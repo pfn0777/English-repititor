@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnglishBot — Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+<div id="app" class="max-w-3xl mx-auto px-4 py-8"></div>
+
+<script>
+const SB_URL = 'https://wbcwavqbxjflgtxepdmf.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY3dhdnFieGpmbGd0eGVwZG1mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1NjAxMzEsImV4cCI6MjA5ODEzNjEzMX0.8RA7w_L6C3fy_ytaJl6ipETz2WZuamFhSGcIQGMOXXo';
+
+// Credentials kept only in memory for the session — never persisted.
+let auth = { username: '', password: '' };
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app = () => document.getElementById('app');
+
+function toast(msg, type = 'info') {
+  const t = document.createElement('div');
+  const bg = type === 'error' ? 'bg-red-600' : type === 'success' ? 'bg-green-600' : 'bg-slate-700';
+  t.className = `fixed top-4 left-1/2 -translate-x-1/2 ${bg} px-4 py-2 rounded-xl text-sm shadow-lg z-50`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+async function api(action, extra = {}) {
+  const res = await fetch(`${SB_URL}/functions/v1/admin`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SB_ANON}`, 'apikey': SB_ANON },
+    body: JSON.stringify({ action, username: auth.username, password: auth.password, ...extra }),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
+// ─── LOGIN ──────────────────────────────────────────────
+function renderLogin() {
+  app().innerHTML = `
+    <div class="max-w-sm mx-auto mt-16">
+      <h1 class="text-xl font-bold mb-1 text-center">Admin panel 🔐</h1>
+      <p class="text-slate-400 text-sm mb-6 text-center">EnglishBot boshqaruvi</p>
+      <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Login</label>
+          <input id="lg-user" type="text" autocomplete="username"
+            class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Parol</label>
+          <input id="lg-pass" type="password" autocomplete="current-password"
+            class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        </div>
+        <button id="lg-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 text-sm font-semibold transition-colors">Kirish</button>
+      </div>
+    </div>`;
+  const submit = async () => {
+    const username = document.getElementById('lg-user').value.trim();
+    const password = document.getElementById('lg-pass').value;
+    if (!username || !password) return toast("Login va parolni kiriting", 'error');
+    const btn = document.getElementById('lg-btn');
+    btn.disabled = true; btn.textContent = 'Tekshirilmoqda...';
+    auth = { username, password };
+    const { ok, data } = await api('login');
+    if (!ok || !data.ok) {
+      auth = { username: '', password: '' };
+      btn.disabled = false; btn.textContent = 'Kirish';
+      return toast(data.message || "Login yoki parol noto'g'ri", 'error');
+    }
+    renderPanel();
+  };
+  document.getElementById('lg-btn').onclick = submit;
+  document.getElementById('lg-pass').addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+}
+
+// ─── PANEL ──────────────────────────────────────────────
+async function renderPanel() {
+  app().innerHTML = `<div class="text-center text-slate-400 mt-16">Yuklanmoqda...</div>`;
+  const { ok, status, data } = await api('stats');
+  if (!ok || !data.ok) {
+    if (status === 401) { auth = { username: '', password: '' }; return renderLogin(); }
+    app().innerHTML = `<div class="text-center text-red-400 mt-16">Xatolik: ${esc(data.message || 'qayta urinib ko\'ring')}</div>`;
+    return;
+  }
+  const s = data.settings;
+  const goalLabel = { travel:'✈️ Sayohat', work:'💼 Ish', ielts:'📝 IELTS', daily:'💬 Kundalik', general:'🌟 Umumiy' };
+  const modeRows = Object.entries(data.byMode || {}).sort((a,b)=>b[1]-a[1])
+    .map(([m,c]) => `<div class="flex justify-between text-sm py-1 border-b border-slate-700/50"><span class="text-slate-300">${esc(m)}</span><span class="text-indigo-300 font-medium">${c}</span></div>`).join('') || '<div class="text-slate-500 text-sm">Ma\'lumot yo\'q</div>';
+  const userRows = (data.users || []).map(u => `
+    <tr class="border-b border-slate-700/50">
+      <td class="py-2 pr-3">${esc(u.name || '—')}</td>
+      <td class="py-2 pr-3 text-slate-400">${esc(u.level || '—')}</td>
+      <td class="py-2 pr-3">${esc(goalLabel[u.goal] || u.goal || '—')}</td>
+      <td class="py-2 text-slate-500 text-xs">${u.last_seen ? new Date(u.last_seen).toLocaleDateString('uz') : '—'}</td>
+    </tr>`).join('') || '<tr><td colspan="4" class="py-3 text-slate-500 text-sm">Foydalanuvchi yo\'q</td></tr>';
+
+  app().innerHTML = `
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-xl font-bold">Admin panel ⚙️</h1>
+      <button id="ap-logout" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-1.5 text-xs transition-colors">Chiqish</button>
+    </div>
+
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+        <div class="text-2xl font-bold text-indigo-400">${data.userCount}</div>
+        <div class="text-xs text-slate-400 mt-1">Foydalanuvchi</div>
+      </div>
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+        <div class="text-2xl font-bold text-green-400">${data.todayReq}</div>
+        <div class="text-xs text-slate-400 mt-1">Bugungi so'rov</div>
+      </div>
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+        <div class="text-2xl font-bold text-amber-400">${data.totalReq}</div>
+        <div class="text-xs text-slate-400 mt-1">Jami so'rov</div>
+      </div>
+    </div>
+
+    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 mb-6">
+      <h2 class="font-semibold mb-3">Sozlamalar</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Aktiv provayder</label>
+          <select id="st-prov" class="w-full bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+            <option value="gemini" ${s.active_provider==='gemini'?'selected':''}>Gemini</option>
+            <option value="claude" ${s.active_provider==='claude'?'selected':''}>Claude</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Model</label>
+          <input id="st-model" type="text" value="${esc(s.model)}"
+            class="w-full bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+          <p class="text-xs text-slate-500 mt-1">Masalan: gemini-2.5-flash yoki claude-sonnet-4-6</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Kunlik limit (har foydalanuvchi)</label>
+          <input id="st-limit" type="number" min="0" value="${esc(s.daily_limit)}"
+            class="w-full bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Gemini kalit <span class="text-slate-500">(joriy: ${s.gemini_set ? esc(s.gemini_key_masked) : 'yo\'q'})</span></label>
+          <input id="st-gkey" type="password" placeholder="O'zgartirish uchun yangi kalit kiriting"
+            class="w-full bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Claude kalit <span class="text-slate-500">(joriy: ${s.claude_set ? esc(s.claude_key_masked) : 'yo\'q'})</span></label>
+          <input id="st-ckey" type="password" placeholder="O'zgartirish uchun yangi kalit kiriting"
+            class="w-full bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        </div>
+        <button id="st-save" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 text-sm font-semibold transition-colors">Saqlash</button>
+      </div>
+    </div>
+
+    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 mb-6">
+      <h2 class="font-semibold mb-3">Rejimlar bo'yicha statistika</h2>
+      ${modeRows}
+    </div>
+
+    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+      <h2 class="font-semibold mb-3">Foydalanuvchilar (${data.userCount})</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="text-left text-slate-400 border-b border-slate-700">
+            <th class="py-2 pr-3 font-medium">Ism</th>
+            <th class="py-2 pr-3 font-medium">Daraja</th>
+            <th class="py-2 pr-3 font-medium">Maqsad</th>
+            <th class="py-2 font-medium">Oxirgi</th>
+          </tr></thead>
+          <tbody>${userRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+
+  document.getElementById('ap-logout').onclick = () => { auth = { username: '', password: '' }; renderLogin(); };
+  document.getElementById('st-save').onclick = async () => {
+    const settings = {
+      active_provider: document.getElementById('st-prov').value,
+      model: document.getElementById('st-model').value.trim(),
+      daily_limit: document.getElementById('st-limit').value,
+    };
+    const gk = document.getElementById('st-gkey').value.trim();
+    const ck = document.getElementById('st-ckey').value.trim();
+    if (gk) settings.gemini_key = gk;
+    if (ck) settings.claude_key = ck;
+    const btn = document.getElementById('st-save');
+    btn.disabled = true; btn.textContent = 'Saqlanmoqda...';
+    const { ok, data } = await api('save', { settings });
+    btn.disabled = false; btn.textContent = 'Saqlash';
+    if (!ok || !data.ok) return toast(data.message || 'Saqlanmadi', 'error');
+    toast('Saqlandi', 'success');
+    renderPanel();
+  };
+}
+
+renderLogin();
+</script>
+</body>
+</html>

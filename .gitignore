@@ -1,0 +1,26 @@
+# AI assistant guidance (local, not for repo)
+CLAUDE.md
+
+# Local agent / IDE settings
+.claude/
+.vscode/
+.idea/
+
+# Secrets and environment
+.env
+.env.*
+*.local
+
+# Dependencies / build
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

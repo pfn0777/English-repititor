@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnglishBot — Ingliz tili repetitori</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+    .view-fade { animation: fadeIn 0.2s ease-out; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    .xp-float { animation: floatUp 1.1s ease-out forwards; }
+    @keyframes floatUp { 0%{opacity:1;transform:translateY(0);} 100%{opacity:0;transform:translateY(-56px);} }
+    .msg-in { animation: msgSlide 0.18s ease-out; }
+    @keyframes msgSlide { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+    .toast-in { animation: toastAnim 3s ease-in-out forwards; }
+    @keyframes toastAnim {
+      0%{opacity:0;transform:translateX(100%);}
+      10%{opacity:1;transform:translateX(0);}
+      80%{opacity:1;transform:translateX(0);}
+      100%{opacity:0;transform:translateX(100%);}
+    }
+    .mode-card { transition: transform 0.15s, box-shadow 0.15s; cursor: pointer; }
+    .mode-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99,102,241,0.3); }
+    .dot-load span { animation: blink 1.3s infinite; display:inline-block; }
+    .dot-load span:nth-child(2){animation-delay:.22s;}
+    .dot-load span:nth-child(3){animation-delay:.44s;}
+    @keyframes blink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+    select, input, textarea {
+      color-scheme: dark;
+    }
+    textarea { resize: none; }
+    body { -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+  <div id="app"></div>
+  <div id="toasts" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <div id="xp-layer" class="fixed inset-0 pointer-events-none z-50"></div>
+
+<script>
+// ─── 1. CONSTANTS ────────────────────────────────────────────────
+const LEVEL_XP  = { A1:0, A2:200, B1:500, B2:1000, C1:2000, C2:4000 };
+const LEVELS    = ['A1','A2','B1','B2','C1','C2'];
+const MAX_HIST  = 20;
+
+const MODES = {
+  conversation: { emoji:'🗣️', title:'Suhbat amaliyoti',  desc:'Jonli dialog va rol o\'yinlari' },
+  correction:   { emoji:'✍️', title:'Matn tuzatish',      desc:'Yozganingni tekshirib beraman' },
+  story:        { emoji:'📖', title:'Hikoya o\'qi',        desc:'Yangi so\'zlar bilan qisqa hikoya' },
+  grammar:      { emoji:'📐', title:'Grammatika',          desc:'Qoida, formula, misollar' },
+  quiz:         { emoji:'🎯', title:'Viktorina',           desc:'10 savollik test, natija va tahlil' },
+  daily:        { emoji:'⚡', title:'Kun vazifasi',        desc:'5 daqiqalik kundalik mashq' },
+};
+
+const ACHIEVEMENTS = [
+  { id:'streak_7',     emoji:'🔥', title:'7 kun ketma-ket',    desc:'7 kun davomida kirdingiz',          check: u => (u.streak||0) >= 7 },
+  { id:'streak_30',    emoji:'🔥', title:'30 kun ketma-ket',   desc:'30 kun davomida kirdingiz',         check: u => (u.streak||0) >= 30 },
+  { id:'words_100',    emoji:'📚', title:"100 so'z",           desc:"100 ta so'z saqlandi",              check: u => (u.vocabulary||[]).length >= 100 },
+  { id:'first_quiz',   emoji:'🎯', title:'Birinchi viktorina', desc:'Birinchi testni bajardingiz',       check: u => (u.quizCount||0) >= 1 },
+  { id:'correction_5', emoji:'✍️', title:'Matn ustasi',        desc:"Matn tuzatishdan 5 marta foydalandingiz", check: u => (u.correctionCount||0) >= 5 },
+  { id:'level_b1',     emoji:'⭐', title:'B1 darajasi',        desc:"500 XP to'pladingiz",               check: u => (u.xp||0) >= 500 },
+];
+
+// ─── 2. STATE ────────────────────────────────────────────────────
+let user = null;
+let currentMode = null;
+let history = [];   // conversation history for AI API
+
+// Backend (Supabase) — API keys live server-side, never in the browser
+const SB_URL = 'https://wbcwavqbxjflgtxepdmf.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiY3dhdnFieGpmbGd0eGVwZG1mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1NjAxMzEsImV4cCI6MjA5ODEzNjEzMX0.8RA7w_L6C3fy_ytaJl6ipETz2WZuamFhSGcIQGMOXXo';
+function getUserId() {
+  let id = LS.str('eb_uid');
+  if (!id) { id = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random()); LS.setStr('eb_uid', id); }
+  return id;
+}
+
+// ─── 3. STORAGE HELPERS ──────────────────────────────────────────
+const LS = {
+  get:   k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set:   (k,v) => localStorage.setItem(k, JSON.stringify(v)),
+  str:   k => localStorage.getItem(k) || '',
+  setStr:(k,v) => localStorage.setItem(k, v),
+};
+
+function loadUser()  { return LS.get('eb_user'); }
+function saveUser()  { LS.set('eb_user', user); }
+
+function getVisits() { return LS.get('eb_visits') || []; }
+function addVisit(d) {
+  const v = getVisits();
+  if (!v.includes(d)) { v.push(d); LS.set('eb_visits', v); }
+}
+
+function getModeStats() { return LS.get('eb_modes') || {}; }
+function incMode(m) {
+  const s = getModeStats(); s[m] = (s[m]||0)+1; LS.set('eb_modes', s);
+}
+
+function getErrors() { return LS.get('eb_errors') || []; }
+function pushError(cat) {
+  const e = getErrors().filter(x => x !== cat);
+  e.unshift(cat); LS.set('eb_errors', e.slice(0,10));
+}
+
+// ─── 4. GAMIFICATION ─────────────────────────────────────────────
+function updateStreak() {
+  const today = todayStr();
+  const yest  = dateStr(-1);
+  if (user.lastVisit === today) return;
+  user.streak = user.lastVisit === yest ? (user.streak||0)+1 : 1;
+  user.lastVisit = today;
+  addVisit(today);
+  saveUser();
+}
+
+function todayStr(offset=0) {
+  return new Date(Date.now() + offset*86400000).toISOString().split('T')[0];
+}
+function dateStr(offset) { return todayStr(offset); }
+
+function addXP(n) {
+  user.xp = (user.xp||0) + n;
+  checkAchievements();
+  saveUser();
+  floatXP(n);
+}
+
+function floatXP(n) {
+  const el = document.createElement('div');
+  el.className = 'xp-float absolute text-amber-400 font-bold text-base';
+  el.style.cssText = 'top:70px;right:18px;';
+  el.textContent = `+${n} XP`;
+  document.getElementById('xp-layer').appendChild(el);
+  setTimeout(() => el.remove(), 1100);
+}
+
+function currentLevel() {
+  let lv = 'A1';
+  for (const [l,x] of Object.entries(LEVEL_XP)) if ((user.xp||0) >= x) lv = l;
+  return lv;
+}
+function nextLevel() {
+  const i = LEVELS.indexOf(currentLevel());
+  return i < LEVELS.length-1 ? LEVELS[i+1] : null;
+}
+function levelPct() {
+  const cur = currentLevel(), nxt = nextLevel();
+  if (!nxt) return 100;
+  const a = LEVEL_XP[cur], b = LEVEL_XP[nxt];
+  return Math.round(((user.xp||0)-a)/(b-a)*100);
+}
+
+function checkAchievements() {
+  if (!user.achievements) user.achievements = [];
+  ACHIEVEMENTS.forEach(a => {
+    if (!user.achievements.includes(a.id) && a.check(user)) {
+      user.achievements.push(a.id);
+      saveUser();
+      toast(`${a.emoji} Yutuq: ${a.title}`, 'achievement');
+    }
+  });
+}
+
+function toast(msg, type='info') {
+  const c = document.getElementById('toasts');
+  const el = document.createElement('div');
+  const cls = { info:'bg-slate-700 border-slate-600', success:'bg-emerald-900 border-emerald-600',
+    error:'bg-red-900 border-red-600', achievement:'bg-indigo-900 border-indigo-500' };
+  el.className = `toast-in px-4 py-2.5 rounded-xl border text-sm font-medium shadow-lg ${cls[type]||cls.info}`;
+  el.textContent = msg;
+  c.appendChild(el);
+  setTimeout(() => el.remove(), 3100);
+}
+
+function speakText(text) {
+  if (!('speechSynthesis' in window)) { toast("Brauzeringiz audio qo'llamaydi", 'error'); return false; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = 0.9;
+  speechSynthesis.speak(u);
+  return true;
+}
+
+// ─── 5. WORD PARSER ──────────────────────────────────────────────
+function parseWords(text) {
+  const re = /📌 \*\*(.+?)\*\*\s*(?:\((.+?)\))?\s*— (.+?)(?:\n|$)/g;
+  let m, added = 0;
+  if (!user.vocabulary) user.vocabulary = [];
+  while ((m = re.exec(text)) !== null) {
+    const word = m[1].trim(), pron = (m[2]||'').trim(), tr = m[3].trim();
+    if (!user.vocabulary.find(v => v.word.toLowerCase()===word.toLowerCase())) {
+      user.vocabulary.push({ word, translation:tr, pronunciation:pron, mastery:0,
+        addedAt: new Date().toISOString(), nextReview: new Date().toISOString() });
+      added++;
+    }
+  }
+  if (added > 0) {
+    addXP(added*5);
+    toast(`📌 ${added} ta yangi so'z saqlandi!`, 'success');
+  }
+}
+
+// ─── 6. TEXT RENDERER ────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function markup(s) {
+  return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');
+}
+
+function renderText(text) {
+  const lines = text.split('\n');
+  let html = '', cardBuf = [], normBuf = [];
+  const CARD_STARTS = ['❌','✅','💡','🔁'];
+  const isCard = l => CARD_STARTS.some(p => l.startsWith(p));
+
+  function flushNorm() {
+    const t = normBuf.join('\n').trim();
+    if (t) html += `<div class="whitespace-pre-wrap leading-relaxed">${markup(t)}</div>`;
+    normBuf = [];
+  }
+  function flushCard() {
+    if (!cardBuf.length) return;
+    html += `<div class="bg-amber-950 border border-amber-500 rounded-xl p-3 my-2 space-y-1 text-sm">`;
+    cardBuf.forEach(l => { html += `<div>${markup(l)}</div>`; });
+    html += `</div>`;
+    cardBuf = [];
+  }
+
+  lines.forEach(l => {
+    if (isCard(l)) { flushNorm(); cardBuf.push(l); }
+    else           { flushCard(); normBuf.push(l); }
+  });
+  flushNorm(); flushCard();
+  return html || `<div class="whitespace-pre-wrap">${markup(text)}</div>`;
+}
+
+// Extract [AUDIO]...[/AUDIO] blocks into hidden play buttons (IELTS Listening)
+function renderAI(text) {
+  const scripts = [];
+  const stripped = text.replace(/\[AUDIO\]([\s\S]*?)\[\/AUDIO\]/g, (_, inner) => {
+    scripts.push(inner.trim());
+    return `\n[[AUDIO_${scripts.length-1}]]\n`;
+  });
+  let html = renderText(stripped);
+  scripts.forEach((s, i) => {
+    const btn = `<button class="aud-btn bg-indigo-600 hover:bg-indigo-500 rounded-lg px-3 py-2 text-sm my-1 inline-flex items-center gap-1" data-audio="${esc(s)}">🔊 Tinglash</button>`;
+    html = html.replace(`[[AUDIO_${i}]]`, btn);
+  });
+  return { html, hasAudio: scripts.length > 0, firstScript: scripts[0] };
+}
+
+// ─── 7. CLAUDE API ───────────────────────────────────────────────
+function onAISuccess(ai) {
+  addXP(10);
+  incMode(currentMode);
+  if (currentMode === 'quiz')       user.quizCount       = (user.quizCount||0) + 1;
+  if (currentMode === 'correction') user.correctionCount = (user.correctionCount||0) + 1;
+  saveUser();
+  parseWords(ai);
+  if (user.goal === 'ielts') parseBand(ai);
+}
+
+function parseBand(text) {
+  const m = text.match(/🎯 Band:\s*([0-9](?:\.[05])?)/);
+  if (!m) return;
+  if (!user.ielts) user.ielts = { targetBand: 6.5, scores: [] };
+  user.ielts.scores.push({ section: currentMode, band: parseFloat(m[1]), date: todayStr() });
+  if (user.ielts.scores.length > 50) user.ielts.scores = user.ielts.scores.slice(-50);
+  saveUser();
+}
+const GOAL_SCENARIOS = {
+  travel: 'aeroport, mehmonxona, restoran, transport, yo\'nalish so\'rash',
+  work:   'ish yig\'ilishi, email yozish, taqdimot, hamkasblar bilan muloqot',
+  ielts:  'IELTS speaking test, academic writing, essay muhokama',
+  daily:  'do\'stlar bilan suhbat, xarid qilish, shifokorga borish',
+  general:'turli mavzular: sport, texnologiya, san\'at, madaniyat',
+};
+
+const IELTS_GUIDE = {
+  conversation:`IELTS Speaking rejimi. Examiner rolini o'yna.
+Part 1: kundalik mavzular (uy, ish, hobbi) — 3-4 qisqa savol.
+Part 2: Cue card ber (mavzu + 3-4 bullet), foydalanuvchi 1-2 daqiqa gapirsin.
+Part 3: Part 2 mavzusiga bog'liq chuqur, mavhum savollar.
+Har bo'limdan keyin baho: Fluency, Lexical Resource, Grammar, Pronunciation bo'yicha izoh + tabiiyroq iboralar.
+Yakunda "🎯 Band: X.X" ber.`,
+  correction:`IELTS Writing rejimi.
+Avval so'ra: Task 1 (grafik/diagramma/jarayon tasvirlash, 150+ so'z) yoki Task 2 (esse, 250+ so'z)?
+Foydalanuvchi matnini 4 mezon bo'yicha bahola:
+- Task Achievement/Response
+- Coherence & Cohesion
+- Lexical Resource
+- Grammatical Range & Accuracy
+Har mezonga qisqa izoh + bandni ko'rsat. Xato formatini (❌✅💡🔁) ishlat.
+2-3 kuchaytiruvchi model jumla ber. Yakunda "🎯 Band: X.X".`,
+  story:`IELTS Reading rejimi.
+Akademik uslubdagi 200-300 so'zlik passage yoz.
+Keyin 5-6 savol ber, turlarni aralashtir: True/False/Not Given, Matching Headings, Multiple Choice, sentence completion.
+Foydalanuvchi javob bergach — to'g'ri/noto'g'ri tahlil qil, passage'dan dalil ko'rsat.
+To'g'ri javoblar soniga qarab "🎯 Band: X.X" (taxminiy) ber.
+Yangi akademik so'zlarni 📌 formatida ajrat.`,
+  quiz:`IELTS Listening rejimi.
+Audio skriptni [AUDIO] va [/AUDIO] teglari orasiga yoz (foydalanuvchi avval TINGLAYDI, o'qimaydi).
+Skript: kundalik yoki akademik dialog/monolog (120-180 so'z).
+Teglardan TASHQARIDA 5-6 savol ber (gap-fill, multiple choice).
+Foydalanuvchi javob bergach — tekshir, skriptdan dalil ko'rsat.
+"🎯 Band: X.X" (taxminiy) ber.`,
+  grammar:`IELTS uchun grammatika va lexical resource rejimi.
+Yuqori band uchun zarur strukturalarni o'rgat: linking words, complex/compound sentences, paraphrasing, academic collocations.
+1. O'zbekcha sodda tushuntir 2. Formula 3. 3 misol (oddiy→murakkab) 4. 3 ta IELTS uslubidagi tarjima vazifa.
+Yangi so'z/iborani 📌 formatida ber.`,
+  daily:`IELTS kunlik mashq rejimi. 5 daqiqalik mini-mashq.
+Har safar boshqa bo'limni tanla (Speaking cue card / Writing mini-paragraph / Reading qisqa passage / Lexical 5 so'z).
+Birini boshla va foydalanuvchi tugaguncha davom et. Baholasang "🎯 Band: X.X" ber.`,
+};
+
+function buildSystem(mode) {
+  const lvlGuide = {
+    A1:"Ko'proq o'zbek tilida tushuntir. Ingliz so'zlarni o'zbek harflarida ham yoz. Juda sodda gap qurilmasi.",
+    A2:"O'zbek va inglizni aralashtirib ishla. Har yangi so'zga o'zbek tarjima ber.",
+    B1:"Asosan inglizcha gapir, qiyin joylarni o'zbekcha tushuntir.",
+    B2:"Inglizcha gapir. Faqat so'ralganda o'zbekcha.",
+    C1:"Faqat inglizcha. Murakkab grammatika va nozik farqlarni tushuntir.",
+    C2:"Native-level ingliz. Academic va professional uslub.",
+  };
+  const modeGuide = {
+    conversation:`Suhbat rejimi. Foydalanuvchi bilan jonli dialog.
+Ssenariy: ${GOAL_SCENARIOS[user.goal]||GOAL_SCENARIOS.general}.
+Har 3-4 replikadan keyin xatolarni ko'rsat:
+❌ Xato: [xato]
+✅ To'g'ri: [to'g'ri]
+💡 Nima uchun: [sabab]
+🔁 Mashq: [vazifa]`,
+    correction:`Matn tuzatish rejimi.
+Foydalanuvchi matnini qator-qator tekshir.
+Har xato uchun: ❌ Xato: ... ✅ To'g'ri: ... 💡 Nima uchun: ...
+Oxirida to'liq to'g'rilangan variant ber.
+Baholash: Boshlang'ich / Rivojlanayapti / Ishonchli / Deyarli ona tili.
+2-3 ta konkret tavsiya ber.`,
+    story:`Hikoya rejimi.
+Foydalanuvchi darajasiga mos 150-300 so'zlik inglizcha hikoya yoz.
+5-8 ta yangi so'zni: 📌 **word** — [o'zbekcha] formatida bergin (word save uchun muhim).
+Hikoya oxirida 3 ta tushunish + 2 ta muhokama savoli ber.`,
+    grammar:`Grammatika rejimi.
+Foydalanuvchi so'ragan qoidani:
+1. Sodda o'zbek tilida tushuntir
+2. Formula ber
+3. 3 misol (oddiydan murakkabga)
+4. 3 ta tarjima vazifa ber
+Javoblarni yashir: "Javobni bilmoqchimisiz? So'rang!" de.`,
+    quiz:`Viktorina rejimi. 10 savollik test.
+Savollarni birin-ketin ber — har javobdan keyin to'g'ri/noto'g'ri deb keyingi savolga o't.
+Format: tarjima, bo'sh joy, xato topish, talaffuz.
+Oxirida: ball, zaif joylar, tavsiya.`,
+    daily:`Kun vazifasi rejimi. 5 daqiqalik mashq.
+Quyidagilardan birini tanlash (har safar boshqa):
+- 3 ta jumla tarjima (o'zbekchadan inglizchaga)
+- Mini rol o'yini (3-4 replika)
+- 5 yangi so'z + kontekst (📌 formatida)
+- 3 ta jumla yoz hayoting haqida
+Birini boshla va foydalanuvchi tugaguncha davom et.`,
+  };
+
+  const isIelts = user.goal === 'ielts';
+  const guide = isIelts ? (IELTS_GUIDE[mode] || modeGuide[mode]) : (modeGuide[mode] || 'Foydalanuvchiga yordam ber.');
+  const targetBand = user.ielts?.targetBand || 6.5;
+
+  return `Sen ingliz tili repetitorisan. O'zbek foydalanuvchilarga yordam berasan.
+Foydalanuvchi: ${user.name} | Daraja: ${user.level} | Maqsad: ${user.goal}${isIelts?` | Target band: ${targetBand}`:''}
+
+DARAJA:
+${lvlGuide[user.level]||lvlGuide.B1}
+
+REJIM:
+${guide}
+
+QOIDALAR:
+1. Har javobda foydalanuvchi biror narsa o'rgansin.
+2. Xato formati: ❌ Xato → ✅ To'g'ri → 💡 Sabab → 🔁 Mashq
+3. Yangi so'z: 📌 **word** (talaffuz) — [o'zbekcha]
+4. Rag'batlantiruvchi bo'l. Qisqa savol — qisqa javob.
+5. Agar foydalanuvchi qiynalsa yoki tushkun bo'lsa — soddalashtir, sekinlashtir, qo'llab-quvvatla.${isIelts?`
+6. IELTS rejimi: baho berganda umumiy ballni aniq "🎯 Band: X.X" formatida (0-9, .0 yoki .5) yoz.`:''}`;
+}
+
+async function callAI(userMsg) {
+  history.push({ role:'user', content: userMsg });
+  if (history.length > MAX_HIST) history = history.slice(-MAX_HIST);
+
+  try {
+    const res = await fetch(`${SB_URL}/functions/v1/chat`, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${SB_ANON}`, 'apikey': SB_ANON },
+      body: JSON.stringify({
+        userId: getUserId(),
+        system: buildSystem(currentMode),
+        messages: history,
+        mode: currentMode,
+        profile: { name:user.name, level:user.level, goal:user.goal },
+      }),
+    });
+
+    const data = await res.json().catch(()=>({}));
+    if (!res.ok) {
+      history.pop();
+      if (res.status===429) return data.message || "⏳ Bugungi limit tugadi.";
+      return `❌ ${data.message || 'Xatolik. Qayta urinib ko\'ring.'}`;
+    }
+
+    const ai = data.text || "❌ Bo'sh javob keldi.";
+    history.push({ role:'assistant', content: ai });
+
+    onAISuccess(ai);
+    return ai;
+
+  } catch(err) {
+    history.pop();
+    if (err.name==='TypeError') return "📡 Internet aloqasi yo'q. Qayta urinib ko'ring.";
+    return `❌ Xatolik: ${err.message}`;
+  }
+}
+
+function showSettingsModal() {
+  const levels = ['A1','A2','B1','B2','C1','C2'];
+  const goals = { travel:'✈️ Sayohat', work:'💼 Ish/biznes', ielts:'📝 IELTS/imtihon', daily:'💬 Kundalik muloqot', general:'🌟 Umumiy' };
+  const bands = ['5','5.5','6','6.5','7','7.5','8'];
+  const curBand = (user.ielts?.targetBand || 6.5).toString();
+
+  document.getElementById('settings-modal')?.remove();
+  const m = document.createElement('div');
+  m.id = 'settings-modal';
+  m.className = 'fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4';
+  m.innerHTML = `
+    <div class="bg-slate-800 rounded-2xl p-6 max-w-sm w-full border border-slate-700 shadow-2xl space-y-4">
+      <h2 class="text-base font-bold">Profil sozlamalari ⚙️</h2>
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1.5">Ism</label>
+        <input id="st-name" type="text" value="${esc(user.name)}"
+          class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1.5">Daraja</label>
+        <select id="st-level" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+          ${levels.map(l=>`<option value="${l}" ${l===user.level?'selected':''}>${l}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-300 mb-1.5">Maqsad</label>
+        <select id="st-goal" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+          ${Object.entries(goals).map(([k,v])=>`<option value="${k}" ${k===user.goal?'selected':''}>${v}</option>`).join('')}
+        </select>
+      </div>
+      <div id="st-band-wrap" class="${user.goal==='ielts'?'':'hidden'}">
+        <label class="block text-sm font-medium text-slate-300 mb-1.5">Target band (IELTS)</label>
+        <select id="st-band" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+          ${bands.map(b=>`<option value="${b}" ${b===curBand?'selected':''}>${parseFloat(b).toFixed(1)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="flex gap-2 pt-1">
+        <button id="st-save" class="flex-1 bg-indigo-600 hover:bg-indigo-500 rounded-xl py-2.5 text-sm font-semibold transition-colors">Saqlash</button>
+        <button id="st-cancel" class="px-4 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm transition-colors">Bekor</button>
+      </div>
+    </div>`;
+  document.body.appendChild(m);
+
+  const goalSel = document.getElementById('st-goal');
+  const bandWrap = document.getElementById('st-band-wrap');
+  goalSel.addEventListener('change', () => {
+    bandWrap.classList.toggle('hidden', goalSel.value !== 'ielts');
+  });
+
+  document.getElementById('st-save').onclick = () => {
+    const name = document.getElementById('st-name').value.trim();
+    if (!name) { toast('Ism bo\'sh bo\'lmasin', 'error'); return; }
+    user.name  = name;
+    user.level = document.getElementById('st-level').value;
+    user.goal  = goalSel.value;
+    if (user.goal === 'ielts') {
+      if (!user.ielts) user.ielts = { targetBand: 6.5, scores: [] };
+      user.ielts.targetBand = parseFloat(document.getElementById('st-band').value) || 6.5;
+    }
+    saveUser();
+    m.remove();
+    toast('Sozlamalar saqlandi!', 'success');
+    renderDashboard();
+  };
+  document.getElementById('st-cancel').onclick = () => m.remove();
+  m.addEventListener('click', e => { if (e.target===m) m.remove(); });
+}
+
+// ─── 9. VIEW: ONBOARDING ─────────────────────────────────────────
+function renderOnboarding() {
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen flex items-center justify-center p-4 view-fade">
+    <div class="max-w-md w-full">
+      <div class="text-center mb-8">
+        <div class="text-6xl mb-3">🇬🇧</div>
+        <h1 class="text-3xl font-bold mb-1">EnglishBot</h1>
+        <p class="text-slate-400 text-sm">Ingliz tilini o'rganishga xush kelibsiz! 🎉</p>
+      </div>
+      <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Ismingiz</label>
+          <input id="ob-name" type="text" placeholder="Masalan: Sardor"
+            class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Darajangiz</label>
+          <select id="ob-level" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+            <option value="A1">A1 — Yangi boshlovchi</option>
+            <option value="A2">A2 — Boshlang'ich</option>
+            <option value="B1" selected>B1 — O'rta</option>
+            <option value="B2">B2 — O'rta-yuqori</option>
+            <option value="C1">C1 — Ilg'or</option>
+            <option value="C2">C2 — Mukammal</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Maqsadingiz</label>
+          <select id="ob-goal" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+            <option value="travel">✈️ Sayohat uchun</option>
+            <option value="work">💼 Ish/biznes uchun</option>
+            <option value="ielts">📝 IELTS/imtihon</option>
+            <option value="daily">💬 Kundalik muloqot</option>
+            <option value="general">🌟 Umumiy rivojlanish</option>
+          </select>
+        </div>
+        <div id="ob-band-wrap" class="hidden">
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Maqsad band (IELTS)</label>
+          <select id="ob-band" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+            <option value="5">5.0</option>
+            <option value="5.5">5.5</option>
+            <option value="6">6.0</option>
+            <option value="6.5" selected>6.5</option>
+            <option value="7">7.0</option>
+            <option value="7.5">7.5</option>
+            <option value="8">8.0</option>
+          </select>
+        </div>
+        <button id="ob-btn"
+          class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">
+          Boshlash →
+        </button>
+      </div>
+    </div>
+  </div>`;
+
+  const goalSel = document.getElementById('ob-goal');
+  const bandWrap = document.getElementById('ob-band-wrap');
+  goalSel.addEventListener('change', () => {
+    bandWrap.classList.toggle('hidden', goalSel.value !== 'ielts');
+  });
+
+  document.getElementById('ob-btn').onclick = () => {
+    const name = document.getElementById('ob-name').value.trim();
+    if (!name) { toast('Iltimos, ismingizni kiriting','error'); return; }
+    const today = todayStr();
+    const goal = goalSel.value;
+    const targetBand = parseFloat(document.getElementById('ob-band').value) || 6.5;
+    user = { name, level: document.getElementById('ob-level').value,
+      goal,
+      xp:0, streak:1, lastVisit:today, achievements:[], vocabulary:[],
+      quizCount:0, correctionCount:0,
+      ielts: { targetBand, scores: [] } };
+    saveUser(); addVisit(today);
+    renderDashboard();
+  };
+}
+
+// ─── 10. VIEW: DASHBOARD ─────────────────────────────────────────
+function renderDashboard() {
+  const stats = getModeStats();
+  const leastMode = Object.keys(MODES).sort((a,b)=>(stats[a]||0)-(stats[b]||0))[0];
+  const errors = getErrors().slice(0,3);
+  const lv = currentLevel(), nxt = nextLevel(), pct = levelPct();
+
+  const IELTS_SECTION = { conversation:'Speaking', correction:'Writing', story:'Reading', quiz:'Listening', grammar:'Lexical/Grammar', daily:'Daily' };
+  const isIelts = user.goal === 'ielts';
+  const cards = Object.entries(MODES).map(([k,m]) => `
+    <div class="mode-card bg-slate-800 rounded-2xl p-4 border ${k===leastMode?'border-indigo-500':'border-slate-700'} relative"
+         data-mode="${k}">
+      ${k===leastMode?'<div class="absolute top-2 right-2 bg-indigo-600 text-xs px-2 py-0.5 rounded-full font-medium">Tavsiya</div>':''}
+      <div class="text-3xl mb-2">${m.emoji}</div>
+      <div class="font-semibold text-sm">${m.title}${isIelts?` <span class="text-indigo-400 text-xs font-normal">· ${IELTS_SECTION[k]}</span>`:''}</div>
+      <div class="text-slate-400 text-xs mt-0.5">${m.desc}</div>
+    </div>`).join('');
+
+  const errHtml = errors.length
+    ? errors.map(e=>`<span class="bg-slate-700 text-xs px-2 py-1 rounded-lg">${esc(e)}</span>`).join('')
+    : '<span class="text-slate-500 text-sm">Hali xatolar yo\'q ✨</span>';
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between sticky top-0 z-10">
+      <div class="font-bold">EnglishBot 🇬🇧</div>
+      <div class="flex items-center gap-2 text-sm">
+        <span class="text-amber-400 font-medium">🔥 ${user.streak||0}</span>
+        <span class="text-amber-300 font-medium">⭐ ${user.xp||0} XP</span>
+        <button id="db-prog" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-2.5 py-1 text-xs transition-colors">📊</button>
+        <button id="db-settings" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-2.5 py-1 text-xs transition-colors">⚙️</button>
+      </div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-6">
+      <div class="mb-5">
+        <h2 class="text-xl font-bold">Salom, ${esc(user.name)}! 👋</h2>
+        <p class="text-slate-400 text-sm mt-0.5">Bugun nima o'rganamiz?</p>
+      </div>
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 mb-5">
+        <div class="flex justify-between text-sm mb-2">
+          <span class="font-medium">XP darajasi: <span class="text-indigo-400">${lv}</span>${user.level!==lv?` <span class="text-slate-500 text-xs">(maqsad: ${esc(user.level)})</span>`:''}</span>
+          <span class="text-slate-400">${nxt?`${LEVEL_XP[nxt]-(user.xp||0)} XP qoldi`:'Eng yuqori daraja!'}</span>
+        </div>
+        <div class="bg-slate-700 rounded-full h-2">
+          <div class="bg-indigo-500 h-2 rounded-full" style="width:${pct}%"></div>
+        </div>
+      </div>
+      <h3 class="font-semibold text-slate-300 text-sm mb-3">Mashq turini tanlang</h3>
+      <div class="grid grid-cols-2 gap-3 mb-5">${cards}</div>
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+        <div class="text-sm font-semibold text-slate-300 mb-2">Zaif joylar</div>
+        <div class="flex flex-wrap gap-2">${errHtml}</div>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('db-prog').onclick = renderProgress;
+  document.getElementById('db-settings').onclick = showSettingsModal;
+  document.querySelectorAll('[data-mode]').forEach(c => {
+    c.onclick = () => { currentMode = c.dataset.mode; history = []; renderChat(); };
+  });
+}
+
+// ─── 11. VIEW: CHAT ──────────────────────────────────────────────
+let chatBusy = false;
+
+function renderChat() {
+  chatBusy = false;
+  const m = MODES[currentMode];
+  document.getElementById('app').innerHTML = `
+  <div class="h-screen flex flex-col view-fade">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 flex-shrink-0">
+      <button id="ch-back" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
+      <div class="flex-1 font-semibold text-sm">${m.emoji} ${m.title}</div>
+      <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-900 text-indigo-300">🤖 AI</span>
+    </div>
+    <div id="ch-msgs" class="flex-1 overflow-y-auto px-4 py-4 space-y-3 scroll-smooth"></div>
+    <div class="bg-slate-800 border-t border-slate-700 px-4 py-3 flex-shrink-0">
+      <div class="flex gap-2 items-end">
+        <div class="flex-1 relative">
+          <textarea id="ch-in" rows="1" placeholder="Xabar yozing..."
+            class="w-full bg-slate-700 rounded-xl px-4 py-3 pr-12 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none max-h-32 overflow-y-auto"></textarea>
+          <div id="ch-cnt" class="absolute bottom-2.5 right-3 text-xs text-slate-500">0</div>
+        </div>
+        <button id="ch-send" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 rounded-xl px-4 py-3 flex-shrink-0 font-bold text-lg leading-none transition-colors">→</button>
+      </div>
+    </div>
+  </div>`;
+
+  const greetings = {
+    conversation:`Salom, ${user.name}! 👋 Bugun suhbat amaliyoti. Qaysi mavzuda gaplashmoqchisiz?`,
+    correction:`Salom, ${user.name}! ✍️ Inglizcha yozgan matnini yuboring — tekshirib beraman.`,
+    story:`Salom, ${user.name}! 📖 Qaysi mavzuda hikoya o'qimoqchisiz? (Masalan: adventure, travel, science)`,
+    grammar:`Salom, ${user.name}! 📐 Qaysi grammatika mavzusini o'rganamiz? (Masalan: Present Perfect, Conditionals)`,
+    quiz:`Salom, ${user.name}! 🎯 10 savollik viktorinaga tayyormisiz? "Ha, boshlaymiz!" deb yozing.`,
+    daily:`Salom, ${user.name}! ⚡ Bugungi 5 daqiqalik mashq tayyor. Boshlaylikmi?`,
+  };
+  appendMsg('ai', greetings[currentMode]||`Salom, ${user.name}! Qanday yordam bera olaman?`);
+
+  document.getElementById('ch-back').onclick = renderDashboard;
+
+  const inp = document.getElementById('ch-in');
+  inp.addEventListener('input', () => {
+    inp.style.height = 'auto';
+    inp.style.height = Math.min(inp.scrollHeight, 128)+'px';
+    document.getElementById('ch-cnt').textContent = inp.value.length;
+  });
+  inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();} });
+  document.getElementById('ch-send').onclick = doSend;
+  inp.focus();
+}
+
+function appendMsg(role, text, isApiErr=false) {
+  const box = document.getElementById('ch-msgs');
+  if (!box) return;
+  const wrap = document.createElement('div');
+  wrap.className = `msg-in flex ${role==='user'?'justify-end':'justify-start'}`;
+  if (role==='user') {
+    wrap.innerHTML = `<div class="max-w-xs sm:max-w-md bg-indigo-600 rounded-tl-2xl rounded-b-2xl px-4 py-2.5 text-sm">${esc(text)}</div>`;
+  } else {
+    const { html, hasAudio, firstScript } = renderAI(text);
+    wrap.innerHTML = `
+      <div class="max-w-xs sm:max-w-md bg-slate-700 rounded-tr-2xl rounded-b-2xl px-4 py-2.5 text-sm ${isApiErr?'border border-red-600':''}">
+        <div class="text-xs text-slate-400 mb-1">🤖 EnglishBot</div>
+        ${html}
+      </div>`;
+    wrap._audio = { hasAudio, firstScript };
+  }
+  box.appendChild(wrap);
+  wrap.querySelectorAll('.aud-btn').forEach(b => b.onclick = () => speakText(b.dataset.audio));
+  if (wrap._audio?.hasAudio) speakText(wrap._audio.firstScript);
+  box.scrollTop = box.scrollHeight;
+}
+
+function showLoader() {
+  const box = document.getElementById('ch-msgs');
+  if (!box) return;
+  const d = document.createElement('div');
+  d.id = 'ld'; d.className = 'flex justify-start';
+  d.innerHTML = `<div class="bg-slate-700 rounded-tr-2xl rounded-b-2xl px-4 py-3 text-sm">
+    <div class="text-xs text-slate-400 mb-1">🤖 EnglishBot</div>
+    <div class="dot-load text-slate-400 text-lg"><span>●</span><span>●</span><span>●</span></div>
+  </div>`;
+  box.appendChild(d); box.scrollTop = box.scrollHeight;
+}
+
+async function doSend() {
+  if (chatBusy) return;
+  const inp = document.getElementById('ch-in');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = ''; inp.style.height = 'auto';
+  document.getElementById('ch-cnt').textContent = '0';
+  appendMsg('user', txt);
+  chatBusy = true;
+  document.getElementById('ch-send').disabled = true;
+  showLoader();
+  const resp = await callAI(txt);
+  document.getElementById('ld')?.remove();
+  chatBusy = false;
+  document.getElementById('ch-send').disabled = false;
+  if (resp) {
+    const isErr = (resp.startsWith('❌')||resp.startsWith('📡')||resp.startsWith('⏳')) && !resp.includes('Xato:');
+    appendMsg('ai', resp, isErr);
+  }
+  inp.focus();
+}
+
+// ─── 12. VIEW: PROGRESS ──────────────────────────────────────────
+function renderProgress() {
+  const visits = getVisits();
+  const dots = Array.from({length:30},(_,i)=>{
+    const d = todayStr(-(29-i));
+    return `<div class="rounded-full ${visits.includes(d)?'bg-amber-400':'bg-slate-700'}" style="width:10px;height:10px;" title="${d}"></div>`;
+  }).join('');
+
+  const lv=currentLevel(), nxt=nextLevel(), pct=levelPct();
+  const lvBarTicks = LEVELS.map(l=>`<span class="text-xs text-slate-500">${l}</span>`).join('');
+
+  const achHtml = ACHIEVEMENTS.map(a=>{
+    const ok = (user.achievements||[]).includes(a.id);
+    return `<div class="bg-slate-700 rounded-xl p-3 text-center border ${ok?'border-indigo-500':'border-transparent'}">
+      <div class="text-2xl mb-1 ${ok?'':'opacity-20'}">${a.emoji}</div>
+      <div class="text-xs font-medium ${ok?'text-white':'text-slate-500'}">${a.title}</div>
+    </div>`;
+  }).join('');
+
+  const SECTION_LABELS = { conversation:'Speaking', correction:'Writing', story:'Reading', quiz:'Listening', grammar:'Grammar', daily:'Daily' };
+  let ieltsHtml = '';
+  if (user.goal === 'ielts') {
+    const scores = user.ielts?.scores || [];
+    const target = user.ielts?.targetBand || 6.5;
+    const avg = scores.length ? (scores.reduce((s,x)=>s+x.band,0)/scores.length) : null;
+    const bySection = {};
+    scores.forEach(x => { bySection[x.section] = x.band; });
+    const secHtml = Object.keys(SECTION_LABELS).filter(k=>bySection[k]!=null)
+      .map(k=>`<div class="flex justify-between text-sm py-1"><span class="text-slate-400">${SECTION_LABELS[k]}</span><span class="font-semibold">${bySection[k].toFixed(1)}</span></div>`).join('')
+      || '<div class="text-slate-500 text-sm py-1">Hali baholanmagan — Writing yoki Speaking sinab ko\'ring</div>';
+    ieltsHtml = `
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+        <div class="flex justify-between items-center mb-3">
+          <div class="font-semibold text-sm">IELTS band 🎯</div>
+          <span class="text-slate-400 text-xs">Maqsad: ${target.toFixed(1)}</span>
+        </div>
+        <div class="flex items-end gap-2 mb-3">
+          <div class="text-3xl font-bold ${avg!=null&&avg>=target?'text-emerald-400':'text-indigo-400'}">${avg!=null?avg.toFixed(1):'—'}</div>
+          <div class="text-xs text-slate-400 mb-1">o'rtacha band${avg!=null?` (${scores.length} baho)`:''}</div>
+        </div>
+        ${secHtml}
+      </div>`;
+  }
+
+  const vocab = (user.vocabulary||[]).slice(0,5);
+  const vocabHtml = vocab.length
+    ? vocab.map(v=>`<div class="flex justify-between py-2 border-b border-slate-700 text-sm">
+        <span>${esc(v.word)}${v.pronunciation?` <span class="text-slate-500">(${esc(v.pronunciation)})</span>`:''} <span class="text-slate-400">— ${esc(v.translation)}</span></span>
+        <span>${stars(v.mastery)}</span>
+      </div>`).join('')
+    : '<div class="text-slate-500 text-sm py-2">Hali so\'z saqlanmagan</div>';
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+      <button id="pr-back" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
+      <div class="font-semibold">Mening natijalarim 📊</div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-6 space-y-5">
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+          <div class="text-2xl font-bold text-amber-400">${user.streak||0}</div>
+          <div class="text-xs text-slate-400 mt-1">Kun ketma-ket</div>
+        </div>
+        <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+          <div class="text-2xl font-bold text-indigo-400">${user.xp||0}</div>
+          <div class="text-xs text-slate-400 mt-1">Jami XP</div>
+        </div>
+        <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+          <div class="text-2xl font-bold text-emerald-400">${(user.vocabulary||[]).length}</div>
+          <div class="text-xs text-slate-400 mt-1">So'zlar</div>
+        </div>
+      </div>
+
+      ${ieltsHtml}
+
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+        <div class="font-semibold text-sm mb-3">So'nggi 30 kun</div>
+        <div class="flex flex-wrap gap-1.5">${dots}</div>
+        <div class="flex gap-4 mt-3 text-xs text-slate-400">
+          <span><span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 mr-1"></span>Kirgan</span>
+          <span><span class="inline-block w-2.5 h-2.5 rounded-full bg-slate-700 mr-1"></span>O'tkazgan</span>
+        </div>
+      </div>
+
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+        <div class="flex justify-between text-sm mb-2">
+          <span class="font-semibold">${lv}</span>
+          <span class="text-slate-400">${nxt?`${LEVEL_XP[nxt]-(user.xp||0)} XP qoldi`:'Maksimal!'}</span>
+        </div>
+        <div class="bg-slate-700 rounded-full h-3 mb-1">
+          <div class="bg-indigo-500 h-3 rounded-full" style="width:${pct}%"></div>
+        </div>
+        <div class="flex justify-between">${lvBarTicks}</div>
+      </div>
+
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+        <div class="font-semibold text-sm mb-3">Yutuqlar</div>
+        <div class="grid grid-cols-3 gap-2">${achHtml}</div>
+      </div>
+
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+        <div class="flex justify-between items-center mb-2">
+          <div class="font-semibold text-sm">So'zlar lug'ati</div>
+          <button id="pr-vocab" class="text-indigo-400 text-xs hover:text-indigo-300 transition-colors">Hammasini ko'rish →</button>
+        </div>
+        ${vocabHtml}
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('pr-back').onclick  = renderDashboard;
+  document.getElementById('pr-vocab').onclick = renderVocabulary;
+}
+
+// ─── 13. VIEW: VOCABULARY ────────────────────────────────────────
+function stars(n) {
+  return `<span class="text-amber-400">${'★'.repeat(n)}</span><span class="text-slate-500">${'☆'.repeat(5-n)}</span>`;
+}
+
+function vocabRows(list, hasQuery=false) {
+  if (!list.length) return hasQuery
+    ? '<div class="text-slate-500 text-sm text-center py-6">Natija topilmadi</div>'
+    : '';
+  return list.map(v=>`
+    <div class="bg-slate-800 rounded-xl p-3 border border-slate-700 flex items-center justify-between">
+      <div>
+        <div class="font-medium text-sm">${esc(v.word)}${v.pronunciation?` <span class="text-slate-500 font-normal">(${esc(v.pronunciation)})</span>`:''}</div>
+        <div class="text-slate-400 text-xs mt-0.5">${esc(v.translation)}</div>
+      </div>
+      <div class="text-sm">${stars(v.mastery)}</div>
+    </div>`).join('');
+}
+
+function renderVocabulary() {
+  const vocab = user.vocabulary||[];
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+      <button id="vb-back" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
+      <div class="flex-1 font-semibold">So'zlar lug'ati 📚</div>
+      <span class="text-slate-400 text-sm">${vocab.length} ta</span>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-5">
+      <input id="vb-q" type="text" placeholder="Qidirish..."
+        class="w-full bg-slate-800 rounded-xl px-4 py-3 text-sm border border-slate-700 focus:border-indigo-500 focus:outline-none mb-3"/>
+      ${vocab.length?`<button id="vb-rev" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold text-sm mb-4 transition-colors">
+        Takrorlash ▶ (${vocab.length} so'z)</button>`:''}
+      <div id="vb-list" class="space-y-2">${vocabRows(vocab)}</div>
+      ${!vocab.length?`<div class="text-center py-10">
+        <div class="text-4xl mb-3">📖</div>
+        <div class="text-slate-400 text-sm">Hikoya yoki suhbat rejimida<br>yangi so'zlar avtomatik saqlanadi</div>
+      </div>`:''}
+    </div>
+  </div>`;
+
+  document.getElementById('vb-back').onclick = renderProgress;
+  document.getElementById('vb-q')?.addEventListener('input', e=>{
+    const q = e.target.value.toLowerCase();
+    const filtered = q ? vocab.filter(v=>v.word.toLowerCase().includes(q)||v.translation.toLowerCase().includes(q)) : vocab;
+    document.getElementById('vb-list').innerHTML = vocabRows(filtered, !!q);
+  });
+  document.getElementById('vb-rev')?.addEventListener('click', ()=>startReview(vocab));
+}
+
+// ─── 14. REVIEW MODE ─────────────────────────────────────────────
+function startReview(vocab) {
+  const queue = [...vocab].sort((a,b)=>a.mastery-b.mastery);
+  let idx = 0;
+
+  function showCard() {
+    if (idx >= queue.length) {
+      document.getElementById('app').innerHTML = `
+        <div class="min-h-screen flex items-center justify-center p-4 view-fade">
+          <div class="text-center">
+            <div class="text-5xl mb-4">🎉</div>
+            <h2 class="text-xl font-bold mb-2">Takrorlash tugadi!</h2>
+            <p class="text-slate-400 mb-6">${queue.length} ta so'z takrorlandi</p>
+            <button id="rv-done" class="bg-indigo-600 hover:bg-indigo-500 rounded-xl px-8 py-3 font-semibold transition-colors">Lug'atga qaytish</button>
+          </div>
+        </div>`;
+      document.getElementById('rv-done').onclick = renderVocabulary;
+      return;
+    }
+
+    const item = queue[idx];
+    document.getElementById('app').innerHTML = `
+      <div class="min-h-screen flex flex-col view-fade">
+        <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3">
+          <button id="rv-exit" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
+          <div class="flex-1 font-semibold">Takrorlash</div>
+          <span class="text-slate-400 text-sm">${idx+1}/${queue.length}</span>
+        </div>
+        <div class="flex-1 flex items-center justify-center p-6">
+          <div class="w-full max-w-sm">
+            <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 text-center mb-4">
+              <div class="text-3xl font-bold mb-1">${esc(item.word)}</div>
+              <div class="text-slate-500 text-sm">O'zbek tarjimasini kiriting</div>
+            </div>
+            <input id="rv-in" type="text" placeholder="Tarjima..."
+              class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none mb-3 text-center"/>
+            <button id="rv-chk" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold text-sm transition-colors">Tekshirish</button>
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('rv-exit').onclick = renderVocabulary;
+    const inp = document.getElementById('rv-in');
+    inp.focus();
+
+    const check = () => {
+      const ans = inp.value.trim().toLowerCase();
+      const cor = item.translation.toLowerCase();
+      const firstToken = cor.split(' ')[0];
+      const ok = ans === cor
+        || (ans.length >= 2 && cor.includes(ans))
+        || (firstToken.length >= 3 && ans.includes(firstToken));
+
+      const vItem = user.vocabulary.find(v=>v.word===item.word);
+      if (vItem) {
+        vItem.mastery = ok ? Math.min(5,vItem.mastery+1) : Math.max(0,vItem.mastery-1);
+        saveUser();
+      }
+      if (ok) addXP(2);
+
+      document.getElementById('app').innerHTML = `
+        <div class="min-h-screen flex flex-col view-fade">
+          <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center">
+            <div class="flex-1 font-semibold">Takrorlash</div>
+            <span class="text-slate-400 text-sm">${idx+1}/${queue.length}</span>
+          </div>
+          <div class="flex-1 flex items-center justify-center p-6">
+            <div class="w-full max-w-sm">
+              <div class="${ok?'bg-emerald-950 border-emerald-500':'bg-red-950 border-red-500'} border rounded-2xl p-6 text-center mb-4">
+                <div class="text-3xl mb-2">${ok?'✅':'❌'}</div>
+                <div class="${ok?'text-emerald-400':'text-red-400'} font-bold mb-1">${ok?"To'g'ri!":'Noto\'g\'ri'}</div>
+                <div class="text-sm text-slate-300">${esc(item.word)} — ${esc(item.translation)}</div>
+                ${!ok?`<div class="text-xs text-slate-400 mt-1">Sizning javob: ${esc(inp.value)}</div>`:''}
+              </div>
+              <button id="rv-nxt" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold text-sm transition-colors">Keyingisi →</button>
+            </div>
+          </div>
+        </div>`;
+      document.getElementById('rv-nxt').onclick = ()=>{ idx++; showCard(); };
+    };
+
+    document.getElementById('rv-chk').onclick = check;
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter') check(); });
+  }
+
+  showCard();
+}
+
+// ─── 15. APP INIT ─────────────────────────────────────────────────
+function init() {
+  user = loadUser();
+  if (!user) { renderOnboarding(); return; }
+  if (!user.ielts) user.ielts = { targetBand: 6.5, scores: [] };
+  updateStreak();
+  renderDashboard();
+}
+
+init();
+</script>
+</body>
+</html>
