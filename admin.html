@@ -90,13 +90,19 @@ async function renderPanel() {
   const goalLabel = { travel:'✈️ Sayohat', work:'💼 Ish', ielts:'📝 IELTS', daily:'💬 Kundalik', general:'🌟 Umumiy' };
   const modeRows = Object.entries(data.byMode || {}).sort((a,b)=>b[1]-a[1])
     .map(([m,c]) => `<div class="flex justify-between text-sm py-1 border-b border-slate-700/50"><span class="text-slate-300">${esc(m)}</span><span class="text-indigo-300 font-medium">${c}</span></div>`).join('') || '<div class="text-slate-500 text-sm">Ma\'lumot yo\'q</div>';
+  const defLimit = s.daily_limit;
   const userRows = (data.users || []).map(u => `
     <tr class="border-b border-slate-700/50">
       <td class="py-2 pr-3">${esc(u.name || '—')}</td>
       <td class="py-2 pr-3 text-slate-400">${esc(u.level || '—')}</td>
       <td class="py-2 pr-3">${esc(goalLabel[u.goal] || u.goal || '—')}</td>
-      <td class="py-2 text-slate-500 text-xs">${u.last_seen ? new Date(u.last_seen).toLocaleDateString('uz') : '—'}</td>
-    </tr>`).join('') || '<tr><td colspan="4" class="py-3 text-slate-500 text-sm">Foydalanuvchi yo\'q</td></tr>';
+      <td class="py-2 pr-3 text-slate-500 text-xs">${u.last_seen ? new Date(u.last_seen).toLocaleDateString('uz') : '—'}</td>
+      <td class="py-2 whitespace-nowrap">
+        <input type="number" min="0" value="${u.daily_limit ?? ''}" placeholder="${esc(defLimit)}" data-uid="${esc(u.id)}"
+          class="lim-in w-16 bg-slate-700 rounded-lg px-2 py-1 text-xs border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        <button data-uid="${esc(u.id)}" class="lim-save bg-slate-600 hover:bg-indigo-600 rounded-lg px-2 py-1 text-xs transition-colors">✓</button>
+      </td>
+    </tr>`).join('') || '<tr><td colspan="5" class="py-3 text-slate-500 text-sm">Foydalanuvchi yo\'q</td></tr>';
 
   app().innerHTML = `
     <div class="flex items-center justify-between mb-6">
@@ -167,7 +173,8 @@ async function renderPanel() {
             <th class="py-2 pr-3 font-medium">Ism</th>
             <th class="py-2 pr-3 font-medium">Daraja</th>
             <th class="py-2 pr-3 font-medium">Maqsad</th>
-            <th class="py-2 font-medium">Oxirgi</th>
+            <th class="py-2 pr-3 font-medium">Oxirgi</th>
+            <th class="py-2 font-medium">Limit</th>
           </tr></thead>
           <tbody>${userRows}</tbody>
         </table>
@@ -193,6 +200,23 @@ async function renderPanel() {
     toast('Saqlandi', 'success');
     renderPanel();
   };
+
+  document.querySelectorAll('.lim-save').forEach(btn => {
+    btn.onclick = async () => {
+      const uid = btn.dataset.uid;
+      const input = document.querySelector(`.lim-in[data-uid="${uid}"]`);
+      const raw = input.value.trim();
+      const limit = raw === '' ? null : Number(raw);
+      if (limit !== null && (!Number.isInteger(limit) || limit < 0)) {
+        return toast("Limit 0 yoki musbat butun son bo'lishi kerak", 'error');
+      }
+      btn.disabled = true;
+      const { ok, data } = await api('set_user_limit', { userId: uid, limit });
+      btn.disabled = false;
+      if (!ok || !data.ok) return toast(data.message || 'Saqlanmadi', 'error');
+      toast(limit === null ? 'Umumiy limitga qaytdi' : `Limit: ${limit}`, 'success');
+    };
+  });
 }
 
 renderLogin();
