@@ -409,7 +409,7 @@ async function callAI(userMsg, opts={}) {
     const data = await res.json().catch(()=>({}));
     if (!res.ok) {
       history.pop();
-      if (res.status===429) return data.message || "⏳ Bugungi limit tugadi.";
+      if (res.status===429) return '⏳ ' + (data.message || "Bugungi limit tugadi.");
       return `❌ ${data.message || 'Xatolik. Qayta urinib ko\'ring.'}`;
     }
 
@@ -638,7 +638,7 @@ function renderDashboard() {
 
 // ─── 11. VIEW: CHAT ──────────────────────────────────────────────
 let chatBusy = false;
-let mediaRec = null, recChunks = [], recStream = null, recTimer = null, recSecs = 0;
+let mediaRec = null, recChunks = [], recStream = null, recTimer = null, recSecs = 0, recStartTime = 0;
 const REC_MAX_SECS = 60;
 
 function blobToB64(blob) {
@@ -662,7 +662,7 @@ function setRecUI(on) {
 }
 
 async function toggleRec() {
-  if (chatBusy) return;
+  if (chatBusy && !(mediaRec && mediaRec.state === 'recording')) return;
   if (mediaRec && mediaRec.state === 'recording') { stopRec(); return; }
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
     return toast("Brauzeringiz ovoz yozishni qo'llamaydi", 'error');
@@ -679,6 +679,8 @@ async function toggleRec() {
   mediaRec.ondataavailable = e => { if (e.data.size > 0) recChunks.push(e.data); };
   mediaRec.onstop = onRecStop;
   mediaRec.start();
+  chatBusy = true;
+  recStartTime = Date.now();
   recSecs = 0;
   setRecUI(true);
   recTimer = setInterval(() => {
@@ -702,16 +704,19 @@ async function onRecStop() {
   const blob = new Blob(recChunks, { type });
   recChunks = [];
   if (!blob.size) return;
-  if (recSecs < 1) return toast('Juda qisqa — biroz uzunroq gapiring', 'error');
+  if (Date.now() - recStartTime < 1000) return toast('Juda qisqa — biroz uzunroq gapiring', 'error');
   await sendAudio(blob);
 }
 
 async function sendAudio(blob) {
+  const sendBtn = document.getElementById('ch-send');
+  if (!sendBtn) return;
+  const micBtn = document.getElementById('ch-mic');
   const url = URL.createObjectURL(blob);
   appendAudioMsg('user', url);
   chatBusy = true;
-  document.getElementById('ch-send').disabled = true;
-  document.getElementById('ch-mic').disabled = true;
+  sendBtn.disabled = true;
+  micBtn.disabled = true;
   showLoader();
   let resp;
   try {
@@ -722,12 +727,25 @@ async function sendAudio(blob) {
   }
   document.getElementById('ld')?.remove();
   chatBusy = false;
-  document.getElementById('ch-send').disabled = false;
-  document.getElementById('ch-mic').disabled = false;
+  sendBtn.disabled = false;
+  micBtn.disabled = false;
   if (resp) {
     const isErr = (resp.startsWith('❌')||resp.startsWith('📡')||resp.startsWith('⏳')) && !resp.includes('Xato:');
     appendMsg('ai', resp, isErr);
   }
+}
+
+function teardownRec() {
+  if (recTimer) { clearInterval(recTimer); recTimer = null; }
+  recStream?.getTracks().forEach(t => t.stop());
+  recStream = null;
+  if (mediaRec && mediaRec.state === 'recording') {
+    mediaRec.onstop = null;
+    mediaRec.stop();
+  }
+  mediaRec = null;
+  recChunks = [];
+  setRecUI(false);
 }
 
 function renderChat() {
@@ -768,7 +786,7 @@ function renderChat() {
   };
   appendMsg('ai', greetings[currentMode]||`Salom, ${user.name}! Qanday yordam bera olaman?`);
 
-  document.getElementById('ch-back').onclick = renderDashboard;
+  document.getElementById('ch-back').onclick = () => { teardownRec(); renderDashboard(); };
 
   const inp = document.getElementById('ch-in');
   inp.addEventListener('input', () => {
@@ -814,6 +832,8 @@ function appendAudioMsg(role, audioUrl) {
       <audio controls src="${esc(audioUrl)}" class="w-full h-9"></audio>
     </div>`;
   box.appendChild(wrap);
+  const aud = wrap.querySelector('audio');
+  if (aud) aud.oncanplay = () => URL.revokeObjectURL(audioUrl);
   box.scrollTop = box.scrollHeight;
 }
 

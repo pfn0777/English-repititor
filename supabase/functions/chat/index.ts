@@ -139,6 +139,7 @@ Deno.serve(async (req: Request) => {
     await db.from('usage').insert({ user_id: userId, mode, provider });
     return json({ text, provider }, 200, cors);
   } catch (_e) {
+    console.error(_e);
     return json({ error: 'server', message: 'Server xatosi' }, 500, cors);
   }
 });
