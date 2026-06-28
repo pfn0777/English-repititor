@@ -387,21 +387,23 @@ QOIDALAR:
 6. IELTS rejimi: baho berganda umumiy ballni aniq "🎯 Band: X.X" formatida (0-9, .0 yoki .5) yoz.`:''}`;
 }
 
-async function callAI(userMsg) {
+async function callAI(userMsg, opts={}) {
   history.push({ role:'user', content: userMsg });
   if (history.length > MAX_HIST) history = history.slice(-MAX_HIST);
 
   try {
+    const body = {
+      userId: getUserId(),
+      system: buildSystem(currentMode),
+      messages: history,
+      mode: currentMode,
+      profile: { name:user.name, level:user.level, goal:user.goal },
+    };
+    if (opts.audio) body.audio = opts.audio;
     const res = await fetch(`${SB_URL}/functions/v1/chat`, {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'Authorization':`Bearer ${SB_ANON}`, 'apikey': SB_ANON },
-      body: JSON.stringify({
-        userId: getUserId(),
-        system: buildSystem(currentMode),
-        messages: history,
-        mode: currentMode,
-        profile: { name:user.name, level:user.level, goal:user.goal },
-      }),
+      body: JSON.stringify(body),
     });
 
     const data = await res.json().catch(()=>({}));
@@ -636,6 +638,97 @@ function renderDashboard() {
 
 // ─── 11. VIEW: CHAT ──────────────────────────────────────────────
 let chatBusy = false;
+let mediaRec = null, recChunks = [], recStream = null, recTimer = null, recSecs = 0;
+const REC_MAX_SECS = 60;
+
+function blobToB64(blob) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(',')[1] || '');
+    r.onerror = reject;
+    r.readAsDataURL(blob);
+  });
+}
+
+function setRecUI(on) {
+  const bar = document.getElementById('ch-rec');
+  const mic = document.getElementById('ch-mic');
+  if (bar) bar.classList.toggle('hidden', !on);
+  if (mic) {
+    mic.classList.toggle('bg-red-600', on);
+    mic.classList.toggle('bg-slate-700', !on);
+    mic.textContent = on ? '⏹' : '🎤';
+  }
+}
+
+async function toggleRec() {
+  if (chatBusy) return;
+  if (mediaRec && mediaRec.state === 'recording') { stopRec(); return; }
+  if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
+    return toast("Brauzeringiz ovoz yozishni qo'llamaydi", 'error');
+  }
+  try {
+    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (_e) {
+    return toast('Mikrofonga ruxsat bering', 'error');
+  }
+  const mime = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg']
+    .find(t => MediaRecorder.isTypeSupported?.(t)) || '';
+  mediaRec = mime ? new MediaRecorder(recStream, { mimeType: mime }) : new MediaRecorder(recStream);
+  recChunks = [];
+  mediaRec.ondataavailable = e => { if (e.data.size > 0) recChunks.push(e.data); };
+  mediaRec.onstop = onRecStop;
+  mediaRec.start();
+  recSecs = 0;
+  setRecUI(true);
+  recTimer = setInterval(() => {
+    recSecs++;
+    const t = document.getElementById('ch-rec-t');
+    if (t) t.textContent = recSecs;
+    if (recSecs >= REC_MAX_SECS) stopRec();
+  }, 1000);
+}
+
+function stopRec() {
+  if (recTimer) { clearInterval(recTimer); recTimer = null; }
+  if (mediaRec && mediaRec.state === 'recording') mediaRec.stop();
+  setRecUI(false);
+}
+
+async function onRecStop() {
+  recStream?.getTracks().forEach(t => t.stop());
+  recStream = null;
+  const type = mediaRec?.mimeType || 'audio/webm';
+  const blob = new Blob(recChunks, { type });
+  recChunks = [];
+  if (!blob.size) return;
+  if (recSecs < 1) return toast('Juda qisqa — biroz uzunroq gapiring', 'error');
+  await sendAudio(blob);
+}
+
+async function sendAudio(blob) {
+  const url = URL.createObjectURL(blob);
+  appendAudioMsg('user', url);
+  chatBusy = true;
+  document.getElementById('ch-send').disabled = true;
+  document.getElementById('ch-mic').disabled = true;
+  showLoader();
+  let resp;
+  try {
+    const data = await blobToB64(blob);
+    resp = await callAI('🎤 [Ovozli xabar]', { audio: { data, mimeType: blob.type || 'audio/webm' } });
+  } catch (_e) {
+    resp = '❌ Ovozni yuborishda xatolik.';
+  }
+  document.getElementById('ld')?.remove();
+  chatBusy = false;
+  document.getElementById('ch-send').disabled = false;
+  document.getElementById('ch-mic').disabled = false;
+  if (resp) {
+    const isErr = (resp.startsWith('❌')||resp.startsWith('📡')||resp.startsWith('⏳')) && !resp.includes('Xato:');
+    appendMsg('ai', resp, isErr);
+  }
+}
 
 function renderChat() {
   chatBusy = false;
@@ -655,7 +748,12 @@ function renderChat() {
             class="w-full bg-slate-700 rounded-xl px-4 py-3 pr-12 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none max-h-32 overflow-y-auto"></textarea>
           <div id="ch-cnt" class="absolute bottom-2.5 right-3 text-xs text-slate-500">0</div>
         </div>
+        <button id="ch-mic" title="Ovozli xabar" class="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 rounded-xl px-4 py-3 flex-shrink-0 text-lg leading-none transition-colors">🎤</button>
         <button id="ch-send" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 rounded-xl px-4 py-3 flex-shrink-0 font-bold text-lg leading-none transition-colors">→</button>
+      </div>
+      <div id="ch-rec" class="hidden mt-2 text-xs text-red-400 flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+        <span>Yozilmoqda… <span id="ch-rec-t">0</span>s — to'xtatish uchun 🎤 ni bosing</span>
       </div>
     </div>
   </div>`;
@@ -680,6 +778,7 @@ function renderChat() {
   });
   inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();} });
   document.getElementById('ch-send').onclick = doSend;
+  document.getElementById('ch-mic').onclick = toggleRec;
   inp.focus();
 }
 
@@ -702,6 +801,19 @@ function appendMsg(role, text, isApiErr=false) {
   box.appendChild(wrap);
   wrap.querySelectorAll('.aud-btn').forEach(b => b.onclick = () => speakText(b.dataset.audio));
   if (wrap._audio?.hasAudio) speakText(wrap._audio.firstScript);
+  box.scrollTop = box.scrollHeight;
+}
+
+function appendAudioMsg(role, audioUrl) {
+  const box = document.getElementById('ch-msgs');
+  if (!box) return;
+  const wrap = document.createElement('div');
+  wrap.className = `msg-in flex ${role==='user'?'justify-end':'justify-start'}`;
+  wrap.innerHTML = `<div class="max-w-xs sm:max-w-md bg-indigo-600 rounded-tl-2xl rounded-b-2xl px-3 py-2 text-sm">
+      <div class="text-xs text-indigo-200 mb-1">🎤 Ovozli xabar</div>
+      <audio controls src="${esc(audioUrl)}" class="w-full h-9"></audio>
+    </div>`;
+  box.appendChild(wrap);
   box.scrollTop = box.scrollHeight;
 }
 
