@@ -574,6 +574,79 @@ function renderOnboarding() {
 }
 
 // ─── 10. VIEW: DASHBOARD ─────────────────────────────────────────
+// ─── BOTTOM NAV (persistent) ─────────────────────────────────────
+const NAV_TABS = [
+  { id:'home',     emoji:'🏠', label:'Bosh' },
+  { id:'ai',       emoji:'🤖', label:'AI Ustoz' },
+  { id:'tasks',    emoji:'✍️', label:'Vazifalar' },
+  { id:'tests',    emoji:'🎯', label:'Testlar' },
+  { id:'progress', emoji:'📊', label:'Progress' },
+];
+
+function renderBottomNav(active, fixed=true) {
+  const items = NAV_TABS.map(t => {
+    const on = t.id === active;
+    return `<button data-nav="${t.id}" class="flex-1 flex flex-col items-center justify-center gap-0.5 py-2 ${on?'text-indigo-400':'text-slate-500 hover:text-slate-300'} transition-colors">
+      <span class="text-xl leading-none">${t.emoji}</span>
+      <span class="text-[10px] font-medium leading-none">${t.label}</span>
+    </button>`;
+  }).join('');
+  const cls = fixed
+    ? 'fixed bottom-0 left-0 right-0 z-20 bg-slate-800 border-t border-slate-700'
+    : 'flex-shrink-0 bg-slate-800 border-t border-slate-700';
+  return `<nav class="${cls}">
+    <div class="max-w-2xl mx-auto flex">${items}</div>
+  </nav>`;
+}
+
+function bindBottomNav() {
+  document.querySelectorAll('[data-nav]').forEach(b => {
+    b.onclick = () => navTo(b.dataset.nav);
+  });
+}
+
+function navTo(tab) {
+  if (typeof teardownRec === 'function') teardownRec();
+  if (tab === 'home') return renderDashboard();
+  if (tab === 'ai')   { currentMode = 'conversation'; history = []; return renderChat(); }
+  if (tab === 'tasks') return renderTasks();
+  if (tab === 'tests') { currentMode = 'quiz'; history = []; return renderChat(); }
+  if (tab === 'progress') return renderProgress();
+}
+
+// ─── VIEW: TASKS (Vazifalar) ─────────────────────────────────────
+const TASK_MODES = ['correction','grammar','story','daily'];
+
+function renderTasks() {
+  const isIelts = user.goal === 'ielts';
+  const IELTS_SECTION = { correction:'Writing', grammar:'Lexical/Grammar', story:'Reading', daily:'Daily' };
+  const cards = TASK_MODES.map(k => {
+    const m = MODES[k];
+    return `<div class="mode-card bg-slate-800 rounded-2xl p-4 border border-slate-700" data-mode="${k}">
+      <div class="text-3xl mb-2">${m.emoji}</div>
+      <div class="font-semibold text-sm">${m.title}${isIelts?` <span class="text-indigo-400 text-xs font-normal">· ${IELTS_SECTION[k]}</span>`:''}</div>
+      <div class="text-slate-400 text-xs mt-0.5">${m.desc}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade pb-24">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center sticky top-0 z-10">
+      <div class="font-semibold">Vazifalar ✍️</div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-6">
+      <h3 class="font-semibold text-slate-300 text-sm mb-3">Mashq turini tanlang</h3>
+      <div class="grid grid-cols-2 gap-3">${cards}</div>
+    </div>
+  </div>
+  ${renderBottomNav('tasks')}`;
+
+  document.querySelectorAll('[data-mode]').forEach(c => {
+    c.onclick = () => { currentMode = c.dataset.mode; history = []; renderChat(); };
+  });
+  bindBottomNav();
+}
+
 function renderDashboard() {
   const stats = getModeStats();
   const leastMode = Object.keys(MODES).sort((a,b)=>(stats[a]||0)-(stats[b]||0))[0];
@@ -596,7 +669,7 @@ function renderDashboard() {
     : '<span class="text-slate-500 text-sm">Hali xatolar yo\'q ✨</span>';
 
   document.getElementById('app').innerHTML = `
-  <div class="min-h-screen view-fade">
+  <div class="min-h-screen view-fade pb-24">
     <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between sticky top-0 z-10">
       <div class="font-bold">EnglishBot 🇬🇧</div>
       <div class="flex items-center gap-2 text-sm">
@@ -627,13 +700,15 @@ function renderDashboard() {
         <div class="flex flex-wrap gap-2">${errHtml}</div>
       </div>
     </div>
-  </div>`;
+  </div>
+  ${renderBottomNav('home')}`;
 
   document.getElementById('db-prog').onclick = renderProgress;
   document.getElementById('db-settings').onclick = showSettingsModal;
   document.querySelectorAll('[data-mode]').forEach(c => {
     c.onclick = () => { currentMode = c.dataset.mode; history = []; renderChat(); };
   });
+  bindBottomNav();
 }
 
 // ─── 11. VIEW: CHAT ──────────────────────────────────────────────
@@ -774,6 +849,7 @@ function renderChat() {
         <span>Yozilmoqda… <span id="ch-rec-t">0</span>s — to'xtatish uchun 🎤 ni bosing</span>
       </div>
     </div>
+    ${renderBottomNav(currentMode==='quiz'?'tests':currentMode==='conversation'?'ai':'tasks', false)}
   </div>`;
 
   const greetings = {
@@ -797,6 +873,7 @@ function renderChat() {
   inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();} });
   document.getElementById('ch-send').onclick = doSend;
   document.getElementById('ch-mic').onclick = toggleRec;
+  bindBottomNav();
   inp.focus();
 }
 
@@ -924,7 +1001,7 @@ function renderProgress() {
     : '<div class="text-slate-500 text-sm py-2">Hali so\'z saqlanmagan</div>';
 
   document.getElementById('app').innerHTML = `
-  <div class="min-h-screen view-fade">
+  <div class="min-h-screen view-fade pb-24">
     <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
       <button id="pr-back" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
       <div class="font-semibold">Mening natijalarim 📊</div>
@@ -980,10 +1057,12 @@ function renderProgress() {
         ${vocabHtml}
       </div>
     </div>
-  </div>`;
+  </div>
+  ${renderBottomNav('progress')}`;
 
   document.getElementById('pr-back').onclick  = renderDashboard;
   document.getElementById('pr-vocab').onclick = renderVocabulary;
+  bindBottomNav();
 }
 
 // ─── 13. VIEW: VOCABULARY ────────────────────────────────────────
