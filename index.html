@@ -215,7 +215,7 @@ function markup(s) {
 function renderText(text) {
   const lines = text.split('\n');
   let html = '', cardBuf = [], normBuf = [];
-  const CARD_STARTS = ['❌','✅','💡','🔁'];
+  const CARD_STARTS = ['❌','✅','💡','🔁','🧩'];
   const isCard = l => CARD_STARTS.some(p => l.startsWith(p));
 
   function flushNorm() {
@@ -262,7 +262,18 @@ function onAISuccess(ai) {
   if (currentMode === 'correction') user.correctionCount = (user.correctionCount||0) + 1;
   saveUser();
   parseWords(ai);
+  parseErrorCats(ai);
   if (user.goal === 'ielts') parseBand(ai);
+}
+
+// Xato kategoriyalarini ajratish → "Zaif joylar" bloki (dashboard) va system promptga boradi
+function parseErrorCats(text) {
+  const re = /🧩 Mavzu:\s*(.+?)(?:\n|$)/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const cat = m[1].trim().replace(/[*_]/g,'');
+    if (cat && cat.length <= 40) pushError(cat);
+  }
 }
 
 function parseBand(text) {
@@ -282,39 +293,43 @@ const GOAL_SCENARIOS = {
 };
 
 const IELTS_GUIDE = {
-  conversation:`IELTS Speaking rejimi. Examiner rolini o'yna.
-Part 1: kundalik mavzular (uy, ish, hobbi) — 3-4 qisqa savol.
-Part 2: Cue card ber (mavzu + 3-4 bullet), foydalanuvchi 1-2 daqiqa gapirsin.
-Part 3: Part 2 mavzusiga bog'liq chuqur, mavhum savollar.
-Har bo'limdan keyin baho: Fluency, Lexical Resource, Grammar, Pronunciation bo'yicha izoh + tabiiyroq iboralar.
-Yakunda "🎯 Band: X.X" ber.`,
+  conversation:`IELTS Speaking rejimi. Examiner rolini o'yna, savollarni BITTALAB ber (real imtihondagidek).
+Part 1: kundalik mavzular (uy, ish, hobbi) — 4-5 qisqa savol, birin-ketin.
+Part 2: Cue card ber (mavzu + "You should say:" 3-4 bullet). 1 daqiqa tayyorgarlik uchun ⏱ timer tugmasini eslatib o't, keyin 1-2 daqiqa gapirsin (mikrofon) yoki yozsin.
+Part 3: Part 2 mavzusiga bog'liq 4-5 chuqur, mavhum savol.
+Har bo'lim oxirida 4 mezon bo'yicha ALOHIDA band + 1-2 aniq maslahat: Fluency & Coherence, Lexical Resource, Grammatical Range & Accuracy, Pronunciation. Tabiiyroq iboralar taklif qil.
+Yakunda umumiy "🎯 Band: X.X" ber.`,
   correction:`IELTS Writing rejimi.
-Avval so'ra: Task 1 (grafik/diagramma/jarayon tasvirlash, 150+ so'z) yoki Task 2 (esse, 250+ so'z)?
-Foydalanuvchi matnini 4 mezon bo'yicha bahola:
+Avval so'ra: Task 1 yoki Task 2?
+Task 1: grafik/jadval/jarayon ma'lumotini MATN JADVAL ko'rinishida o'zing ber (masalan, yillar bo'yicha raqamlar) — foydalanuvchi 150+ so'z bilan tasvirlasin. 20 daqiqalik ⏱ timerni eslat.
+Task 2: real imtihon uslubidagi esse savoli ber (opinion/discussion/problem-solution), 250+ so'z. 40 daqiqalik ⏱ timerni eslat.
+Javob kelganda AVVAL so'zlarni sana va "So'zlar soni: N" deb yoz. Task 1 <150 yoki Task 2 <250 bo'lsa — ogohlantir va Task Achievement bandini pasaytir (real imtihondagidek jarima).
+4 mezon bo'yicha har biriga alohida band + izoh:
 - Task Achievement/Response
 - Coherence & Cohesion
 - Lexical Resource
 - Grammatical Range & Accuracy
-Har mezonga qisqa izoh + bandni ko'rsat. Xato formatini (❌✅💡🔁) ishlat.
-2-3 kuchaytiruvchi model jumla ber. Yakunda "🎯 Band: X.X".`,
+Xato formatini (❌✅💡🔁) ishlat. 2-3 kuchaytiruvchi model jumla ber. Yakunda "🎯 Band: X.X".`,
   story:`IELTS Reading rejimi.
-Akademik uslubdagi 200-300 so'zlik passage yoz.
-Keyin 5-6 savol ber, turlarni aralashtir: True/False/Not Given, Matching Headings, Multiple Choice, sentence completion.
-Foydalanuvchi javob bergach — to'g'ri/noto'g'ri tahlil qil, passage'dan dalil ko'rsat.
-To'g'ri javoblar soniga qarab "🎯 Band: X.X" (taxminiy) ber.
-Yangi akademik so'zlarni 📌 formatida ajrat.`,
+Akademik uslubdagi 350-500 so'zlik passage yoz (real imtihon murakkabligiga yaqin: science, history, environment, society).
+Keyin 8-10 savol ber, turlarni aralashtir: True/False/Not Given, Yes/No/Not Given, Matching Headings, Multiple Choice, Sentence/Summary Completion.
+Javoblarni QAT'IY tekshir (imlo xatosi = noto'g'ri, real imtihondagidek), passage'dan dalil ko'rsat.
+Band konvertatsiya (to'g'ri javoblar foiziga qarab): 90%+ → 8.0-8.5, 75% → 7.0, 65% → 6.5, 55% → 6.0, 45% → 5.5, 35% → 5.0.
+"🎯 Band: X.X" ber. Yangi akademik so'zlarni 📌 formatida ajrat.`,
   quiz:`IELTS Listening rejimi.
-Audio skriptni [AUDIO] va [/AUDIO] teglari orasiga yoz (foydalanuvchi avval TINGLAYDI, o'qimaydi).
-Skript: kundalik yoki akademik dialog/monolog (120-180 so'z).
-Teglardan TASHQARIDA 5-6 savol ber (gap-fill, multiple choice).
-Foydalanuvchi javob bergach — tekshir, skriptdan dalil ko'rsat.
-"🎯 Band: X.X" (taxminiy) ber.`,
+IKKITA audio bo'lim ber, har birining skriptini [AUDIO] va [/AUDIO] teglari orasiga yoz (foydalanuvchi avval TINGLAYDI, o'qimaydi):
+1-bo'lim: kundalik dialog (100-150 so'z, masalan buyurtma, ro'yxatdan o'tish).
+2-bo'lim: akademik monolog (100-150 so'z, masalan ma'ruza parchasi).
+Teglardan TASHQARIDA jami 8-10 savol ber (form/gap-fill, multiple choice, matching).
+Javoblarni QAT'IY tekshir — imlo xatosi = noto'g'ri (real imtihondagidek), skriptdan dalil ko'rsat.
+Band konvertatsiya (foizga qarab): 90%+ → 8.0-8.5, 75% → 7.0, 65% → 6.5, 55% → 6.0, 45% → 5.5.
+"🎯 Band: X.X" ber.`,
   grammar:`IELTS uchun grammatika va lexical resource rejimi.
-Yuqori band uchun zarur strukturalarni o'rgat: linking words, complex/compound sentences, paraphrasing, academic collocations.
+Yuqori band uchun zarur strukturalarni o'rgat: linking words, complex/compound sentences, paraphrasing, academic collocations, hedging (may/might/tend to).
 1. O'zbekcha sodda tushuntir 2. Formula 3. 3 misol (oddiy→murakkab) 4. 3 ta IELTS uslubidagi tarjima vazifa.
 Yangi so'z/iborani 📌 formatida ber.`,
   daily:`IELTS kunlik mashq rejimi. 5 daqiqalik mini-mashq.
-Har safar boshqa bo'limni tanla (Speaking cue card / Writing mini-paragraph / Reading qisqa passage / Lexical 5 so'z).
+Har safar boshqa bo'limni tanla (Speaking cue card / Writing mini-paragraph / Reading qisqa passage / Listening mini-audio [AUDIO] tegida / Lexical 5 so'z).
 Birini boshla va foydalanuvchi tugaguncha davom et. Baholasang "🎯 Band: X.X" ber.`,
 };
 
@@ -369,8 +384,11 @@ Birini boshla va foydalanuvchi tugaguncha davom et.`,
   const guide = isIelts ? (IELTS_GUIDE[mode] || modeGuide[mode]) : (modeGuide[mode] || 'Foydalanuvchiga yordam ber.');
   const targetBand = user.ielts?.targetBand || 6.5;
 
+  const weakSpots = getErrors().slice(0,5);
+
   return `Sen ingliz tili repetitorisan. O'zbek foydalanuvchilarga yordam berasan.
 Foydalanuvchi: ${user.name} | Daraja: ${user.level} | Maqsad: ${user.goal}${isIelts?` | Target band: ${targetBand}`:''}
+${weakSpots.length?`Zaif joylari (shularga alohida e'tibor ber, mashqlarda qayta ishlat): ${weakSpots.join(', ')}`:''}
 
 DARAJA:
 ${lvlGuide[user.level]||lvlGuide.B1}
@@ -383,8 +401,9 @@ QOIDALAR:
 2. Xato formati: ❌ Xato → ✅ To'g'ri → 💡 Sabab → 🔁 Mashq
 3. Yangi so'z: 📌 **word** (talaffuz) — [o'zbekcha]
 4. Rag'batlantiruvchi bo'l. Qisqa savol — qisqa javob.
-5. Agar foydalanuvchi qiynalsa yoki tushkun bo'lsa — soddalashtir, sekinlashtir, qo'llab-quvvatla.${isIelts?`
-6. IELTS rejimi: baho berganda umumiy ballni aniq "🎯 Band: X.X" formatida (0-9, .0 yoki .5) yoz.`:''}`;
+5. Agar foydalanuvchi qiynalsa yoki tushkun bo'lsa — soddalashtir, sekinlashtir, qo'llab-quvvatla.
+6. Har ❌ xato kartadan keyin xato turini alohida qatorda yoz: 🧩 Mavzu: [qisqa kategoriya] (masalan: 🧩 Mavzu: Present Perfect yoki 🧩 Mavzu: Artikllar).${isIelts?`
+7. IELTS rejimi: baho berganda umumiy ballni aniq "🎯 Band: X.X" formatida (0-9, .0 yoki .5) yoz.`:''}`;
 }
 
 async function callAI(userMsg, opts={}) {
@@ -456,11 +475,18 @@ function showSettingsModal() {
           ${Object.entries(goals).map(([k,v])=>`<option value="${k}" ${k===user.goal?'selected':''}>${v}</option>`).join('')}
         </select>
       </div>
-      <div id="st-band-wrap" class="${user.goal==='ielts'?'':'hidden'}">
-        <label class="block text-sm font-medium text-slate-300 mb-1.5">Target band (IELTS)</label>
-        <select id="st-band" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
-          ${bands.map(b=>`<option value="${b}" ${b===curBand?'selected':''}>${parseFloat(b).toFixed(1)}</option>`).join('')}
-        </select>
+      <div id="st-band-wrap" class="${user.goal==='ielts'?'':'hidden'} space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Target band (IELTS)</label>
+          <select id="st-band" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
+            ${bands.map(b=>`<option value="${b}" ${b===curBand?'selected':''}>${parseFloat(b).toFixed(1)}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1.5">Imtihon sanasi (ixtiyoriy)</label>
+          <input id="st-exam" type="date" value="${user.ielts?.examDate||''}"
+            class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        </div>
       </div>
       <div class="flex gap-2 pt-1">
         <button id="st-save" class="flex-1 bg-indigo-600 hover:bg-indigo-500 rounded-xl py-2.5 text-sm font-semibold transition-colors">Saqlash</button>
@@ -484,6 +510,7 @@ function showSettingsModal() {
     if (user.goal === 'ielts') {
       if (!user.ielts) user.ielts = { targetBand: 6.5, scores: [] };
       user.ielts.targetBand = parseFloat(document.getElementById('st-band').value) || 6.5;
+      user.ielts.examDate = document.getElementById('st-exam').value || null;
     }
     saveUser();
     m.remove();
@@ -668,6 +695,18 @@ function renderDashboard() {
     ? errors.map(e=>`<span class="bg-slate-700 text-xs px-2 py-1 rounded-lg">${esc(e)}</span>`).join('')
     : '<span class="text-slate-500 text-sm">Hali xatolar yo\'q ✨</span>';
 
+  // IELTS imtihon countdown
+  let examHtml = '';
+  if (isIelts && user.ielts?.examDate) {
+    const days = Math.ceil((new Date(user.ielts.examDate) - new Date(todayStr())) / 86400000);
+    examHtml = days >= 0
+      ? `<div class="bg-indigo-950 border ${days<=14?'border-red-600':'border-indigo-700'} rounded-2xl px-4 py-3 mb-5 flex items-center justify-between text-sm">
+          <span>🗓 IELTS imtihonigacha</span>
+          <span class="font-bold text-lg ${days<=14?'text-red-400':'text-indigo-300'}">${days} kun</span>
+        </div>`
+      : `<div class="bg-slate-800 border border-slate-700 rounded-2xl px-4 py-3 mb-5 text-sm text-slate-400">🗓 Imtihon sanasi o'tgan — ⚙️ sozlamalardan yangilang</div>`;
+  }
+
   document.getElementById('app').innerHTML = `
   <div class="min-h-screen view-fade pb-24">
     <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between sticky top-0 z-10">
@@ -693,6 +732,7 @@ function renderDashboard() {
           <div class="bg-indigo-500 h-2 rounded-full" style="width:${pct}%"></div>
         </div>
       </div>
+      ${examHtml}
       <h3 class="font-semibold text-slate-300 text-sm mb-3">Mashq turini tanlang</h3>
       <div class="grid grid-cols-2 gap-3 mb-5">${cards}</div>
       <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
@@ -713,8 +753,65 @@ function renderDashboard() {
 
 // ─── 11. VIEW: CHAT ──────────────────────────────────────────────
 let chatBusy = false;
+let examTimer = null;
+
+// IELTS imtihon timeri (chat headerdagi ⏱)
+function stopExamTimer() {
+  if (examTimer) { clearInterval(examTimer); examTimer = null; }
+  const d = document.getElementById('ch-timer-d');
+  if (d) { d.classList.add('hidden'); d.textContent = ''; }
+  document.getElementById('ch-timer')?.classList.remove('bg-red-700');
+}
+
+function startExamTimer(mins) {
+  stopExamTimer();
+  let left = mins * 60;
+  const fmt = s => `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+  const d = document.getElementById('ch-timer-d');
+  if (d) { d.classList.remove('hidden'); d.textContent = fmt(left); }
+  document.getElementById('ch-timer')?.classList.add('bg-red-700');
+  examTimer = setInterval(() => {
+    left--;
+    const dd = document.getElementById('ch-timer-d');
+    if (!dd) { stopExamTimer(); return; }
+    dd.textContent = fmt(left);
+    if (left <= 0) {
+      stopExamTimer();
+      toast('⏱ Vaqt tugadi!', 'error');
+      appendMsg('ai', `⏱ **Vaqt tugadi!** (${mins} daqiqa) Real imtihonda shu yerda to'xtatilasiz — javobingizni hozir yuboring.`);
+    }
+  }, 1000);
+}
+
+function showTimerMenu() {
+  if (examTimer) { stopExamTimer(); toast("Timer to'xtatildi"); return; }
+  const presets = [
+    [1,  '1 daq — Speaking Part 2 tayyorgarlik'],
+    [2,  '2 daq — Speaking Part 2 monolog'],
+    [20, '20 daq — Writing Task 1 / Reading passage'],
+    [40, '40 daq — Writing Task 2'],
+    [60, "60 daq — to'liq bo'lim"],
+  ];
+  document.getElementById('timer-modal')?.remove();
+  const m = document.createElement('div');
+  m.id = 'timer-modal';
+  m.className = 'fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4';
+  m.innerHTML = `
+    <div class="bg-slate-800 rounded-2xl p-5 max-w-sm w-full border border-slate-700 shadow-2xl">
+      <h2 class="text-base font-bold mb-3">⏱ Imtihon timeri</h2>
+      <div class="space-y-2">
+        ${presets.map(([mn,label])=>`<button data-min="${mn}" class="w-full text-left bg-slate-700 hover:bg-indigo-600 rounded-xl px-4 py-2.5 text-sm transition-colors">${label}</button>`).join('')}
+      </div>
+      <button id="tm-cancel" class="w-full mt-3 bg-slate-700 hover:bg-slate-600 rounded-xl py-2 text-sm transition-colors">Bekor</button>
+    </div>`;
+  document.body.appendChild(m);
+  m.querySelectorAll('[data-min]').forEach(b => b.onclick = () => { m.remove(); startExamTimer(parseInt(b.dataset.min)); });
+  document.getElementById('tm-cancel').onclick = () => m.remove();
+  m.addEventListener('click', e => { if (e.target === m) m.remove(); });
+}
+
 let mediaRec = null, recChunks = [], recStream = null, recTimer = null, recSecs = 0, recStartTime = 0;
-const REC_MAX_SECS = 60;
+const REC_MAX_SECS = 150; // IELTS Speaking Part 2: 2 daqiqa monolog + zaxira
 
 function blobToB64(blob) {
   return new Promise((resolve, reject) => {
@@ -811,6 +908,7 @@ async function sendAudio(blob) {
 }
 
 function teardownRec() {
+  stopExamTimer();
   if (recTimer) { clearInterval(recTimer); recTimer = null; }
   recStream?.getTracks().forEach(t => t.stop());
   recStream = null;
@@ -831,6 +929,8 @@ function renderChat() {
     <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 flex-shrink-0">
       <button id="ch-back" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
       <div class="flex-1 font-semibold text-sm">${m.emoji} ${m.title}</div>
+      <span id="ch-timer-d" class="hidden text-xs font-mono text-red-400 font-bold"></span>
+      <button id="ch-timer" title="Imtihon timeri" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-2 py-1 text-sm transition-colors">⏱</button>
       <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-900 text-indigo-300">🤖 AI</span>
     </div>
     <div id="ch-msgs" class="flex-1 overflow-y-auto px-4 py-4 space-y-3 scroll-smooth"></div>
@@ -839,7 +939,7 @@ function renderChat() {
         <div class="flex-1 relative">
           <textarea id="ch-in" rows="1" placeholder="Xabar yozing..."
             class="w-full bg-slate-700 rounded-xl px-4 py-3 pr-12 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none max-h-32 overflow-y-auto"></textarea>
-          <div id="ch-cnt" class="absolute bottom-2.5 right-3 text-xs text-slate-500">0</div>
+          <div id="ch-cnt" class="absolute bottom-2.5 right-3 text-xs text-slate-500">0 so'z</div>
         </div>
         <button id="ch-mic" title="Ovozli xabar" class="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 rounded-xl px-4 py-3 flex-shrink-0 text-lg leading-none transition-colors">🎤</button>
         <button id="ch-send" class="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 rounded-xl px-4 py-3 flex-shrink-0 font-bold text-lg leading-none transition-colors">→</button>
@@ -860,15 +960,27 @@ function renderChat() {
     quiz:`Salom, ${user.name}! 🎯 10 savollik viktorinaga tayyormisiz? "Ha, boshlaymiz!" deb yozing.`,
     daily:`Salom, ${user.name}! ⚡ Bugungi 5 daqiqalik mashq tayyor. Boshlaylikmi?`,
   };
-  appendMsg('ai', greetings[currentMode]||`Salom, ${user.name}! Qanday yordam bera olaman?`);
+  const ieltsGreetings = {
+    conversation:`Salom, ${user.name}! 🎤 IELTS Speaking mashqi. Qaysi qismdan boshlaymiz — Part 1, Part 2 yoki Part 3? (Part 2 da tayyorgarlik uchun ⏱ timerdan foydalaning, javobni 🎤 bilan gapirib bering)`,
+    correction:`Salom, ${user.name}! ✍️ IELTS Writing. Task 1 (grafik tasvirlash, 150+ so'z, 20 daq) yoki Task 2 (esse, 250+ so'z, 40 daq)? Yozayotganda pastda so'z soni ko'rinadi, vaqtni ⏱ bilan o'lchang.`,
+    story:`Salom, ${user.name}! 📖 IELTS Reading. Qaysi mavzuda passage beray? (science, history, environment...) Savollar real imtihon formatida bo'ladi — imloga e'tibor bering!`,
+    quiz:`Salom, ${user.name}! 🎧 IELTS Listening. Audio 2 qismdan iborat — avval 🔊 tinglaysiz, keyin savollarga javob berasiz. Imlo xatosi = noto'g'ri javob! Boshlaymi?`,
+    grammar:`Salom, ${user.name}! 📐 IELTS grammatika va lexical resource. Qaysi mavzu? (linking words, complex sentences, paraphrasing...)`,
+    daily:`Salom, ${user.name}! ⚡ Bugungi 5 daqiqalik IELTS mini-mashq tayyor. Boshlaymi?`,
+  };
+  const greet = (user.goal==='ielts' ? ieltsGreetings[currentMode] : greetings[currentMode]) || `Salom, ${user.name}! Qanday yordam bera olaman?`;
+  appendMsg('ai', greet);
 
   document.getElementById('ch-back').onclick = () => { teardownRec(); renderDashboard(); };
+  document.getElementById('ch-timer').onclick = showTimerMenu;
 
   const inp = document.getElementById('ch-in');
   inp.addEventListener('input', () => {
     inp.style.height = 'auto';
     inp.style.height = Math.min(inp.scrollHeight, 128)+'px';
-    document.getElementById('ch-cnt').textContent = inp.value.length;
+    // So'z hisoblagich — IELTS Writing uchun muhim (Task 1: 150+, Task 2: 250+)
+    const words = inp.value.trim() ? inp.value.trim().split(/\s+/).length : 0;
+    document.getElementById('ch-cnt').textContent = `${words} so'z`;
   });
   inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();} });
   document.getElementById('ch-send').onclick = doSend;
@@ -932,7 +1044,7 @@ async function doSend() {
   const txt = inp.value.trim();
   if (!txt) return;
   inp.value = ''; inp.style.height = 'auto';
-  document.getElementById('ch-cnt').textContent = '0';
+  document.getElementById('ch-cnt').textContent = "0 so'z";
   appendMsg('user', txt);
   chatBusy = true;
   document.getElementById('ch-send').disabled = true;
@@ -972,12 +1084,24 @@ function renderProgress() {
   if (user.goal === 'ielts') {
     const scores = user.ielts?.scores || [];
     const target = user.ielts?.targetBand || 6.5;
-    const avg = scores.length ? (scores.reduce((s,x)=>s+x.band,0)/scores.length) : null;
-    const bySection = {};
-    scores.forEach(x => { bySection[x.section] = x.band; });
-    const secHtml = Object.keys(SECTION_LABELS).filter(k=>bySection[k]!=null)
-      .map(k=>`<div class="flex justify-between text-sm py-1"><span class="text-slate-400">${SECTION_LABELS[k]}</span><span class="font-semibold">${bySection[k].toFixed(1)}</span></div>`).join('')
+    // Oxirgi baho har bo'lim bo'yicha (scores xronologik — oxirgisi qoladi)
+    const latest = {};
+    scores.forEach(x => { latest[x.section] = x.band; });
+    // Umumiy band — real IELTS kabi: 4 asosiy skill oxirgi ballari o'rtachasi, 0.5 ga yaxlitlanadi
+    const SKILLS = ['conversation','correction','story','quiz'];
+    const skillBands = SKILLS.map(k=>latest[k]).filter(b=>b!=null);
+    const overall = skillBands.length ? Math.round((skillBands.reduce((s,b)=>s+b,0)/skillBands.length)*2)/2 : null;
+    const secHtml = Object.keys(SECTION_LABELS).filter(k=>latest[k]!=null)
+      .map(k=>`<div class="flex justify-between text-sm py-1"><span class="text-slate-400">${SECTION_LABELS[k]}</span><span class="font-semibold ${latest[k]>=target?'text-emerald-400':''}">${latest[k].toFixed(1)}</span></div>`).join('')
       || '<div class="text-slate-500 text-sm py-1">Hali baholanmagan — Writing yoki Speaking sinab ko\'ring</div>';
+    // Trend: oxirgi 12 baho
+    const trendHtml = scores.length >= 2 ? `
+      <div class="mt-3">
+        <div class="text-xs text-slate-500 mb-1.5">Dinamika (oxirgi ${Math.min(scores.length,12)} baho)</div>
+        <div class="flex items-end gap-1" style="height:48px">
+          ${scores.slice(-12).map(x=>`<div title="${SECTION_LABELS[x.section]||x.section}: ${x.band.toFixed(1)} (${x.date})" class="flex-1 rounded-t ${x.band>=target?'bg-emerald-500':'bg-indigo-500'}" style="height:${Math.max(6,Math.round(x.band/9*48))}px"></div>`).join('')}
+        </div>
+      </div>` : '';
     ieltsHtml = `
       <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
         <div class="flex justify-between items-center mb-3">
@@ -985,10 +1109,11 @@ function renderProgress() {
           <span class="text-slate-400 text-xs">Maqsad: ${target.toFixed(1)}</span>
         </div>
         <div class="flex items-end gap-2 mb-3">
-          <div class="text-3xl font-bold ${avg!=null&&avg>=target?'text-emerald-400':'text-indigo-400'}">${avg!=null?avg.toFixed(1):'—'}</div>
-          <div class="text-xs text-slate-400 mb-1">o'rtacha band${avg!=null?` (${scores.length} baho)`:''}</div>
+          <div class="text-3xl font-bold ${overall!=null&&overall>=target?'text-emerald-400':'text-indigo-400'}">${overall!=null?overall.toFixed(1):'—'}</div>
+          <div class="text-xs text-slate-400 mb-1">umumiy band${skillBands.length?` (${skillBands.length}/4 bo'lim, oxirgi ballardan)`:''}</div>
         </div>
         ${secHtml}
+        ${trendHtml}
       </div>`;
   }
 
@@ -1066,6 +1191,13 @@ function renderProgress() {
 }
 
 // ─── 13. VIEW: VOCABULARY ────────────────────────────────────────
+// Spaced repetition: mastery darajasiga qarab keyingi takrorlash oralig'i (kun)
+const SRS_DAYS = [1, 1, 2, 4, 7, 14];
+function dueWords(list) {
+  const now = Date.now();
+  return list.filter(v => !v.nextReview || new Date(v.nextReview).getTime() <= now);
+}
+
 function stars(n) {
   return `<span class="text-amber-400">${'★'.repeat(n)}</span><span class="text-slate-500">${'☆'.repeat(5-n)}</span>`;
 }
@@ -1080,12 +1212,16 @@ function vocabRows(list, hasQuery=false) {
         <div class="font-medium text-sm">${esc(v.word)}${v.pronunciation?` <span class="text-slate-500 font-normal">(${esc(v.pronunciation)})</span>`:''}</div>
         <div class="text-slate-400 text-xs mt-0.5">${esc(v.translation)}</div>
       </div>
-      <div class="text-sm">${stars(v.mastery)}</div>
+      <div class="flex items-center gap-2">
+        <button class="vb-say text-lg leading-none" title="Talaffuzni eshitish" data-w="${esc(v.word)}">🔊</button>
+        <div class="text-sm">${stars(v.mastery)}</div>
+      </div>
     </div>`).join('');
 }
 
 function renderVocabulary() {
   const vocab = user.vocabulary||[];
+  const due = dueWords(vocab);
   document.getElementById('app').innerHTML = `
   <div class="min-h-screen view-fade">
     <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
@@ -1096,8 +1232,8 @@ function renderVocabulary() {
     <div class="max-w-2xl mx-auto px-4 py-5">
       <input id="vb-q" type="text" placeholder="Qidirish..."
         class="w-full bg-slate-800 rounded-xl px-4 py-3 text-sm border border-slate-700 focus:border-indigo-500 focus:outline-none mb-3"/>
-      ${vocab.length?`<button id="vb-rev" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold text-sm mb-4 transition-colors">
-        Takrorlash ▶ (${vocab.length} so'z)</button>`:''}
+      ${vocab.length?`<button id="vb-rev" class="w-full ${due.length?'bg-indigo-600 hover:bg-indigo-500':'bg-slate-700 hover:bg-slate-600'} rounded-xl py-3 font-semibold text-sm mb-4 transition-colors">
+        ${due.length?`Takrorlash ▶ (${due.length} ta navbatda)`:`Hammasi takrorlangan ✅ — baribir mashq qilish (${vocab.length})`}</button>`:''}
       <div id="vb-list" class="space-y-2">${vocabRows(vocab)}</div>
       ${!vocab.length?`<div class="text-center py-10">
         <div class="text-4xl mb-3">📖</div>
@@ -1112,7 +1248,12 @@ function renderVocabulary() {
     const filtered = q ? vocab.filter(v=>v.word.toLowerCase().includes(q)||v.translation.toLowerCase().includes(q)) : vocab;
     document.getElementById('vb-list').innerHTML = vocabRows(filtered, !!q);
   });
-  document.getElementById('vb-rev')?.addEventListener('click', ()=>startReview(vocab));
+  document.getElementById('vb-rev')?.addEventListener('click', ()=>startReview(due.length?due:vocab));
+  // 🔊 tugmalar (delegation — qidiruvda re-render bo'lsa ham ishlaydi)
+  document.getElementById('vb-list').addEventListener('click', e=>{
+    const b = e.target.closest('.vb-say');
+    if (b) speakText(b.dataset.w);
+  });
 }
 
 // ─── 14. REVIEW MODE ─────────────────────────────────────────────
@@ -1146,7 +1287,8 @@ function startReview(vocab) {
         <div class="flex-1 flex items-center justify-center p-6">
           <div class="w-full max-w-sm">
             <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 text-center mb-4">
-              <div class="text-3xl font-bold mb-1">${esc(item.word)}</div>
+              <div class="text-3xl font-bold mb-1">${esc(item.word)} <button id="rv-say" title="Eshitish" class="text-xl align-middle">🔊</button></div>
+              ${item.pronunciation?`<div class="text-slate-400 text-sm mb-1">(${esc(item.pronunciation)})</div>`:''}
               <div class="text-slate-500 text-sm">O'zbek tarjimasini kiriting</div>
             </div>
             <input id="rv-in" type="text" placeholder="Tarjima..."
@@ -1157,6 +1299,7 @@ function startReview(vocab) {
       </div>`;
 
     document.getElementById('rv-exit').onclick = renderVocabulary;
+    document.getElementById('rv-say').onclick = () => speakText(item.word);
     const inp = document.getElementById('rv-in');
     inp.focus();
 
@@ -1171,6 +1314,8 @@ function startReview(vocab) {
       const vItem = user.vocabulary.find(v=>v.word===item.word);
       if (vItem) {
         vItem.mastery = ok ? Math.min(5,vItem.mastery+1) : Math.max(0,vItem.mastery-1);
+        // Spaced repetition: keyingi takrorlash sanasi mastery'ga bog'liq
+        vItem.nextReview = new Date(Date.now() + SRS_DAYS[vItem.mastery]*86400000).toISOString();
         saveUser();
       }
       if (ok) addXP(2);
