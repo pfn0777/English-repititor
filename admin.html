@@ -137,9 +137,8 @@ async function renderPanel() {
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-300 mb-1.5">Model</label>
-          <input id="st-model" type="text" value="${esc(s.model)}"
-            class="w-full bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
-          <p class="text-xs text-slate-500 mt-1">Masalan: gemini-2.5-flash yoki claude-sonnet-4-6</p>
+          <div id="st-model-wrap"></div>
+          <p id="st-model-hint" class="text-xs text-slate-500 mt-1">Yuklanmoqda...</p>
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-300 mb-1.5">Kunlik limit (har foydalanuvchi)</label>
@@ -182,6 +181,37 @@ async function renderPanel() {
     </div>`;
 
   document.getElementById('ap-logout').onclick = () => { auth = { username: '', password: '' }; renderLogin(); };
+  // Model field is filled from list_models so a retired model name can't be typed in by hand.
+  const modelField = { models: null, warning: '' };
+  const drawModelField = () => {
+    const wrap = document.getElementById('st-model-wrap');
+    const hint = document.getElementById('st-model-hint');
+    const cls = 'w-full bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none';
+    const prov = document.getElementById('st-prov').value;
+    const cur = wrap.dataset.value || s.model || '';
+    const list = (modelField.models || {})[prov] || [];
+    if (!list.length) {
+      wrap.innerHTML = `<input id="st-model" type="text" value="${esc(cur)}" class="${cls}"/>`;
+      hint.textContent = modelField.models ? (modelField.warning || "Ro'yxat bo'sh — model nomini qo'lda kiriting") : 'Modellar yuklanmoqda...';
+      hint.className = 'text-xs text-amber-400 mt-1';
+    } else {
+      const known = list.includes(cur);
+      const opts = (known ? [] : [`<option value="${esc(cur)}" selected>⚠ ${esc(cur)} — mavjud emas</option>`])
+        .concat(list.map(m => `<option value="${esc(m)}" ${m === cur ? 'selected' : ''}>${esc(m)}</option>`)).join('');
+      wrap.innerHTML = `<select id="st-model" class="${cls}">${opts}</select>`;
+      hint.textContent = known ? `${list.length} ta model mavjud` : "Joriy model bu kalit uchun mavjud emas — ro'yxatdan boshqasini tanlang";
+      hint.className = known ? 'text-xs text-slate-500 mt-1' : 'text-xs text-amber-400 mt-1';
+    }
+    document.getElementById('st-model').onchange = e => { wrap.dataset.value = e.target.value; };
+  };
+  document.getElementById('st-prov').onchange = drawModelField;
+  drawModelField();
+  api('list_models').then(({ ok, data }) => {
+    modelField.models = (ok && data.ok) ? (data.models || {}) : {};
+    modelField.warning = (ok && data.ok) ? (data.warning || '') : (data.message || "Modellar ro'yxati olinmadi");
+    drawModelField();
+  });
+
   document.getElementById('st-save').onclick = async () => {
     const settings = {
       active_provider: document.getElementById('st-prov').value,

@@ -7,6 +7,8 @@ const ALLOWED_ORIGINS = [
 ];
 const GLOBAL_DAILY_LIMIT = Number(Deno.env.get('GLOBAL_DAILY_LIMIT') || '2000');
 const MAX_PAYLOAD_CHARS = 20000;
+// Alias Google keeps pointed at a current model — pinned versions get retired.
+const GEMINI_FALLBACK_MODEL = 'gemini-flash-latest';
 const MAX_AUDIO_B64 = 2_000_000; // ~1.5MB; ~60s opus is enough
 const ALLOWED_AUDIO_MIME = ['audio/webm', 'audio/ogg', 'audio/mp4', 'audio/mpeg', 'audio/wav'];
 
@@ -97,14 +99,17 @@ Deno.serve(async (req: Request) => {
         body: JSON.stringify({ model, max_tokens: 1000, system, messages }),
       });
       const d = await r.json();
-      if (!r.ok) return json({ error: 'ai', message: d.error?.message || 'AI xatosi' }, 502, cors);
+      if (!r.ok) {
+        console.error('claude_error', r.status, JSON.stringify(d.error || d));
+        return json({ error: 'ai', message: d.error?.message || 'AI xatosi' }, 502, cors);
+      }
       text = d.content?.[0]?.text || '';
     } else {
       if (!s.gemini_key) {
         const msg = hasAudio ? 'Ovozli xabar uchun Gemini kerak. Admin Gemini kalitini kiritmagan.' : 'Admin Gemini kalitini kiritmagan.';
         return json({ error: 'no_key', message: msg }, 503, cors);
       }
-      const model = String(s.model || '').startsWith('gemini') ? s.model : 'gemini-2.5-flash';
+      const model = String(s.model || '').startsWith('gemini') ? s.model : GEMINI_FALLBACK_MODEL;
       const contents = (messages || []).map((m: { role: string; content: string }) => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: m.content }],
@@ -122,17 +127,29 @@ Deno.serve(async (req: Request) => {
         sys = `${system}\n\nThe user sent a VOICE message (audio attached). First transcribe what they said, then assess pronunciation, fluency and grammar. Give concrete corrections in the standard format. If the goal is IELTS, also give a Speaking band as "\u{1F3AF} Band: X.X".`;
       }
 
-      const isVertex = String(s.gemini_key).startsWith('AQ.');
-      const url = isVertex
-        ? `https://aiplatform.googleapis.com/v1/publishers/google/models/${model}:generateContent?key=${s.gemini_key}`
-        : `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${s.gemini_key}`;
-      const r = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ system_instruction: { parts: [{ text: sys }] }, contents, generationConfig: { maxOutputTokens: 1000 } }),
-      });
-      const d = await r.json();
-      if (!r.ok) return json({ error: 'ai', message: d.error?.message || 'AI xatosi' }, 502, cors);
+      const body = JSON.stringify({ system_instruction: { parts: [{ text: sys }] }, contents, generationConfig: { maxOutputTokens: 1000 } });
+      const callGemini = (m: string) => fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${s.gemini_key}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body },
+      );
+
+      let r = await callGemini(model);
+      let d = await r.json();
+      // Pinned Gemini versions get retired over time; retry once on the always-current alias
+      // so a stale admin setting doesn't take the bot down.
+      const retired = !r.ok && (r.status === 404 || /no longer available|not found|not supported/i.test(String(d?.error?.message || '')));
+      if (retired && model !== GEMINI_FALLBACK_MODEL) {
+        console.error('gemini_model_retired', model, '-> fallback', GEMINI_FALLBACK_MODEL);
+        r = await callGemini(GEMINI_FALLBACK_MODEL);
+        d = await r.json();
+      }
+      if (!r.ok) {
+        console.error('gemini_error', r.status, JSON.stringify(d.error || d));
+        if (r.status === 429) {
+          return json({ error: 'rate_limit', message: "Hozir band, biroz kuting va qayta urinib ko'ring." }, 429, cors);
+        }
+        return json({ error: 'ai', message: d.error?.message || 'AI xatosi' }, 502, cors);
+      }
       text = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
 
