@@ -7,9 +7,16 @@ const ALLOWED_ORIGINS = [
 ];
 const GLOBAL_DAILY_LIMIT = Number(Deno.env.get('GLOBAL_DAILY_LIMIT') || '2000');
 const MAX_PAYLOAD_CHARS = 20000;
-// Alias Google keeps pointed at a current model — pinned versions get retired.
+// Fallback only — the active model lives in app_secrets.model (currently gemini-2.5-flash-lite).
+// This alias stays as the safety net: Google keeps it pointed at a current model, so a retired
+// pinned version can't take the bot down (see the retry below).
 const GEMINI_FALLBACK_MODEL = 'gemini-flash-latest';
 const MAX_AUDIO_B64 = 2_000_000; // ~1.5MB; ~60s opus is enough
+// Thinking-capable Gemini models charge their reasoning tokens against maxOutputTokens — at 1000
+// the visible answer was silently cut to ~40 tokens. gemini-2.5-flash-lite has thinking OFF by
+// default, but the fallback alias does not, so the budget must still cover thinking + answer.
+// thinkingConfig is rejected by the alias, so it is not set here.
+const MAX_OUTPUT_TOKENS = 4000;
 const ALLOWED_AUDIO_MIME = ['audio/webm', 'audio/ogg', 'audio/mp4', 'audio/mpeg', 'audio/wav'];
 
 function corsFor(req: Request) {
@@ -96,7 +103,7 @@ Deno.serve(async (req: Request) => {
       const r = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-api-key': s.claude_key, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model, max_tokens: 1000, system, messages }),
+        body: JSON.stringify({ model, max_tokens: MAX_OUTPUT_TOKENS, system, messages }),
       });
       const d = await r.json();
       if (!r.ok) {
@@ -127,7 +134,11 @@ Deno.serve(async (req: Request) => {
         sys = `${system}\n\nThe user sent a VOICE message (audio attached). First transcribe what they said, then assess pronunciation, fluency and grammar. Give concrete corrections in the standard format. If the goal is IELTS, also give a Speaking band as "\u{1F3AF} Band: X.X".`;
       }
 
-      const body = JSON.stringify({ system_instruction: { parts: [{ text: sys }] }, contents, generationConfig: { maxOutputTokens: 1000 } });
+      const body = JSON.stringify({
+        system_instruction: { parts: [{ text: sys }] },
+        contents,
+        generationConfig: { maxOutputTokens: MAX_OUTPUT_TOKENS },
+      });
       const callGemini = (m: string) => fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${s.gemini_key}`,
         { method: 'POST', headers: { 'Content-Type': 'application/json' }, body },
@@ -151,6 +162,9 @@ Deno.serve(async (req: Request) => {
         return json({ error: 'ai', message: d.error?.message || 'AI xatosi' }, 502, cors);
       }
       text = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      // Surfaced so a silent truncation shows up in logs instead of looking like a bad answer.
+      const finish = d.candidates?.[0]?.finishReason;
+      if (finish && finish !== 'STOP') console.error('gemini_finish', finish, 'chars', text.length);
     }
 
     await db.from('usage').insert({ user_id: userId, mode, provider });

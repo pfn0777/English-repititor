@@ -1,0 +1,100 @@
+{
+  "A1": [
+    {
+      "id": "A1-01",
+      "title": "Salomlashish va tanishuv",
+      "can": "Salomlasha olaman va o'zim haqimda oddiy gaplar ayta olaman",
+      "grammar": "'to be' fe'li — am/is/are shaxs olmoshlari bilan (verb to be)",
+      "words": ["hello", "hi", "name", "my", "your", "i", "you", "he", "she", "it", "we", "they", "am", "is", "are", "good", "morning", "nice", "meet", "from", "what", "where", "teacher", "student", "and"],
+      "tasks": ["translate", "build", "listen", "translate", "build", "listen"]
+    },
+    {
+      "id": "A1-02",
+      "title": "Mening oilam",
+      "can": "Oilam a'zolari haqida gapira olaman va nimam borligini ayta olaman",
+      "grammar": "Egalik olmoshlari (my/your/his/her) va 'have got' — egalikni bildirish",
+      "words": ["have", "has", "got", "his", "her", "our", "their", "family", "mother", "father", "brother", "sister", "son", "daughter", "friend", "old", "young", "year", "how", "many", "two", "three", "but", "not", "very"],
+      "tasks": ["listen", "translate", "build", "translate", "listen", "build"]
+    },
+    {
+      "id": "A1-03",
+      "title": "Buyumlar va artikllar",
+      "can": "Atrofimdagi narsalarni nomlay olaman va ularni ko'rsata olaman",
+      "grammar": "Artikllar a/an/the — noaniq va aniq artikl (articles)",
+      "words": ["a", "an", "the", "book", "pen", "apple", "orange", "table", "chair", "room", "house", "door", "window", "box", "bag", "cup", "egg", "hour", "umbrella", "new", "big", "small", "this", "that", "here"],
+      "tasks": ["translate", "listen", "build", "build", "translate", "listen"]
+    },
+    {
+      "id": "A1-04",
+      "title": "Sonlar va ko'plik",
+      "can": "Narsalarni sanay olaman va nechtaligini ayta olaman",
+      "grammar": "Ko'plik shakli (-s/-es) va noto'g'ri ko'pliklar, sonlar (plurals and numbers)",
+      "words": ["one", "four", "five", "six", "seven", "eight", "nine", "ten", "twenty", "hundred", "child", "children", "man", "men", "woman", "women", "boy", "girl", "city", "country", "number", "people", "some", "these", "those"],
+      "tasks": ["translate", "build", "write", "listen", "translate", "build"]
+    },
+    {
+      "id": "A1-05",
+      "title": "Kundalik ishlarim",
+      "can": "Har kuni nima qilishimni ayta olaman",
+      "grammar": "Hozirgi oddiy zamon, tasdiq shakli va 3-shaxs -s (Present Simple, affirmative)",
+      "words": ["live", "work", "study", "like", "want", "need", "speak", "read", "write", "play", "eat", "drink", "go", "come", "every", "day", "english", "school", "office", "football", "music", "water", "tea", "in", "on"],
+      "tasks": ["build", "translate", "listen", "write", "build", "translate"]
+    },
+    {
+      "id": "A1-06",
+      "title": "Savol va inkor",
+      "can": "Savol bera olaman va biror narsani qilmasligimni ayta olaman",
+      "grammar": "Hozirgi oddiy zamon inkor va savoli — do/does (Present Simple, negative and questions)",
+      "words": ["do", "does", "no", "yes", "why", "when", "who", "which", "question", "answer", "know", "think", "understand", "help", "ask", "say", "tell", "please", "sorry", "always", "never", "sometimes", "often", "usually", "because"],
+      "tasks": ["translate", "write", "build", "listen", "translate", "write"]
+    },
+    {
+      "id": "A1-07",
+      "title": "Uy va shahar",
+      "can": "Uyimda va shahrimda nima borligini tasvirlab bera olaman",
+      "grammar": "'there is / there are' — mavjudlikni bildirish va joy predloglari (there is/are)",
+      "words": ["there", "kitchen", "bedroom", "bathroom", "garden", "wall", "floor", "street", "shop", "park", "bank", "hospital", "market", "near", "next", "under", "behind", "between", "front", "left", "right", "cheap", "clean", "quiet", "or"],
+      "tasks": ["listen", "build", "translate", "write", "build", "translate"]
+    },
+    {
+      "id": "A1-08",
+      "title": "Qobiliyat va imkoniyat",
+      "can": "Nimani qila olishimni va qila olmasligimni ayta olaman",
+      "grammar": "'can / cannot' modal fe'li — qobiliyat va so'rov (modal verb can)",
+      "words": ["can", "cannot", "swim", "run", "jump", "drive", "cook", "sing", "dance", "draw", "ride", "bike", "car", "well", "fast", "slow", "hard", "easy", "difficult", "also", "too", "with", "without", "again", "together"],
+      "tasks": ["translate", "build", "write", "translate", "listen", "build"]
+    },
+    {
+      "id": "A1-09",
+      "title": "Kecha qanday edim",
+      "can": "Kecha qayerda va qanday ahvolda bo'lganimni ayta olaman",
+      "grammar": "O'tgan zamon — was/were va vaqt ifodalari (Past Simple, to be)",
+      "words": ["was", "were", "yesterday", "last", "week", "month", "ago", "born", "today", "tomorrow", "night", "evening", "afternoon", "time", "happy", "sad", "tired", "angry", "hungry", "thirsty", "ill", "cold", "hot", "weather", "at"],
+      "tasks": ["build", "listen", "translate", "write", "translate", "build"]
+    },
+    {
+      "id": "A1-10",
+      "title": "O'tgan hafta voqealari",
+      "can": "O'tgan kunlarda nima qilganim haqida hikoya qila olaman",
+      "grammar": "O'tgan zamon — muntazam fe'llar (Past Simple, regular verbs, -ed)",
+      "words": ["finish", "start", "open", "close", "watch", "listen", "call", "walk", "wait", "visit", "travel", "arrive", "stay", "love", "learn", "use", "decide", "look", "talk", "film", "letter", "holiday", "station", "hotel", "then"],
+      "tasks": ["write", "translate", "build", "listen", "write", "translate"]
+    },
+    {
+      "id": "A1-11",
+      "title": "Hozir nima bo'lyapti",
+      "can": "Hozir shu daqiqada nima qilayotganimni ayta olaman",
+      "grammar": "Hozirgi davomli zamon — am/is/are + -ing (Present Continuous)",
+      "words": ["now", "moment", "wear", "sit", "stand", "sleep", "smile", "carry", "buy", "make", "take", "give", "put", "clothes", "shirt", "dress", "shoes", "phone", "computer", "picture", "outside", "inside", "still", "busy", "of"],
+      "tasks": ["translate", "build", "listen", "translate", "write", "build"]
+    },
+    {
+      "id": "A1-12",
+      "title": "Odat va hozirgi holat",
+      "can": "Odatdagi ish bilan hozirgi ishni farqlab ayta olaman",
+      "grammar": "Hozirgi oddiy va hozirgi davomli zamonni solishtirish (Present Simple vs Present Continuous)",
+      "words": ["rain", "snow", "sun", "wind", "spring", "summer", "autumn", "winter", "weekend", "breakfast", "lunch", "dinner", "coffee", "bread", "meat", "fruit", "vegetable", "restaurant", "expensive", "delicious", "hate", "prefer", "rarely", "while", "so"],
+      "tasks": ["build", "write", "translate", "listen", "build", "translate"]
+    }
+  ]
+}

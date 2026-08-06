@@ -1,0 +1,100 @@
+{
+  "A2": [
+    {
+      "id": "A2-01",
+      "title": "O'tgan zamon voqealari",
+      "can": "O'tmishda sodir bo'lgan voqealar haqida gapira olaman",
+      "grammar": "O'tgan zamon — noto'g'ri fe'llar: become-became, bring-brought (Past Simple, irregular verbs)",
+      "words": ["become", "begin", "break", "bring", "catch", "choose", "feel", "find", "forget", "hear", "keep", "leave", "lose", "send", "sell", "spend", "teach", "throw", "win", "ring", "wake", "hurt", "happen", "suddenly", "finally"],
+      "tasks": ["translate", "build", "listen", "write", "translate", "build"]
+    },
+    {
+      "id": "A2-02",
+      "title": "Narsalarni taqqoslash",
+      "can": "Ikki narsani bir-biri bilan taqqoslay olaman",
+      "grammar": "Sifatlarning qiyosiy darajasi — -er va more + than (comparative adjectives)",
+      "words": ["strong", "weak", "tall", "short", "heavy", "light", "thick", "thin", "wide", "narrow", "deep", "safe", "dangerous", "modern", "comfortable", "popular", "famous", "boring", "interesting", "than", "more", "less", "enough", "quite", "similar"],
+      "tasks": ["build", "translate", "write", "listen", "build", "translate"]
+    },
+    {
+      "id": "A2-03",
+      "title": "Eng yaxshi va eng yomon",
+      "can": "Guruh ichidan eng zo'rini ajratib ayta olaman",
+      "grammar": "Sifatlarning orttirma darajasi — the -est va the most (superlative adjectives)",
+      "words": ["high", "low", "rich", "poor", "beautiful", "ugly", "important", "useful", "funny", "serious", "lucky", "strange", "perfect", "terrible", "wonderful", "amazing", "best", "worst", "most", "least", "place", "choice", "top", "among", "mountain"],
+      "tasks": ["translate", "write", "build", "listen", "translate", "build"]
+    },
+    {
+      "id": "A2-04",
+      "title": "Rejalar va niyatlar",
+      "can": "Oldindan tuzilgan rejalarim haqida ayta olaman",
+      "grammar": "Kelasi zamon rejasi — be going to + fe'l (be going to for plans)",
+      "words": ["plan", "hope", "soon", "tonight", "trip", "ticket", "passport", "luggage", "airport", "flight", "beach", "museum", "camping", "guide", "prepare", "pack", "arrange", "invite", "join", "meeting", "event", "party", "guest", "schedule", "abroad"],
+      "tasks": ["build", "listen", "translate", "write", "build", "translate"]
+    },
+    {
+      "id": "A2-05",
+      "title": "Kelajak va qarorlar",
+      "can": "Kelajak haqida taxmin qila olaman va shu zahoti qaror ayta olaman",
+      "grammar": "Kelasi zamon — will/won't, tez qabul qilingan qaror va taxmin uchun (will for future)",
+      "words": ["will", "promise", "believe", "guess", "probably", "maybe", "sure", "worry", "offer", "order", "agree", "refuse", "forecast", "chance", "luck", "predict", "later", "certainly", "perhaps", "wonder", "expect", "hopefully", "message", "reply", "idea"],
+      "tasks": ["translate", "build", "write", "translate", "listen", "build"]
+    },
+    {
+      "id": "A2-06",
+      "title": "Hayotiy tajriba",
+      "can": "Hayotimda nima qilganim yoki qilmaganim haqida ayta olaman",
+      "grammar": "Present Perfect kirish — have/has + III shakl, ever/never/just bilan (Present Perfect)",
+      "words": ["ever", "just", "already", "yet", "before", "experience", "adventure", "taste", "try", "climb", "achieve", "discover", "explore", "appear", "notice", "recently", "twice", "once", "several", "memory", "story", "life", "change", "since", "island"],
+      "tasks": ["write", "translate", "build", "listen", "translate", "build"]
+    },
+    {
+      "id": "A2-07",
+      "title": "Miqdor va oziq-ovqat",
+      "can": "Narsalarning miqdorini aniq ayta olaman",
+      "grammar": "Miqdor so'zlari — some/any, much/many, a lot of, a few, a little (quantifiers)",
+      "words": ["much", "any", "few", "plenty", "amount", "bottle", "glass", "piece", "slice", "packet", "bowl", "plate", "spoon", "knife", "fork", "sugar", "salt", "rice", "milk", "cheese", "juice", "soup", "butter", "honey", "flour"],
+      "tasks": ["translate", "build", "listen", "write", "build", "translate"]
+    },
+    {
+      "id": "A2-08",
+      "title": "Maslahat va majburiyat",
+      "can": "Maslahat bera olaman va nima qilish shartligini ayta olaman",
+      "grammar": "Modal fe'llar — should (maslahat), must va have to (majburiyat) (modal verbs)",
+      "words": ["should", "must", "advice", "rule", "law", "allow", "forbid", "permission", "duty", "responsible", "health", "doctor", "medicine", "exercise", "rest", "danger", "careful", "warning", "sign", "behave", "polite", "respect", "obey", "necessary", "smoke"],
+      "tasks": ["build", "translate", "write", "listen", "translate", "build"]
+    },
+    {
+      "id": "A2-09",
+      "title": "Ish-harakat tarzi",
+      "can": "Ishni qanday bajarganimni tasvirlab bera olaman",
+      "grammar": "Tarz ravishlari — sifatga -ly qo'shish, sifat va ravish farqi (adverbs of manner)",
+      "words": ["quickly", "slowly", "carefully", "quietly", "loudly", "badly", "politely", "angrily", "happily", "easily", "clearly", "correctly", "hardly", "nearly", "almost", "exactly", "completely", "seriously", "silently", "patiently", "behaviour", "manner", "speed", "voice", "movement"],
+      "tasks": ["translate", "listen", "build", "write", "translate", "build"]
+    },
+    {
+      "id": "A2-10",
+      "title": "Shart va natija",
+      "can": "Shart qo'yib, natijasi nima bo'lishini ayta olaman",
+      "grammar": "Birinchi shart gap — if + Present Simple, will + fe'l (First Conditional)",
+      "words": ["if", "unless", "result", "cause", "effect", "problem", "solution", "risk", "avoid", "prevent", "succeed", "mistake", "repair", "save", "waste", "borrow", "earn", "cost", "price", "money", "otherwise", "possible", "impossible", "situation", "depend"],
+      "tasks": ["build", "write", "translate", "listen", "build", "translate"]
+    },
+    {
+      "id": "A2-11",
+      "title": "Tajriba va aniq vaqt",
+      "can": "Umumiy tajriba bilan aniq vaqtdagi voqeani farqlab ayta olaman",
+      "grammar": "Present Perfect va Past Simple farqi — aniq vaqt bo'lsa Past Simple (Present Perfect vs Past Simple)",
+      "words": ["lately", "during", "until", "whole", "career", "job", "company", "business", "project", "manager", "employee", "customer", "salary", "interview", "apply", "hire", "retire", "skill", "success", "failure", "progress", "improve", "report", "team", "goal"],
+      "tasks": ["translate", "build", "write", "translate", "listen", "build"]
+    },
+    {
+      "id": "A2-12",
+      "title": "Narsalar qanday yasaladi",
+      "can": "Narsa kim tomonidan yoki qayerda qilinishini ayta olaman",
+      "grammar": "Majhul nisbat kirish — is/are + III shakl, by bilan (Present Simple passive)",
+      "words": ["produce", "build", "grow", "design", "invent", "create", "deliver", "export", "import", "factory", "product", "material", "metal", "wood", "plastic", "paper", "cotton", "machine", "process", "quality", "industry", "farm", "village", "government", "language"],
+      "tasks": ["write", "translate", "build", "listen", "translate", "build"]
+    }
+  ]
+}
