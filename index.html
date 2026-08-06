@@ -59,6 +59,7 @@ const MODES = {
 const TASKS_PER_UNIT            = 6;    // unit ichidagi vazifalar; 7-qadam = unit imtihoni
 const PASS_THRESHOLD            = 0.8;  // 4/5 o'tadi, 3/5 yiqiladi
 const MAX_DAILY_TASKS           = 3;    // kuniga maksimum
+const DAILY_QUOTA               = 1;    // erkin mashqlar ochilishi uchun kerakli vazifa (≤ MAX_DAILY_TASKS)
 const MAX_ATTEMPTS_BEFORE_RELIEF= 3;    // shundan keyin AI to'liq tushuntirib yengillashtiradi
 const CALIBRATION_TASKS         = 3;    // dastlabki necha vazifadan keyin daraja tuzatiladi
 const REMEDIAL_TASKS            = 2;    // daraja imtihonidan yiqilgach beriladigan takror vazifalar
@@ -437,6 +438,36 @@ function canStartTask() {
   if (!getTaskType()) return { ok:false, reason:'level_not_ready' };
   if (p.doneToday.count >= MAX_DAILY_TASKS) return { ok:false, reason:'daily_limit' };
   return { ok:true, reason:null };
+}
+
+// Erkin mashqlar (6 ta rejim + AI Ustoz + Testlar) ochiqmi?
+// Escape hatch'lar shart: dastursiz yoki vazifasiz holatda qulf abadiy bo'lib qoladi.
+function freeModeGate() {
+  const p = user.program;
+  if (!p) return { ok:true, reason:'no_program', done:0, need:0 };
+  rollDaily();
+  if (!getTaskType()) return { ok:true, reason:'level_not_ready', done:0, need:0 };
+  const need = Math.min(DAILY_QUOTA, MAX_DAILY_TASKS);
+  const done = p.doneToday.count;
+  if (done >= need) return { ok:true, reason:'quota_done', done, need };
+  return { ok:false, reason:'quota_pending', done, need };
+}
+
+// Qulf matni. need=1 bo'lganda raqam ko'rsatilmaydi — dashboardda "bugun 0/3" bilan
+// yonma-yon turganda ikki xil kasr chalkashtiradi.
+function lockText(g) {
+  return g.need > 1
+    ? `Bugungi ${g.done}/${g.need} vazifa bajarilgach ochiladi`
+    : 'Bugungi vazifani bajarsangiz ochiladi';
+}
+
+// Qulf paytida AI o'rniga qaytariladigan lokal matn — tarmoqqa chiqmaydi, token sarflamaydi.
+function lockedReply(g) {
+  return `🔒 **Avval bugungi vazifani bajaraylik.**
+
+${lockText(g)}: suhbat, hikoya, grammatika, viktorina va matn tuzatish.
+
+👉 Pastdagi ✍️ **Vazifalar** bo'limiga o'ting.`;
 }
 
 function issueTask(type, prompt) {
@@ -942,6 +973,13 @@ QOIDALAR:
 }
 
 async function callAI(userMsg, opts={}) {
+  // Qulf tekshiruvi tarixga yozishdan ham oldin — qulflangan xabar history'ga tushmasin.
+  // opts.program chaqiruvlari hech qachon qulflanmaydi, aks holda dastur o'zini bloklaydi.
+  if (!opts.program) {
+    const g = freeModeGate();
+    if (!g.ok) return lockedReply(g);
+  }
+
   history.push({ role:'user', content: userMsg });
   if (history.length > MAX_HIST) history = history.slice(-MAX_HIST);
 
@@ -1217,10 +1255,12 @@ const NAV_TABS = [
 ];
 
 function renderBottomNav(active, fixed=true) {
+  const locked = !freeModeGate().ok;
   const items = NAV_TABS.map(t => {
     const on = t.id === active;
-    return `<button data-nav="${t.id}" class="flex-1 flex flex-col items-center justify-center gap-0.5 py-2 ${on?'text-indigo-400':'text-slate-500 hover:text-slate-300'} transition-colors">
-      <span class="text-xl leading-none">${t.emoji}</span>
+    const lk = locked && (t.id === 'ai' || t.id === 'tests');
+    return `<button data-nav="${t.id}" class="flex-1 flex flex-col items-center justify-center gap-0.5 py-2 ${on?'text-indigo-400':'text-slate-500 hover:text-slate-300'} ${lk?'opacity-50':''} transition-colors">
+      <span class="text-xl leading-none relative">${t.emoji}${lk?'<span class="absolute -top-1 -right-2 text-[9px]">🔒</span>':''}</span>
       <span class="text-[10px] font-medium leading-none">${t.label}</span>
     </button>`;
   }).join('');
@@ -1554,10 +1594,13 @@ function renderDashboard() {
 
   const IELTS_SECTION = { conversation:'Speaking', correction:'Writing', story:'Reading', quiz:'Listening', grammar:'Lexical/Grammar', daily:'Daily' };
   const isIelts = ieltsActive();
+  const modeGate = freeModeGate();
+  const modeLocked = !modeGate.ok;
   const cards = Object.entries(MODES).map(([k,m]) => `
-    <div class="mode-card bg-slate-800 rounded-2xl p-4 border ${k===leastMode?'border-indigo-500':'border-slate-700'} relative"
+    <div class="mode-card bg-slate-800 rounded-2xl p-4 border ${!modeLocked && k===leastMode?'border-indigo-500':'border-slate-700'} relative ${modeLocked?'opacity-50 cursor-not-allowed':''}"
          data-mode="${k}">
-      ${k===leastMode?'<div class="absolute top-2 right-2 bg-indigo-600 text-xs px-2 py-0.5 rounded-full font-medium">Tavsiya</div>':''}
+      ${modeLocked?'<div class="absolute top-2 right-2 text-sm">🔒</div>':''}
+      ${!modeLocked && k===leastMode?'<div class="absolute top-2 right-2 bg-indigo-600 text-xs px-2 py-0.5 rounded-full font-medium">Tavsiya</div>':''}
       <div class="text-3xl mb-2">${m.emoji}</div>
       <div class="font-semibold text-sm">${m.title}${isIelts?` <span class="text-indigo-400 text-xs font-normal">· ${IELTS_SECTION[k]}</span>`:''}</div>
       <div class="text-slate-400 text-xs mt-0.5">${m.desc}</div>
@@ -1613,7 +1656,8 @@ function renderDashboard() {
         </div>
       </div>
       ${examHtml}
-      <h3 class="font-semibold text-slate-300 text-sm mb-3">Mashq turini tanlang</h3>
+      <h3 class="font-semibold text-slate-300 text-sm ${modeLocked?'mb-1':'mb-3'}">Mashq turini tanlang${modeLocked?' 🔒':''}</h3>
+      ${modeLocked?`<p class="text-slate-500 text-xs mb-3">${lockText(modeGate)}</p>`:''}
       <div class="grid grid-cols-2 gap-3 mb-5">${cards}</div>
       <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
         <div class="text-sm font-semibold text-slate-300 mb-2">Zaif joylar</div>
@@ -1628,7 +1672,12 @@ function renderDashboard() {
   const taskBtn = document.getElementById('db-task');
   if (taskBtn) taskBtn.onclick = renderProgram;
   document.querySelectorAll('[data-mode]').forEach(c => {
-    c.onclick = () => { currentMode = c.dataset.mode; history = []; renderChat(); };
+    c.onclick = () => {
+      // CSS'ga tayanmaymiz — gate qayta tekshiriladi.
+      const g = freeModeGate();
+      if (!g.ok) { toast('Avval bugungi vazifani bajaring', 'info'); return renderProgram(); }
+      currentMode = c.dataset.mode; history = []; renderChat();
+    };
   });
   bindBottomNav();
 }
@@ -1804,6 +1853,13 @@ function teardownRec() {
 }
 
 function renderChat() {
+  // Erkin rejim qulflangan bo'lsa chat umuman ochilmaydi (nav va kartalar shu yerdan o'tadi).
+  const gate = freeModeGate();
+  if (!gate.ok) {
+    toast('Avval bugungi vazifani bajaring', 'info');
+    return renderProgram();
+  }
+
   chatBusy = false;
   const m = MODES[currentMode];
   document.getElementById('app').innerHTML = `
