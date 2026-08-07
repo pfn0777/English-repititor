@@ -131,7 +131,11 @@ Deno.serve(async (req: Request) => {
           target.parts[0] = { text: 'Please assess my spoken English from the audio.' };
         }
         target.parts.push({ inline_data: { mime_type: audio.mimeType.split(';')[0].trim(), data: audio.data } });
-        sys = `${system}\n\nThe user sent a VOICE message (audio attached). First transcribe what they said, then assess pronunciation, fluency and grammar. Give concrete corrections in the standard format. If the goal is IELTS, also give a Speaking band as "\u{1F3AF} Band: X.X".`;
+        // Program tasks parse a "📊 NATIJA: N/M" marker from the FIRST line, so the
+        // generic voice suffix must not push a transcription ahead of it.
+        sys = String(mode || '').startsWith('program_')
+          ? `${system}\n\nThe user answered with a VOICE message (audio attached). Listen to it and grade it exactly as instructed above — the required output format, including the first line, stays unchanged. Add the transcription of what you actually heard AFTER the required first line. Judge pronunciation only when it changes the meaning. CRITICAL: if the audio has no intelligible speech, score it zero and say so — never reconstruct a transcription from the expected answers in the task text.`
+          : `${system}\n\nThe user sent a VOICE message (audio attached). First transcribe what they said, then assess pronunciation, fluency and grammar. Give concrete corrections in the standard format. If the goal is IELTS, also give a Speaking band as "\u{1F3AF} Band: X.X".`;
       }
 
       const body = JSON.stringify({

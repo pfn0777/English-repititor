@@ -63,6 +63,8 @@ const DAILY_QUOTA               = 1;    // erkin mashqlar ochilishi uchun kerakl
 const MAX_ATTEMPTS_BEFORE_RELIEF= 3;    // shundan keyin AI to'liq tushuntirib yengillashtiradi
 const MAX_ATTEMPTS_BEFORE_SKIP  = 5;    // shundan keyin o'tkazib yuborish ochiladi (tiqilib qolmasin)
 const CALIBRATION_TASKS         = 3;    // dastlabki necha vazifadan keyin daraja tuzatiladi
+const CALIBRATION_UP_AVG        = 0.9;  // shu o'rtachadan yuqori bo'lsa daraja ko'tariladi
+const CALIBRATION_DOWN_AVG      = 0.6;  // shu o'rtachadan past bo'lsa daraja tushiriladi
 const REMEDIAL_TASKS            = 2;    // daraja imtihonidan yiqilgach beriladigan takror vazifalar
 const XP_PER_TASK               = 25;
 const VOCAB_IN_PROMPT           = 30;   // system promptga ketadigan so'zlar chegarasi (payload 20KB)
@@ -73,6 +75,7 @@ const TASK_TYPES = {
   build:     { emoji:'🧱', title:'Gap tuzish',   desc:"Berilgan 5 so'z bilan gap tuzing" },
   write:     { emoji:'✍️', title:'Qisqa yozma',  desc:'50-120 so\'zlik matn yozing' },
   listen:    { emoji:'🎧', title:'Tinglash',     desc:'Audioni tinglab savollarga javob bering' },
+  speak:     { emoji:'🎤', title:'Gapirish',     desc:'5 ta jumlani ovoz chiqarib ayting' },
 };
 
 // Syllabus. Manba: data/curriculum-*.json — `node scripts/build-curriculum.mjs` bilan yangilanadi.
@@ -143,7 +146,7 @@ const CURRICULUM = {
         { en:'not', uz:'emas', ipa:'nɑːt' },
         { en:'very', uz:'juda', ipa:'ˈveri' },
       ],
-      tasks:['listen','translate','build','translate','listen','build'] },
+      tasks:['listen','translate','build','speak','listen','build'] },
     { id:'A1-03', title:'Buyumlar va artikllar',
       can:'Atrofimdagi narsalarni nomlay olaman va ularni ko\'rsata olaman',
       grammar:'Artikllar a/an/the — noaniq va aniq artikl (articles)',
@@ -175,7 +178,7 @@ const CURRICULUM = {
         { en:'that', uz:'o\'sha, ana u', ipa:'ðæt' },
         { en:'here', uz:'shu yerda', ipa:'hɪr' },
       ],
-      tasks:['translate','listen','build','translate','build','listen'] },
+      tasks:['translate','listen','build','speak','build','listen'] },
     { id:'A1-04', title:'Sonlar va ko\'plik',
       can:'Narsalarni sanay olaman va nechtaligini ayta olaman',
       grammar:'Ko\'plik shakli (-s/-es) va noto\'g\'ri ko\'pliklar, sonlar (plurals and numbers)',
@@ -207,7 +210,7 @@ const CURRICULUM = {
         { en:'these', uz:'bular', ipa:'ðiːz' },
         { en:'those', uz:'o\'shalar', ipa:'ðoʊz' },
       ],
-      tasks:['translate','build','write','listen','translate','build'] },
+      tasks:['translate','build','write','listen','speak','build'] },
     { id:'A1-05', title:'Kundalik ishlarim',
       can:'Har kuni nima qilishimni ayta olaman',
       grammar:'Hozirgi oddiy zamon, tasdiq shakli va 3-shaxs -s (Present Simple, affirmative)',
@@ -239,7 +242,7 @@ const CURRICULUM = {
         { en:'in', uz:'ichida, -da', ipa:'ɪn' },
         { en:'on', uz:'ustida', ipa:'ɑːn' },
       ],
-      tasks:['build','translate','listen','write','build','translate'] },
+      tasks:['build','translate','speak','write','build','listen'] },
     { id:'A1-06', title:'Savol va inkor',
       can:'Savol bera olaman va biror narsani qilmasligimni ayta olaman',
       grammar:'Hozirgi oddiy zamon inkor va savoli — do/does (Present Simple, negative and questions)',
@@ -271,7 +274,7 @@ const CURRICULUM = {
         { en:'usually', uz:'odatda', ipa:'ˈjuːʒuəli' },
         { en:'because', uz:'chunki', ipa:'bɪˈkɔːz' },
       ],
-      tasks:['translate','write','build','listen','translate','write'] },
+      tasks:['translate','write','build','speak','translate','listen'] },
     { id:'A1-07', title:'Uy va shahar',
       can:'Uyimda va shahrimda nima borligini tasvirlab bera olaman',
       grammar:'\'there is / there are\' — mavjudlikni bildirish va joy predloglari (there is/are)',
@@ -303,7 +306,7 @@ const CURRICULUM = {
         { en:'quiet', uz:'tinch, jimjit', ipa:'ˈkwaɪət' },
         { en:'or', uz:'yoki', ipa:'ɔːr' },
       ],
-      tasks:['listen','build','translate','write','build','translate'] },
+      tasks:['listen','build','translate','write','speak','translate'] },
     { id:'A1-08', title:'Qobiliyat va imkoniyat',
       can:'Nimani qila olishimni va qila olmasligimni ayta olaman',
       grammar:'\'can / cannot\' modal fe\'li — qobiliyat va so\'rov (modal verb can)',
@@ -335,7 +338,7 @@ const CURRICULUM = {
         { en:'again', uz:'yana', ipa:'əˈɡen' },
         { en:'together', uz:'birgalikda', ipa:'təˈɡeðər' },
       ],
-      tasks:['translate','build','write','translate','listen','build'] },
+      tasks:['translate','build','write','speak','listen','build'] },
     { id:'A1-09', title:'Kecha qanday edim',
       can:'Kecha qayerda va qanday ahvolda bo\'lganimni ayta olaman',
       grammar:'O\'tgan zamon — was/were va vaqt ifodalari (Past Simple, to be)',
@@ -367,7 +370,7 @@ const CURRICULUM = {
         { en:'weather', uz:'ob-havo', ipa:'ˈweðər' },
         { en:'at', uz:'-da (joy yoki vaqt)', ipa:'æt' },
       ],
-      tasks:['build','listen','translate','write','translate','build'] },
+      tasks:['build','speak','translate','write','translate','listen'] },
     { id:'A1-10', title:'O\'tgan hafta voqealari',
       can:'O\'tgan kunlarda nima qilganim haqida hikoya qila olaman',
       grammar:'O\'tgan zamon — muntazam fe\'llar (Past Simple, regular verbs, -ed)',
@@ -399,7 +402,7 @@ const CURRICULUM = {
         { en:'hotel', uz:'mehmonxona', ipa:'hoʊˈtel' },
         { en:'then', uz:'keyin, so\'ng', ipa:'ðen' },
       ],
-      tasks:['write','translate','build','listen','write','translate'] },
+      tasks:['write','translate','build','speak','listen','translate'] },
     { id:'A1-11', title:'Hozir nima bo\'lyapti',
       can:'Hozir shu daqiqada nima qilayotganimni ayta olaman',
       grammar:'Hozirgi davomli zamon — am/is/are + -ing (Present Continuous)',
@@ -431,7 +434,7 @@ const CURRICULUM = {
         { en:'busy', uz:'band', ipa:'ˈbɪzi' },
         { en:'of', uz:'-ning', ipa:'ʌv' },
       ],
-      tasks:['translate','build','listen','translate','write','build'] },
+      tasks:['translate','build','speak','translate','write','listen'] },
     { id:'A1-12', title:'Odat va hozirgi holat',
       can:'Odatdagi ish bilan hozirgi ishni farqlab ayta olaman',
       grammar:'Hozirgi oddiy va hozirgi davomli zamonni solishtirish (Present Simple vs Present Continuous)',
@@ -463,7 +466,7 @@ const CURRICULUM = {
         { en:'while', uz:'-ayotganda, vaqtida', ipa:'waɪl' },
         { en:'so', uz:'shuning uchun', ipa:'soʊ' },
       ],
-      tasks:['build','write','translate','listen','build','translate'] },
+      tasks:['build','write','translate','speak','listen','translate'] },
   ],
   A2: [
     { id:'A2-01', title:'O\'tgan zamon voqealari',
@@ -497,7 +500,7 @@ const CURRICULUM = {
         { en:'suddenly', uz:'to\'satdan', ipa:'ˈsʌdənli' },
         { en:'finally', uz:'nihoyat', ipa:'ˈfaɪnəli' },
       ],
-      tasks:['translate','build','listen','write','translate','build'] },
+      tasks:['translate','build','listen','write','speak','build'] },
     { id:'A2-02', title:'Narsalarni taqqoslash',
       can:'Ikki narsani bir-biri bilan taqqoslay olaman',
       grammar:'Sifatlarning qiyosiy darajasi — -er va more + than (comparative adjectives)',
@@ -529,7 +532,7 @@ const CURRICULUM = {
         { en:'quite', uz:'ancha, ancha-muncha', ipa:'kwaɪt' },
         { en:'similar', uz:'o\'xshash', ipa:'ˈsɪmələr' },
       ],
-      tasks:['build','translate','write','listen','build','translate'] },
+      tasks:['build','translate','write','speak','build','listen'] },
     { id:'A2-03', title:'Eng yaxshi va eng yomon',
       can:'Guruh ichidan eng zo\'rini ajratib ayta olaman',
       grammar:'Sifatlarning orttirma darajasi — the -est va the most (superlative adjectives)',
@@ -561,7 +564,7 @@ const CURRICULUM = {
         { en:'among', uz:'orasida (ko\'plik)', ipa:'əˈmʌŋ' },
         { en:'mountain', uz:'tog\'', ipa:'ˈmaʊntn' },
       ],
-      tasks:['translate','write','build','listen','translate','build'] },
+      tasks:['translate','write','build','speak','listen','build'] },
     { id:'A2-04', title:'Rejalar va niyatlar',
       can:'Oldindan tuzilgan rejalarim haqida ayta olaman',
       grammar:'Kelasi zamon rejasi — be going to + fe\'l (be going to for plans)',
@@ -593,7 +596,7 @@ const CURRICULUM = {
         { en:'schedule', uz:'jadval', ipa:'ˈskedʒuːl' },
         { en:'abroad', uz:'chet elda', ipa:'əˈbrɔːd' },
       ],
-      tasks:['build','listen','translate','write','build','translate'] },
+      tasks:['build','listen','translate','write','speak','translate'] },
     { id:'A2-05', title:'Kelajak va qarorlar',
       can:'Kelajak haqida taxmin qila olaman va shu zahoti qaror ayta olaman',
       grammar:'Kelasi zamon — will/won\'t, tez qabul qilingan qaror va taxmin uchun (will for future)',
@@ -625,7 +628,7 @@ const CURRICULUM = {
         { en:'reply', uz:'javob bermoq', ipa:'rɪˈplaɪ' },
         { en:'idea', uz:'fikr, g\'oya', ipa:'aɪˈdiːə' },
       ],
-      tasks:['translate','build','write','translate','listen','build'] },
+      tasks:['translate','build','write','speak','listen','build'] },
     { id:'A2-06', title:'Hayotiy tajriba',
       can:'Hayotimda nima qilganim yoki qilmaganim haqida ayta olaman',
       grammar:'Present Perfect kirish — have/has + III shakl, ever/never/just bilan (Present Perfect)',
@@ -657,7 +660,7 @@ const CURRICULUM = {
         { en:'since', uz:'-dan beri', ipa:'sɪns' },
         { en:'island', uz:'orol', ipa:'ˈaɪlənd' },
       ],
-      tasks:['write','translate','build','listen','translate','build'] },
+      tasks:['write','translate','build','speak','listen','build'] },
     { id:'A2-07', title:'Miqdor va oziq-ovqat',
       can:'Narsalarning miqdorini aniq ayta olaman',
       grammar:'Miqdor so\'zlari — some/any, much/many, a lot of, a few, a little (quantifiers)',
@@ -689,7 +692,7 @@ const CURRICULUM = {
         { en:'honey', uz:'asal', ipa:'ˈhʌni' },
         { en:'flour', uz:'un', ipa:'ˈflaʊər' },
       ],
-      tasks:['translate','build','listen','write','build','translate'] },
+      tasks:['translate','build','listen','write','speak','translate'] },
     { id:'A2-08', title:'Maslahat va majburiyat',
       can:'Maslahat bera olaman va nima qilish shartligini ayta olaman',
       grammar:'Modal fe\'llar — should (maslahat), must va have to (majburiyat) (modal verbs)',
@@ -721,7 +724,7 @@ const CURRICULUM = {
         { en:'necessary', uz:'zarur', ipa:'ˈnesəseri' },
         { en:'smoke', uz:'chekmoq', ipa:'smoʊk' },
       ],
-      tasks:['build','translate','write','listen','translate','build'] },
+      tasks:['build','translate','write','speak','listen','build'] },
     { id:'A2-09', title:'Ish-harakat tarzi',
       can:'Ishni qanday bajarganimni tasvirlab bera olaman',
       grammar:'Tarz ravishlari — sifatga -ly qo\'shish, sifat va ravish farqi (adverbs of manner)',
@@ -753,7 +756,7 @@ const CURRICULUM = {
         { en:'voice', uz:'ovoz', ipa:'vɔɪs' },
         { en:'movement', uz:'harakat', ipa:'ˈmuːvmənt' },
       ],
-      tasks:['translate','listen','build','write','translate','build'] },
+      tasks:['translate','listen','build','write','speak','build'] },
     { id:'A2-10', title:'Shart va natija',
       can:'Shart qo\'yib, natijasi nima bo\'lishini ayta olaman',
       grammar:'Birinchi shart gap — if + Present Simple, will + fe\'l (First Conditional)',
@@ -785,7 +788,7 @@ const CURRICULUM = {
         { en:'situation', uz:'vaziyat', ipa:'ˌsɪtʃuˈeɪʃn' },
         { en:'depend', uz:'bog\'liq bo\'lmoq', ipa:'dɪˈpend' },
       ],
-      tasks:['build','write','translate','listen','build','translate'] },
+      tasks:['build','write','translate','speak','listen','translate'] },
     { id:'A2-11', title:'Tajriba va aniq vaqt',
       can:'Umumiy tajriba bilan aniq vaqtdagi voqeani farqlab ayta olaman',
       grammar:'Present Perfect va Past Simple farqi — aniq vaqt bo\'lsa Past Simple (Present Perfect vs Past Simple)',
@@ -817,7 +820,7 @@ const CURRICULUM = {
         { en:'team', uz:'jamoa', ipa:'tiːm' },
         { en:'goal', uz:'maqsad', ipa:'ɡoʊl' },
       ],
-      tasks:['translate','build','write','translate','listen','build'] },
+      tasks:['translate','build','write','speak','listen','build'] },
     { id:'A2-12', title:'Narsalar qanday yasaladi',
       can:'Narsa kim tomonidan yoki qayerda qilinishini ayta olaman',
       grammar:'Majhul nisbat kirish — is/are + III shakl, by bilan (Present Simple passive)',
@@ -849,7 +852,7 @@ const CURRICULUM = {
         { en:'government', uz:'hukumat', ipa:'ˈɡʌvərnmənt' },
         { en:'language', uz:'til', ipa:'ˈlæŋɡwɪdʒ' },
       ],
-      tasks:['write','translate','build','listen','translate','build'] },
+      tasks:['write','translate','build','speak','listen','build'] },
   ],
 };
 // <curriculum:end>
@@ -949,14 +952,24 @@ function pushError(cat) {
 }
 
 // ─── 4. GAMIFICATION ─────────────────────────────────────────────
-function updateStreak() {
+// Kirish kunini belgilaydi (Progress'dagi 30 kunlik kalendar shundan o'qiydi).
+// Streak'ga TEGMAYDI — streak o'rganish uchun beriladi, kirish uchun emas.
+function registerVisit() {
   const today = todayStr();
-  const yest  = dateStr(-1);
   if (user.lastVisit === today) return;
-  user.streak = user.lastVisit === yest ? (user.streak||0)+1 : 1;
   user.lastVisit = today;
   addVisit(today);
   saveUser();
+}
+
+// Streak faqat vazifa bajarilganda o'sadi. Sof funksiya — alohida test qilinadi.
+// Qaytaradi: true, agar bugun birinchi marta hisoblangan bo'lsa.
+function updateStreakOnTask() {
+  const today = todayStr();
+  if (user.lastTaskDay === today) return false;
+  user.streak = user.lastTaskDay === dateStr(-1) ? (user.streak||0)+1 : 1;
+  user.lastTaskDay = today;
+  return true;
 }
 
 // Toshkent vaqti (UTC+5). UTC bo'lsa kun 05:00 da almashardi — kechqurun mashq qilgan
@@ -1294,6 +1307,7 @@ function applyResult(score) {
     p.current.status = 'passed';
     rollDaily();
     p.doneToday.count++;
+    updateStreakOnTask();
     p.current = null;
     advance();
     addXP(XP_PER_TASK);   // addXP o'zi saveUser chaqiradi
@@ -1335,6 +1349,7 @@ function skipTask() {
   p.current = null;
   rollDaily();
   p.doneToday.count++;      // kunlik hisobga kiradi — erkin rejimlar ochiladi
+  updateStreakOnTask();
   advance();
   saveUser();
   return { ok:true, skipped:true, type, unitId: u ? u.id : null };
@@ -1388,14 +1403,17 @@ function calibrate() {
   if (c.checked || c.results.length < CALIBRATION_TASKS) return null;
   c.checked = true;
 
-  const allPerfect = c.results.every(r => r >= 1);
-  const allFailed  = c.results.every(r => r < PASS_THRESHOLD);
+  // O'rtacha bo'yicha: "uchtasi ham 100%" sharti amalda deyarli ishlamasdi —
+  // 5/5, 5/5, 4/5 olgan odam ham darajasidan yuqori turadi.
+  const avg = c.results.reduce((s, r) => s + r, 0) / c.results.length;
+  const strong = avg >= CALIBRATION_UP_AVG && c.results.every(r => r >= PASS_THRESHOLD);
+  const weak   = avg < CALIBRATION_DOWN_AVG;
   const i = LEVELS.indexOf(p.level);
   let moved = null;
 
-  if (allPerfect && i < LEVELS.length-1 && CURRICULUM[LEVELS[i+1]]?.length) {
+  if (strong && i < LEVELS.length-1 && CURRICULUM[LEVELS[i+1]]?.length) {
     p.level = LEVELS[i+1]; moved = 'up';
-  } else if (allFailed && i > 0) {
+  } else if (weak && i > 0) {
     p.level = LEVELS[i-1]; moved = 'down';
   }
   if (moved) {
@@ -1668,6 +1686,29 @@ Savollar matnda aniq javobi bor faktlarga tegishli bo'lsin. Javoblarni BERMA.`,
 Ma'no to'g'ri bo'lsa — to'g'ri. Kichik imlo xatosi kechiriladi.
 Javob berilmagan savol — noto'g'ri.`,
   },
+  speak: {
+    total: 5,
+    audio: true,
+    issue:`5 ta QISQA o'zbekcha jumla yoz — foydalanuvchi ularni inglizchaga o'girib, OVOZ CHIQARIB aytadi.
+Har biri 4-8 so'zdan oshmasin, unit grammatikasi va lug'atiga tayansin.
+Raqamlangan ro'yxat: 1) ... 5)
+Javoblarni O'ZING BERMA. Boshqa hech narsa yozma — faqat 5 ta jumla.`,
+    check:`Foydalanuvchi 5 ta jumlani OVOZDA aytdi.
+
+AVVAL AUDIONI TEKSHIR: agar unda tushunarli inglizcha NUTQ eshitilmasa (jimlik, shovqin,
+signal tovushi, faqat fon shovqini yoki tushunib bo'lmaydigan g'o'ng'ir) — javobing
+AYNAN quyidagi ikki qatordan iborat bo'lsin, boshqa hech narsa yozma:
+📊 NATIJA: 0/5
+[AUDIO_YOQ] Ovoz eshitilmadi — mikrofonni tekshirib, qaytadan aytib ko'ring.
+Eshitmagan matningni HECH QACHON o'ylab topma va vazifa matnidagi kutilgan javoblarni
+transkripsiya sifatida ko'chirma. Bu eng qattiq qoida.
+
+Nutq eshitilsa — har bir jumlani ALOHIDA tekshir.
+To'g'ri hisoblanadi: ma'no to'g'ri + grammatika to'g'ri + so'z tanib olinadigan darajada aytilgan.
+Talaffuzni faqat MA'NO buzilganda xato deb hisobla (masalan "ship" o'rniga "sheep") — aksent uchun ball kamaytirma.
+Aytilmagan jumla — noto'g'ri.
+Har xato bandda 🔊 belgisi bilan so'zni qanday aytish kerakligini o'zbek harflarida ham ko'rsat.`,
+  },
   unit_exam: {
     total: 8,
     issue:`UNIT IMTIHONI. Butun unit bo'yicha 8 ta savol ber:
@@ -1913,6 +1954,12 @@ function isAiError(text) {
   return typeof text === 'string' && /^(❌|📡|⏳)/.test(text);
 }
 
+// Gapirish vazifasida AI nutqni eshitmaganini shu belgi bilan bildiradi.
+// Bu bilim xatosi emas — urinish sanalmasligi kerak.
+function isNoAudio(text) {
+  return typeof text === 'string' && /\[AUDIO_YOQ\]/.test(text);
+}
+
 // Yangi vazifa: AI dan matn so'raydi va program.current ga yozadi.
 async function startTask() {
   const gate = canStartTask();
@@ -1944,20 +1991,30 @@ async function retryTask() {
 }
 
 // Javobni tekshiruvga yuboradi. PASS/FAIL ni klient hisoblaydi (applyResult).
-async function submitTask(answer) {
+// audio berilsa (gapirish vazifasi) — matn o'rniga ovoz yuboriladi.
+async function submitTask(answer, audio) {
   const p = user.program;
   if (!p?.current) return { ok:false, reason:'no_task' };
-  if (!answer || !answer.trim()) return { ok:false, reason:'empty_answer' };
+  if (!audio && (!answer || !answer.trim())) return { ok:false, reason:'empty_answer' };
 
   p.current.status = 'submitted';
   saveUser();
   history = [];
-  const text = await callAI(answer, { program:'check' });
+  const opts = { program:'check' };
+  if (audio) opts.audio = audio;
+  const text = await callAI(answer || '🎤 [Ovozli javob]', opts);
 
   if (isAiError(text)) {
     p.current.status = 'open';   // tarmoq/AI xatosi — urinish sanalmaydi
     saveUser();
     return { ok:false, reason:'ai_error', message:text };
+  }
+
+  // Mikrofon ishlamagan yoki nutq eshitilmagan — bu bilim xatosi emas, urinish sanalmaydi.
+  if (isNoAudio(text)) {
+    p.current.status = 'open';
+    saveUser();
+    return { ok:false, reason:'no_audio', text };
   }
 
   const score = parseResult(text);
@@ -1988,7 +2045,6 @@ async function revealAndSkip() {
 }
 
 function showSettingsModal() {
-  const levels = ['A1','A2','B1','B2','C1','C2'];
   const goals = { travel:'✈️ Sayohat', work:'💼 Ish/biznes', ielts:'📝 IELTS/imtihon', daily:'💬 Kundalik muloqot', general:'🌟 Umumiy' };
   const bands = ['5','5.5','6','6.5','7','7.5','8'];
   const curBand = (user.ielts?.targetBand || 6.5).toString();
@@ -2007,9 +2063,10 @@ function showSettingsModal() {
       </div>
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-1.5">Daraja</label>
-        <select id="st-level" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
-          ${levels.map(l=>`<option value="${l}" ${l===user.level?'selected':''}>${l}</option>`).join('')}
-        </select>
+        <div class="w-full bg-slate-900 rounded-xl px-4 py-3 text-sm border border-slate-700 flex items-center justify-between">
+          <span class="font-semibold">${currentLevel()}</span>
+          <span class="text-xs text-slate-500">daraja imtihonidan o'tib ko'tariladi</span>
+        </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-slate-300 mb-1.5">Maqsad</label>
@@ -2047,7 +2104,7 @@ function showSettingsModal() {
     const name = document.getElementById('st-name').value.trim();
     if (!name) { toast('Ism bo\'sh bo\'lmasin', 'error'); return; }
     user.name  = name;
-    user.level = document.getElementById('st-level').value;
+    // Daraja bu yerdan o'zgartirilmaydi — uni faqat daraja imtihoni ko'taradi.
     user.goal  = goalSel.value;
     if (user.goal === 'ielts') {
       if (!user.ielts) user.ielts = { targetBand: 6.5, scores: [] };
@@ -2135,7 +2192,7 @@ function renderOnboarding() {
     const level = document.getElementById('ob-level').value;
     user = { name, level,
       goal,
-      xp:0, streak:1, lastVisit:today, achievements:[], vocabulary:[],
+      xp:0, streak:1, lastVisit:today, lastTaskDay:today, achievements:[], vocabulary:[],
       quizCount:0, correctionCount:0,
       introSeen: false,   // eski foydalanuvchida umuman yo'q — init() ularni o'tkazib yuboradi
       ielts: { targetBand, scores: [] } };
@@ -2513,11 +2570,22 @@ function bindLessonBox() {
 
 function taskBox(cur, lbl) {
   const { html } = renderAI(cur.prompt);
-  return `
+  const head = `
   <div class="bg-slate-800 rounded-2xl p-4 border border-indigo-600 mb-4">
     <div class="text-xs text-indigo-400 font-semibold mb-2">${lbl.emoji} ${lbl.title}${cur.attempts?` · ${cur.attempts+1}-urinish`:''}</div>
     <div class="text-sm space-y-1">${html}</div>
-  </div>
+  </div>`;
+
+  // Gapirish vazifasi — javob matn emas, ovoz orqali beriladi.
+  if (TASK_GUIDE[cur.type]?.audio) return `${head}
+  <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 text-center mb-3">
+    <div class="text-slate-400 text-sm mb-4">Beshta jumlani ketma-ket, ovoz chiqarib ayting.<br>Tugatgach yozishni to'xtating.</div>
+    <button id="pg-mic" class="bg-slate-700 hover:bg-slate-600 rounded-full w-16 h-16 text-2xl transition-colors">🎤</button>
+    <div id="pg-rec" class="hidden text-xs text-red-400 mt-3">Yozilmoqda… <span id="pg-rec-t">0</span>s — to'xtatish uchun ⏹ ni bosing</div>
+    <div class="text-xs text-slate-500 mt-3">O'tish uchun ${Math.round(PASS_THRESHOLD*100)}% kerak</div>
+  </div>`;
+
+  return `${head}
   <textarea id="pg-ans" rows="6" placeholder="Javobingizni shu yerga yozing..."
     class="w-full bg-slate-800 rounded-xl px-4 py-3 text-sm border border-slate-700 focus:border-indigo-500 focus:outline-none mb-1"></textarea>
   <div class="flex justify-between items-center mb-3">
@@ -2528,6 +2596,8 @@ function taskBox(cur, lbl) {
 }
 
 function bindTaskBox() {
+  const mic = document.getElementById('pg-mic');
+  if (mic) { mic.onclick = () => toggleRec('program'); return; }
   const ta = document.getElementById('pg-ans');
   ta.addEventListener('input', () => {
     const w = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
@@ -2583,6 +2653,22 @@ async function doSkipTask() {
   renderProgram();
 }
 
+// Gapirish vazifasi: ovoz yozib bo'lingach chaqiriladi.
+async function doSubmitSpeak(blob) {
+  if (programBusy) return;
+  programBusy = true;
+  programLoading('Ovozingiz tinglanmoqda...');
+  let audio = null;
+  try {
+    audio = { data: await blobToB64(blob), mimeType: blob.type || 'audio/webm' };
+  } catch (_e) {
+    programBusy = false;
+    toast('Ovozni yuborishda xatolik', 'error');
+    return renderProgram();
+  }
+  await finishSubmit(await submitTask(null, audio));
+}
+
 async function doSubmitTask() {
   if (programBusy) return;
   const ta = document.getElementById('pg-ans');
@@ -2592,11 +2678,16 @@ async function doSubmitTask() {
   programBusy = true;
   document.getElementById('pg-send').disabled = true;
   programLoading('Javobingiz tekshirilmoqda...');
-  const r = await submitTask(answer);
+  await finishSubmit(await submitTask(answer));
+}
+
+// submitTask natijasini UI'ga qo'llash — matn va ovoz yo'llari uchun umumiy.
+async function finishSubmit(r) {
   programBusy = false;
 
   if (!r.ok) {
-    if (r.reason === 'no_marker') toast("Tekshiruv tugallanmadi — qayta yuboring", 'error');
+    if (r.reason === 'no_audio') toast("Ovoz eshitilmadi — mikrofonni tekshirib, qaytadan ayting", 'error');
+    else if (r.reason === 'no_marker') toast("Tekshiruv tugallanmadi — qayta yuboring", 'error');
     else toast(r.message || 'Xatolik', 'error');
     return renderProgram();
   }
@@ -2689,7 +2780,10 @@ function renderDashboard() {
   const stats = getModeStats();
   const leastMode = Object.keys(MODES).sort((a,b)=>(stats[a]||0)-(stats[b]||0))[0];
   const errors = getErrors().slice(0,3);
-  const lv = xpLevel(), nxt = nextLevel(), pct = levelPct();
+  // Daraja kartasi CEFR progressini ko'rsatadi — XP darajasi bilan ikkilanmasin.
+  const unitsTotal = (CURRICULUM[user.program?.level] || []).length;
+  const unitsDone  = (user.program?.passedUnits || []).length;
+  const unitPct    = unitsTotal ? Math.round(unitsDone / unitsTotal * 100) : 0;
 
   const IELTS_SECTION = { conversation:'Speaking', correction:'Writing', story:'Reading', quiz:'Listening', grammar:'Lexical/Grammar', daily:'Daily' };
   const isIelts = ieltsActive();
@@ -2748,10 +2842,10 @@ function renderDashboard() {
         <div class="flex justify-between text-sm mb-2">
           <span class="font-medium">Darajangiz: <span class="text-indigo-400">${currentLevel()}</span>
             <span class="text-slate-500 text-xs">· imtihondan o'tib ko'tariladi</span></span>
-          <span class="text-slate-400 text-xs">⭐ ${lv}${nxt?` · ${LEVEL_XP[nxt]-(user.xp||0)} XP`:''}</span>
+          <span class="text-slate-400 text-xs">${unitsDone}/${unitsTotal} unit</span>
         </div>
         <div class="bg-slate-700 rounded-full h-2">
-          <div class="bg-indigo-500 h-2 rounded-full" style="width:${pct}%"></div>
+          <div class="bg-indigo-500 h-2 rounded-full" style="width:${unitPct}%"></div>
         </div>
       </div>
       ${examHtml}
@@ -2852,9 +2946,15 @@ function blobToB64(blob) {
   });
 }
 
+// Yozgich ikki joyda ishlaydi: chat ('ch-*' idlar) va dastur ('pg-*' idlar).
+let recTarget = 'chat';
+const REC_IDS = { chat: { bar:'ch-rec', mic:'ch-mic', secs:'ch-rec-t' },
+                  program: { bar:'pg-rec', mic:'pg-mic', secs:'pg-rec-t' } };
+
 function setRecUI(on) {
-  const bar = document.getElementById('ch-rec');
-  const mic = document.getElementById('ch-mic');
+  const ids = REC_IDS[recTarget] || REC_IDS.chat;
+  const bar = document.getElementById(ids.bar);
+  const mic = document.getElementById(ids.mic);
   if (bar) bar.classList.toggle('hidden', !on);
   if (mic) {
     mic.classList.toggle('bg-red-600', on);
@@ -2863,8 +2963,10 @@ function setRecUI(on) {
   }
 }
 
-async function toggleRec() {
-  if (chatBusy && !(mediaRec && mediaRec.state === 'recording')) return;
+async function toggleRec(target) {
+  if (target) recTarget = target;
+  const busy = recTarget === 'program' ? programBusy : chatBusy;
+  if (busy && !(mediaRec && mediaRec.state === 'recording')) return;
   if (mediaRec && mediaRec.state === 'recording') { stopRec(); return; }
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
     return toast("Brauzeringiz ovoz yozishni qo'llamaydi", 'error');
@@ -2881,13 +2983,14 @@ async function toggleRec() {
   mediaRec.ondataavailable = e => { if (e.data.size > 0) recChunks.push(e.data); };
   mediaRec.onstop = onRecStop;
   mediaRec.start();
-  chatBusy = true;
+  if (recTarget === 'program') programBusy = true; else chatBusy = true;
   recStartTime = Date.now();
   recSecs = 0;
   setRecUI(true);
+  const secsId = (REC_IDS[recTarget] || REC_IDS.chat).secs;
   recTimer = setInterval(() => {
     recSecs++;
-    const t = document.getElementById('ch-rec-t');
+    const t = document.getElementById(secsId);
     if (t) t.textContent = recSecs;
     if (recSecs >= REC_MAX_SECS) stopRec();
   }, 1000);
@@ -2905,8 +3008,14 @@ async function onRecStop() {
   const type = mediaRec?.mimeType || 'audio/webm';
   const blob = new Blob(recChunks, { type });
   recChunks = [];
-  if (!blob.size) return;
-  if (Date.now() - recStartTime < 1000) return toast('Juda qisqa — biroz uzunroq gapiring', 'error');
+  const short = Date.now() - recStartTime < 1000;
+  if (!blob.size || short) {
+    if (recTarget === 'program') programBusy = false; else chatBusy = false;
+    if (short) toast('Juda qisqa — biroz uzunroq gapiring', 'error');
+    if (recTarget === 'program') renderProgram();
+    return;
+  }
+  if (recTarget === 'program') { programBusy = false; await doSubmitSpeak(blob); return; }
   await sendAudio(blob);
 }
 
@@ -3105,8 +3214,7 @@ function renderProgress() {
     return `<div class="rounded-full ${visits.includes(d)?'bg-amber-400':'bg-slate-700'}" style="width:10px;height:10px;" title="${d}"></div>`;
   }).join('');
 
-  const lv=xpLevel(), nxt=nextLevel(), pct=levelPct();
-  const lvBarTicks = LEVELS.map(l=>`<span class="text-xs text-slate-500">${l}</span>`).join('');
+  const nxt=nextLevel(), pct=levelPct();
 
   const achHtml = ACHIEVEMENTS.map(a=>{
     const ok = (user.achievements||[]).includes(a.id);
@@ -3197,13 +3305,13 @@ function renderProgress() {
 
       <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
         <div class="flex justify-between text-sm mb-2">
-          <span class="font-semibold">${lv}</span>
-          <span class="text-slate-400">${nxt?`${LEVEL_XP[nxt]-(user.xp||0)} XP qoldi`:'Maksimal!'}</span>
+          <span class="font-semibold">⭐ ${user.xp||0} XP</span>
+          <span class="text-slate-400">${nxt?`keyingi bosqichgacha ${LEVEL_XP[nxt]-(user.xp||0)} XP`:'Maksimal!'}</span>
         </div>
         <div class="bg-slate-700 rounded-full h-3 mb-1">
           <div class="bg-indigo-500 h-3 rounded-full" style="width:${pct}%"></div>
         </div>
-        <div class="flex justify-between">${lvBarTicks}</div>
+        <div class="text-xs text-slate-500">XP — mashq faolligi ko'rsatkichi. CEFR darajangiz (${currentLevel()}) faqat daraja imtihoni bilan ko'tariladi.</div>
       </div>
 
       <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
@@ -3260,7 +3368,7 @@ function renderVocabulary() {
   const vocab = user.vocabulary||[];
   const due = dueWords(vocab);
   document.getElementById('app').innerHTML = `
-  <div class="min-h-screen view-fade">
+  <div class="min-h-screen view-fade pb-24">
     <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
       <button id="vb-back" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
       <div class="flex-1 font-semibold">So'zlar lug'ati 📚</div>
@@ -3274,12 +3382,14 @@ function renderVocabulary() {
       <div id="vb-list" class="space-y-2">${vocabRows(vocab)}</div>
       ${!vocab.length?`<div class="text-center py-10">
         <div class="text-4xl mb-3">📖</div>
-        <div class="text-slate-400 text-sm">Hikoya yoki suhbat rejimida<br>yangi so'zlar avtomatik saqlanadi</div>
+        <div class="text-slate-400 text-sm">Mavzu darsini ochsangiz<br>unit so'zlari shu yerga tushadi</div>
       </div>`:''}
     </div>
-  </div>`;
+  </div>
+  ${renderBottomNav('progress')}`;
 
   document.getElementById('vb-back').onclick = renderProgress;
+  bindBottomNav();
   document.getElementById('vb-q')?.addEventListener('input', e=>{
     const q = e.target.value.toLowerCase();
     const filtered = q ? vocab.filter(v=>v.word.toLowerCase().includes(q)||v.translation.toLowerCase().includes(q)) : vocab;
@@ -3390,7 +3500,10 @@ function init() {
   user = loadUser();
   if (!user) { renderOnboarding(); return; }
   if (!user.ielts) user.ielts = { targetBand: 6.5, scores: [] };
-  updateStreak();
+  // Streak endi vazifaga bog'liq. Eski foydalanuvchi streak'ini yo'qotmasin —
+  // oxirgi kirish kunini boshlang'ich nuqta qilib olamiz.
+  if (!user.lastTaskDay) user.lastTaskDay = user.lastVisit || todayStr();
+  registerVisit();
 
   // Dastur: eski foydalanuvchida yo'q — A1-01 dan boshlanadi va bir marta tushuntiriladi.
   const isMigrated = !user.program;

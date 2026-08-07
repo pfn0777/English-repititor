@@ -55,6 +55,7 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'advance','levelUp','calibrate','rollDaily','todayStr','currentLevel','xpLevel',
                   'parseResult','buildProgramSystem','programContext','buildSystem','isAiError',
                   'unitWords','needsLesson','markLessonSeen','seedUnitWords','skipTask',
+                  'updateStreakOnTask','TASK_TYPES','dateStr','isNoAudio',
                   'CURRICULUM','LEVELS','PASS_THRESHOLD','MAX_DAILY_TASKS','TASKS_PER_UNIT','TASK_GUIDE',
                   'MAX_ATTEMPTS_BEFORE_SKIP'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user };`);
@@ -196,6 +197,21 @@ u4.program = api.initProgram('A2');
 u4.program.calibration.results = [0.2, 0.4, 0.0];
 api.setUser(u4);
 t("3/3 yiqilish → 'down' (A2→A1)", api.calibrate() === 'down' && u4.program.level === 'A1');
+
+// Kengaytirilgan chegara: mukammal bo'lmasa ham barqaror kuchli natija ko'taradi
+const calib = (level, results) => {
+  const uu = { name:'C', level, goal:'general', xp:0, vocabulary:[], achievements:[] };
+  uu.program = api.initProgram(level);
+  uu.program.calibration.results = results;
+  api.setUser(uu);
+  return { moved: api.calibrate(), level: uu.program.level };
+};
+t("5/5, 5/5, 4/5 → 'up' (avg 0.93)", calib('A1', [1, 1, 0.8]).moved === 'up');
+t("4/5, 4/5, 4/5 → harakat yo'q (avg 0.8)", calib('A1', [0.8, 0.8, 0.8]).moved === null);
+t("5/5, 5/5, 2/5 → harakat yo'q (bitta yiqilish bor)", calib('A1', [1, 1, 0.4]).moved === null);
+t("3/5, 3/5, 2/5 → 'down' (avg 0.53)", calib('A2', [0.6, 0.6, 0.4]).moved === 'down');
+t("A1 da 'down' bo'lmaydi (pastroq daraja yo'q)", calib('A1', [0, 0, 0]).moved === null);
+api.setUser(u4);   // keyingi bo'lim u4 ustida ishlaydi
 
 // --- currentLevel XP dan mustaqil
 console.log('9. Daraja XP dan mustaqil:');
@@ -370,6 +386,53 @@ for (const lv of ['A1','A2']) {
   }
 }
 t(`barcha unitlar uchun system prompt < 20000 (eng uzuni ${maxSys})`, maxSys < 20000);
+
+// --- Gapirish vazifasi
+console.log('19. Gapirish (speak) vazifasi:');
+t('TASK_TYPES da speak bor', !!api.TASK_TYPES.speak);
+t('TASK_GUIDE da speak bor, total=5', api.TASK_GUIDE.speak?.total === 5);
+t('speak audio bilan belgilangan', api.TASK_GUIDE.speak?.audio === true);
+t('boshqa turlarda audio bayrog\'i yo\'q',
+  ['translate','build','write','listen','unit_exam','level_exam'].every(k => !api.TASK_GUIDE[k].audio));
+t('A1-01 da speak yo\'q (avval so\'zlar tanilsin)', !api.CURRICULUM.A1[0].tasks.includes('speak'));
+t('qolgan barcha unitlarda speak bor',
+  [...api.CURRICULUM.A1.slice(1), ...api.CURRICULUM.A2].every(x => x.tasks.includes('speak')));
+
+const u10 = { name:'T10', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+u10.program = api.initProgram('A1');
+u10.program.unitIndex = 1; u10.program.taskIndex = 3;   // A1-02 4-qadam = speak
+api.setUser(u10);
+t("A1-02 4-qadam = 'speak'", api.getTaskType() === 'speak');
+api.issueTask('speak', '1) Menda ikkita akam bor.');
+t('speak check promptida 📊 NATIJA: N/5 bor', api.buildProgramSystem('check').includes('📊 NATIJA: N/5'));
+t('speak check promptida aksent uchun jarima yo\'q talabi bor',
+  api.buildProgramSystem('check').includes('aksent uchun ball kamaytirma'));
+t('speak check promptida transkripsiyani to\'qish taqiqlangan',
+  api.buildProgramSystem('check').includes('[AUDIO_YOQ]'));
+t('isNoAudio() belgini topadi', api.isNoAudio('📊 NATIJA: 0/5\n[AUDIO_YOQ] Ovoz eshitilmadi.') === true);
+t('isNoAudio() oddiy javobda false', api.isNoAudio('📊 NATIJA: 4/5\n❌ Xato: ...') === false);
+
+// --- Streak vazifaga bog'langan
+console.log('20. Streak vazifa bo\'yicha:');
+const u11 = { name:'T11', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[],
+              streak:1, lastTaskDay: api.dateStr(-1) };
+u11.program = api.initProgram('A1');
+api.setUser(u11);
+api.issueTask('translate', 'p');
+api.applyResult({ correct:5, total:5 });
+t('kecha bajarilgan bo\'lsa → streak 2', u11.streak === 2);
+t('lastTaskDay bugunga o\'tdi', u11.lastTaskDay === api.todayStr());
+
+u11.program.doneToday.count = 0;
+api.issueTask('translate', 'p');
+api.applyResult({ correct:5, total:5 });
+t('bir kunda ikkinchi vazifa streak\'ni oshirmaydi', u11.streak === 2);
+
+u11.lastTaskDay = api.dateStr(-5);
+t('uzilgan kunlardan keyin streak 1 ga tushadi',
+  api.updateStreakOnTask() === true && u11.streak === 1);
+t('kirish streak\'ni oshirmaydi (updateStreak funksiyasi yo\'q)',
+  typeof api.updateStreakOnTask === 'function');
 
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);
 process.exit(fails === 0 ? 0 : 1);

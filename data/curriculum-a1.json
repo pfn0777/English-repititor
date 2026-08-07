@@ -33,7 +33,7 @@
         { "en": "student", "uz": "talaba, o'quvchi", "ipa": "ˈstuːdnt" },
         { "en": "and", "uz": "va", "ipa": "ænd" }
       ],
-      "tasks": ["translate", "build", "listen", "translate", "build", "listen"]
+      "tasks": ["translate","build","listen","translate","build","listen"]
     },
     {
       "id": "A1-02",
@@ -68,7 +68,7 @@
         { "en": "not", "uz": "emas", "ipa": "nɑːt" },
         { "en": "very", "uz": "juda", "ipa": "ˈveri" }
       ],
-      "tasks": ["listen", "translate", "build", "translate", "listen", "build"]
+      "tasks": ["listen","translate","build","speak","listen","build"]
     },
     {
       "id": "A1-03",
@@ -103,7 +103,7 @@
         { "en": "that", "uz": "o'sha, ana u", "ipa": "ðæt" },
         { "en": "here", "uz": "shu yerda", "ipa": "hɪr" }
       ],
-      "tasks": ["translate", "listen", "build", "translate", "build", "listen"]
+      "tasks": ["translate","listen","build","speak","build","listen"]
     },
     {
       "id": "A1-04",
@@ -138,7 +138,7 @@
         { "en": "these", "uz": "bular", "ipa": "ðiːz" },
         { "en": "those", "uz": "o'shalar", "ipa": "ðoʊz" }
       ],
-      "tasks": ["translate", "build", "write", "listen", "translate", "build"]
+      "tasks": ["translate","build","write","listen","speak","build"]
     },
     {
       "id": "A1-05",
@@ -173,7 +173,7 @@
         { "en": "in", "uz": "ichida, -da", "ipa": "ɪn" },
         { "en": "on", "uz": "ustida", "ipa": "ɑːn" }
       ],
-      "tasks": ["build", "translate", "listen", "write", "build", "translate"]
+      "tasks": ["build","translate","speak","write","build","listen"]
     },
     {
       "id": "A1-06",
@@ -208,7 +208,7 @@
         { "en": "usually", "uz": "odatda", "ipa": "ˈjuːʒuəli" },
         { "en": "because", "uz": "chunki", "ipa": "bɪˈkɔːz" }
       ],
-      "tasks": ["translate", "write", "build", "listen", "translate", "write"]
+      "tasks": ["translate","write","build","speak","translate","listen"]
     },
     {
       "id": "A1-07",
@@ -243,7 +243,7 @@
         { "en": "quiet", "uz": "tinch, jimjit", "ipa": "ˈkwaɪət" },
         { "en": "or", "uz": "yoki", "ipa": "ɔːr" }
       ],
-      "tasks": ["listen", "build", "translate", "write", "build", "translate"]
+      "tasks": ["listen","build","translate","write","speak","translate"]
     },
     {
       "id": "A1-08",
@@ -278,7 +278,7 @@
         { "en": "again", "uz": "yana", "ipa": "əˈɡen" },
         { "en": "together", "uz": "birgalikda", "ipa": "təˈɡeðər" }
       ],
-      "tasks": ["translate", "build", "write", "translate", "listen", "build"]
+      "tasks": ["translate","build","write","speak","listen","build"]
     },
     {
       "id": "A1-09",
@@ -313,7 +313,7 @@
         { "en": "weather", "uz": "ob-havo", "ipa": "ˈweðər" },
         { "en": "at", "uz": "-da (joy yoki vaqt)", "ipa": "æt" }
       ],
-      "tasks": ["build", "listen", "translate", "write", "translate", "build"]
+      "tasks": ["build","speak","translate","write","translate","listen"]
     },
     {
       "id": "A1-10",
@@ -348,7 +348,7 @@
         { "en": "hotel", "uz": "mehmonxona", "ipa": "hoʊˈtel" },
         { "en": "then", "uz": "keyin, so'ng", "ipa": "ðen" }
       ],
-      "tasks": ["write", "translate", "build", "listen", "write", "translate"]
+      "tasks": ["write","translate","build","speak","listen","translate"]
     },
     {
       "id": "A1-11",
@@ -383,7 +383,7 @@
         { "en": "busy", "uz": "band", "ipa": "ˈbɪzi" },
         { "en": "of", "uz": "-ning", "ipa": "ʌv" }
       ],
-      "tasks": ["translate", "build", "listen", "translate", "write", "build"]
+      "tasks": ["translate","build","speak","translate","write","listen"]
     },
     {
       "id": "A1-12",
@@ -418,7 +418,7 @@
         { "en": "while", "uz": "-ayotganda, vaqtida", "ipa": "waɪl" },
         { "en": "so", "uz": "shuning uchun", "ipa": "soʊ" }
       ],
-      "tasks": ["build", "write", "translate", "listen", "build", "translate"]
+      "tasks": ["build","write","translate","speak","listen","translate"]
     }
   ]
 }

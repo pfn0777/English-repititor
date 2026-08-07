@@ -8,11 +8,12 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEVELS = ['A1', 'A2'];
-const TASK_TYPES = ['translate', 'build', 'write', 'listen'];
+const TASK_TYPES = ['translate', 'build', 'write', 'listen', 'speak'];
 const WORDS_PER_UNIT = 25;
 const TASKS_PER_UNIT = 6;
 const UNITS_PER_LEVEL = 12;
 const NO_WRITE_YET = ['A1-01', 'A1-02', 'A1-03'];   // bu unitlarda yozma vazifa hali erta
+const NO_SPEAK_YET = ['A1-01'];                     // birinchi unit — avval so'zlar tanilsin
 
 const errors = [];
 const warnings = [];
@@ -77,6 +78,12 @@ for (const lv of LEVELS) {
       }
       if (NO_WRITE_YET.includes(u.id) && u.tasks.includes('write')) {
         errors.push(`${u.id}: bu unitda write hali erta`);
+      }
+      if (NO_SPEAK_YET.includes(u.id) && u.tasks.includes('speak')) {
+        errors.push(`${u.id}: bu unitda speak hali erta`);
+      }
+      if (!NO_SPEAK_YET.includes(u.id) && !u.tasks.includes('speak')) {
+        errors.push(`${u.id}: gapirish (speak) vazifasi yo'q`);
       }
       for (let k = 1; k < u.tasks.length; k++) {
         if (u.tasks[k] === u.tasks[k - 1]) warnings.push(`${u.id}: ketma-ket bir xil tur "${u.tasks[k]}"`);
