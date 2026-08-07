@@ -1,0 +1,19 @@
+{
+  "name": "EnglishBot — Ingliz tili repetitori",
+  "short_name": "EnglishBot",
+  "description": "CEFR dasturi bo'yicha ingliz tili o'rgatuvchi AI repetitor",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "uz",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%234f46e5'/%3E%3Ctext x='256' y='340' font-size='260' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='bold'%3EEB%3C/text%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

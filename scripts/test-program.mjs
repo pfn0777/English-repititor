@@ -18,7 +18,7 @@ const stubs = {
     removeItem: k => { delete store[k]; },
   },
   document: null,   // quyida to'ldiriladi
-  window: {},
+  window: { addEventListener(){}, removeEventListener(){} },
   crypto: { randomUUID: () => '00000000-1111-2222-3333-444444444444' },
   fetch: async () => ({ ok:false, status:0, json: async () => ({}) }),
   speechSynthesis: undefined,
@@ -166,13 +166,20 @@ t('unitIndex/taskIndex nolga tushdi', u2.program.unitIndex === 0 && u2.program.t
 t('passedUnits tozalandi', u2.program.passedUnits.length === 0);
 t('A2-01 ochildi', api.getUnit()?.id === 'A2-01');
 
-// A2 tugagach B1 hali yo'q → "tayyorlanmoqda" holati
-console.log("7b. A2 tugagach B1 hali yo'q:");
+// A2 → B1 → oxirgi tayyor darajadan keyin "tayyorlanmoqda" holati
+console.log("7b. Oxirgi darajadan keyin dastur tugaydi:");
+const B1N = api.CURRICULUM.B1.length;
+t(`CURRICULUM B1=${B1N} (12 kutiladi)`, B1N === 12);
 for (let i = 0; i < A2N; i++) doUnit(u2);
 u2.program.doneToday.count = 0;
 api.issueTask('level_exam', 'e'); api.applyResult({ correct:10, total:10 });
 t("level → B1", u2.program.level === 'B1');
-t("B1 CURRICULUM'da yo'q → getTaskType()=null", api.getTaskType() === null);
+t("B1-01 ochildi", api.getUnit()?.id === 'B1-01');
+for (let i = 0; i < B1N; i++) doUnit(u2);
+u2.program.doneToday.count = 0;
+api.issueTask('level_exam', 'e'); api.applyResult({ correct:10, total:10 });
+t("level → B2", u2.program.level === 'B2');
+t("B2 CURRICULUM'da yo'q → getTaskType()=null", api.getTaskType() === null);
 t("canStartTask reason='level_not_ready'", api.canStartTask().reason === 'level_not_ready');
 
 // --- Kalibratsiya
@@ -228,6 +235,12 @@ t('marker yo\'q → null', api.parseResult("Yaxshi ish! Hammasi to'g'ri.") === n
 t('total=0 → null', api.parseResult('📊 NATIJA: 0/0') === null);
 t('correct > total → null', api.parseResult('📊 NATIJA: 7/5') === null);
 t('band markeri bilan chalkashmaydi', api.parseResult('🎯 Band: 6.5') === null);
+// Format bir oz buzilsa ham o'quvchi qayta yubormasin
+t('emojisiz ham topadi', api.parseResult('NATIJA: 4/5')?.correct === 4);
+t('markdown qalin shrift bilan', api.parseResult('📊 **NATIJA: 3/5**')?.correct === 3);
+t('kichik harf bilan', api.parseResult('Natija: 5/5')?.total === 5);
+t('ikki nuqtasiz', api.parseResult('📊 NATIJA 2/5')?.correct === 2);
+t('null/undefined da yiqilmaydi', api.parseResult(null) === null && api.parseResult(undefined) === null);
 
 // --- isAiError
 console.log('11. isAiError():');
@@ -280,13 +293,13 @@ for (const [type, g] of Object.entries(api.TASK_GUIDE)) {
 
 // --- Curriculum so'z sxemasi
 console.log('14. So\'z sxemasi { en, uz, ipa }:');
-const allUnits = [...api.CURRICULUM.A1, ...api.CURRICULUM.A2];
+const allUnits = [...api.CURRICULUM.A1, ...api.CURRICULUM.A2, ...api.CURRICULUM.B1];
 t('har unitda 25 ta so\'z', allUnits.every(x => x.words.length === 25));
 t('har so\'zda en/uz/ipa to\'liq',
   allUnits.every(x => x.words.every(w => w && w.en && w.uz && w.ipa)));
 t('har unitda explain matni bor', allUnits.every(x => typeof x.explain === 'string' && x.explain.length > 20));
 const enAll = allUnits.flatMap(x => x.words.map(w => w.en));
-t(`600 noyob so'z (${enAll.length})`, enAll.length === 600 && new Set(enAll).size === 600);
+t(`900 noyob so'z (${enAll.length})`, enAll.length === 900 && new Set(enAll).size === 900);
 const uw = api.unitWords(api.CURRICULUM.A1[0]);
 t("unitWords() { en, uz, ipa } qaytaradi", uw[0].en === 'hello' && uw[0].uz.length > 0 && uw[0].ipa.length > 0);
 t('unitWords() eski satr shaklini ham qabul qiladi',
@@ -379,7 +392,7 @@ t("reveal fazasi to'g'ri javob so'raydi", revealSys.includes("TO'G'RI JAVOBLARNI
 t('reveal fazasida 📊 NATIJA talab qilinmaydi', !revealSys.includes('📊 NATIJA: N/'));
 // So'zlar endi ~3x uzunroq — 20000 belgi shiftini alohida tekshiramiz
 let maxSys = 0;
-for (const lv of ['A1','A2']) {
+for (const lv of ['A1','A2','B1']) {
   for (let i = 0; i < api.CURRICULUM[lv].length; i++) {
     u9.program.level = lv; u9.program.unitIndex = i;
     for (const ph of ['issue','check','reveal']) maxSys = Math.max(maxSys, api.buildProgramSystem(ph).length);
@@ -396,7 +409,8 @@ t('boshqa turlarda audio bayrog\'i yo\'q',
   ['translate','build','write','listen','unit_exam','level_exam'].every(k => !api.TASK_GUIDE[k].audio));
 t('A1-01 da speak yo\'q (avval so\'zlar tanilsin)', !api.CURRICULUM.A1[0].tasks.includes('speak'));
 t('qolgan barcha unitlarda speak bor',
-  [...api.CURRICULUM.A1.slice(1), ...api.CURRICULUM.A2].every(x => x.tasks.includes('speak')));
+  [...api.CURRICULUM.A1.slice(1), ...api.CURRICULUM.A2, ...api.CURRICULUM.B1]
+    .every(x => x.tasks.includes('speak')));
 
 const u10 = { name:'T10', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
 u10.program = api.initProgram('A1');

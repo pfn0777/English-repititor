@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const LEVELS = ['A1', 'A2'];
+const LEVELS = ['A1', 'A2', 'B1'];
 const TASK_TYPES = ['translate', 'build', 'write', 'listen', 'speak'];
 const WORDS_PER_UNIT = 25;
 const TASKS_PER_UNIT = 6;
