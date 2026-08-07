@@ -594,6 +594,63 @@ function calibrate() {
   return moved;
 }
 
+// Yo'l xaritasi — "qayerdaman / hozir nima / keyin nima" uchun yagona manba.
+// Dastur ekrani, dashboard va kirish ekrani shu funksiyadan o'qiydi; UI'ga bog'liq emas.
+// null qaytadi: dastur yo'q yoki daraja syllabusi hali yozilmagan.
+function getRoadmap() {
+  const p = user.program;
+  if (!p) return null;
+  const u = getUnit();
+  if (!u) return null;
+
+  const units    = CURRICULUM[p.level] || [];
+  const inLevelExam = p.levelExam.pending;
+
+  // Unit ichidagi 7 qadam: TASKS_PER_UNIT vazifa + unit imtihoni.
+  const mk = (type, i, state) => {
+    const l = taskLabel(type);
+    return { i, type, emoji:l.emoji, title:l.title, state };
+  };
+  const stateOf = i => inLevelExam ? 'done'
+    : i <  p.taskIndex ? 'done'
+    : i === p.taskIndex ? 'current' : 'locked';
+
+  const steps = u.tasks.slice(0, TASKS_PER_UNIT).map((t,i) => mk(t, i, stateOf(i)));
+  steps.push(mk('unit_exam', TASKS_PER_UNIT, stateOf(TASKS_PER_UNIT)));
+
+  const curIdx   = steps.findIndex(s => s.state === 'current');
+  const nextUnit = units[p.unitIndex + 1] || null;
+  const nextLvl  = LEVELS[Math.min(LEVELS.length - 1, LEVELS.indexOf(p.level) + 1)];
+
+  let phase = 'unit', prev = null, current = null, next = null;
+
+  if (inLevelExam) {
+    phase   = p.levelExam.remedial > 0 ? 'remedial' : 'level_exam';
+    current = phase === 'remedial'
+      ? { ...taskLabel('translate'), title:`Takror vazifa (${p.levelExam.remedial} qoldi)` }
+      : taskLabel('level_exam');
+    prev = { title:`${p.level} — barcha unitlar` };
+    next = { title: phase === 'remedial' ? 'Daraja imtihoni' : `${nextLvl} darajasi` };
+  } else {
+    prev = curIdx > 0 ? steps[curIdx - 1] : { title:'—' };
+    current = curIdx >= 0 ? steps[curIdx] : null;
+    next = curIdx >= 0 && curIdx < steps.length - 1
+      ? steps[curIdx + 1]
+      : { title: nextUnit ? `Yangi mavzu: ${nextUnit.title}` : 'Daraja imtihoni' };
+    if (curIdx === TASKS_PER_UNIT) phase = 'unit_exam';
+  }
+
+  return {
+    phase, steps, curIdx, prev, current, next,
+    level: p.level,
+    unitTitle: u.title,
+    unitNo: p.unitIndex + 1,
+    unitsTotal: units.length,
+    unitsDone: p.passedUnits.length,
+    nextUnitTitle: nextUnit ? nextUnit.title : null,
+  };
+}
+
 // ─── 5. WORD PARSER ──────────────────────────────────────────────
 function parseWords(text) {
   const re = /📌 \*\*(.+?)\*\*\s*(?:\((.+?)\))?\s*— (.+?)(?:\n|$)/g;
@@ -1232,6 +1289,7 @@ function renderOnboarding() {
       goal,
       xp:0, streak:1, lastVisit:today, achievements:[], vocabulary:[],
       quizCount:0, correctionCount:0,
+      introSeen: false,   // eski foydalanuvchida umuman yo'q — init() ularni o'tkazib yuboradi
       ielts: { targetBand, scores: [] } };
     // Yangi foydalanuvchi o'zi tanlagan darajadan boshlaydi; syllabus hali yo'q bo'lsa —
     // eng yuqori tayyor darajaga tushiriladi (aks holda birinchi ekran bo'sh chiqadi).
@@ -1240,6 +1298,60 @@ function renderOnboarding() {
     user.program = initProgram(start);
     saveUser(); addVisit(today);
     if (start !== level) toast(`${level} dasturi hali tayyorlanmoqda — ${start} dan boshlaymiz`, 'info');
+    renderPathIntro();
+  };
+}
+
+// Onboarding va birinchi vazifa orasidagi yagona tushuntirish ekrani.
+// Bir marta ko'rsatiladi — `user.introSeen` bayrog'i bilan.
+function renderPathIntro() {
+  const p = user.program;
+  const units = CURRICULUM[p.level] || [];
+  const chain = LEVELS.map(l => {
+    const on = l === p.level;
+    return `<span class="${on ? 'bg-indigo-600 text-white font-bold' : 'bg-slate-700 text-slate-400'} px-2 py-1 rounded-lg text-xs">${l}</span>`;
+  }).join('<span class="text-slate-600 text-xs">→</span>');
+
+  const rule = (n, title, desc) => `
+    <div class="flex gap-3">
+      <div class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center shrink-0">${n}</div>
+      <div>
+        <div class="text-sm font-semibold">${title}</div>
+        <div class="text-xs text-slate-400 mt-0.5">${desc}</div>
+      </div>
+    </div>`;
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen flex items-center justify-center p-4 view-fade">
+    <div class="max-w-md w-full">
+      <div class="text-center mb-6">
+        <div class="text-5xl mb-2">🗺</div>
+        <h1 class="text-2xl font-bold">Sizning yo'lingiz</h1>
+        <p class="text-slate-400 text-sm mt-1">${esc(user.name)}, dastur qanday ishlashini bir daqiqada tushuntiraman.</p>
+      </div>
+      <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 space-y-4">
+        <div>
+          <div class="flex items-center justify-center gap-1 flex-wrap mb-1.5">${chain}</div>
+          <div class="text-center text-xs text-slate-500">Siz <b class="text-indigo-400">${p.level}</b> dan boshlaysiz · ${units.length} ta mavzu</div>
+        </div>
+        <div class="border-t border-slate-700 pt-4 space-y-3.5">
+          ${rule(1, `Har mavzu — ${TASKS_PER_UNIT} ta vazifa`, "Tarjima, gap tuzish, tinglash va yozma. Tartibni men belgilayman.")}
+          ${rule(2, 'Mavzu oxirida — imtihon', `Butun mavzu bo'yicha. ${Math.round(PASS_THRESHOLD*100)}% to'plansangiz o'tasiz.`)}
+          ${rule(3, 'Daraja imtihoni', "Barcha mavzular tugagach topshiriladi — daraja shundan keyin ko'tariladi.")}
+        </div>
+        <div class="border-t border-slate-700 pt-4 text-xs text-slate-400 space-y-1.5">
+          <div>🔒 <b>Tartib majburiy</b> — keyingi vazifa avvalgisi bajarilmaguncha ochilmaydi.</div>
+          <div>📅 <b>Kuniga ${MAX_DAILY_TASKS} vazifa</b> yetarli. Yodlash uchun tanaffus kerak.</div>
+          <div>🎯 Dastlabki ${CALIBRATION_TASKS} vazifadan keyin daraja avtomatik moslashtiriladi.</div>
+        </div>
+        <button id="pi-go" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">Birinchi vazifani boshlash →</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('pi-go').onclick = () => {
+    user.introSeen = true;
+    saveUser();
     renderProgram();
   };
 }
@@ -1330,6 +1442,52 @@ function programHeader() {
     <div class="bg-slate-700 rounded-full h-1.5">
       <div class="bg-indigo-500 h-1.5 rounded-full" style="width:${pct}%"></div>
     </div>
+    ${roadmapStrip(getRoadmap())}
+  </div>`;
+}
+
+// Unit ichidagi qadamlar chizig'i: ●━●━○━○━○━○━🏁
+// Bajarilgan yashil, joriy indigo va halqali, qolgani kulrang qulfda.
+function roadmapStrip(rm) {
+  if (!rm) return '';
+  const dot = s => {
+    const base = 'w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0';
+    const face = s.type === 'unit_exam' ? '🏁' : (s.state === 'done' ? '✓' : s.i + 1);
+    if (s.state === 'done')    return `<div class="${base} bg-emerald-600 text-white">${face}</div>`;
+    if (s.state === 'current') return `<div class="${base} bg-indigo-500 text-white ring-4 ring-indigo-500/25">${face}</div>`;
+    return `<div class="${base} bg-slate-700 text-slate-500">${face}</div>`;
+  };
+  const cells = rm.steps.map((s,i) => {
+    const line = i < rm.steps.length - 1
+      ? `<div class="flex-1 h-0.5 ${rm.steps[i+1].state === 'locked' ? 'bg-slate-700' : 'bg-emerald-600'}"></div>`
+      : '';
+    return dot(s) + line;
+  }).join('');
+  const caption = rm.phase === 'unit'
+    ? `${rm.curIdx + 1}-qadam: ${esc(rm.current ? rm.current.title : '')}`
+    : rm.phase === 'unit_exam' ? 'Unit imtihoni — oxirgi qadam'
+    : rm.phase === 'remedial'  ? 'Takror vazifalar — imtihonga qaytamiz'
+    : 'Daraja imtihoni';
+  return `
+  <div class="mt-3 pt-3 border-t border-slate-700">
+    <div class="flex items-center mb-1.5">${cells}</div>
+    <div class="text-[11px] text-slate-500">${caption}</div>
+  </div>`;
+}
+
+// "Bundan keyin bu" bloki — vazifa boshlashdan oldin ketma-ketlikni ko'rsatadi.
+function nextStepCard(rm) {
+  if (!rm) return '';
+  const row = (lab, val, cls, mark) => `
+    <div class="flex items-baseline justify-between gap-3">
+      <span class="text-slate-500 text-xs shrink-0">${lab}</span>
+      <span class="${cls} text-sm text-right">${esc(val)} ${mark}</span>
+    </div>`;
+  return `
+  <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 mb-4 space-y-2">
+    ${row('Bajarilgan', rm.prev.title, 'text-emerald-400', rm.prev.title === '—' ? '' : '✓')}
+    ${row('Hozir',      rm.current ? rm.current.title : '—', 'text-indigo-300 font-semibold', '←')}
+    ${row('Keyin',      rm.next.title, 'text-slate-400', '🔒')}
   </div>`;
 }
 
@@ -1398,12 +1556,16 @@ function renderProgram() {
     bind = () => { document.getElementById('pg-free').onclick = renderDashboard; };
 
   } else {
-    body = `<div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 text-center">
+    // Vazifa tugagandan keyin ham shu shox ishlaydi — shuning uchun tugma matni
+    // programFeedback bo'yicha o'zgaradi: "Boshlash" emas, "Keyingi vazifa".
+    const cont = !!programFeedback;
+    body = `${nextStepCard(getRoadmap())}
+    <div class="bg-slate-800 rounded-2xl p-6 border border-indigo-600 text-center">
       <div class="text-5xl mb-3">${lbl.emoji}</div>
       <div class="font-bold mb-1">${lbl.title}</div>
       <div class="text-slate-400 text-sm mb-1">${lbl.desc}</div>
       <div class="text-xs text-slate-500 mb-4">Bugun: ${p.doneToday.count}/${MAX_DAILY_TASKS} vazifa</div>
-      <button id="pg-start" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">Boshlash →</button>
+      <button id="pg-start" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">${cont ? 'Keyingi vazifa →' : 'Boshlash →'}</button>
     </div>`;
     bind = () => { document.getElementById('pg-start').onclick = doStartTask; };
   }
@@ -2300,6 +2462,9 @@ function init() {
     saveUser();
   }
   rollDaily();
+  // Onboardingni tugatib, tushuntirish ekranini ko'rmasdan chiqib ketgan yangi foydalanuvchi.
+  // Eski foydalanuvchida `introSeen` umuman yo'q (undefined) — ular bu shoxga tushmaydi.
+  if (user.introSeen === false) { renderPathIntro(); syncFromServer(); return; }
   renderDashboard();
   if (isMigrated) showProgramIntro();
 
