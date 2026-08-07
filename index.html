@@ -387,6 +387,13 @@ function speakText(text) {
   return true;
 }
 
+// Har bir [AUDIO] tugmasini jonlantirish — renderAI() ishlatilgan HAR joyda chaqirilishi shart
+function bindAudioButtons(root) {
+  (root || document).querySelectorAll('.aud-btn').forEach(b => {
+    b.onclick = () => speakText(b.dataset.audio);
+  });
+}
+
 // ─── 4.5 DASTUR MEXANIZMI (PROGRAM) ──────────────────────────────
 // Sof holat funksiyalari — UI'ga bog'liq emas, alohida test qilinadi.
 
@@ -1586,6 +1593,7 @@ function renderProgram() {
 
   programFeedback = null;   // faqat bir marta ko'rsatiladi
   bind?.();
+  bindAudioButtons(document.getElementById('app'));
   bindBottomNav();
 }
 
@@ -2106,7 +2114,7 @@ function appendMsg(role, text, isApiErr=false) {
     wrap._audio = { hasAudio, firstScript };
   }
   box.appendChild(wrap);
-  wrap.querySelectorAll('.aud-btn').forEach(b => b.onclick = () => speakText(b.dataset.audio));
+  bindAudioButtons(wrap);
   if (wrap._audio?.hasAudio) speakText(wrap._audio.firstScript);
   box.scrollTop = box.scrollHeight;
 }
