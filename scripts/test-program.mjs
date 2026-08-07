@@ -54,7 +54,9 @@ const names = Object.keys(stubs);
 const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTask','applyResult',
                   'advance','levelUp','calibrate','rollDaily','todayStr','currentLevel','xpLevel',
                   'parseResult','buildProgramSystem','programContext','buildSystem','isAiError',
-                  'CURRICULUM','LEVELS','PASS_THRESHOLD','MAX_DAILY_TASKS','TASKS_PER_UNIT','TASK_GUIDE'];
+                  'unitWords','needsLesson','markLessonSeen','seedUnitWords','skipTask',
+                  'CURRICULUM','LEVELS','PASS_THRESHOLD','MAX_DAILY_TASKS','TASKS_PER_UNIT','TASK_GUIDE',
+                  'MAX_ATTEMPTS_BEFORE_SKIP'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user };`);
 const api = runner(...names.map(n => stubs[n]));
 
@@ -259,6 +261,115 @@ for (const [type, g] of Object.entries(api.TASK_GUIDE)) {
   const s = api.buildProgramSystem('check');
   t(`${type}: 📊 NATIJA: N/${g.total}`, s.includes(`📊 NATIJA: N/${g.total}`));
 }
+
+// --- Curriculum so'z sxemasi
+console.log('14. So\'z sxemasi { en, uz, ipa }:');
+const allUnits = [...api.CURRICULUM.A1, ...api.CURRICULUM.A2];
+t('har unitda 25 ta so\'z', allUnits.every(x => x.words.length === 25));
+t('har so\'zda en/uz/ipa to\'liq',
+  allUnits.every(x => x.words.every(w => w && w.en && w.uz && w.ipa)));
+t('har unitda explain matni bor', allUnits.every(x => typeof x.explain === 'string' && x.explain.length > 20));
+const enAll = allUnits.flatMap(x => x.words.map(w => w.en));
+t(`600 noyob so'z (${enAll.length})`, enAll.length === 600 && new Set(enAll).size === 600);
+const uw = api.unitWords(api.CURRICULUM.A1[0]);
+t("unitWords() { en, uz, ipa } qaytaradi", uw[0].en === 'hello' && uw[0].uz.length > 0 && uw[0].ipa.length > 0);
+t('unitWords() eski satr shaklini ham qabul qiladi',
+  api.unitWords({ words:['test'] })[0].en === 'test');
+
+// --- Mavzu darsi
+console.log('15. Mavzu darsi:');
+const u6 = { name:'T6', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+u6.program = api.initProgram('A1');
+api.setUser(u6);
+t('yangi unit boshida needsLesson() = true', api.needsLesson() === true);
+t('markLessonSeen() birinchi marta true', api.markLessonSeen('A1-01') === true);
+t('ko\'rilgandan keyin needsLesson() = false', api.needsLesson() === false);
+t('markLessonSeen() takroriy chaqiruvda false', api.markLessonSeen('A1-01') === false);
+
+api.issueTask('translate', 'p');
+t('vazifa ochiq bo\'lsa needsLesson() = false', api.needsLesson() === false);
+api.applyResult({ correct:5, total:5 });
+t('unit o\'rtasida (taskIndex=1) needsLesson() = false', api.needsLesson() === false);
+
+// Keyingi unitga o'tganda dars yana kerak
+for (let i = 1; i <= api.TASKS_PER_UNIT; i++) {
+  api.issueTask(api.getTaskType(), 'p');
+  u6.program.doneToday.count = 0;
+  api.applyResult({ correct:5, total:5 });
+}
+t('A1-02 ga o\'tildi', api.getUnit()?.id === 'A1-02');
+t('yangi unitda needsLesson() yana true', api.needsLesson() === true);
+
+// --- Lug'at seed
+console.log('16. seedUnitWords() — lug\'at to\'ldirish:');
+const u7 = { name:'T7', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+u7.program = api.initProgram('A1');
+api.setUser(u7);
+const added = api.seedUnitWords(api.CURRICULUM.A1[0]);
+t('25 ta so\'z qo\'shildi', added === 25 && u7.vocabulary.length === 25);
+const first = u7.vocabulary[0];
+t('lug\'at yozuvi to\'liq (word/translation/pronunciation)',
+  !!first.word && !!first.translation && !!first.pronunciation);
+t('mastery 0 va darhol takrorlashga tayyor', first.mastery === 0 && first.nextReview <= Date.now());
+t('XP berilmadi', u7.xp === 0);
+t('ikkinchi chaqiruvda dublikat yo\'q',
+  api.seedUnitWords(api.CURRICULUM.A1[0]) === 0 && u7.vocabulary.length === 25);
+t('boshqa unit so\'zlari qo\'shiladi',
+  api.seedUnitWords(api.CURRICULUM.A1[1]) === 25 && u7.vocabulary.length === 50);
+
+// --- Chiqish yo'li (skip)
+console.log('17. Tiqilib qolishdan chiqish yo\'li:');
+const u8 = { name:'T8', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+u8.program = api.initProgram('A1');
+api.setUser(u8);
+api.issueTask('translate', 'p');
+t('skipTask() ruxsatsiz ishlamaydi', api.skipTask().reason === 'not_allowed');
+for (let i = 1; i < api.MAX_ATTEMPTS_BEFORE_SKIP; i++) {
+  r = api.applyResult({ correct:0, total:5 });
+  t(`${i}-urinishdan keyin canSkip yo'q`, r.canSkip !== true);
+}
+r = api.applyResult({ correct:0, total:5 });
+t(`${api.MAX_ATTEMPTS_BEFORE_SKIP}-urinishdan keyin canSkip = true`, r.canSkip === true);
+
+const xpBefore = u8.xp;
+const sk = api.skipTask();
+t('skipTask() ok', sk.ok === true && sk.skipped === true);
+t('keyingi vazifaga o\'tdi (taskIndex=1)', u8.program.taskIndex === 1);
+t('XP berilmadi', u8.xp === xpBefore);
+t('kunlik hisobga kirdi (erkin rejimlar ochiladi)', u8.program.doneToday.count === 1);
+t('unit weakUnits ga yozildi', u8.program.weakUnits.includes('A1-01'));
+t('vazifa yopildi', u8.program.current === null);
+t('vazifasiz skipTask() ishlamaydi', api.skipTask().reason === 'no_task');
+t('weakUnits promptga tushdi', api.programContext().includes('A1-01'));
+
+// --- Yangi kontekst formati va payload chegarasi
+console.log('18. Kontekst formati va payload:');
+const u9 = { name:'Sardor', level:'A1', goal:'general', xp:0, achievements:[],
+             vocabulary: Array.from({length:50},(_,i)=>({word:'w'+i, translation:'t', mastery:0})) };
+u9.program = api.initProgram('A1');
+api.setUser(u9);
+const ctx2 = api.programContext();
+t("lug'at 'en — uz' formatida", ctx2.includes('hello — salom'));
+t('etalon tarjima talabi bor', ctx2.includes('AYNAN'));
+// issue fazasi getTaskType() ga qaraydi — A1-01 da 'build' 2-qadamda turadi
+u9.program.taskIndex = 1;
+t("A1-01 2-qadam = 'build'", api.getTaskType() === 'build');
+const buildSys = api.buildProgramSystem('issue');
+u9.program.taskIndex = 0;
+api.issueTask('build', 'p');
+t("build promptida tarjimani o'ylab topish taqiqlangan", buildSys.includes("O'YLAB TOPMA"));
+const revealSys = api.buildProgramSystem('reveal');
+t("reveal fazasi to'g'ri javob so'raydi", revealSys.includes("TO'G'RI JAVOBLARNI"));
+t('reveal fazasida 📊 NATIJA talab qilinmaydi', !revealSys.includes('📊 NATIJA: N/'));
+// So'zlar endi ~3x uzunroq — 20000 belgi shiftini alohida tekshiramiz
+let maxSys = 0;
+for (const lv of ['A1','A2']) {
+  for (let i = 0; i < api.CURRICULUM[lv].length; i++) {
+    u9.program.level = lv; u9.program.unitIndex = i;
+    for (const ph of ['issue','check','reveal']) maxSys = Math.max(maxSys, api.buildProgramSystem(ph).length);
+  }
+}
+t(`barcha unitlar uchun system prompt < 20000 (eng uzuni ${maxSys})`, maxSys < 20000);
 
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);
 process.exit(fails === 0 ? 0 : 1);

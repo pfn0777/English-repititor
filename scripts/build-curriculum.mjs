@@ -36,20 +36,33 @@ for (const lv of LEVELS) {
     const expectedId = `${lv}-${String(i + 1).padStart(2, '0')}`;
     if (u.id !== expectedId) errors.push(`${lv}[${i}]: id "${u.id}" != "${expectedId}"`);
 
-    for (const k of ['title', 'can', 'grammar']) {
+    for (const k of ['title', 'can', 'grammar', 'explain']) {
       if (typeof u[k] !== 'string' || !u[k].trim()) errors.push(`${u.id}: "${k}" bo'sh yoki matn emas`);
     }
 
     if (!Array.isArray(u.words) || u.words.length !== WORDS_PER_UNIT) {
       errors.push(`${u.id}: so'z soni ${(u.words || []).length}, kutilgan ${WORDS_PER_UNIT}`);
     } else {
+      // So'z = { en, uz, ipa }. Tarjima etalon bo'lishi shart — AI o'ylab topmasin.
       for (const w of u.words) {
-        if (typeof w !== 'string' || !w.trim() || w !== w.toLowerCase()) {
-          errors.push(`${u.id}: noto'g'ri so'z "${w}" (kichik harf, bo'sh emas)`);
+        if (!w || typeof w !== 'object' || Array.isArray(w)) {
+          errors.push(`${u.id}: so'z obyekt emas — { en, uz, ipa } kutilgan, kelgani: ${JSON.stringify(w)}`);
           continue;
         }
-        if (seenWords.has(w)) errors.push(`${u.id}: "${w}" takror — ${seenWords.get(w)} da bor`);
-        else seenWords.set(w, u.id);
+        let bad = false;
+        for (const k of ['en', 'uz', 'ipa']) {
+          if (typeof w[k] !== 'string' || !w[k].trim()) {
+            errors.push(`${u.id}: "${w.en ?? '?'}" so'zida "${k}" bo'sh yoki matn emas`);
+            bad = true;
+          }
+        }
+        if (bad) continue;
+        if (w.en !== w.en.toLowerCase()) {
+          errors.push(`${u.id}: "${w.en}" — en kichik harfda bo'lsin`);
+          continue;
+        }
+        if (seenWords.has(w.en)) errors.push(`${u.id}: "${w.en}" takror — ${seenWords.get(w.en)} da bor`);
+        else seenWords.set(w.en, u.id);
       }
     }
 
@@ -81,11 +94,17 @@ if (errors.length) {
 warnings.forEach(w => console.warn('  ogohlantirish: ' + w));
 
 // ── JS blokini yasash ────────────────────────────────────────────
-const q = s => "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
+// explain ichida qator ko'chirish bor — \n ni ham qochirish shart, aks holda JS sintaksis xatosi.
+const q = s => "'" + String(s)
+  .replace(/\\/g, '\\\\')
+  .replace(/'/g, "\\'")
+  .replace(/\n/g, '\\n') + "'";
+const wordJs = w => `        { en:${q(w.en)}, uz:${q(w.uz)}, ipa:${q(w.ipa)} },`;
 const unitJs = u => `    { id:${q(u.id)}, title:${q(u.title)},\n`
   + `      can:${q(u.can)},\n`
   + `      grammar:${q(u.grammar)},\n`
-  + `      words:[${u.words.map(q).join(',')}],\n`
+  + `      explain:${q(u.explain)},\n`
+  + `      words:[\n${u.words.map(wordJs).join('\n')}\n      ],\n`
   + `      tasks:[${u.tasks.map(q).join(',')}] },`;
 
 const body = LEVELS.map(lv => `  ${lv}: [\n${curriculum[lv].map(unitJs).join('\n')}\n  ],`).join('\n');

@@ -61,6 +61,7 @@ const PASS_THRESHOLD            = 0.8;  // 4/5 o'tadi, 3/5 yiqiladi
 const MAX_DAILY_TASKS           = 3;    // kuniga maksimum
 const DAILY_QUOTA               = 1;    // erkin mashqlar ochilishi uchun kerakli vazifa (≤ MAX_DAILY_TASKS)
 const MAX_ATTEMPTS_BEFORE_RELIEF= 3;    // shundan keyin AI to'liq tushuntirib yengillashtiradi
+const MAX_ATTEMPTS_BEFORE_SKIP  = 5;    // shundan keyin o'tkazib yuborish ochiladi (tiqilib qolmasin)
 const CALIBRATION_TASKS         = 3;    // dastlabki necha vazifadan keyin daraja tuzatiladi
 const REMEDIAL_TASKS            = 2;    // daraja imtihonidan yiqilgach beriladigan takror vazifalar
 const XP_PER_TASK               = 25;
@@ -82,124 +83,772 @@ const CURRICULUM = {
     { id:'A1-01', title:'Salomlashish va tanishuv',
       can:'Salomlasha olaman va o\'zim haqimda oddiy gaplar ayta olaman',
       grammar:'\'to be\' fe\'li — am/is/are shaxs olmoshlari bilan (verb to be)',
-      words:['hello','hi','name','my','your','i','you','he','she','it','we','they','am','is','are','good','morning','nice','meet','from','what','where','teacher','student','and'],
+      explain:'Formula: I + am · He/She/It + is · You/We/They + are\nMisol: I am a student. — Men talabaman.\nMisol: She is from Bukhara. — U Buxorodan.',
+      words:[
+        { en:'hello', uz:'salom', ipa:'həˈloʊ' },
+        { en:'hi', uz:'salom (norasmiy)', ipa:'haɪ' },
+        { en:'name', uz:'ism', ipa:'neɪm' },
+        { en:'my', uz:'mening', ipa:'maɪ' },
+        { en:'your', uz:'sening, sizning', ipa:'jɔːr' },
+        { en:'i', uz:'men', ipa:'aɪ' },
+        { en:'you', uz:'sen, siz', ipa:'juː' },
+        { en:'he', uz:'u (erkak)', ipa:'hiː' },
+        { en:'she', uz:'u (ayol)', ipa:'ʃiː' },
+        { en:'it', uz:'u (jonsiz narsa)', ipa:'ɪt' },
+        { en:'we', uz:'biz', ipa:'wiː' },
+        { en:'they', uz:'ular', ipa:'ðeɪ' },
+        { en:'am', uz:'-man (I bilan ishlatiladi)', ipa:'æm' },
+        { en:'is', uz:'-dir (he/she/it bilan)', ipa:'ɪz' },
+        { en:'are', uz:'-siz (you/we/they bilan)', ipa:'ɑːr' },
+        { en:'good', uz:'yaxshi', ipa:'ɡʊd' },
+        { en:'morning', uz:'ertalab', ipa:'ˈmɔːrnɪŋ' },
+        { en:'nice', uz:'yoqimli, chiroyli', ipa:'naɪs' },
+        { en:'meet', uz:'uchrashmoq, tanishmoq', ipa:'miːt' },
+        { en:'from', uz:'-dan', ipa:'frʌm' },
+        { en:'what', uz:'nima', ipa:'wʌt' },
+        { en:'where', uz:'qayerda', ipa:'wer' },
+        { en:'teacher', uz:'o\'qituvchi', ipa:'ˈtiːtʃər' },
+        { en:'student', uz:'talaba, o\'quvchi', ipa:'ˈstuːdnt' },
+        { en:'and', uz:'va', ipa:'ænd' },
+      ],
       tasks:['translate','build','listen','translate','build','listen'] },
     { id:'A1-02', title:'Mening oilam',
       can:'Oilam a\'zolari haqida gapira olaman va nimam borligini ayta olaman',
       grammar:'Egalik olmoshlari (my/your/his/her) va \'have got\' — egalikni bildirish',
-      words:['have','has','got','his','her','our','their','family','mother','father','brother','sister','son','daughter','friend','old','young','year','how','many','two','three','but','not','very'],
+      explain:'Formula: I/You/We/They + have got · He/She/It + has got\nMisol: I have got two brothers. — Mening ikkita akam bor.\nMisol: She has got a big family. — Uning katta oilasi bor.',
+      words:[
+        { en:'have', uz:'ega bo\'lmoq, bor', ipa:'hæv' },
+        { en:'has', uz:'bor (u uchun)', ipa:'hæz' },
+        { en:'got', uz:'ega bo\'lgan (have got tarkibida)', ipa:'ɡɑːt' },
+        { en:'his', uz:'uning (erkak)', ipa:'hɪz' },
+        { en:'her', uz:'uning (ayol)', ipa:'hɜːr' },
+        { en:'our', uz:'bizning', ipa:'ˈaʊər' },
+        { en:'their', uz:'ularning', ipa:'ðer' },
+        { en:'family', uz:'oila', ipa:'ˈfæməli' },
+        { en:'mother', uz:'ona', ipa:'ˈmʌðər' },
+        { en:'father', uz:'ota', ipa:'ˈfɑːðər' },
+        { en:'brother', uz:'aka, uka', ipa:'ˈbrʌðər' },
+        { en:'sister', uz:'opa, singil', ipa:'ˈsɪstər' },
+        { en:'son', uz:'o\'g\'il (farzand)', ipa:'sʌn' },
+        { en:'daughter', uz:'qiz (farzand)', ipa:'ˈdɔːtər' },
+        { en:'friend', uz:'do\'st', ipa:'frend' },
+        { en:'old', uz:'keksa, eski', ipa:'oʊld' },
+        { en:'young', uz:'yosh', ipa:'jʌŋ' },
+        { en:'year', uz:'yil', ipa:'jɪr' },
+        { en:'how', uz:'qanday, qanaqa', ipa:'haʊ' },
+        { en:'many', uz:'ko\'p (sanaladigan)', ipa:'ˈmeni' },
+        { en:'two', uz:'ikki', ipa:'tuː' },
+        { en:'three', uz:'uch', ipa:'θriː' },
+        { en:'but', uz:'lekin', ipa:'bʌt' },
+        { en:'not', uz:'emas', ipa:'nɑːt' },
+        { en:'very', uz:'juda', ipa:'ˈveri' },
+      ],
       tasks:['listen','translate','build','translate','listen','build'] },
     { id:'A1-03', title:'Buyumlar va artikllar',
       can:'Atrofimdagi narsalarni nomlay olaman va ularni ko\'rsata olaman',
       grammar:'Artikllar a/an/the — noaniq va aniq artikl (articles)',
-      words:['a','an','the','book','pen','apple','orange','table','chair','room','house','door','window','box','bag','cup','egg','hour','umbrella','new','big','small','this','that','here'],
-      tasks:['translate','listen','build','build','translate','listen'] },
+      explain:'Formula: a + undosh tovush · an + unli tovush · the = aniq, ma\'lum narsa\nMisol: This is a book. — Bu kitob.\nMisol: I want an apple. The apple is big. — Menga olma kerak. O\'sha olma katta.',
+      words:[
+        { en:'a', uz:'bir (noaniq artikl)', ipa:'ə' },
+        { en:'an', uz:'bir (unli tovush oldidan)', ipa:'ən' },
+        { en:'the', uz:'o\'sha (aniq artikl)', ipa:'ðə' },
+        { en:'book', uz:'kitob', ipa:'bʊk' },
+        { en:'pen', uz:'ruchka', ipa:'pen' },
+        { en:'apple', uz:'olma', ipa:'ˈæpl' },
+        { en:'orange', uz:'apelsin', ipa:'ˈɔːrɪndʒ' },
+        { en:'table', uz:'stol', ipa:'ˈteɪbl' },
+        { en:'chair', uz:'stul', ipa:'tʃer' },
+        { en:'room', uz:'xona', ipa:'ruːm' },
+        { en:'house', uz:'uy', ipa:'haʊs' },
+        { en:'door', uz:'eshik', ipa:'dɔːr' },
+        { en:'window', uz:'deraza', ipa:'ˈwɪndoʊ' },
+        { en:'box', uz:'quti', ipa:'bɑːks' },
+        { en:'bag', uz:'sumka', ipa:'bæɡ' },
+        { en:'cup', uz:'piyola, chashka', ipa:'kʌp' },
+        { en:'egg', uz:'tuxum', ipa:'eɡ' },
+        { en:'hour', uz:'soat (vaqt oralig\'i)', ipa:'ˈaʊər' },
+        { en:'umbrella', uz:'soyabon', ipa:'ʌmˈbrelə' },
+        { en:'new', uz:'yangi', ipa:'nuː' },
+        { en:'big', uz:'katta', ipa:'bɪɡ' },
+        { en:'small', uz:'kichik', ipa:'smɔːl' },
+        { en:'this', uz:'bu', ipa:'ðɪs' },
+        { en:'that', uz:'o\'sha, ana u', ipa:'ðæt' },
+        { en:'here', uz:'shu yerda', ipa:'hɪr' },
+      ],
+      tasks:['translate','listen','build','translate','build','listen'] },
     { id:'A1-04', title:'Sonlar va ko\'plik',
       can:'Narsalarni sanay olaman va nechtaligini ayta olaman',
       grammar:'Ko\'plik shakli (-s/-es) va noto\'g\'ri ko\'pliklar, sonlar (plurals and numbers)',
-      words:['one','four','five','six','seven','eight','nine','ten','twenty','hundred','child','children','man','men','woman','women','boy','girl','city','country','number','people','some','these','those'],
+      explain:'Formula: ot + -s (book → books) · -s/-sh/-ch/-x dan keyin -es (box → boxes)\nNoto\'g\'ri: child → children, man → men, woman → women\nMisol: I have five books. — Menda beshta kitob bor.',
+      words:[
+        { en:'one', uz:'bir', ipa:'wʌn' },
+        { en:'four', uz:'to\'rt', ipa:'fɔːr' },
+        { en:'five', uz:'besh', ipa:'faɪv' },
+        { en:'six', uz:'olti', ipa:'sɪks' },
+        { en:'seven', uz:'yetti', ipa:'ˈsevn' },
+        { en:'eight', uz:'sakkiz', ipa:'eɪt' },
+        { en:'nine', uz:'to\'qqiz', ipa:'naɪn' },
+        { en:'ten', uz:'o\'n', ipa:'ten' },
+        { en:'twenty', uz:'yigirma', ipa:'ˈtwenti' },
+        { en:'hundred', uz:'yuz (son)', ipa:'ˈhʌndrəd' },
+        { en:'child', uz:'bola', ipa:'tʃaɪld' },
+        { en:'children', uz:'bolalar', ipa:'ˈtʃɪldrən' },
+        { en:'man', uz:'erkak', ipa:'mæn' },
+        { en:'men', uz:'erkaklar', ipa:'men' },
+        { en:'woman', uz:'ayol', ipa:'ˈwʊmən' },
+        { en:'women', uz:'ayollar', ipa:'ˈwɪmɪn' },
+        { en:'boy', uz:'o\'g\'il bola', ipa:'bɔɪ' },
+        { en:'girl', uz:'qiz bola', ipa:'ɡɜːrl' },
+        { en:'city', uz:'shahar', ipa:'ˈsɪti' },
+        { en:'country', uz:'mamlakat', ipa:'ˈkʌntri' },
+        { en:'number', uz:'raqam, son', ipa:'ˈnʌmbər' },
+        { en:'people', uz:'odamlar', ipa:'ˈpiːpl' },
+        { en:'some', uz:'bir nechta, biroz', ipa:'sʌm' },
+        { en:'these', uz:'bular', ipa:'ðiːz' },
+        { en:'those', uz:'o\'shalar', ipa:'ðoʊz' },
+      ],
       tasks:['translate','build','write','listen','translate','build'] },
     { id:'A1-05', title:'Kundalik ishlarim',
       can:'Har kuni nima qilishimni ayta olaman',
       grammar:'Hozirgi oddiy zamon, tasdiq shakli va 3-shaxs -s (Present Simple, affirmative)',
-      words:['live','work','study','like','want','need','speak','read','write','play','eat','drink','go','come','every','day','english','school','office','football','music','water','tea','in','on'],
+      explain:'Formula: I/You/We/They + fe\'l · He/She/It + fe\'l + s\nMisol: I work every day. — Men har kuni ishlayman.\nMisol: He works in an office. — U ofisda ishlaydi.',
+      words:[
+        { en:'live', uz:'yashamoq', ipa:'lɪv' },
+        { en:'work', uz:'ishlamoq', ipa:'wɜːrk' },
+        { en:'study', uz:'o\'qimoq, tahsil olmoq', ipa:'ˈstʌdi' },
+        { en:'like', uz:'yoqmoq', ipa:'laɪk' },
+        { en:'want', uz:'xohlamoq', ipa:'wɑːnt' },
+        { en:'need', uz:'kerak bo\'lmoq', ipa:'niːd' },
+        { en:'speak', uz:'gapirmoq', ipa:'spiːk' },
+        { en:'read', uz:'o\'qimoq (matnni)', ipa:'riːd' },
+        { en:'write', uz:'yozmoq', ipa:'raɪt' },
+        { en:'play', uz:'o\'ynamoq', ipa:'pleɪ' },
+        { en:'eat', uz:'yemoq', ipa:'iːt' },
+        { en:'drink', uz:'ichmoq', ipa:'drɪŋk' },
+        { en:'go', uz:'bormoq', ipa:'ɡoʊ' },
+        { en:'come', uz:'kelmoq', ipa:'kʌm' },
+        { en:'every', uz:'har', ipa:'ˈevri' },
+        { en:'day', uz:'kun', ipa:'deɪ' },
+        { en:'english', uz:'ingliz tili', ipa:'ˈɪŋɡlɪʃ' },
+        { en:'school', uz:'maktab', ipa:'skuːl' },
+        { en:'office', uz:'ofis', ipa:'ˈɔːfɪs' },
+        { en:'football', uz:'futbol', ipa:'ˈfʊtbɔːl' },
+        { en:'music', uz:'musiqa', ipa:'ˈmjuːzɪk' },
+        { en:'water', uz:'suv', ipa:'ˈwɔːtər' },
+        { en:'tea', uz:'choy', ipa:'tiː' },
+        { en:'in', uz:'ichida, -da', ipa:'ɪn' },
+        { en:'on', uz:'ustida', ipa:'ɑːn' },
+      ],
       tasks:['build','translate','listen','write','build','translate'] },
     { id:'A1-06', title:'Savol va inkor',
       can:'Savol bera olaman va biror narsani qilmasligimni ayta olaman',
       grammar:'Hozirgi oddiy zamon inkor va savoli — do/does (Present Simple, negative and questions)',
-      words:['do','does','no','yes','why','when','who','which','question','answer','know','think','understand','help','ask','say','tell','please','sorry','always','never','sometimes','often','usually','because'],
+      explain:'Formula: I/You/We/They + do not (don\'t) + fe\'l · He/She/It + does not (doesn\'t) + fe\'l\nSavol: Do you...? / Does he...?\nMisol: I don\'t know. — Men bilmayman.\nMisol: Does she speak English? — U ingliz tilida gapiradimi?',
+      words:[
+        { en:'do', uz:'qilmoq; yordamchi fe\'l', ipa:'duː' },
+        { en:'does', uz:'qiladi (u uchun yordamchi)', ipa:'dʌz' },
+        { en:'no', uz:'yo\'q', ipa:'noʊ' },
+        { en:'yes', uz:'ha', ipa:'jes' },
+        { en:'why', uz:'nega', ipa:'waɪ' },
+        { en:'when', uz:'qachon', ipa:'wen' },
+        { en:'who', uz:'kim', ipa:'huː' },
+        { en:'which', uz:'qaysi', ipa:'wɪtʃ' },
+        { en:'question', uz:'savol', ipa:'ˈkwestʃən' },
+        { en:'answer', uz:'javob', ipa:'ˈænsər' },
+        { en:'know', uz:'bilmoq', ipa:'noʊ' },
+        { en:'think', uz:'o\'ylamoq', ipa:'θɪŋk' },
+        { en:'understand', uz:'tushunmoq', ipa:'ˌʌndərˈstænd' },
+        { en:'help', uz:'yordam bermoq', ipa:'help' },
+        { en:'ask', uz:'so\'ramoq', ipa:'æsk' },
+        { en:'say', uz:'aytmoq', ipa:'seɪ' },
+        { en:'tell', uz:'aytib bermoq', ipa:'tel' },
+        { en:'please', uz:'iltimos', ipa:'pliːz' },
+        { en:'sorry', uz:'kechirasiz', ipa:'ˈsɑːri' },
+        { en:'always', uz:'doim', ipa:'ˈɔːlweɪz' },
+        { en:'never', uz:'hech qachon', ipa:'ˈnevər' },
+        { en:'sometimes', uz:'ba\'zan', ipa:'ˈsʌmtaɪmz' },
+        { en:'often', uz:'tez-tez', ipa:'ˈɔːfn' },
+        { en:'usually', uz:'odatda', ipa:'ˈjuːʒuəli' },
+        { en:'because', uz:'chunki', ipa:'bɪˈkɔːz' },
+      ],
       tasks:['translate','write','build','listen','translate','write'] },
     { id:'A1-07', title:'Uy va shahar',
       can:'Uyimda va shahrimda nima borligini tasvirlab bera olaman',
       grammar:'\'there is / there are\' — mavjudlikni bildirish va joy predloglari (there is/are)',
-      words:['there','kitchen','bedroom','bathroom','garden','wall','floor','street','shop','park','bank','hospital','market','near','next','under','behind','between','front','left','right','cheap','clean','quiet','or'],
+      explain:'Formula: There is + birlik · There are + ko\'plik\nMisol: There is a park near my house. — Uyim yonida park bor.\nMisol: There are two shops in the street. — Ko\'chada ikkita do\'kon bor.',
+      words:[
+        { en:'there', uz:'u yerda; bor (there is)', ipa:'ðer' },
+        { en:'kitchen', uz:'oshxona', ipa:'ˈkɪtʃɪn' },
+        { en:'bedroom', uz:'yotoqxona', ipa:'ˈbedruːm' },
+        { en:'bathroom', uz:'hammom', ipa:'ˈbæθruːm' },
+        { en:'garden', uz:'bog\'', ipa:'ˈɡɑːrdn' },
+        { en:'wall', uz:'devor', ipa:'wɔːl' },
+        { en:'floor', uz:'pol; qavat', ipa:'flɔːr' },
+        { en:'street', uz:'ko\'cha', ipa:'striːt' },
+        { en:'shop', uz:'do\'kon', ipa:'ʃɑːp' },
+        { en:'park', uz:'park', ipa:'pɑːrk' },
+        { en:'bank', uz:'bank', ipa:'bæŋk' },
+        { en:'hospital', uz:'shifoxona', ipa:'ˈhɑːspɪtl' },
+        { en:'market', uz:'bozor', ipa:'ˈmɑːrkɪt' },
+        { en:'near', uz:'yaqin', ipa:'nɪr' },
+        { en:'next', uz:'keyingi; yonida', ipa:'nekst' },
+        { en:'under', uz:'ostida', ipa:'ˈʌndər' },
+        { en:'behind', uz:'orqasida', ipa:'bɪˈhaɪnd' },
+        { en:'between', uz:'orasida', ipa:'bɪˈtwiːn' },
+        { en:'front', uz:'old tomon', ipa:'frʌnt' },
+        { en:'left', uz:'chap', ipa:'left' },
+        { en:'right', uz:'o\'ng; to\'g\'ri', ipa:'raɪt' },
+        { en:'cheap', uz:'arzon', ipa:'tʃiːp' },
+        { en:'clean', uz:'toza', ipa:'kliːn' },
+        { en:'quiet', uz:'tinch, jimjit', ipa:'ˈkwaɪət' },
+        { en:'or', uz:'yoki', ipa:'ɔːr' },
+      ],
       tasks:['listen','build','translate','write','build','translate'] },
     { id:'A1-08', title:'Qobiliyat va imkoniyat',
       can:'Nimani qila olishimni va qila olmasligimni ayta olaman',
       grammar:'\'can / cannot\' modal fe\'li — qobiliyat va so\'rov (modal verb can)',
-      words:['can','cannot','swim','run','jump','drive','cook','sing','dance','draw','ride','bike','car','well','fast','slow','hard','easy','difficult','also','too','with','without','again','together'],
+      explain:'Formula: shaxs + can + fe\'l (to\'siz) · inkor: cannot / can\'t\nMisol: I can swim. — Men suza olaman.\nMisol: She can\'t drive a car. — U mashina hayday olmaydi.',
+      words:[
+        { en:'can', uz:'-a olmoq', ipa:'kæn' },
+        { en:'cannot', uz:'-a olmaslik', ipa:'ˈkænɑːt' },
+        { en:'swim', uz:'suzmoq', ipa:'swɪm' },
+        { en:'run', uz:'yugurmoq', ipa:'rʌn' },
+        { en:'jump', uz:'sakramoq', ipa:'dʒʌmp' },
+        { en:'drive', uz:'haydamoq', ipa:'draɪv' },
+        { en:'cook', uz:'ovqat pishirmoq', ipa:'kʊk' },
+        { en:'sing', uz:'qo\'shiq aytmoq', ipa:'sɪŋ' },
+        { en:'dance', uz:'raqsga tushmoq', ipa:'dæns' },
+        { en:'draw', uz:'rasm chizmoq', ipa:'drɔː' },
+        { en:'ride', uz:'minmoq', ipa:'raɪd' },
+        { en:'bike', uz:'velosiped', ipa:'baɪk' },
+        { en:'car', uz:'mashina', ipa:'kɑːr' },
+        { en:'well', uz:'yaxshi (ravish)', ipa:'wel' },
+        { en:'fast', uz:'tez', ipa:'fæst' },
+        { en:'slow', uz:'sekin', ipa:'sloʊ' },
+        { en:'hard', uz:'qattiq; mashaqqatli', ipa:'hɑːrd' },
+        { en:'easy', uz:'oson', ipa:'ˈiːzi' },
+        { en:'difficult', uz:'qiyin', ipa:'ˈdɪfɪkəlt' },
+        { en:'also', uz:'shuningdek', ipa:'ˈɔːlsoʊ' },
+        { en:'too', uz:'ham; juda', ipa:'tuː' },
+        { en:'with', uz:'bilan', ipa:'wɪð' },
+        { en:'without', uz:'-siz', ipa:'wɪˈðaʊt' },
+        { en:'again', uz:'yana', ipa:'əˈɡen' },
+        { en:'together', uz:'birgalikda', ipa:'təˈɡeðər' },
+      ],
       tasks:['translate','build','write','translate','listen','build'] },
     { id:'A1-09', title:'Kecha qanday edim',
       can:'Kecha qayerda va qanday ahvolda bo\'lganimni ayta olaman',
       grammar:'O\'tgan zamon — was/were va vaqt ifodalari (Past Simple, to be)',
-      words:['was','were','yesterday','last','week','month','ago','born','today','tomorrow','night','evening','afternoon','time','happy','sad','tired','angry','hungry','thirsty','ill','cold','hot','weather','at'],
+      explain:'Formula: I/He/She/It + was · You/We/They + were\nMisol: I was tired yesterday. — Men kecha charchagandim.\nMisol: They were at home. — Ular uyda edilar.',
+      words:[
+        { en:'was', uz:'edi (I/he/she/it)', ipa:'wʌz' },
+        { en:'were', uz:'edilar (you/we/they)', ipa:'wɜːr' },
+        { en:'yesterday', uz:'kecha', ipa:'ˈjestərdeɪ' },
+        { en:'last', uz:'o\'tgan; oxirgi', ipa:'læst' },
+        { en:'week', uz:'hafta', ipa:'wiːk' },
+        { en:'month', uz:'oy (kalendar)', ipa:'mʌnθ' },
+        { en:'ago', uz:'oldin', ipa:'əˈɡoʊ' },
+        { en:'born', uz:'tug\'ilgan', ipa:'bɔːrn' },
+        { en:'today', uz:'bugun', ipa:'təˈdeɪ' },
+        { en:'tomorrow', uz:'ertaga', ipa:'təˈmɑːroʊ' },
+        { en:'night', uz:'tun', ipa:'naɪt' },
+        { en:'evening', uz:'kechqurun', ipa:'ˈiːvnɪŋ' },
+        { en:'afternoon', uz:'tushdan keyin', ipa:'ˌæftərˈnuːn' },
+        { en:'time', uz:'vaqt', ipa:'taɪm' },
+        { en:'happy', uz:'baxtli', ipa:'ˈhæpi' },
+        { en:'sad', uz:'xafa', ipa:'sæd' },
+        { en:'tired', uz:'charchagan', ipa:'ˈtaɪərd' },
+        { en:'angry', uz:'jahli chiqqan', ipa:'ˈæŋɡri' },
+        { en:'hungry', uz:'och', ipa:'ˈhʌŋɡri' },
+        { en:'thirsty', uz:'chanqagan', ipa:'ˈθɜːrsti' },
+        { en:'ill', uz:'kasal', ipa:'ɪl' },
+        { en:'cold', uz:'sovuq', ipa:'koʊld' },
+        { en:'hot', uz:'issiq', ipa:'hɑːt' },
+        { en:'weather', uz:'ob-havo', ipa:'ˈweðər' },
+        { en:'at', uz:'-da (joy yoki vaqt)', ipa:'æt' },
+      ],
       tasks:['build','listen','translate','write','translate','build'] },
     { id:'A1-10', title:'O\'tgan hafta voqealari',
       can:'O\'tgan kunlarda nima qilganim haqida hikoya qila olaman',
       grammar:'O\'tgan zamon — muntazam fe\'llar (Past Simple, regular verbs, -ed)',
-      words:['finish','start','open','close','watch','listen','call','walk','wait','visit','travel','arrive','stay','love','learn','use','decide','look','talk','film','letter','holiday','station','hotel','then'],
+      explain:'Formula: fe\'l + -ed (work → worked) · inkor: did not (didn\'t) + fe\'l\nMisol: I visited my friend last week. — O\'tgan hafta do\'stimnikiga bordim.\nMisol: We didn\'t watch the film. — Biz kinoni ko\'rmadik.',
+      words:[
+        { en:'finish', uz:'tugatmoq', ipa:'ˈfɪnɪʃ' },
+        { en:'start', uz:'boshlamoq', ipa:'stɑːrt' },
+        { en:'open', uz:'ochmoq', ipa:'ˈoʊpən' },
+        { en:'close', uz:'yopmoq', ipa:'kloʊz' },
+        { en:'watch', uz:'tomosha qilmoq', ipa:'wɑːtʃ' },
+        { en:'listen', uz:'tinglamoq', ipa:'ˈlɪsn' },
+        { en:'call', uz:'qo\'ng\'iroq qilmoq', ipa:'kɔːl' },
+        { en:'walk', uz:'piyoda yurmoq', ipa:'wɔːk' },
+        { en:'wait', uz:'kutmoq', ipa:'weɪt' },
+        { en:'visit', uz:'tashrif buyurmoq', ipa:'ˈvɪzɪt' },
+        { en:'travel', uz:'sayohat qilmoq', ipa:'ˈtrævl' },
+        { en:'arrive', uz:'yetib bormoq', ipa:'əˈraɪv' },
+        { en:'stay', uz:'qolmoq', ipa:'steɪ' },
+        { en:'love', uz:'sevmoq', ipa:'lʌv' },
+        { en:'learn', uz:'o\'rganmoq', ipa:'lɜːrn' },
+        { en:'use', uz:'ishlatmoq', ipa:'juːz' },
+        { en:'decide', uz:'qaror qilmoq', ipa:'dɪˈsaɪd' },
+        { en:'look', uz:'qaramoq', ipa:'lʊk' },
+        { en:'talk', uz:'suhbatlashmoq', ipa:'tɔːk' },
+        { en:'film', uz:'kino', ipa:'fɪlm' },
+        { en:'letter', uz:'xat; harf', ipa:'ˈletər' },
+        { en:'holiday', uz:'ta\'til, bayram', ipa:'ˈhɑːlədeɪ' },
+        { en:'station', uz:'bekat', ipa:'ˈsteɪʃn' },
+        { en:'hotel', uz:'mehmonxona', ipa:'hoʊˈtel' },
+        { en:'then', uz:'keyin, so\'ng', ipa:'ðen' },
+      ],
       tasks:['write','translate','build','listen','write','translate'] },
     { id:'A1-11', title:'Hozir nima bo\'lyapti',
       can:'Hozir shu daqiqada nima qilayotganimni ayta olaman',
       grammar:'Hozirgi davomli zamon — am/is/are + -ing (Present Continuous)',
-      words:['now','moment','wear','sit','stand','sleep','smile','carry','buy','make','take','give','put','clothes','shirt','dress','shoes','phone','computer','picture','outside','inside','still','busy','of'],
+      explain:'Formula: am/is/are + fe\'l + -ing\nMisol: I am reading a book now. — Men hozir kitob o\'qiyapman.\nMisol: They are sitting outside. — Ular tashqarida o\'tirishibdi.',
+      words:[
+        { en:'now', uz:'hozir', ipa:'naʊ' },
+        { en:'moment', uz:'daqiqa, lahza', ipa:'ˈmoʊmənt' },
+        { en:'wear', uz:'kiyib yurmoq', ipa:'wer' },
+        { en:'sit', uz:'o\'tirmoq', ipa:'sɪt' },
+        { en:'stand', uz:'turmoq', ipa:'stænd' },
+        { en:'sleep', uz:'uxlamoq', ipa:'sliːp' },
+        { en:'smile', uz:'jilmaymoq', ipa:'smaɪl' },
+        { en:'carry', uz:'ko\'tarib yurmoq', ipa:'ˈkæri' },
+        { en:'buy', uz:'sotib olmoq', ipa:'baɪ' },
+        { en:'make', uz:'yasamoq, tayyorlamoq', ipa:'meɪk' },
+        { en:'take', uz:'olmoq', ipa:'teɪk' },
+        { en:'give', uz:'bermoq', ipa:'ɡɪv' },
+        { en:'put', uz:'qo\'ymoq', ipa:'pʊt' },
+        { en:'clothes', uz:'kiyim', ipa:'kloʊðz' },
+        { en:'shirt', uz:'ko\'ylak (erkak)', ipa:'ʃɜːrt' },
+        { en:'dress', uz:'ko\'ylak (ayol)', ipa:'dres' },
+        { en:'shoes', uz:'oyoq kiyim', ipa:'ʃuːz' },
+        { en:'phone', uz:'telefon', ipa:'foʊn' },
+        { en:'computer', uz:'kompyuter', ipa:'kəmˈpjuːtər' },
+        { en:'picture', uz:'rasm', ipa:'ˈpɪktʃər' },
+        { en:'outside', uz:'tashqarida', ipa:'ˌaʊtˈsaɪd' },
+        { en:'inside', uz:'ichkarida', ipa:'ˌɪnˈsaɪd' },
+        { en:'still', uz:'hali ham', ipa:'stɪl' },
+        { en:'busy', uz:'band', ipa:'ˈbɪzi' },
+        { en:'of', uz:'-ning', ipa:'ʌv' },
+      ],
       tasks:['translate','build','listen','translate','write','build'] },
     { id:'A1-12', title:'Odat va hozirgi holat',
       can:'Odatdagi ish bilan hozirgi ishni farqlab ayta olaman',
       grammar:'Hozirgi oddiy va hozirgi davomli zamonni solishtirish (Present Simple vs Present Continuous)',
-      words:['rain','snow','sun','wind','spring','summer','autumn','winter','weekend','breakfast','lunch','dinner','coffee','bread','meat','fruit','vegetable','restaurant','expensive','delicious','hate','prefer','rarely','while','so'],
+      explain:'Qoida: doimiy odat → Present Simple · hozir sodir bo\'layotgan ish → Present Continuous\nMisol: I drink coffee every morning. — Men har kuni ertalab kofe ichaman.\nMisol: I am drinking tea now. — Men hozir choy ichyapman.',
+      words:[
+        { en:'rain', uz:'yomg\'ir', ipa:'reɪn' },
+        { en:'snow', uz:'qor', ipa:'snoʊ' },
+        { en:'sun', uz:'quyosh', ipa:'sʌn' },
+        { en:'wind', uz:'shamol', ipa:'wɪnd' },
+        { en:'spring', uz:'bahor', ipa:'sprɪŋ' },
+        { en:'summer', uz:'yoz', ipa:'ˈsʌmər' },
+        { en:'autumn', uz:'kuz', ipa:'ˈɔːtəm' },
+        { en:'winter', uz:'qish', ipa:'ˈwɪntər' },
+        { en:'weekend', uz:'dam olish kunlari', ipa:'ˈwiːkend' },
+        { en:'breakfast', uz:'nonushta', ipa:'ˈbrekfəst' },
+        { en:'lunch', uz:'tushlik', ipa:'lʌntʃ' },
+        { en:'dinner', uz:'kechki ovqat', ipa:'ˈdɪnər' },
+        { en:'coffee', uz:'kofe', ipa:'ˈkɔːfi' },
+        { en:'bread', uz:'non', ipa:'bred' },
+        { en:'meat', uz:'go\'sht', ipa:'miːt' },
+        { en:'fruit', uz:'meva', ipa:'fruːt' },
+        { en:'vegetable', uz:'sabzavot', ipa:'ˈvedʒtəbl' },
+        { en:'restaurant', uz:'restoran', ipa:'ˈrestrɑːnt' },
+        { en:'expensive', uz:'qimmat', ipa:'ɪkˈspensɪv' },
+        { en:'delicious', uz:'mazali', ipa:'dɪˈlɪʃəs' },
+        { en:'hate', uz:'yomon ko\'rmoq', ipa:'heɪt' },
+        { en:'prefer', uz:'afzal ko\'rmoq', ipa:'prɪˈfɜːr' },
+        { en:'rarely', uz:'kamdan-kam', ipa:'ˈrerli' },
+        { en:'while', uz:'-ayotganda, vaqtida', ipa:'waɪl' },
+        { en:'so', uz:'shuning uchun', ipa:'soʊ' },
+      ],
       tasks:['build','write','translate','listen','build','translate'] },
   ],
   A2: [
     { id:'A2-01', title:'O\'tgan zamon voqealari',
       can:'O\'tmishda sodir bo\'lgan voqealar haqida gapira olaman',
       grammar:'O\'tgan zamon — noto\'g\'ri fe\'llar: become-became, bring-brought (Past Simple, irregular verbs)',
-      words:['become','begin','break','bring','catch','choose','feel','find','forget','hear','keep','leave','lose','send','sell','spend','teach','throw','win','ring','wake','hurt','happen','suddenly','finally'],
+      explain:'Qoida: noto\'g\'ri fe\'llar -ed olmaydi, shakli butunlay o\'zgaradi\nMisol: I lost my keys yesterday. (lose → lost) — Kecha kalitlarimni yo\'qotdim.\nMisol: She brought a book. (bring → brought) — U kitob olib keldi.',
+      words:[
+        { en:'become', uz:'bo\'lmoq, aylanmoq', ipa:'bɪˈkʌm' },
+        { en:'begin', uz:'boshlamoq', ipa:'bɪˈɡɪn' },
+        { en:'break', uz:'sindirmoq', ipa:'breɪk' },
+        { en:'bring', uz:'olib kelmoq', ipa:'brɪŋ' },
+        { en:'catch', uz:'ushlamoq', ipa:'kætʃ' },
+        { en:'choose', uz:'tanlamoq', ipa:'tʃuːz' },
+        { en:'feel', uz:'his qilmoq', ipa:'fiːl' },
+        { en:'find', uz:'topmoq', ipa:'faɪnd' },
+        { en:'forget', uz:'unutmoq', ipa:'fərˈɡet' },
+        { en:'hear', uz:'eshitmoq', ipa:'hɪr' },
+        { en:'keep', uz:'saqlamoq', ipa:'kiːp' },
+        { en:'leave', uz:'ketmoq; qoldirmoq', ipa:'liːv' },
+        { en:'lose', uz:'yo\'qotmoq', ipa:'luːz' },
+        { en:'send', uz:'jo\'natmoq', ipa:'send' },
+        { en:'sell', uz:'sotmoq', ipa:'sel' },
+        { en:'spend', uz:'sarflamoq', ipa:'spend' },
+        { en:'teach', uz:'o\'rgatmoq', ipa:'tiːtʃ' },
+        { en:'throw', uz:'uloqtirmoq', ipa:'θroʊ' },
+        { en:'win', uz:'yutmoq, g\'olib bo\'lmoq', ipa:'wɪn' },
+        { en:'ring', uz:'jiringlamoq', ipa:'rɪŋ' },
+        { en:'wake', uz:'uyg\'onmoq', ipa:'weɪk' },
+        { en:'hurt', uz:'og\'ritmoq', ipa:'hɜːrt' },
+        { en:'happen', uz:'sodir bo\'lmoq', ipa:'ˈhæpən' },
+        { en:'suddenly', uz:'to\'satdan', ipa:'ˈsʌdənli' },
+        { en:'finally', uz:'nihoyat', ipa:'ˈfaɪnəli' },
+      ],
       tasks:['translate','build','listen','write','translate','build'] },
     { id:'A2-02', title:'Narsalarni taqqoslash',
       can:'Ikki narsani bir-biri bilan taqqoslay olaman',
       grammar:'Sifatlarning qiyosiy darajasi — -er va more + than (comparative adjectives)',
-      words:['strong','weak','tall','short','heavy','light','thick','thin','wide','narrow','deep','safe','dangerous','modern','comfortable','popular','famous','boring','interesting','than','more','less','enough','quite','similar'],
+      explain:'Formula: qisqa sifat + -er + than · uzun sifat: more + sifat + than\nMisol: This bag is heavier than that one. — Bu sumka anavidan og\'irroq.\nMisol: Tashkent is more modern than my village. — Toshkent qishlog\'imdan zamonaviyroq.',
+      words:[
+        { en:'strong', uz:'kuchli', ipa:'strɔːŋ' },
+        { en:'weak', uz:'kuchsiz', ipa:'wiːk' },
+        { en:'tall', uz:'baland bo\'yli', ipa:'tɔːl' },
+        { en:'short', uz:'kalta; past bo\'yli', ipa:'ʃɔːrt' },
+        { en:'heavy', uz:'og\'ir', ipa:'ˈhevi' },
+        { en:'light', uz:'yengil; yorug\'', ipa:'laɪt' },
+        { en:'thick', uz:'qalin', ipa:'θɪk' },
+        { en:'thin', uz:'ingichka, ozg\'in', ipa:'θɪn' },
+        { en:'wide', uz:'keng', ipa:'waɪd' },
+        { en:'narrow', uz:'tor', ipa:'ˈnæroʊ' },
+        { en:'deep', uz:'chuqur', ipa:'diːp' },
+        { en:'safe', uz:'xavfsiz', ipa:'seɪf' },
+        { en:'dangerous', uz:'xavfli', ipa:'ˈdeɪndʒərəs' },
+        { en:'modern', uz:'zamonaviy', ipa:'ˈmɑːdərn' },
+        { en:'comfortable', uz:'qulay', ipa:'ˈkʌmftəbl' },
+        { en:'popular', uz:'ommabop', ipa:'ˈpɑːpjələr' },
+        { en:'famous', uz:'mashhur', ipa:'ˈfeɪməs' },
+        { en:'boring', uz:'zerikarli', ipa:'ˈbɔːrɪŋ' },
+        { en:'interesting', uz:'qiziqarli', ipa:'ˈɪntrəstɪŋ' },
+        { en:'than', uz:'-dan (qiyoslashda)', ipa:'ðæn' },
+        { en:'more', uz:'ko\'proq', ipa:'mɔːr' },
+        { en:'less', uz:'kamroq', ipa:'les' },
+        { en:'enough', uz:'yetarli', ipa:'ɪˈnʌf' },
+        { en:'quite', uz:'ancha, ancha-muncha', ipa:'kwaɪt' },
+        { en:'similar', uz:'o\'xshash', ipa:'ˈsɪmələr' },
+      ],
       tasks:['build','translate','write','listen','build','translate'] },
     { id:'A2-03', title:'Eng yaxshi va eng yomon',
       can:'Guruh ichidan eng zo\'rini ajratib ayta olaman',
       grammar:'Sifatlarning orttirma darajasi — the -est va the most (superlative adjectives)',
-      words:['high','low','rich','poor','beautiful','ugly','important','useful','funny','serious','lucky','strange','perfect','terrible','wonderful','amazing','best','worst','most','least','place','choice','top','among','mountain'],
+      explain:'Formula: the + qisqa sifat + -est · the most + uzun sifat\nMisol: This is the highest mountain. — Bu eng baland tog\'.\nMisol: She is the most beautiful singer. — U eng go\'zal qo\'shiqchi.',
+      words:[
+        { en:'high', uz:'baland', ipa:'haɪ' },
+        { en:'low', uz:'past', ipa:'loʊ' },
+        { en:'rich', uz:'boy', ipa:'rɪtʃ' },
+        { en:'poor', uz:'kambag\'al', ipa:'pʊr' },
+        { en:'beautiful', uz:'go\'zal', ipa:'ˈbjuːtɪfl' },
+        { en:'ugly', uz:'xunuk', ipa:'ˈʌɡli' },
+        { en:'important', uz:'muhim', ipa:'ɪmˈpɔːrtnt' },
+        { en:'useful', uz:'foydali', ipa:'ˈjuːsfl' },
+        { en:'funny', uz:'kulgili', ipa:'ˈfʌni' },
+        { en:'serious', uz:'jiddiy', ipa:'ˈsɪriəs' },
+        { en:'lucky', uz:'omadli', ipa:'ˈlʌki' },
+        { en:'strange', uz:'g\'alati', ipa:'streɪndʒ' },
+        { en:'perfect', uz:'mukammal', ipa:'ˈpɜːrfɪkt' },
+        { en:'terrible', uz:'dahshatli', ipa:'ˈterəbl' },
+        { en:'wonderful', uz:'ajoyib', ipa:'ˈwʌndərfl' },
+        { en:'amazing', uz:'hayratlanarli', ipa:'əˈmeɪzɪŋ' },
+        { en:'best', uz:'eng yaxshi', ipa:'best' },
+        { en:'worst', uz:'eng yomon', ipa:'wɜːrst' },
+        { en:'most', uz:'eng (ko\'p)', ipa:'moʊst' },
+        { en:'least', uz:'eng kam', ipa:'liːst' },
+        { en:'place', uz:'joy', ipa:'pleɪs' },
+        { en:'choice', uz:'tanlov', ipa:'tʃɔɪs' },
+        { en:'top', uz:'eng yuqori, cho\'qqi', ipa:'tɑːp' },
+        { en:'among', uz:'orasida (ko\'plik)', ipa:'əˈmʌŋ' },
+        { en:'mountain', uz:'tog\'', ipa:'ˈmaʊntn' },
+      ],
       tasks:['translate','write','build','listen','translate','build'] },
     { id:'A2-04', title:'Rejalar va niyatlar',
       can:'Oldindan tuzilgan rejalarim haqida ayta olaman',
       grammar:'Kelasi zamon rejasi — be going to + fe\'l (be going to for plans)',
-      words:['plan','hope','soon','tonight','trip','ticket','passport','luggage','airport','flight','beach','museum','camping','guide','prepare','pack','arrange','invite','join','meeting','event','party','guest','schedule','abroad'],
+      explain:'Formula: am/is/are + going to + fe\'l\nMisol: I am going to travel next week. — Kelasi hafta sayohat qilmoqchiman.\nMisol: They are going to buy tickets. — Ular chipta olishmoqchi.',
+      words:[
+        { en:'plan', uz:'reja', ipa:'plæn' },
+        { en:'hope', uz:'umid qilmoq', ipa:'hoʊp' },
+        { en:'soon', uz:'tez orada', ipa:'suːn' },
+        { en:'tonight', uz:'bugun kechqurun', ipa:'təˈnaɪt' },
+        { en:'trip', uz:'safar', ipa:'trɪp' },
+        { en:'ticket', uz:'chipta', ipa:'ˈtɪkɪt' },
+        { en:'passport', uz:'pasport', ipa:'ˈpæspɔːrt' },
+        { en:'luggage', uz:'yuk, chamadon', ipa:'ˈlʌɡɪdʒ' },
+        { en:'airport', uz:'aeroport', ipa:'ˈerpɔːrt' },
+        { en:'flight', uz:'parvoz', ipa:'flaɪt' },
+        { en:'beach', uz:'plyaj, qirg\'oq', ipa:'biːtʃ' },
+        { en:'museum', uz:'muzey', ipa:'mjuˈziːəm' },
+        { en:'camping', uz:'chodirda dam olish', ipa:'ˈkæmpɪŋ' },
+        { en:'guide', uz:'yo\'lboshchi, gid', ipa:'ɡaɪd' },
+        { en:'prepare', uz:'tayyorlamoq', ipa:'prɪˈper' },
+        { en:'pack', uz:'yuk joylamoq', ipa:'pæk' },
+        { en:'arrange', uz:'uyushtirmoq', ipa:'əˈreɪndʒ' },
+        { en:'invite', uz:'taklif qilmoq', ipa:'ɪnˈvaɪt' },
+        { en:'join', uz:'qo\'shilmoq', ipa:'dʒɔɪn' },
+        { en:'meeting', uz:'uchrashuv', ipa:'ˈmiːtɪŋ' },
+        { en:'event', uz:'tadbir', ipa:'ɪˈvent' },
+        { en:'party', uz:'ziyofat', ipa:'ˈpɑːrti' },
+        { en:'guest', uz:'mehmon', ipa:'ɡest' },
+        { en:'schedule', uz:'jadval', ipa:'ˈskedʒuːl' },
+        { en:'abroad', uz:'chet elda', ipa:'əˈbrɔːd' },
+      ],
       tasks:['build','listen','translate','write','build','translate'] },
     { id:'A2-05', title:'Kelajak va qarorlar',
       can:'Kelajak haqida taxmin qila olaman va shu zahoti qaror ayta olaman',
       grammar:'Kelasi zamon — will/won\'t, tez qabul qilingan qaror va taxmin uchun (will for future)',
-      words:['will','promise','believe','guess','probably','maybe','sure','worry','offer','order','agree','refuse','forecast','chance','luck','predict','later','certainly','perhaps','wonder','expect','hopefully','message','reply','idea'],
+      explain:'Formula: will + fe\'l (barcha shaxslar uchun bir xil) · inkor: won\'t\nMisol: I think it will rain tomorrow. — Menimcha, ertaga yomg\'ir yog\'adi.\nMisol: I won\'t forget your name. — Ismingizni unutmayman.',
+      words:[
+        { en:'will', uz:'-adi (kelasi zamon)', ipa:'wɪl' },
+        { en:'promise', uz:'va\'da bermoq', ipa:'ˈprɑːmɪs' },
+        { en:'believe', uz:'ishonmoq', ipa:'bɪˈliːv' },
+        { en:'guess', uz:'taxmin qilmoq', ipa:'ɡes' },
+        { en:'probably', uz:'ehtimol', ipa:'ˈprɑːbəbli' },
+        { en:'maybe', uz:'balki', ipa:'ˈmeɪbi' },
+        { en:'sure', uz:'ishonchli, aniq', ipa:'ʃʊr' },
+        { en:'worry', uz:'xavotirlanmoq', ipa:'ˈwɜːri' },
+        { en:'offer', uz:'taklif qilmoq', ipa:'ˈɔːfər' },
+        { en:'order', uz:'buyurtma bermoq', ipa:'ˈɔːrdər' },
+        { en:'agree', uz:'rozi bo\'lmoq', ipa:'əˈɡriː' },
+        { en:'refuse', uz:'rad etmoq', ipa:'rɪˈfjuːz' },
+        { en:'forecast', uz:'prognoz', ipa:'ˈfɔːrkæst' },
+        { en:'chance', uz:'imkoniyat', ipa:'tʃæns' },
+        { en:'luck', uz:'omad', ipa:'lʌk' },
+        { en:'predict', uz:'bashorat qilmoq', ipa:'prɪˈdɪkt' },
+        { en:'later', uz:'keyinroq', ipa:'ˈleɪtər' },
+        { en:'certainly', uz:'albatta', ipa:'ˈsɜːrtnli' },
+        { en:'perhaps', uz:'ehtimol, balki', ipa:'pərˈhæps' },
+        { en:'wonder', uz:'qiziqmoq, o\'ylab qolmoq', ipa:'ˈwʌndər' },
+        { en:'expect', uz:'kutmoq (natijani)', ipa:'ɪkˈspekt' },
+        { en:'hopefully', uz:'umid qilamanki', ipa:'ˈhoʊpfəli' },
+        { en:'message', uz:'xabar', ipa:'ˈmesɪdʒ' },
+        { en:'reply', uz:'javob bermoq', ipa:'rɪˈplaɪ' },
+        { en:'idea', uz:'fikr, g\'oya', ipa:'aɪˈdiːə' },
+      ],
       tasks:['translate','build','write','translate','listen','build'] },
     { id:'A2-06', title:'Hayotiy tajriba',
       can:'Hayotimda nima qilganim yoki qilmaganim haqida ayta olaman',
       grammar:'Present Perfect kirish — have/has + III shakl, ever/never/just bilan (Present Perfect)',
-      words:['ever','just','already','yet','before','experience','adventure','taste','try','climb','achieve','discover','explore','appear','notice','recently','twice','once','several','memory','story','life','change','since','island'],
+      explain:'Formula: have/has + fe\'lning III shakli\nMisol: I have never been to London. — Men hech qachon Londonda bo\'lmaganman.\nMisol: She has just finished her work. — U hozirgina ishini tugatdi.',
+      words:[
+        { en:'ever', uz:'hech qachon (savolda)', ipa:'ˈevər' },
+        { en:'just', uz:'hozirgina', ipa:'dʒʌst' },
+        { en:'already', uz:'allaqachon', ipa:'ɔːlˈredi' },
+        { en:'yet', uz:'hali (inkor/savolda)', ipa:'jet' },
+        { en:'before', uz:'oldin, ilgari', ipa:'bɪˈfɔːr' },
+        { en:'experience', uz:'tajriba', ipa:'ɪkˈspɪriəns' },
+        { en:'adventure', uz:'sarguzasht', ipa:'ədˈventʃər' },
+        { en:'taste', uz:'ta\'tib ko\'rmoq', ipa:'teɪst' },
+        { en:'try', uz:'urinib ko\'rmoq', ipa:'traɪ' },
+        { en:'climb', uz:'chiqmoq (tog\'ga)', ipa:'klaɪm' },
+        { en:'achieve', uz:'erishmoq', ipa:'əˈtʃiːv' },
+        { en:'discover', uz:'kashf qilmoq', ipa:'dɪˈskʌvər' },
+        { en:'explore', uz:'o\'rganib chiqmoq', ipa:'ɪkˈsplɔːr' },
+        { en:'appear', uz:'paydo bo\'lmoq', ipa:'əˈpɪr' },
+        { en:'notice', uz:'payqamoq', ipa:'ˈnoʊtɪs' },
+        { en:'recently', uz:'yaqinda', ipa:'ˈriːsntli' },
+        { en:'twice', uz:'ikki marta', ipa:'twaɪs' },
+        { en:'once', uz:'bir marta', ipa:'wʌns' },
+        { en:'several', uz:'bir nechta', ipa:'ˈsevrəl' },
+        { en:'memory', uz:'xotira', ipa:'ˈmeməri' },
+        { en:'story', uz:'hikoya', ipa:'ˈstɔːri' },
+        { en:'life', uz:'hayot', ipa:'laɪf' },
+        { en:'change', uz:'o\'zgartirmoq', ipa:'tʃeɪndʒ' },
+        { en:'since', uz:'-dan beri', ipa:'sɪns' },
+        { en:'island', uz:'orol', ipa:'ˈaɪlənd' },
+      ],
       tasks:['write','translate','build','listen','translate','build'] },
     { id:'A2-07', title:'Miqdor va oziq-ovqat',
       can:'Narsalarning miqdorini aniq ayta olaman',
       grammar:'Miqdor so\'zlari — some/any, much/many, a lot of, a few, a little (quantifiers)',
-      words:['much','any','few','plenty','amount','bottle','glass','piece','slice','packet','bowl','plate','spoon','knife','fork','sugar','salt','rice','milk','cheese','juice','soup','butter','honey','flour'],
+      explain:'Qoida: sanaladigan → many, a few · sanalmaydigan → much, a little · tasdiqda some, inkor/savolda any\nMisol: There isn\'t much milk. — Sut ko\'p emas.\nMisol: I need a few eggs. — Menga bir nechta tuxum kerak.',
+      words:[
+        { en:'much', uz:'ko\'p (sanalmaydigan)', ipa:'mʌtʃ' },
+        { en:'any', uz:'biror, hech', ipa:'ˈeni' },
+        { en:'few', uz:'kam (sanaladigan)', ipa:'fjuː' },
+        { en:'plenty', uz:'mo\'l-ko\'l', ipa:'ˈplenti' },
+        { en:'amount', uz:'miqdor', ipa:'əˈmaʊnt' },
+        { en:'bottle', uz:'shisha', ipa:'ˈbɑːtl' },
+        { en:'glass', uz:'stakan; shisha', ipa:'ɡlæs' },
+        { en:'piece', uz:'bo\'lak', ipa:'piːs' },
+        { en:'slice', uz:'tilim', ipa:'slaɪs' },
+        { en:'packet', uz:'paket', ipa:'ˈpækɪt' },
+        { en:'bowl', uz:'kosa', ipa:'boʊl' },
+        { en:'plate', uz:'likopcha', ipa:'pleɪt' },
+        { en:'spoon', uz:'qoshiq', ipa:'spuːn' },
+        { en:'knife', uz:'pichoq', ipa:'naɪf' },
+        { en:'fork', uz:'vilka', ipa:'fɔːrk' },
+        { en:'sugar', uz:'shakar', ipa:'ˈʃʊɡər' },
+        { en:'salt', uz:'tuz', ipa:'sɔːlt' },
+        { en:'rice', uz:'guruch', ipa:'raɪs' },
+        { en:'milk', uz:'sut', ipa:'mɪlk' },
+        { en:'cheese', uz:'pishloq', ipa:'tʃiːz' },
+        { en:'juice', uz:'sharbat', ipa:'dʒuːs' },
+        { en:'soup', uz:'sho\'rva', ipa:'suːp' },
+        { en:'butter', uz:'sariyog\'', ipa:'ˈbʌtər' },
+        { en:'honey', uz:'asal', ipa:'ˈhʌni' },
+        { en:'flour', uz:'un', ipa:'ˈflaʊər' },
+      ],
       tasks:['translate','build','listen','write','build','translate'] },
     { id:'A2-08', title:'Maslahat va majburiyat',
       can:'Maslahat bera olaman va nima qilish shartligini ayta olaman',
       grammar:'Modal fe\'llar — should (maslahat), must va have to (majburiyat) (modal verbs)',
-      words:['should','must','advice','rule','law','allow','forbid','permission','duty','responsible','health','doctor','medicine','exercise','rest','danger','careful','warning','sign','behave','polite','respect','obey','necessary','smoke'],
+      explain:'Qoida: should = maslahat · must = qat\'iy shart · have to = tashqi majburiyat\nMisol: You should rest more. — Ko\'proq dam olishingiz kerak.\nMisol: We must obey the rules. — Biz qoidalarga bo\'ysunishimiz shart.',
+      words:[
+        { en:'should', uz:'kerak (maslahat)', ipa:'ʃʊd' },
+        { en:'must', uz:'shart, majbur', ipa:'mʌst' },
+        { en:'advice', uz:'maslahat', ipa:'ədˈvaɪs' },
+        { en:'rule', uz:'qoida', ipa:'ruːl' },
+        { en:'law', uz:'qonun', ipa:'lɔː' },
+        { en:'allow', uz:'ruxsat bermoq', ipa:'əˈlaʊ' },
+        { en:'forbid', uz:'taqiqlamoq', ipa:'fərˈbɪd' },
+        { en:'permission', uz:'ruxsat', ipa:'pərˈmɪʃn' },
+        { en:'duty', uz:'burch', ipa:'ˈduːti' },
+        { en:'responsible', uz:'mas\'ul', ipa:'rɪˈspɑːnsəbl' },
+        { en:'health', uz:'sog\'liq', ipa:'helθ' },
+        { en:'doctor', uz:'shifokor', ipa:'ˈdɑːktər' },
+        { en:'medicine', uz:'dori', ipa:'ˈmedsn' },
+        { en:'exercise', uz:'mashq', ipa:'ˈeksərsaɪz' },
+        { en:'rest', uz:'dam olmoq', ipa:'rest' },
+        { en:'danger', uz:'xavf', ipa:'ˈdeɪndʒər' },
+        { en:'careful', uz:'ehtiyotkor', ipa:'ˈkerfl' },
+        { en:'warning', uz:'ogohlantirish', ipa:'ˈwɔːrnɪŋ' },
+        { en:'sign', uz:'belgi, ishora', ipa:'saɪn' },
+        { en:'behave', uz:'o\'zini tutmoq', ipa:'bɪˈheɪv' },
+        { en:'polite', uz:'odobli', ipa:'pəˈlaɪt' },
+        { en:'respect', uz:'hurmat qilmoq', ipa:'rɪˈspekt' },
+        { en:'obey', uz:'bo\'ysunmoq', ipa:'əˈbeɪ' },
+        { en:'necessary', uz:'zarur', ipa:'ˈnesəseri' },
+        { en:'smoke', uz:'chekmoq', ipa:'smoʊk' },
+      ],
       tasks:['build','translate','write','listen','translate','build'] },
     { id:'A2-09', title:'Ish-harakat tarzi',
       can:'Ishni qanday bajarganimni tasvirlab bera olaman',
       grammar:'Tarz ravishlari — sifatga -ly qo\'shish, sifat va ravish farqi (adverbs of manner)',
-      words:['quickly','slowly','carefully','quietly','loudly','badly','politely','angrily','happily','easily','clearly','correctly','hardly','nearly','almost','exactly','completely','seriously','silently','patiently','behaviour','manner','speed','voice','movement'],
+      explain:'Formula: sifat + -ly = ravish (quick → quickly)\nQoida: sifat otni, ravish fe\'lni izohlaydi\nMisol: He is a careful driver. He drives carefully. — U ehtiyotkor haydovchi. U ehtiyotkorlik bilan haydaydi.',
+      words:[
+        { en:'quickly', uz:'tez', ipa:'ˈkwɪkli' },
+        { en:'slowly', uz:'sekin', ipa:'ˈsloʊli' },
+        { en:'carefully', uz:'ehtiyotkorlik bilan', ipa:'ˈkerfəli' },
+        { en:'quietly', uz:'ohista', ipa:'ˈkwaɪətli' },
+        { en:'loudly', uz:'baland ovozda', ipa:'ˈlaʊdli' },
+        { en:'badly', uz:'yomon', ipa:'ˈbædli' },
+        { en:'politely', uz:'odob bilan', ipa:'pəˈlaɪtli' },
+        { en:'angrily', uz:'jahl bilan', ipa:'ˈæŋɡrəli' },
+        { en:'happily', uz:'xursandchilik bilan', ipa:'ˈhæpɪli' },
+        { en:'easily', uz:'osonlik bilan', ipa:'ˈiːzəli' },
+        { en:'clearly', uz:'aniq, ravshan', ipa:'ˈklɪrli' },
+        { en:'correctly', uz:'to\'g\'ri', ipa:'kəˈrektli' },
+        { en:'hardly', uz:'deyarli emas', ipa:'ˈhɑːrdli' },
+        { en:'nearly', uz:'deyarli', ipa:'ˈnɪrli' },
+        { en:'almost', uz:'deyarli, oz qoldi', ipa:'ˈɔːlmoʊst' },
+        { en:'exactly', uz:'aynan', ipa:'ɪɡˈzæktli' },
+        { en:'completely', uz:'butunlay', ipa:'kəmˈpliːtli' },
+        { en:'seriously', uz:'jiddiy', ipa:'ˈsɪriəsli' },
+        { en:'silently', uz:'jimgina', ipa:'ˈsaɪləntli' },
+        { en:'patiently', uz:'sabr bilan', ipa:'ˈpeɪʃntli' },
+        { en:'behaviour', uz:'xulq, yurish-turish', ipa:'bɪˈheɪvjər' },
+        { en:'manner', uz:'uslub, tarz', ipa:'ˈmænər' },
+        { en:'speed', uz:'tezlik', ipa:'spiːd' },
+        { en:'voice', uz:'ovoz', ipa:'vɔɪs' },
+        { en:'movement', uz:'harakat', ipa:'ˈmuːvmənt' },
+      ],
       tasks:['translate','listen','build','write','translate','build'] },
     { id:'A2-10', title:'Shart va natija',
       can:'Shart qo\'yib, natijasi nima bo\'lishini ayta olaman',
       grammar:'Birinchi shart gap — if + Present Simple, will + fe\'l (First Conditional)',
-      words:['if','unless','result','cause','effect','problem','solution','risk','avoid','prevent','succeed','mistake','repair','save','waste','borrow','earn','cost','price','money','otherwise','possible','impossible','situation','depend'],
+      explain:'Formula: If + Present Simple, will + fe\'l\nMisol: If it rains, we will stay at home. — Agar yomg\'ir yog\'sa, uyda qolamiz.\nMisol: If you study hard, you will succeed. — Qattiq o\'qisang, muvaffaqiyat qozonasan.',
+      words:[
+        { en:'if', uz:'agar', ipa:'ɪf' },
+        { en:'unless', uz:'agar ... bo\'lmasa', ipa:'ənˈles' },
+        { en:'result', uz:'natija', ipa:'rɪˈzʌlt' },
+        { en:'cause', uz:'sabab', ipa:'kɔːz' },
+        { en:'effect', uz:'ta\'sir', ipa:'ɪˈfekt' },
+        { en:'problem', uz:'muammo', ipa:'ˈprɑːbləm' },
+        { en:'solution', uz:'yechim', ipa:'səˈluːʃn' },
+        { en:'risk', uz:'xavf, tavakkal', ipa:'rɪsk' },
+        { en:'avoid', uz:'qochmoq, chetlab o\'tmoq', ipa:'əˈvɔɪd' },
+        { en:'prevent', uz:'oldini olmoq', ipa:'prɪˈvent' },
+        { en:'succeed', uz:'muvaffaqiyat qozonmoq', ipa:'səkˈsiːd' },
+        { en:'mistake', uz:'xato', ipa:'mɪˈsteɪk' },
+        { en:'repair', uz:'ta\'mirlamoq', ipa:'rɪˈper' },
+        { en:'save', uz:'tejamoq; saqlamoq', ipa:'seɪv' },
+        { en:'waste', uz:'isrof qilmoq', ipa:'weɪst' },
+        { en:'borrow', uz:'qarz olmoq', ipa:'ˈbɑːroʊ' },
+        { en:'earn', uz:'topmoq (pul)', ipa:'ɜːrn' },
+        { en:'cost', uz:'turmoq (narxi)', ipa:'kɔːst' },
+        { en:'price', uz:'narx', ipa:'praɪs' },
+        { en:'money', uz:'pul', ipa:'ˈmʌni' },
+        { en:'otherwise', uz:'aks holda', ipa:'ˈʌðərwaɪz' },
+        { en:'possible', uz:'mumkin', ipa:'ˈpɑːsəbl' },
+        { en:'impossible', uz:'imkonsiz', ipa:'ɪmˈpɑːsəbl' },
+        { en:'situation', uz:'vaziyat', ipa:'ˌsɪtʃuˈeɪʃn' },
+        { en:'depend', uz:'bog\'liq bo\'lmoq', ipa:'dɪˈpend' },
+      ],
       tasks:['build','write','translate','listen','build','translate'] },
     { id:'A2-11', title:'Tajriba va aniq vaqt',
       can:'Umumiy tajriba bilan aniq vaqtdagi voqeani farqlab ayta olaman',
       grammar:'Present Perfect va Past Simple farqi — aniq vaqt bo\'lsa Past Simple (Present Perfect vs Past Simple)',
-      words:['lately','during','until','whole','career','job','company','business','project','manager','employee','customer','salary','interview','apply','hire','retire','skill','success','failure','progress','improve','report','team','goal'],
+      explain:'Qoida: aniq vaqt aytilsa (yesterday, in 2020) → Past Simple · vaqt noaniq bo\'lsa → Present Perfect\nMisol: I have worked here for two years. — Bu yerda ikki yildan beri ishlayman.\nMisol: I worked there in 2020. — U yerda 2020-yilda ishlaganman.',
+      words:[
+        { en:'lately', uz:'so\'nggi paytda', ipa:'ˈleɪtli' },
+        { en:'during', uz:'davomida', ipa:'ˈdʊrɪŋ' },
+        { en:'until', uz:'-gacha', ipa:'ənˈtɪl' },
+        { en:'whole', uz:'butun', ipa:'hoʊl' },
+        { en:'career', uz:'kasbiy yo\'l', ipa:'kəˈrɪr' },
+        { en:'job', uz:'ish (lavozim)', ipa:'dʒɑːb' },
+        { en:'company', uz:'kompaniya', ipa:'ˈkʌmpəni' },
+        { en:'business', uz:'biznes', ipa:'ˈbɪznəs' },
+        { en:'project', uz:'loyiha', ipa:'ˈprɑːdʒekt' },
+        { en:'manager', uz:'rahbar, menejer', ipa:'ˈmænɪdʒər' },
+        { en:'employee', uz:'xodim', ipa:'ɪmˈplɔɪiː' },
+        { en:'customer', uz:'mijoz', ipa:'ˈkʌstəmər' },
+        { en:'salary', uz:'maosh', ipa:'ˈsæləri' },
+        { en:'interview', uz:'suhbat (ishga qabul)', ipa:'ˈɪntərvjuː' },
+        { en:'apply', uz:'ariza bermoq', ipa:'əˈplaɪ' },
+        { en:'hire', uz:'ishga olmoq', ipa:'ˈhaɪər' },
+        { en:'retire', uz:'nafaqaga chiqmoq', ipa:'rɪˈtaɪər' },
+        { en:'skill', uz:'ko\'nikma', ipa:'skɪl' },
+        { en:'success', uz:'muvaffaqiyat', ipa:'səkˈses' },
+        { en:'failure', uz:'muvaffaqiyatsizlik', ipa:'ˈfeɪljər' },
+        { en:'progress', uz:'taraqqiyot', ipa:'ˈprɑːɡres' },
+        { en:'improve', uz:'yaxshilamoq', ipa:'ɪmˈpruːv' },
+        { en:'report', uz:'hisobot', ipa:'rɪˈpɔːrt' },
+        { en:'team', uz:'jamoa', ipa:'tiːm' },
+        { en:'goal', uz:'maqsad', ipa:'ɡoʊl' },
+      ],
       tasks:['translate','build','write','translate','listen','build'] },
     { id:'A2-12', title:'Narsalar qanday yasaladi',
       can:'Narsa kim tomonidan yoki qayerda qilinishini ayta olaman',
       grammar:'Majhul nisbat kirish — is/are + III shakl, by bilan (Present Simple passive)',
-      words:['produce','build','grow','design','invent','create','deliver','export','import','factory','product','material','metal','wood','plastic','paper','cotton','machine','process','quality','industry','farm','village','government','language'],
+      explain:'Formula: is/are + fe\'lning III shakli (+ by ...)\nMisol: Cotton is grown in Uzbekistan. — Paxta O\'zbekistonda yetishtiriladi.\nMisol: These cars are made by a big company. — Bu mashinalar katta kompaniya tomonidan ishlab chiqariladi.',
+      words:[
+        { en:'produce', uz:'ishlab chiqarmoq', ipa:'prəˈduːs' },
+        { en:'build', uz:'qurmoq', ipa:'bɪld' },
+        { en:'grow', uz:'o\'stirmoq, o\'smoq', ipa:'ɡroʊ' },
+        { en:'design', uz:'loyihalashtirmoq', ipa:'dɪˈzaɪn' },
+        { en:'invent', uz:'ixtiro qilmoq', ipa:'ɪnˈvent' },
+        { en:'create', uz:'yaratmoq', ipa:'kriˈeɪt' },
+        { en:'deliver', uz:'yetkazib bermoq', ipa:'dɪˈlɪvər' },
+        { en:'export', uz:'eksport qilmoq', ipa:'ɪkˈspɔːrt' },
+        { en:'import', uz:'import qilmoq', ipa:'ɪmˈpɔːrt' },
+        { en:'factory', uz:'zavod', ipa:'ˈfæktri' },
+        { en:'product', uz:'mahsulot', ipa:'ˈprɑːdʌkt' },
+        { en:'material', uz:'material, xomashyo', ipa:'məˈtɪriəl' },
+        { en:'metal', uz:'metall', ipa:'ˈmetl' },
+        { en:'wood', uz:'yog\'och', ipa:'wʊd' },
+        { en:'plastic', uz:'plastmassa', ipa:'ˈplæstɪk' },
+        { en:'paper', uz:'qog\'oz', ipa:'ˈpeɪpər' },
+        { en:'cotton', uz:'paxta', ipa:'ˈkɑːtn' },
+        { en:'machine', uz:'mashina, dastgoh', ipa:'məˈʃiːn' },
+        { en:'process', uz:'jarayon', ipa:'ˈprɑːses' },
+        { en:'quality', uz:'sifat', ipa:'ˈkwɑːləti' },
+        { en:'industry', uz:'sanoat', ipa:'ˈɪndəstri' },
+        { en:'farm', uz:'ferma', ipa:'fɑːrm' },
+        { en:'village', uz:'qishloq', ipa:'ˈvɪlɪdʒ' },
+        { en:'government', uz:'hukumat', ipa:'ˈɡʌvərnmənt' },
+        { en:'language', uz:'til', ipa:'ˈlæŋɡwɪdʒ' },
+      ],
       tasks:['write','translate','build','listen','translate','build'] },
   ],
 };
@@ -482,6 +1131,8 @@ function initProgram(level) {
     doneToday: { date: todayStr(), count: 0 },
     calibration: { results: [], checked: false },
     levelExam: { pending: false, attempts: 0, remedial: 0 },
+    lessonsSeen: [],       // darsi ko'rilgan unit id'lari
+    weakUnits: [],         // vazifasi o'tkazib yuborilgan unitlar — imtihonda qaytariladi
     updatedAt: new Date().toISOString(),
   };
 }
@@ -490,6 +1141,61 @@ function getUnit() {
   const p = user.program;
   if (!p) return null;
   return (CURRICULUM[p.level] || [])[p.unitIndex] || null;
+}
+
+// Unit so'zlari — { en, uz, ipa }. Eski satr shaklini ham qabul qiladi (himoya uchun).
+function unitWords(u) {
+  if (!u || !Array.isArray(u.words)) return [];
+  return u.words.map(w => typeof w === 'string'
+    ? { en: w, uz: '', ipa: '' }
+    : { en: w.en || '', uz: w.uz || '', ipa: w.ipa || '' });
+}
+
+// ── Mavzu darsi ──────────────────────────────────────────────────
+// Unit boshida so'zlar va grammatika ko'rsatiladi. Bu AI chaqiruvi EMAS —
+// lokal data, shuning uchun token ham, kutish ham yo'q.
+function needsLesson() {
+  const p = user.program;
+  if (!p) return false;
+  if (p.current) return false;
+  if (p.levelExam.pending) return false;
+  if (p.taskIndex !== 0) return false;
+  const u = getUnit();
+  if (!u) return false;
+  return !(p.lessonsSeen || []).includes(u.id);
+}
+
+function markLessonSeen(unitId) {
+  const p = user.program;
+  if (!p || !unitId) return false;
+  if (!Array.isArray(p.lessonsSeen)) p.lessonsSeen = [];
+  if (p.lessonsSeen.includes(unitId)) return false;
+  p.lessonsSeen.push(unitId);
+  return true;
+}
+
+// Unit so'zlarini lug'atga ko'chiradi — dastur bilan shug'ullanuvchida
+// takrorlash (SRS) birinchi kundanoq ishlashi uchun. XP bermaydi.
+function seedUnitWords(u) {
+  if (!u) return 0;
+  if (!Array.isArray(user.vocabulary)) user.vocabulary = [];
+  const have = new Set(user.vocabulary.map(v => String(v.word || '').toLowerCase()));
+  const now = Date.now();
+  let added = 0;
+  for (const w of unitWords(u)) {
+    if (!w.en || have.has(w.en.toLowerCase())) continue;
+    user.vocabulary.push({
+      word: w.en,
+      translation: w.uz,
+      pronunciation: w.ipa,
+      mastery: 0,
+      addedAt: new Date().toISOString(),
+      nextReview: now,
+    });
+    have.add(w.en.toLowerCase());
+    added++;
+  }
+  return added;
 }
 
 // Joriy qadam turi: vazifa turi, 'unit_exam' yoki 'level_exam'.
@@ -607,8 +1313,31 @@ function applyResult(score) {
   p.current.status = 'failed';
   p.current.attempts++;
   if (p.current.attempts >= MAX_ATTEMPTS_BEFORE_RELIEF) p.current.relief = true;
+  // Yengillashtirilgan variant ham yordam bermasa — o'quvchi tiqilib qolmasin.
+  if (p.current.attempts >= MAX_ATTEMPTS_BEFORE_SKIP) p.current.canSkip = true;
   saveUser();
-  return { ok:true, passed:false, ratio, type, attempts:p.current.attempts, relief:p.current.relief };
+  return { ok:true, passed:false, ratio, type, attempts:p.current.attempts,
+           relief:p.current.relief, canSkip:!!p.current.canSkip };
+}
+
+// Chiqish yo'li: vazifa o'tkazib yuboriladi, lekin XP berilmaydi va unit
+// "o'zlashtirilmagan" deb belgilanadi — unit imtihonida qaytadan so'raladi.
+function skipTask() {
+  const p = user.program;
+  if (!p || !p.current) return { ok:false, reason:'no_task' };
+  if (!p.current.canSkip) return { ok:false, reason:'not_allowed' };
+
+  const u = getUnit();
+  if (u && !Array.isArray(p.weakUnits)) p.weakUnits = [];
+  if (u && !p.weakUnits.includes(u.id)) p.weakUnits.push(u.id);
+
+  const type = p.current.type;
+  p.current = null;
+  rollDaily();
+  p.doneToday.count++;      // kunlik hisobga kiradi — erkin rejimlar ochiladi
+  advance();
+  saveUser();
+  return { ok:true, skipped:true, type, unitId: u ? u.id : null };
 }
 
 // Muvaffaqiyatli qadamdan keyin dasturni oldinga suradi.
@@ -914,6 +1643,7 @@ Javob berilmagan jumla — noto'g'ri.`,
     total: 5,
     issue:`Unit lug'atidan 5 ta so'z tanla va ro'yxat qilib ber — foydalanuvchi har biri bilan bitta inglizcha gap tuzadi.
 Format: 1) word — [o'zbekcha tarjima]
+Tarjimani O'ZING O'YLAB TOPMA — yuqoridagi "Unit lug'ati" ro'yxatidagi tarjimani AYNAN ko'chir.
 Gap namunasini O'ZING BERMA. Faqat 5 ta so'z.`,
     check:`Foydalanuvchi 5 ta gap tuzdi. Har birini ALOHIDA tekshir.
 To'g'ri hisoblanadi: berilgan so'z ISHLATILGAN + gap grammatik to'g'ri + ma'noli.
@@ -943,7 +1673,8 @@ Javob berilmagan savol — noto'g'ri.`,
     issue:`UNIT IMTIHONI. Butun unit bo'yicha 8 ta savol ber:
 1-5) o'zbekchadan inglizchaga tarjima (unit grammatikasi)
 6-8) unit lug'atidan so'z ma'nosi (inglizcha so'z → o'zbekcha tarjimasini so'ra)
-Raqamlangan ro'yxat, javoblarsiz. Boshqa hech narsa yozma.`,
+Raqamlangan ro'yxat, javoblarsiz. Boshqa hech narsa yozma.
+Tekshirishda so'z ma'nosi uchun ETALON — yuqoridagi "Unit lug'ati" ro'yxati.`,
     check:`Unit imtihoni javoblari. 8 ta bandning har birini ALOHIDA tekshir, qat'iy baho ber.`,
   },
   level_exam: {
@@ -970,19 +1701,24 @@ function programContext() {
     lines.push(`Unit ${u.id} — ${u.title}`);
     lines.push(`Maqsad: ${u.can}`);
     lines.push(`Grammatika: ${u.grammar}`);
-    lines.push(`Unit lug'ati (asosan SHULARDAN foydalan): ${u.words.join(', ')}`);
+    // Tarjima ETALON — AI o'zicha o'ylab topmasin, o'quvchi darsda ko'rgani bilan bir xil bo'lsin.
+    lines.push(`Unit lug'ati (asosan SHULARDAN foydalan, tarjimasi AYNAN shunday): ${unitWords(u).map(w => `${w.en} — ${w.uz}`).join('; ')}`);
   }
   const learned = (user.vocabulary || []).slice(-VOCAB_IN_PROMPT).map(v => v.word);
   if (learned.length) {
     lines.push(`Allaqachon o'rgatilgan so'zlar (qayta ishlat, boshqatdan izohlama): ${learned.join(', ')}`);
   }
+  const skipped = (user.program.weakUnits || []).slice(-3);
+  if (skipped.length) {
+    lines.push(`O'zlashtirilmagan unitlar (imtihonda albatta tekshir): ${skipped.join(', ')}`);
+  }
   return lines.join('\n');
 }
 
-// Dastur rejimi uchun to'liq system prompt. phase: 'issue' | 'check'
+// Dastur rejimi uchun to'liq system prompt. phase: 'issue' | 'check' | 'reveal'
 function buildProgramSystem(phase) {
   const p = user.program;
-  const type = phase === 'check' ? p.current?.type : getTaskType();
+  const type = (phase === 'check' || phase === 'reveal') ? p.current?.type : getTaskType();
   const g = TASK_GUIDE[type];
   if (!g) return buildSystem(currentMode);
 
@@ -1012,6 +1748,21 @@ QOIDALAR:
 1. Faqat vazifani yoz. Salomlashish, "omad", "tayyormisiz" kabi gaplar YOZMA.
 2. Javoblarni oshkor qilma.
 3. Yangi so'z kiritsang: 📌 **word** (talaffuz) — [o'zbekcha]`;
+  }
+
+  if (phase === 'reveal') {
+    return `${head}
+
+BERILGAN VAZIFA:
+${p.current?.prompt || '(matn yo\'q)'}
+
+Foydalanuvchi bu vazifani bir necha marta urinib ham bajara olmadi. Endi TO'G'RI JAVOBLARNI o'zing ber.
+1. Har bir band uchun: ✅ To'g'ri javob, so'ng 💡 nega shundayligini o'zbekcha BITTA sodda jumlada tushuntir.
+2. Oxirida mavzu qoidasini 2 qatorda takrorla (formula + 1 misol).
+3. Tanbeh berma, "afsus" dema — xotirjam va qo'llab-quvvatlovchi ohangda yoz.
+4. 📊 NATIJA yozma — bu baholash emas, tushuntirish.
+5. MUHIM: bu javoblar namuna bo'ladi — har bir inglizcha gap grammatik jihatdan MUKAMMAL bo'lsin
+   (artikl a/an/the, to'g'ri zamon, ko'plik). Xato namuna berish mumkin emas.`;
   }
 
   // phase === 'check'
@@ -1221,6 +1972,21 @@ async function submitTask(answer) {
   return { ok:true, text, score, ...r };
 }
 
+// Chiqish yo'li: AI to'g'ri javoblarni tushuntiradi, so'ng vazifa o'tkazib yuboriladi.
+// AI javob bermasa ham o'tkazib yuboriladi — aks holda o'quvchi yana tiqilib qoladi.
+async function revealAndSkip() {
+  const p = user.program;
+  if (!p?.current) return { ok:false, reason:'no_task' };
+  if (!p.current.canSkip) return { ok:false, reason:'not_allowed' };
+
+  history = [];
+  const text = await callAI("To'g'ri javoblarni ko'rsat.", { program:'reveal' });
+  const ok = !isAiError(text);
+  const r = skipTask();
+  if (!r.ok) return r;
+  return { ok:true, skipped:true, text: ok ? text : null, unitId:r.unitId };
+}
+
 function showSettingsModal() {
   const levels = ['A1','A2','B1','B2','C1','C2'];
   const goals = { travel:'✈️ Sayohat', work:'💼 Ish/biznes', ielts:'📝 IELTS/imtihon', daily:'💬 Kundalik muloqot', general:'🌟 Umumiy' };
@@ -1316,12 +2082,12 @@ function renderOnboarding() {
         <div>
           <label class="block text-sm font-medium text-slate-300 mb-1.5">Darajangiz</label>
           <select id="ob-level" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
-            <option value="A1">A1 — Yangi boshlovchi</option>
+            <option value="A1" selected>A1 — Yangi boshlovchi</option>
             <option value="A2">A2 — Boshlang'ich</option>
-            <option value="B1" selected>B1 — O'rta</option>
-            <option value="B2">B2 — O'rta-yuqori</option>
-            <option value="C1">C1 — Ilg'or</option>
-            <option value="C2">C2 — Mukammal</option>
+            <option value="B1" disabled>B1 — O'rta (dastur tayyorlanmoqda)</option>
+            <option value="B2" disabled>B2 — O'rta-yuqori (dastur tayyorlanmoqda)</option>
+            <option value="C1" disabled>C1 — Ilg'or (dastur tayyorlanmoqda)</option>
+            <option value="C2" disabled>C2 — Mukammal (dastur tayyorlanmoqda)</option>
           </select>
         </div>
         <div>
@@ -1484,7 +2250,7 @@ function navTo(tab) {
   if (typeof teardownRec === 'function') teardownRec();
   if (tab === 'home') return renderDashboard();
   if (tab === 'ai')   { currentMode = 'conversation'; history = []; return renderChat(); }
-  if (tab === 'tasks') return renderProgram();
+  if (tab === 'tasks') { lessonOpen = false; return renderProgram(); }
   if (tab === 'tests') { currentMode = 'quiz'; history = []; return renderChat(); }
   if (tab === 'progress') return renderProgress();
 }
@@ -1492,6 +2258,8 @@ function navTo(tab) {
 // ─── VIEW: DASTUR (Vazifalar) ────────────────────────────────────
 let programFeedback = null;   // oxirgi PASS izohi — bir marta ko'rsatiladi
 let programBusy = false;
+let lessonOpen = false;       // mavzu darsi qo'lda ochilganmi
+let programFeedbackKind = 'pass';   // 'pass' | 'skip'
 
 function taskLabel(type) {
   if (type === 'unit_exam')  return { emoji:'📋', title:'Unit imtihoni',   desc:"Butun unit bo'yicha 8 savol" };
@@ -1520,7 +2288,8 @@ function programHeader() {
       <span class="text-xs bg-indigo-900 text-indigo-300 px-2 py-1 rounded-lg whitespace-nowrap">${stepTxt}</span>
     </div>
     ${u ? `<div class="text-xs text-slate-400 mb-2">🎯 ${esc(u.can)}</div>
-    <div class="text-xs text-slate-500 mb-2">📐 ${esc(u.grammar)}</div>` : ''}
+    <div class="text-xs text-slate-500 mb-2">📐 ${esc(u.grammar)}</div>
+    <button id="pg-lesson" class="text-xs bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-1.5 mb-3 transition-colors">📖 Mavzu darsi va so'zlar</button>` : ''}
     <div class="bg-slate-700 rounded-full h-1.5">
       <div class="bg-indigo-500 h-1.5 rounded-full" style="width:${pct}%"></div>
     </div>
@@ -1573,10 +2342,17 @@ function nextStepCard(rm) {
   </div>`;
 }
 
-function resultCard(text, passed) {
+// kind: 'pass' | 'fail' | 'skip'
+function resultCard(text, passed, kind) {
+  const k = kind || (passed ? 'pass' : 'fail');
+  const style = {
+    pass: ['bg-emerald-950 border-emerald-600', 'text-emerald-400', '✅ Vazifa qabul qilindi!'],
+    fail: ['bg-red-950 border-red-600', 'text-red-400', '❌ Hali yetarli emas'],
+    skip: ['bg-slate-800 border-amber-600', 'text-amber-400', "📘 To'g'ri javoblar — o'qib chiqing"],
+  }[k];
   const { html } = renderAI(text);
-  return `<div class="${passed?'bg-emerald-950 border-emerald-600':'bg-red-950 border-red-600'} border rounded-2xl p-4 mb-4">
-    <div class="font-bold mb-2 ${passed?'text-emerald-400':'text-red-400'}">${passed?"✅ Vazifa qabul qilindi!":'❌ Hali yetarli emas'}</div>
+  return `<div class="${style[0]} border rounded-2xl p-4 mb-4">
+    <div class="font-bold mb-2 ${style[1]}">${style[2]}</div>
     <div class="text-sm space-y-1">${html}</div>
   </div>`;
 }
@@ -1601,6 +2377,11 @@ function renderProgram() {
     </div>`;
     bind = () => { document.getElementById('pg-free').onclick = renderDashboard; };
 
+  } else if (lessonOpen || needsLesson()) {
+    // Vazifadan OLDIN mavzu darsi: so'zlar + grammatika. AI chaqirilmaydi.
+    body = unitLessonBox(getUnit());
+    bind = bindLessonBox;
+
   } else if (cur && cur.status === 'failed') {
     const relief = cur.relief;
     body = `${cur.feedback ? resultCard(cur.feedback, false) : ''}
@@ -1612,8 +2393,17 @@ function renderProgram() {
     </div>
     <button id="pg-retry" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">
       ${relief ? '💡 Yengillashtirilgan variantni olish' : '🔁 Qayta urinish'}
-    </button>`;
-    bind = () => { document.getElementById('pg-retry').onclick = doRetryTask; };
+    </button>
+    ${cur.canSkip ? `
+    <button id="pg-skip" class="w-full mt-2 bg-slate-700 hover:bg-slate-600 rounded-xl py-3 text-sm transition-colors">
+      ⏭ To'g'ri javoblarni ko'rib, keyingisiga o'tish
+    </button>
+    <div class="text-xs text-slate-500 mt-2 text-center">Bu vazifa "o'zlashtirilmagan" deb belgilanadi va unit imtihonida qaytariladi. XP berilmaydi.</div>` : ''}`;
+    bind = () => {
+      document.getElementById('pg-retry').onclick = doRetryTask;
+      const sk = document.getElementById('pg-skip');
+      if (sk) sk.onclick = doSkipTask;
+    };
 
   } else if (cur && cur.status === 'submitted') {
     body = `<div class="bg-slate-800 rounded-2xl p-4 border border-amber-600 mb-4">
@@ -1659,7 +2449,7 @@ function renderProgram() {
       <span class="text-amber-400 text-sm font-medium">🔥 ${user.streak||0}</span>
     </div>
     <div class="max-w-2xl mx-auto px-4 py-5">
-      ${programFeedback ? resultCard(programFeedback, true) : ''}
+      ${programFeedback ? resultCard(programFeedback, programFeedbackKind === 'pass', programFeedbackKind) : ''}
       ${programHeader()}
       <div id="pg-body">${body}</div>
     </div>
@@ -1667,9 +2457,58 @@ function renderProgram() {
   ${renderBottomNav('tasks')}`;
 
   programFeedback = null;   // faqat bir marta ko'rsatiladi
+  programFeedbackKind = 'pass';
   bind?.();
+  const les = document.getElementById('pg-lesson');
+  if (les) les.onclick = () => { lessonOpen = true; renderProgram(); };
   bindAudioButtons(document.getElementById('app'));
   bindBottomNav();
+}
+
+// ── Mavzu darsi ekrani ───────────────────────────────────────────
+function unitLessonBox(u) {
+  if (!u) return '';
+  const words = unitWords(u);
+  const rows = words.map(w => `
+    <div class="flex items-center gap-2 py-1.5 border-b border-slate-700/60 last:border-0">
+      <button class="aud-btn text-slate-400 hover:text-indigo-400 shrink-0" data-audio="${esc(w.en)}">🔊</button>
+      <div class="w-28 shrink-0">
+        <div class="text-sm font-medium">${esc(w.en)}</div>
+        <div class="text-[11px] text-slate-500">${esc(w.ipa)}</div>
+      </div>
+      <div class="text-sm text-slate-300 flex-1">${esc(w.uz)}</div>
+    </div>`).join('');
+
+  const seen = (user.program.lessonsSeen || []).includes(u.id);
+  return `
+  <div class="bg-slate-800 rounded-2xl p-5 border border-indigo-600 mb-4">
+    <div class="text-xs text-indigo-400 font-semibold mb-1">📖 Mavzu darsi</div>
+    <div class="font-bold mb-3">${esc(u.title)}</div>
+    <div class="bg-slate-900 rounded-xl p-3 mb-4">
+      <div class="text-xs text-slate-400 mb-1">📐 ${esc(u.grammar)}</div>
+      <div class="text-sm whitespace-pre-line">${esc(u.explain || '')}</div>
+    </div>
+    <div class="text-xs text-slate-400 mb-1">📚 Unit so'zlari (${words.length} ta)</div>
+    <div class="bg-slate-900 rounded-xl px-3 py-1 max-h-80 overflow-y-auto">${rows}</div>
+  </div>
+  <button id="pg-lesson-done" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">
+    ${seen ? 'Yopish' : "Tushundim, vazifani boshlash →"}
+  </button>`;
+}
+
+function bindLessonBox() {
+  const btn = document.getElementById('pg-lesson-done');
+  if (!btn) return;
+  btn.onclick = () => {
+    const u = getUnit();
+    if (u && markLessonSeen(u.id)) {
+      const n = seedUnitWords(u);
+      saveUser();
+      if (n) toast(`📚 ${n} ta so'z lug'atga qo'shildi`, 'success');
+    }
+    lessonOpen = false;
+    renderProgram();
+  };
 }
 
 function taskBox(cur, lbl) {
@@ -1726,6 +2565,21 @@ async function doRetryTask() {
   const r = await retryTask();
   programBusy = false;
   if (!r.ok) toast(r.message || 'Xatolik. Qayta urinib ko\'ring.', 'error');
+  renderProgram();
+}
+
+async function doSkipTask() {
+  if (programBusy) return;
+  programBusy = true;
+  programLoading("To'g'ri javoblar tayyorlanmoqda...");
+  const r = await revealAndSkip();
+  programBusy = false;
+  if (!r.ok) {
+    toast('Xatolik. Qayta urinib ko\'ring.', 'error');
+    return renderProgram();
+  }
+  if (r.text) { programFeedback = r.text; programFeedbackKind = 'skip'; }
+  else toast("Javoblarni ololmadim, lekin keyingi vazifaga o'tdingiz", 'info');
   renderProgram();
 }
 
@@ -2544,6 +3398,9 @@ function init() {
     user.program = initProgram('A1');
     saveUser();
   }
+  // Keyinroq qo'shilgan maydonlar — eski progressda yo'q, crash bo'lmasin.
+  if (!Array.isArray(user.program.lessonsSeen)) user.program.lessonsSeen = [];
+  if (!Array.isArray(user.program.weakUnits))   user.program.weakUnits = [];
   rollDaily();
   // Onboardingni tugatib, tushuntirish ekranini ko'rmasdan chiqib ketgan yangi foydalanuvchi.
   // Eski foydalanuvchida `introSeen` umuman yo'q (undefined) — ular bu shoxga tushmaydi.
