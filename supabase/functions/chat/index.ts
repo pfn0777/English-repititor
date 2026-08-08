@@ -19,6 +19,80 @@ const MAX_AUDIO_B64 = 2_000_000; // ~1.5MB; ~60s opus is enough
 const MAX_OUTPUT_TOKENS = 4000;
 const ALLOWED_AUDIO_MIME = ['audio/webm', 'audio/ogg', 'audio/mp4', 'audio/mpeg', 'audio/wav'];
 
+// ─── Obuna (docs/specs/subscription-stars.md) ────────────────────
+// Bu blok index.html §4.6 dagi mantiqning AYNAN nusxasi. Edge Function'lar
+// modul ulashmaydi (ALLOWED_ORIGINS bilan bir xil holat), shuning uchun birini
+// o'zgartirsang ikkinchisini ham o'zgartir — aks holda klient ochiq ko'rsatgan
+// tugma serverda 429 beradi.
+const DAY_MS = 86_400_000;
+const TRIAL_DAYS = 7;
+const LIMIT_ACTIVE = 60;
+const LIMIT_TRIAL = 40;
+const LIMIT_FREE = 5;
+const INITDATA_MAX_AGE_S = 86_400; // 24 soat — replay oynasi
+
+type Ent = 'active' | 'trial' | 'free';
+
+function entitlementOf(row: { trial_started_at?: string | null; subscription_until?: string | null } | null, now: number): Ent {
+  const sub = row?.subscription_until ? Date.parse(row.subscription_until) : NaN;
+  if (Number.isFinite(sub) && sub > now) return 'active';
+  const tr = row?.trial_started_at ? Date.parse(row.trial_started_at) : NaN;
+  if (!Number.isFinite(tr)) return 'trial'; // hali boshlanmagan — soat 1-vazifadan yuradi
+  return tr + TRIAL_DAYS * DAY_MS > now ? 'trial' : 'free';
+}
+
+function limitFor(ent: Ent): number {
+  if (ent === 'active') return LIMIT_ACTIVE;
+  if (ent === 'trial') return LIMIT_TRIAL;
+  return LIMIT_FREE;
+}
+
+async function hmacSha256(key: ArrayBuffer | Uint8Array, msg: string): Promise<Uint8Array> {
+  const k = await crypto.subtle.importKey('raw', key as BufferSource, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  return new Uint8Array(await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(msg)));
+}
+
+const toHex = (b: Uint8Array) => Array.from(b).map((x) => x.toString(16).padStart(2, '0')).join('');
+
+// Vaqti doimiy solishtirish — hash'ni belgima-belgi taxmin qilishga yo'l qo'ymaslik uchun.
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+// Telegram rasmiy algoritmi: core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+// Qaytadi: { tgId, username } yoki null. null = ISHONMA (imzo yo'q/xato/eski).
+export async function verifyInitData(initData: string, botToken: string): Promise<{ tgId: number; username: string | null } | null> {
+  if (!initData || !botToken) return null;
+  let params: URLSearchParams;
+  try { params = new URLSearchParams(initData); } catch { return null; }
+
+  const hash = params.get('hash');
+  if (!hash) return null;
+
+  const dataCheckString = [...params.entries()]
+    .filter(([k]) => k !== 'hash' && k !== 'signature')
+    .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    .map(([k, v]) => `${k}=${v}`)
+    .join('\n');
+
+  const secretKey = await hmacSha256(new TextEncoder().encode('WebAppData'), botToken);
+  const expected = toHex(await hmacSha256(secretKey, dataCheckString));
+  if (!timingSafeEqual(expected, hash)) return null;
+
+  // Eski initData'ni qayta ishlatishga yo'l qo'ymaslik.
+  const authDate = Number(params.get('auth_date') || 0);
+  if (!authDate || Math.floor(Date.now() / 1000) - authDate > INITDATA_MAX_AGE_S) return null;
+
+  try {
+    const u = JSON.parse(params.get('user') || 'null');
+    if (!u || typeof u.id !== 'number') return null;
+    return { tgId: u.id, username: u.username ?? null };
+  } catch { return null; }
+}
+
 function corsFor(req: Request) {
   const origin = req.headers.get('origin') || '';
   const allow = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -41,7 +115,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-    const { userId, system, messages, mode, profile, audio } = await req.json();
+    const { userId, initData, system, messages, mode, profile, audio } = await req.json();
     if (!userId || typeof userId !== 'string') return json({ error: 'no_user', message: 'userId kerak' }, 400, cors);
     if (!Array.isArray(messages) || messages.length === 0) return json({ error: 'bad_input', message: "Xabar bo'sh" }, 400, cors);
 
@@ -72,25 +146,79 @@ Deno.serve(async (req: Request) => {
       return json({ error: 'busy', message: "Tizim bugun band. Ertaga qayta urinib ko'ring." }, 429, cors);
     }
 
-    await db.from('users').upsert({
-      id: userId,
+    const { data: s } = await db.from('app_secrets').select('*').eq('id', 1).single();
+    if (!s) return json({ error: 'no_config', message: 'Sozlama topilmadi' }, 500, cors);
+
+    // ─── Kimligi va huquqi ──────────────────────────────────────────
+    // bot_token qo'yilmaguncha Mini App yo'q: initData'siz so'rov eski xatti-harakatda
+    // qoladi (trial). Token qo'yilgach — brauzerdan kelgan so'rov 'free' bo'ladi.
+    const tgEnabled = !!s.bot_token;
+    const tg = initData ? await verifyInitData(String(initData), String(s.bot_token || '')) : null;
+    if (tgEnabled && initData && !tg) {
+      return json({ error: 'bad_auth', message: 'Telegram tekshiruvidan o‘tmadi' }, 401, cors);
+    }
+
+    const nowMs = Date.now();
+    const profileFields = {
       name: profile?.name ?? null,
       level: profile?.level ?? null,
       goal: profile?.goal ?? null,
       last_seen: new Date().toISOString(),
-    }, { onConflict: 'id' });
+    };
 
-    const { data: s } = await db.from('app_secrets').select('*').eq('id', 1).single();
-    if (!s) return json({ error: 'no_config', message: 'Sozlama topilmadi' }, 500, cors);
+    // tg_id — barqaror shaxs. localStorage tozalansa eb_uid o'zgaradi, lekin
+    // tg_id o'sha qatorga olib keladi: trial qaytadan boshlanmaydi.
+    let row: Record<string, unknown> | null = null;
+    if (tg) {
+      const { data: byTg } = await db.from('users').select('*').eq('tg_id', tg.tgId).maybeSingle();
+      if (byTg) {
+        await db.from('users').update({ ...profileFields, tg_username: tg.username }).eq('id', byTg.id);
+        row = { ...byTg, ...profileFields };
+      } else {
+        const { data: claimed } = await db.from('users')
+          .upsert({ id: userId, ...profileFields, tg_id: tg.tgId, tg_username: tg.username }, { onConflict: 'id' })
+          .select('*').single();
+        row = claimed ?? null;
+      }
+    } else {
+      const { data: plain } = await db.from('users')
+        .upsert({ id: userId, ...profileFields }, { onConflict: 'id' })
+        .select('*').single();
+      row = plain ?? null;
+    }
 
-    // Per-user override takes precedence; null falls back to the global default.
-    const { data: u } = await db.from('users').select('daily_limit').eq('id', userId).single();
-    const effectiveLimit = (u?.daily_limit ?? null) !== null ? Number(u!.daily_limit) : Number(s.daily_limit);
+    const uid = (row?.id as string) ?? userId;
+    const ent = tgEnabled && !tg
+      ? 'free' as Ent
+      : entitlementOf(row as { trial_started_at?: string | null; subscription_until?: string | null }, nowMs);
+
+    // Admin qo'lda qo'ygan limit hamma narsadan ustun turadi.
+    const override = (row?.daily_limit ?? null) as number | null;
+    const effectiveLimit = override !== null ? Number(override) : limitFor(ent);
+
+    const subState = {
+      trial_started_at: (row?.trial_started_at as string | null) ?? null,
+      subscription_until: (row?.subscription_until as string | null) ?? null,
+      entitlement: ent,
+    };
 
     const { count } = await db.from('usage').select('*', { count: 'exact', head: true })
-      .eq('user_id', userId).gte('created_at', since.toISOString());
+      .eq('user_id', uid).gte('created_at', since.toISOString());
     if ((count ?? 0) >= effectiveLimit) {
-      return json({ error: 'limit', message: "Bugungi limit tugadi. Ertaga qayta urinib ko'ring." }, 429, cors);
+      return json({
+        error: 'limit',
+        message: ent === 'free'
+          ? 'Bepul rejim tugadi. Obuna bo‘lsangiz kuniga 3 vazifa ochiladi.'
+          : "Bugungi limit tugadi. Ertaga qayta urinib ko'ring.",
+        sub: subState,
+      }, 429, cors);
+    }
+
+    // Trial soati birinchi VAZIFADAN yuradi — ilovani ochib ko'rgan odam kun yo'qotmasin.
+    if (mode === 'program_issue' && !subState.trial_started_at) {
+      const startedAt = new Date(nowMs).toISOString();
+      await db.from('users').update({ trial_started_at: startedAt }).eq('id', uid);
+      subState.trial_started_at = startedAt;
     }
 
     // Audio messages require Gemini (Claude has no audio input). Route to Gemini regardless of active_provider.
@@ -171,8 +299,8 @@ Deno.serve(async (req: Request) => {
       if (finish && finish !== 'STOP') console.error('gemini_finish', finish, 'chars', text.length);
     }
 
-    await db.from('usage').insert({ user_id: userId, mode, provider });
-    return json({ text, provider }, 200, cors);
+    await db.from('usage').insert({ user_id: uid, mode, provider });
+    return json({ text, provider, sub: subState }, 200, cors);
   } catch (_e) {
     console.error(_e);
     return json({ error: 'server', message: 'Server xatosi' }, 500, cors);

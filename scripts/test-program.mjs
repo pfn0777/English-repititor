@@ -28,6 +28,9 @@ const stubs = {
   setInterval: () => 0,
   clearInterval: () => {},
   navigator: {},
+  // Telegram Mini App SDK. undefined = oddiy brauzer; testlar ikkala holatni ham
+  // ko'radi, shuning uchun bu yerda faqat obyekt mavjudligi ta'minlanadi.
+  Telegram: undefined,
   MediaRecorder: undefined,
   FileReader: class {},
   Blob: class {},
@@ -57,7 +60,11 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'unitWords','needsLesson','markLessonSeen','seedUnitWords','skipTask',
                   'updateStreakOnTask','TASK_TYPES','dateStr','isNoAudio',
                   'CURRICULUM','LEVELS','PASS_THRESHOLD','MAX_DAILY_TASKS','TASKS_PER_UNIT','TASK_GUIDE',
-                  'MAX_ATTEMPTS_BEFORE_SKIP'];
+                  'MAX_ATTEMPTS_BEFORE_SKIP',
+                  'entitlementOf','limitFor','tasksFor','trialDaysLeft','dailyTasks','myEntitlement',
+                  'adoptSub','freeModeGate',
+                  'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
+                  'TASKS_ACTIVE','TASKS_FREE','DAY_MS'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user };`);
 const api = runner(...names.map(n => stubs[n]));
 
@@ -462,6 +469,99 @@ t('uzilgan kunlardan keyin streak 1 ga tushadi',
   api.updateStreakOnTask() === true && u11.streak === 1);
 t('kirish streak\'ni oshirmaydi (updateStreak funksiyasi yo\'q)',
   typeof api.updateStreakOnTask === 'function');
+
+// --- Obuna va trial (docs/specs/subscription-stars.md)
+console.log('21. Obuna huquqi (entitlement):');
+const NOW = Date.parse('2026-08-08T12:00:00Z');
+const ago = d => new Date(NOW - d * api.DAY_MS).toISOString();
+const ahead = d => new Date(NOW + d * api.DAY_MS).toISOString();
+
+t('trial 7 kun (konstanta)', api.TRIAL_DAYS === 7);
+t('obuna 150 star / 30 kun', api.SUB_STARS === 150 && api.SUB_DAYS === 30);
+
+t("holat yo'q → 'trial' (soat birinchi vazifadan yuradi)",
+  api.entitlementOf(null, NOW) === 'trial');
+t("trial_started_at null → 'trial'",
+  api.entitlementOf({ trial_started_at:null, subscription_until:null }, NOW) === 'trial');
+t("3 kun oldin boshlangan → 'trial'",
+  api.entitlementOf({ trial_started_at: ago(3) }, NOW) === 'trial');
+t("aniq 7 kun oldin boshlangan → 'free' (chegara ichkarida emas)",
+  api.entitlementOf({ trial_started_at: ago(7) }, NOW) === 'free');
+t("8 kun oldin boshlangan → 'free'",
+  api.entitlementOf({ trial_started_at: ago(8) }, NOW) === 'free');
+t("obuna kelajakda → 'active' (trial tugagan bo'lsa ham)",
+  api.entitlementOf({ trial_started_at: ago(40), subscription_until: ahead(10) }, NOW) === 'active');
+t("obuna o'tgan + trial tugagan → 'free'",
+  api.entitlementOf({ trial_started_at: ago(40), subscription_until: ago(1) }, NOW) === 'free');
+t("obuna trial'dan ustun turadi",
+  api.entitlementOf({ trial_started_at: ago(1), subscription_until: ahead(30) }, NOW) === 'active');
+t("buzuq sana → 'trial' (foydalanuvchi zarar ko'rmaydi)",
+  api.entitlementOf({ trial_started_at: 'xato', subscription_until: 'xato' }, NOW) === 'trial');
+
+t('limit: active=60, trial=40, free=5',
+  api.limitFor('active') === 60 && api.limitFor('trial') === 40 && api.limitFor('free') === 5);
+t("noma'lum holat → eng past limit", api.limitFor('???') === api.LIMIT_FREE);
+t('vazifa: active=3, trial=3, free=1',
+  api.tasksFor('active') === 3 && api.tasksFor('trial') === 3 && api.tasksFor('free') === 1);
+
+t("qolgan kun: boshlanmagan → 7", api.trialDaysLeft(null, NOW) === 7);
+t('qolgan kun: 3 kun o\'tgan → 4', api.trialDaysLeft({ trial_started_at: ago(3) }, NOW) === 4);
+t('qolgan kun: 6.5 kun o\'tgan → 1 (yuqoriga yaxlitlanadi)',
+  api.trialDaysLeft({ trial_started_at: new Date(NOW - 6.5 * api.DAY_MS).toISOString() }, NOW) === 1);
+t('qolgan kun: trial tugagan → null',
+  api.trialDaysLeft({ trial_started_at: ago(9) }, NOW) === null);
+t('qolgan kun: obunachida → null (trial ko\'rsatilmaydi)',
+  api.trialDaysLeft({ subscription_until: ahead(5) }, NOW) === null);
+
+// --- Huquq kunlik vazifa soniga ta'sir qiladi
+console.log('22. Huquq → kunlik norma:');
+const u12 = { name:'T12', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+u12.program = api.initProgram('A1');
+api.setUser(u12);
+t("sub yo'q (eski foydalanuvchi) → trial huquqi", api.myEntitlement() === 'trial');
+t('trial → kuniga 3 vazifa', api.dailyTasks() === 3);
+
+u12.sub = { trial_started_at: ago(30), subscription_until: null };
+t("trial tugagan → 'free'", api.myEntitlement() === 'free');
+t('free → kuniga 1 vazifa', api.dailyTasks() === 1);
+u12.program.doneToday = { date: api.todayStr(), count: 1 };
+t('free: 1-vazifadan keyin kunlik limit', api.canStartTask().reason === 'daily_limit');
+t('free: erkin rejimlar obunaga kiradi (norma bajarilgach ham yopiq)',
+  api.freeModeGate().ok === false && api.freeModeGate().reason === 'needs_sub');
+t('free: norma bajarilmagunicha sabab quota_pending (avval nima uchunligi bilinsin)',
+  (u12.program.doneToday = { date: api.todayStr(), count: 0 },
+   api.freeModeGate().reason === 'quota_pending'));
+u12.program.doneToday = { date: api.todayStr(), count: 1 };
+
+u12.sub = { trial_started_at: ago(30), subscription_until: ahead(20) };
+t("to'lovdan keyin → 'active'", api.myEntitlement() === 'active');
+t('active → kuniga 3 vazifa', api.dailyTasks() === 3);
+u12.program.doneToday = { date: api.todayStr(), count: 1 };
+t('active: 2-vazifa ochiq', api.canStartTask().ok === true);
+t('active: erkin rejimlar ochiq', api.freeModeGate().ok === true);
+
+u12.sub = { trial_started_at: ago(2), subscription_until: null };
+t('trial: erkin rejimlar ochiq', api.freeModeGate().ok === true);
+
+// Server 'free' desa — sanalarda hech narsa bo'lmasa ham unga ishonamiz
+// (brauzerdan, Telegram'siz kirgan foydalanuvchi aynan shu holatda).
+u12.sub = { trial_started_at: null, subscription_until: null, entitlement: 'free' };
+t("server 'free' qarori klient hisobidan ustun", api.myEntitlement() === 'free');
+u12.sub = { trial_started_at: null, subscription_until: null, entitlement: 'active' };
+t("server 'active' qarori sanadan qayta hisoblanadi (eskirgan nusxaga ishonilmaydi)",
+  api.myEntitlement() === 'trial');
+
+// --- Server holatini o'zlashtirish
+console.log('23. adoptSub():');
+u12.sub = { trial_started_at: ago(1), subscription_until: ahead(9), entitlement: 'active' };
+const subBefore = JSON.stringify(u12.sub);
+t('null e\'tiborsiz qoldiriladi (huquq sababsiz yo\'qolmasin)',
+  api.adoptSub(null) === false && JSON.stringify(u12.sub) === subBefore);
+t("yangi holat o'zlashtiriladi",
+  api.adoptSub({ trial_started_at: ago(2), subscription_until: null }) === true
+  && api.myEntitlement() === 'trial');
+t("bir xil holat qayta yozilmaydi",
+  api.adoptSub({ trial_started_at: ago(2), subscription_until: null }) === false);
 
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);
 process.exit(fails === 0 ? 0 : 1);

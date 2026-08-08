@@ -8,6 +8,9 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='bold'%3EEB%3C/text%3E%3C/svg%3E">
   <meta name="theme-color" content="#0f172a">
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Telegram Mini App SDK. Brauzerda yuklanmasa window.Telegram undefined bo'ladi
+       va ilova bepul rejimda ishlashda davom etadi — yiqilmaydi. -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #1e293b; }
@@ -72,6 +75,19 @@ const REMEDIAL_TASKS            = 2;    // daraja imtihonidan yiqilgach beriladi
 const XP_PER_TASK               = 25;
 const VOCAB_IN_PROMPT           = 30;   // system promptga ketadigan so'zlar chegarasi (payload 20KB)
 const SYNC_DEBOUNCE_MS          = 500;
+
+// ─── 1c. OBUNA (docs/specs/subscription-stars.md) ────────────────
+// Bu qiymatlar chat/index.ts dagi nusxasi bilan bir xil bo'lishi SHART —
+// klient boshqacha hisoblasa, foydalanuvchi ochilgan tugmani bosib 429 oladi.
+const TRIAL_DAYS   = 7;     // birinchi vazifadan boshlab
+const SUB_STARS    = 150;   // oylik obuna narxi (Telegram Stars)
+const SUB_DAYS     = 30;
+const LIMIT_ACTIVE = 60;    // obunachining kunlik AI chaqiruvlari
+const LIMIT_TRIAL  = 40;
+const LIMIT_FREE   = 5;
+const TASKS_ACTIVE = MAX_DAILY_TASKS;  // obunachi va trial — to'liq norma
+const TASKS_FREE   = 1;                // trial tugagan, obunasiz
+const DAY_MS       = 86400000;
 
 const TASK_TYPES = {
   translate: { emoji:'🔤', title:'Tarjima',      desc:"5 ta o'zbekcha jumlani inglizchaga o'giring" },
@@ -2427,6 +2443,37 @@ function getUserId() {
   return id;
 }
 
+// ─── 2.5 TELEGRAM MINI APP ───────────────────────────────────────
+// Ilova ikki muhitda ishlaydi: Telegram ichida (tg_id bor → trial va obuna) va
+// oddiy brauzerda (tg_id yo'q → bepul rejim). Hech qaysi funksiya Telegram
+// yo'qligida yiqilmasligi SHART.
+function tgApp() { return (typeof Telegram !== 'undefined' && Telegram && Telegram.WebApp) || null; }
+
+// initData — Telegram imzolagan satr. Klient uni O'QIMAYDI, faqat serverga uzatadi;
+// haqiqiylik faqat serverda HMAC bilan tekshiriladi.
+function getInitData() { const a = tgApp(); return (a && a.initData) || ''; }
+function isInTelegram() { return getInitData().length > 0; }
+
+// initDataUnsafe — imzolanmagan nusxa. Faqat salomlashish uchun; hech qanday
+// huquq yoki limit qarori bunga tayanmaydi.
+function tgName() {
+  const a = tgApp();
+  const u = a && a.initDataUnsafe && a.initDataUnsafe.user;
+  return (u && (u.first_name || u.username)) || '';
+}
+
+function tgInit() {
+  const a = tgApp();
+  if (!a) return;
+  try {
+    a.ready();
+    a.expand();
+    if (a.setHeaderColor) a.setHeaderColor('#0f172a');
+    if (a.setBackgroundColor) a.setBackgroundColor('#0f172a');
+    if (a.disableVerticalSwipes) a.disableVerticalSwipes();  // vazifa matnini scroll qilganda ilova yopilmasin
+  } catch (e) { console.warn('tgInit', e); }
+}
+
 // ─── 3. STORAGE HELPERS ──────────────────────────────────────────
 const LS = {
   get:   k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
@@ -2457,7 +2504,7 @@ async function pushProgress() {
   try {
     const res = await fetch(progressUrl(), {
       method:'POST', headers: progressHeaders(),
-      body: JSON.stringify({ userId:getUserId(), action:'save', progress:user.program }),
+      body: JSON.stringify({ userId:getUserId(), initData:getInitData(), action:'save', progress:user.program }),
     });
     if (!res.ok) console.warn('progress save failed:', res.status);
   } catch (err) {
@@ -2469,7 +2516,7 @@ async function loadProgress() {
   try {
     const res = await fetch(progressUrl(), {
       method:'POST', headers: progressHeaders(),
-      body: JSON.stringify({ userId:getUserId(), action:'get' }),
+      body: JSON.stringify({ userId:getUserId(), initData:getInitData(), action:'get' }),
     });
     if (!res.ok) { console.warn('progress load failed:', res.status); return null; }
     const d = await res.json();
@@ -2785,7 +2832,7 @@ function canStartTask() {
   rollDaily();
   if (p.current) return { ok:false, reason:'open_task' };
   if (!getTaskType()) return { ok:false, reason:'level_not_ready' };
-  if (p.doneToday.count >= MAX_DAILY_TASKS) return { ok:false, reason:'daily_limit' };
+  if (p.doneToday.count >= dailyTasks()) return { ok:false, reason:'daily_limit' };
   return { ok:true, reason:null };
 }
 
@@ -2796,22 +2843,40 @@ function freeModeGate() {
   if (!p) return { ok:true, reason:'no_program', done:0, need:0 };
   rollDaily();
   if (!getTaskType()) return { ok:true, reason:'level_not_ready', done:0, need:0 };
-  const need = Math.min(DAILY_QUOTA, MAX_DAILY_TASKS);
+  const need = Math.min(DAILY_QUOTA, dailyTasks());
   const done = p.doneToday.count;
-  if (done >= need) return { ok:true, reason:'quota_done', done, need };
-  return { ok:false, reason:'quota_pending', done, need };
+  if (done < need) return { ok:false, reason:'quota_pending', done, need };
+  // Norma bajarilgan, lekin erkin rejimlar obunaga kiradi. Bu tekshiruv normadan
+  // KEYIN turadi: aks holda obunasiz odam vazifasini ham bajarmay paywall ko'radi
+  // va nima uchun to'lashi kerakligini bilmay qoladi.
+  if (myEntitlement() === 'free') return { ok:false, reason:'needs_sub', done, need };
+  return { ok:true, reason:'quota_done', done, need };
 }
 
 // Qulf matni. need=1 bo'lganda raqam ko'rsatilmaydi — dashboardda "bugun 0/3" bilan
 // yonma-yon turganda ikki xil kasr chalkashtiradi.
 function lockText(g) {
+  if (g.reason === 'needs_sub') return `Obuna bilan ochiladi — ${SUB_STARS} ⭐ / oy`;
   return g.need > 1
     ? `Bugungi ${g.done}/${g.need} vazifa bajarilgach ochiladi`
     : 'Bugungi vazifani bajarsangiz ochiladi';
 }
 
+function lockToast(g) {
+  return g.reason === 'needs_sub'
+    ? `Bu bo'lim obunaga kiradi — ${SUB_STARS} ⭐`
+    : 'Avval bugungi vazifani bajaring';
+}
+
 // Qulf paytida AI o'rniga qaytariladigan lokal matn — tarmoqqa chiqmaydi, token sarflamaydi.
 function lockedReply(g) {
+  if (g.reason === 'needs_sub') {
+    return `🔒 **Bu bo'lim obunaga kiradi.**
+
+Obuna bo'lsangiz kuniga ${TASKS_ACTIVE} ta vazifa, 6 ta erkin mashq rejimi va AI Ustoz ochiladi — ${SUB_STARS} ⭐ / oy.
+
+👉 Pastdagi ✍️ **Vazifalar** bo'limiga o'ting.`;
+  }
   return `🔒 **Avval bugungi vazifani bajaraylik.**
 
 ${lockText(g)}: suhbat, hikoya, grammatika, viktorina va matn tuzatish.
@@ -3029,6 +3094,73 @@ function getRoadmap() {
     unitsDone: p.passedUnits.length,
     nextUnitTitle: nextUnit ? nextUnit.title : null,
   };
+}
+
+// ─── 4.6 OBUNA VA TRIAL (docs/specs/subscription-stars.md) ───────
+// Bu funksiyalar sof: DOM'ga ham, tarmoqqa ham tegmaydi — test-program.mjs
+// ularni to'g'ridan-to'g'ri sinaydi. chat/index.ts da AYNAN shu mantiq
+// takrorlanadi; ikkisi ajralib qolsa foydalanuvchi ochiq tugmani bosib 429 oladi.
+//
+// Klient huquq manbai EMAS. Bu yerdagi hisob faqat ekranni chizish uchun —
+// haqiqiy chegarani har doim server qo'yadi.
+
+// row: { trial_started_at, subscription_until } — serverdan kelgan nusxa (yoki null).
+// 'trial' uchta holatni qamraydi: hali boshlanmagan, boshlangan va muddati ichida.
+// Boshlanmaganda ham 'trial' qaytadi — soat birinchi vazifadan yurishi kerak,
+// ilovani ochib ko'rgan odam kunini yo'qotmasin.
+function entitlementOf(row, now) {
+  const t = now == null ? Date.now() : (now instanceof Date ? now.getTime() : now);
+  const sub = row && row.subscription_until ? Date.parse(row.subscription_until) : NaN;
+  if (Number.isFinite(sub) && sub > t) return 'active';
+  const tr = row && row.trial_started_at ? Date.parse(row.trial_started_at) : NaN;
+  if (!Number.isFinite(tr)) return 'trial';
+  return tr + TRIAL_DAYS * DAY_MS > t ? 'trial' : 'free';
+}
+
+function limitFor(ent) {
+  if (ent === 'active') return LIMIT_ACTIVE;
+  if (ent === 'trial')  return LIMIT_TRIAL;
+  return LIMIT_FREE;
+}
+
+function tasksFor(ent) { return ent === 'free' ? TASKS_FREE : TASKS_ACTIVE; }
+
+// Trial holatida qolgan kun (yuqoriga yaxlitlanadi: "1 kun qoldi" oxirgi kungacha
+// turadi). Trial emas — null, ya'ni chaqiruvchi hech narsa chizmasligi kerak.
+function trialDaysLeft(row, now) {
+  if (entitlementOf(row, now) !== 'trial') return null;
+  const tr = row && row.trial_started_at ? Date.parse(row.trial_started_at) : NaN;
+  if (!Number.isFinite(tr)) return TRIAL_DAYS;
+  const t = now == null ? Date.now() : (now instanceof Date ? now.getTime() : now);
+  return Math.max(0, Math.ceil((tr + TRIAL_DAYS * DAY_MS - t) / DAY_MS));
+}
+
+// user.sub — serverdagi holatning klientdagi nusxasi. Eski foydalanuvchilarda
+// yo'q (undefined) → entitlementOf 'trial' qaytaradi, ya'ni ular ham 7 kun oladi.
+//
+// Server 'free' desa — unga so'zsiz ishonamiz. Klient sanalardan buni bila
+// olmaydi: brauzerdan (Telegram'siz) kirgan odamda hech qanday sana yo'q, lekin
+// server uni 'free' deb hisoblaydi. Teskarisiga ishonmaymiz — 'active' qarori
+// har doim sanadan qayta hisoblanadi, aks holda eskirgan nusxa obunani uzaytirib
+// yuboradi.
+function myEntitlement() {
+  if (user && user.sub && user.sub.entitlement === 'free') return 'free';
+  return entitlementOf(user && user.sub, Date.now());
+}
+function dailyTasks()    { return tasksFor(myEntitlement()); }
+function myTrialDaysLeft(){ return trialDaysLeft(user && user.sub, Date.now()); }
+
+// Serverdan kelgan huquq holatini o'zlashtirish. Server javobida `sub` bo'lmasa
+// (eski deploy, xato) mavjud nusxa saqlanadi — huquq sababsiz yo'qolmasin.
+function adoptSub(sub) {
+  if (!sub || !user) return false;
+  const before = JSON.stringify(user.sub || null);
+  user.sub = { trial_started_at: sub.trial_started_at || null,
+               subscription_until: sub.subscription_until || null,
+               entitlement: sub.entitlement || null };
+  if (JSON.stringify(user.sub) === before) return false;
+  saveUser();
+  return true;
 }
 
 // ─── 5. WORD PARSER ──────────────────────────────────────────────
@@ -3470,6 +3602,7 @@ async function callAI(userMsg, opts={}) {
   try {
     const body = {
       userId: getUserId(),
+      initData: getInitData(),   // server tg_id ni shundan oladi; imzosi u yerda tekshiriladi
       system: opts.program ? buildProgramSystem(opts.program) : buildSystem(currentMode),
       messages: history,
       mode: opts.program ? `program_${opts.program}` : currentMode,
@@ -3483,6 +3616,9 @@ async function callAI(userMsg, opts={}) {
     });
 
     const data = await res.json().catch(()=>({}));
+    // Server huquq holatini har javobda qaytaradi (xato javoblarida ham) —
+    // trial birinchi vazifada boshlanadi va klient buni darhol ko'rishi kerak.
+    adoptSub(data.sub);
     if (!res.ok) {
       history.pop();
       if (res.status===429) return '⏳ ' + (data.message || "Bugungi limit tugadi.");
@@ -3805,7 +3941,7 @@ function renderPathIntro() {
         </div>
         <div class="border-t border-slate-700 pt-4 text-xs text-slate-400 space-y-1.5">
           <div>🔒 <b>Tartib majburiy</b> — keyingi vazifa avvalgisi bajarilmaguncha ochilmaydi.</div>
-          <div>📅 <b>Kuniga ${MAX_DAILY_TASKS} vazifa</b> yetarli. Yodlash uchun tanaffus kerak.</div>
+          <div>📅 <b>Kuniga ${dailyTasks()} vazifa</b> yetarli. Yodlash uchun tanaffus kerak.</div>
           <div>🎯 Dastlabki ${CALIBRATION_TASKS} vazifadan keyin daraja avtomatik moslashtiriladi.</div>
         </div>
         <button id="pi-go" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">Birinchi vazifani boshlash →</button>
@@ -3973,6 +4109,101 @@ function resultCard(text, passed, kind) {
   </div>`;
 }
 
+// ─── OBUNA UI ────────────────────────────────────────────────────
+// Trial tugashiga sanoq. Faqat oxirgi 3 kunda ko'rsatiladi — 7-kundan boshlab
+// har kuni ko'rsatilsa, ogohlantirish fon shovqiniga aylanadi va bosilmay qoladi.
+function trialStrip() {
+  const left = myTrialDaysLeft();
+  if (left === null || left > 3) return '';
+  const urgent = left <= 1;
+  return `
+  <div class="${urgent ? 'bg-amber-950 border-amber-600' : 'bg-slate-800 border-slate-700'} border rounded-2xl px-4 py-3 mb-4 flex items-center justify-between gap-3">
+    <div class="text-sm">
+      <div class="font-semibold ${urgent ? 'text-amber-400' : 'text-slate-200'}">
+        ${left === 0 ? 'Bepul sinov bugun tugaydi' : `Bepul sinov: ${left} kun qoldi`}
+      </div>
+      <div class="text-xs text-slate-400">Keyin kuniga 1 vazifa qoladi</div>
+    </div>
+    <button id="pw-buy-strip" class="shrink-0 bg-indigo-600 hover:bg-indigo-500 rounded-xl px-4 py-2 text-sm font-semibold transition-colors">${SUB_STARS} ⭐</button>
+  </div>`;
+}
+
+// Trial tugagan, obuna yo'q. Progress va streak saqlanadi — bu ataylab:
+// qaytib kelish sababi qolmasa, obuna sotib olish ehtimoli ham qolmaydi.
+function paywallBox() {
+  return `
+  <div class="bg-slate-800 rounded-2xl p-6 border border-indigo-600 text-center">
+    <div class="text-5xl mb-3">⭐</div>
+    <div class="font-bold mb-1">Bugungi bepul vazifa bajarildi</div>
+    <div class="text-slate-400 text-sm mb-4">Obuna bo'lsangiz kuniga ${TASKS_ACTIVE} ta vazifa, erkin mashqlar va AI Ustoz ochiladi.</div>
+    <div class="bg-slate-900 rounded-xl p-4 mb-4 text-left text-sm space-y-1.5">
+      <div class="text-emerald-400">✓ Kuniga ${TASKS_ACTIVE} vazifa (hozir ${TASKS_FREE})</div>
+      <div class="text-emerald-400">✓ 6 ta erkin mashq rejimi</div>
+      <div class="text-emerald-400">✓ AI Ustoz va testlar</div>
+      <div class="text-emerald-400">✓ Ovozli gapirish mashqlari</div>
+    </div>
+    <button id="pw-buy" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">${SUB_STARS} ⭐ — 1 oy</button>
+    <div class="text-xs text-slate-500 mt-3">Progressingiz va streak'ingiz saqlanib turadi</div>
+  </div>`;
+}
+
+let buyBusy = false;
+async function buySubscription() {
+  if (buyBusy) return;
+  if (!isInTelegram()) {
+    return toast("Obuna faqat Telegram ilovasi ichida — botni oching", 'error');
+  }
+  buyBusy = true;
+  try {
+    const res = await fetch(`${SB_URL}/functions/v1/billing`, {
+      method:'POST', headers: progressHeaders(),
+      body: JSON.stringify({ userId:getUserId(), initData:getInitData(), action:'invoice' }),
+    });
+    const d = await res.json().catch(()=>({}));
+    if (!res.ok || !d.link) return toast(d.message || "To'lov havolasi olinmadi", 'error');
+
+    const app = tgApp();
+    if (!app || !app.openInvoice) return toast('Telegram versiyasi eski — ilovani yangilang', 'error');
+    app.openInvoice(d.link, async (status) => {
+      // 'paid' — to'lov o'tdi, lekin obunani bot yozadi (webhook), shuning uchun
+      // holatni serverdan qayta so'raymiz, klientda o'zimiz yozib qo'ymaymiz.
+      if (status === 'paid') { await refreshSub(); toast('Obuna faollashdi ⭐', 'success'); renderProgram(); }
+      else if (status === 'failed') toast("To'lov amalga oshmadi", 'error');
+    });
+  } catch (err) {
+    toast("Aloqa xatosi. Qayta urinib ko'ring", 'error');
+  } finally {
+    buyBusy = false;
+  }
+}
+
+// To'lovdan keyin holat darhol yangilanmasligi mumkin (bot uzatishi bir necha
+// soniya olishi mumkin) — shuning uchun bir necha marta so'raymiz.
+async function refreshSub(tries = 4) {
+  for (let i = 0; i < tries; i++) {
+    try {
+      const res = await fetch(`${SB_URL}/functions/v1/billing`, {
+        method:'POST', headers: progressHeaders(),
+        body: JSON.stringify({ userId:getUserId(), initData:getInitData(), action:'status' }),
+      });
+      const d = await res.json().catch(()=>({}));
+      if (res.ok && d.sub) {
+        adoptSub(d.sub);
+        if (d.sub.entitlement === 'active') return true;
+      }
+    } catch { /* tarmoq — keyingi urinishda */ }
+    await new Promise(r => setTimeout(r, 1500));
+  }
+  return false;
+}
+
+function bindBuyButtons() {
+  const a = document.getElementById('pw-buy');
+  if (a) a.onclick = buySubscription;
+  const b = document.getElementById('pw-buy-strip');
+  if (b) b.onclick = buySubscription;
+}
+
 function renderProgram() {
   const p = user.program;
   if (!p) return renderDashboard();
@@ -4041,14 +4272,21 @@ function renderProgram() {
     bind = bindTaskBox;
 
   } else if (gate.reason === 'daily_limit') {
-    body = `<div class="bg-slate-800 rounded-2xl p-6 border border-emerald-700 text-center">
+    // Bir xil "kunlik limit" ikki xil ma'no beradi: obunachida — norma bajarildi,
+    // trial tugaganda — paywall. Ularni aralashtirib yubormaslik kerak.
+    if (myEntitlement() === 'free') {
+      body = paywallBox();
+      bind = bindBuyButtons;
+    } else {
+      body = `<div class="bg-slate-800 rounded-2xl p-6 border border-emerald-700 text-center">
       <div class="text-5xl mb-3">🎉</div>
       <div class="font-bold mb-1">Bugungi norma bajarildi!</div>
-      <div class="text-slate-400 text-sm">${MAX_DAILY_TASKS}/${MAX_DAILY_TASKS} vazifa. Yodlash uchun tanaffus kerak — ertaga davom etamiz.</div>
+      <div class="text-slate-400 text-sm">${dailyTasks()}/${dailyTasks()} vazifa. Yodlash uchun tanaffus kerak — ertaga davom etamiz.</div>
       <div class="text-xs text-slate-500 mt-3">Xohlasangiz erkin mashqlar bilan shug'ullaning 👇</div>
       <button id="pg-free" class="mt-3 bg-slate-700 hover:bg-slate-600 rounded-xl px-6 py-2.5 text-sm transition-colors">Erkin mashqlar</button>
     </div>`;
-    bind = () => { document.getElementById('pg-free').onclick = renderDashboard; };
+      bind = () => { document.getElementById('pg-free').onclick = renderDashboard; };
+    }
 
   } else if (isOffline()) {
     // Vazifa berish AI'ga bog'liq — internetsiz mumkin emas. Lekin dars va
@@ -4082,7 +4320,7 @@ function renderProgram() {
       <div class="text-5xl mb-3">${lbl.emoji}</div>
       <div class="font-bold mb-1">${lbl.title}</div>
       <div class="text-slate-400 text-sm mb-1">${lbl.desc}</div>
-      <div class="text-xs text-slate-500 mb-4">Bugun: ${p.doneToday.count}/${MAX_DAILY_TASKS} vazifa</div>
+      <div class="text-xs text-slate-500 mb-4">Bugun: ${p.doneToday.count}/${dailyTasks()} vazifa</div>
       <button id="pg-start" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">${cont ? 'Keyingi vazifa →' : 'Boshlash →'}</button>
     </div>`;
     bind = () => { document.getElementById('pg-start').onclick = doStartTask; };
@@ -4096,6 +4334,7 @@ function renderProgram() {
     </div>
     <div class="max-w-2xl mx-auto px-4 py-5">
       ${programFeedback ? resultCard(programFeedback, programFeedbackKind === 'pass', programFeedbackKind) : ''}
+      ${trialStrip()}
       ${programHeader()}
       <div id="pg-body">${body}</div>
     </div>
@@ -4105,6 +4344,7 @@ function renderProgram() {
   programFeedback = null;   // faqat bir marta ko'rsatiladi
   programFeedbackKind = 'pass';
   bind?.();
+  bindBuyButtons();   // trialStrip() dagi tugma har qanday shoxda bo'lishi mumkin
   const les = document.getElementById('pg-lesson');
   if (les) les.onclick = () => { lessonOpen = true; renderProgram(); };
   bindAudioButtons(document.getElementById('app'));
@@ -4342,13 +4582,13 @@ function dashTaskCard() {
   } else if (gate.reason === 'daily_limit') {
     icon = '🎉'; tone = 'border-emerald-600';
     title = 'Bugungi norma bajarildi';
-    sub = `${MAX_DAILY_TASKS}/${MAX_DAILY_TASKS} vazifa — ertaga davom etamiz`;
+    sub = `${dailyTasks()}/${dailyTasks()} vazifa — ertaga davom etamiz`;
     cta = "Ko'rish →";
   } else {
     const lbl = taskLabel(type);
     icon = lbl.emoji;
     title = 'Bugungi vazifa tayyor';
-    sub = `${u ? esc(u.title) + ' · ' : ''}${lbl.title} · bugun ${p.doneToday.count}/${MAX_DAILY_TASKS}`;
+    sub = `${u ? esc(u.title) + ' · ' : ''}${lbl.title} · bugun ${p.doneToday.count}/${dailyTasks()}`;
     cta = 'Boshlash →';
   }
 
@@ -4457,7 +4697,7 @@ function renderDashboard() {
     c.onclick = () => {
       // CSS'ga tayanmaymiz — gate qayta tekshiriladi.
       const g = freeModeGate();
-      if (!g.ok) { toast('Avval bugungi vazifani bajaring', 'info'); return renderProgram(); }
+      if (!g.ok) { toast(lockToast(g), 'info'); return renderProgram(); }
       currentMode = c.dataset.mode; history = []; renderChat();
     };
   });
@@ -4653,7 +4893,7 @@ function renderChat() {
   // Erkin rejim qulflangan bo'lsa chat umuman ochilmaydi (nav va kartalar shu yerdan o'tadi).
   const gate = freeModeGate();
   if (!gate.ok) {
-    toast('Avval bugungi vazifani bajaring', 'info');
+    toast(lockToast(gate), 'info');
     return renderProgram();
   }
 
@@ -5086,9 +5326,13 @@ function startReview(vocab) {
 
 // ─── 15. APP INIT ─────────────────────────────────────────────────
 function init() {
+  tgInit();   // Telegram tashqarisida hech narsa qilmaydi
   user = loadUser();
   if (!user) { renderOnboarding(); return; }
   if (!user.ielts) user.ielts = { targetBand: 6.5, scores: [] };
+  // Obuna holati serverdan keladi. Eski foydalanuvchida yo'q → entitlementOf()
+  // 'trial' qaytaradi, ya'ni ular ham 7 kunlik sinovni oladi.
+  if (!user.sub) user.sub = { trial_started_at: null, subscription_until: null };
   // Streak endi vazifaga bog'liq. Eski foydalanuvchi streak'ini yo'qotmasin —
   // oxirgi kirish kunini boshlang'ich nuqta qilib olamiz.
   if (!user.lastTaskDay) user.lastTaskDay = user.lastVisit || todayStr();
