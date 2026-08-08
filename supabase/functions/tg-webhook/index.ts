@@ -92,16 +92,28 @@ Deno.serve(async (req: Request) => {
       const from = Number.isFinite(base) && base > now ? base : now;
       const until = new Date(from + SUB_DAYS * 86_400_000).toISOString();
 
-      if (row) {
-        await db.from('users').update({ subscription_until: until }).eq('id', row.id);
-      } else {
+      // Obuna yozilmasa "faollashdi" deb aytish MUMKIN EMAS — pul olingan holda
+      // yolg'on tasdiq eng yomon variant. Shuning uchun natija tekshiriladi.
+      const { error: subErr } = row
+        ? await db.from('users').update({ subscription_until: until }).eq('id', row.id)
         // Mini App'ga hali kirmagan, lekin bot orqali to'lagan holat.
-        await db.from('users').insert({
-          tg_id: tgId,
-          tg_username: msg.from?.username ?? null,
-          subscription_until: until,
-          last_seen: new Date().toISOString(),
+        : await db.from('users').insert({
+            tg_id: tgId,
+            tg_username: msg.from?.username ?? null,
+            subscription_until: until,
+            last_seen: new Date().toISOString(),
+          });
+
+      if (subErr) {
+        // payments qatori ALLAQACHON yozilgan, ya'ni to'lov fakti yo'qolmaydi va
+        // obunani qo'lda tiklash mumkin. 200 qaytaramiz: takroriy urinish
+        // charge_id UNIQUE ga urilib baribir shu yerga yetib kelmaydi.
+        console.error('subscription_write_failed', tgId, chargeId, subErr);
+        await tg(botToken, 'sendMessage', {
+          chat_id: msg.chat.id,
+          text: '⚠️ To\'lovingiz qabul qilindi, lekin obunani faollashtirishda texnik xatolik yuz berdi.\n\nPulingiz yo\'qolmadi va to\'lov qayd etildi — obuna qo\'lda tiklanadi. Iltimos, /start bosib qayta urinib ko\'ring yoki adminga yozing.',
         });
+        return ok();
       }
 
       await tg(botToken, 'sendMessage', {

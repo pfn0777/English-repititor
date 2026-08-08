@@ -3,7 +3,7 @@
 // mavzu darsi (so'zlar + grammatika) va lug'at takrorlash (SRS) tarmoqqa muhtoj emas.
 // AI vazifalari baribir internet talab qiladi; ular keshlanmaydi.
 
-const VERSION = 'eb-v3';
+const VERSION = 'eb-v4';
 const SHELL_CACHE = `${VERSION}-shell`;
 const CDN_CACHE = `${VERSION}-cdn`;
 const SHELL = ['./', './index.html', './manifest.json'];
@@ -34,12 +34,19 @@ self.addEventListener('fetch', (e) => {
   if (url.hostname.endsWith('.supabase.co')) return;
 
   // Sahifaning o'zi: avval tarmoq (yangilanish yo'qolmasin), keyin kesh.
-  if (req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
+  // Origin tekshiruvi SHART: usiz cdn.tailwindcss.com dagi `/` yo'li ham shu
+  // tarmoqqa tushib, internetsiz holatda script o'rniga index.html qaytardi.
+  const sameOrigin = url.origin === self.location.origin;
+  if (sameOrigin && (req.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/')) {
     e.respondWith((async () => {
       try {
         const fresh = await fetch(req);
-        const c = await caches.open(SHELL_CACHE);
-        c.put(req, fresh.clone());
+        // Faqat sog'lom javob keshlanadi. Deploy paytidagi 500 keshga tushsa,
+        // u doimiy offline qobiqqa aylanib qolardi.
+        if (fresh.ok) {
+          const c = await caches.open(SHELL_CACHE);
+          c.put(req, fresh.clone());
+        }
         return fresh;
       } catch (_e) {
         return (await caches.match(req)) || (await caches.match('./index.html'));

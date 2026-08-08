@@ -3817,6 +3817,7 @@ function showSettingsModal() {
 
 // ─── 9. VIEW: ONBOARDING ─────────────────────────────────────────
 function renderOnboarding() {
+  currentView = 'onboarding';
   document.getElementById('app').innerHTML = `
   <div class="min-h-screen flex items-center justify-center p-4 view-fade">
     <div class="max-w-md w-full">
@@ -3887,7 +3888,10 @@ function renderOnboarding() {
     const level = document.getElementById('ob-level').value;
     user = { name, level,
       goal,
-      xp:0, streak:1, lastVisit:today, lastTaskDay:today, achievements:[], vocabulary:[],
+      // Streak vazifaga bog'liq: ro'yxatdan o'tishning o'zi uni boshlamaydi.
+      // lastTaskDay:today qo'yilsa, ertasi kuni birinchi vazifani bajargan
+      // foydalanuvchi streak 2 oladi — bitta vazifa bilan.
+      xp:0, streak:0, lastVisit:today, lastTaskDay:null, achievements:[], vocabulary:[],
       quizCount:0, correctionCount:0,
       introSeen: false,   // eski foydalanuvchida umuman yo'q — init() ularni o'tkazib yuboradi
       ielts: { targetBand, scores: [] } };
@@ -4012,6 +4016,11 @@ let programFeedback = null;   // oxirgi PASS izohi — bir marta ko'rsatiladi
 let programBusy = false;
 let lessonOpen = false;       // mavzu darsi qo'lda ochilganmi
 let programFeedbackKind = 'pass';   // 'pass' | 'skip'
+
+// Qaysi to'liq ekran ochiq. Faqat bitta narsa uchun kerak: aloqa tiklanganda
+// ekranni faqat dastur ekranida qayta chizamiz, aks holda chatdagi yozilgan
+// matn yoki takrorlash sessiyasi yo'qoladi.
+let currentView = '';
 
 function taskLabel(type) {
   if (type === 'unit_exam')  return { emoji:'📋', title:'Unit imtihoni',   desc:"Butun unit bo'yicha 8 savol" };
@@ -4205,6 +4214,7 @@ function bindBuyButtons() {
 }
 
 function renderProgram() {
+  currentView = 'program';
   const p = user.program;
   if (!p) return renderDashboard();
 
@@ -4606,6 +4616,7 @@ function dashTaskCard() {
 }
 
 function renderDashboard() {
+  currentView = 'home';
   const stats = getModeStats();
   const leastMode = Object.keys(MODES).sort((a,b)=>(stats[a]||0)-(stats[b]||0))[0];
   const errors = getErrors().slice(0,3);
@@ -4886,10 +4897,16 @@ function teardownRec() {
   }
   mediaRec = null;
   recChunks = [];
+  // Yozuv boshlanganda toggleRec busy bayrog'ini ko'taradi. Uni shu yerda
+  // tushirmasak, speak vazifasida yozib turib pastki nav orqali chiqqan
+  // foydalanuvchi qaytganda hamma tugma o'lik bo'lib qoladi (reload'gacha).
+  programBusy = false;
+  chatBusy = false;
   setRecUI(false);
 }
 
 function renderChat() {
+  currentView = 'chat';
   // Erkin rejim qulflangan bo'lsa chat umuman ochilmaydi (nav va kartalar shu yerdan o'tadi).
   const gate = freeModeGate();
   if (!gate.ok) {
@@ -4959,7 +4976,9 @@ function renderChat() {
   });
   inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();doSend();} });
   document.getElementById('ch-send').onclick = doSend;
-  document.getElementById('ch-mic').onclick = toggleRec;
+  // Argument aniq berilishi shart: onclick = toggleRec bo'lsa MouseEvent
+  // recTarget sifatida uzatiladi va ovoz noto'g'ri joyga ketishi mumkin.
+  document.getElementById('ch-mic').onclick = () => toggleRec('chat');
   bindBottomNav();
   inp.focus();
 }
@@ -5037,6 +5056,7 @@ async function doSend() {
 
 // ─── 12. VIEW: PROGRESS ──────────────────────────────────────────
 function renderProgress() {
+  currentView = 'progress';
   const visits = getVisits();
   const dots = Array.from({length:30},(_,i)=>{
     const d = todayStr(-(29-i));
@@ -5194,6 +5214,7 @@ function vocabRows(list, hasQuery=false) {
 }
 
 function renderVocabulary() {
+  currentView = 'vocab';
   const vocab = user.vocabulary||[];
   const due = dueWords(vocab);
   document.getElementById('app').innerHTML = `
@@ -5335,7 +5356,11 @@ function init() {
   if (!user.sub) user.sub = { trial_started_at: null, subscription_until: null };
   // Streak endi vazifaga bog'liq. Eski foydalanuvchi streak'ini yo'qotmasin —
   // oxirgi kirish kunini boshlang'ich nuqta qilib olamiz.
-  if (!user.lastTaskDay) user.lastTaskDay = user.lastVisit || todayStr();
+  // === undefined ataylab: yangi foydalanuvchida maydon ANIQ null bo'ladi
+  // (hali bitta ham vazifa yo'q), eski foydalanuvchida esa umuman yo'q.
+  // !user.lastTaskDay bo'lsa yangi foydalanuvchining null'i ham to'ldirilib,
+  // streak bir kunga oshib ketardi.
+  if (user.lastTaskDay === undefined) user.lastTaskDay = user.lastVisit || todayStr();
   registerVisit();
 
   // Dastur: eski foydalanuvchida yo'q — A1-01 dan boshlanadi va bir marta tushuntiriladi.
@@ -5391,7 +5416,12 @@ function showProgramIntro() {
 }
 
 // Aloqa tiklanganda dastur ekrani o'zi yangilanadi — foydalanuvchi qo'lda qayta yuklamasin.
-window.addEventListener('online',  () => { toast('Aloqa tiklandi ✅', 'success'); if (user?.program) renderProgram(); });
+// FAQAT dastur ekranida: boshqa ekranni qayta chizish chatdagi yozilgan matnni
+// yoki takrorlash sessiyasini yo'q qiladi, aloqa esa bir soniyaga uzilishi mumkin.
+window.addEventListener('online',  () => {
+  toast('Aloqa tiklandi ✅', 'success');
+  if (currentView === 'program' && user?.program) renderProgram();
+});
 window.addEventListener('offline', () => toast("Internet aloqasi uzildi — dars va takrorlash ishlaydi", 'info'));
 
 // Offline qobiq: ilova internetsiz ham ochilsin, mavzu darsi va takrorlash ishlasin.

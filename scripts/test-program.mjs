@@ -58,14 +58,15 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'advance','levelUp','calibrate','rollDaily','todayStr','currentLevel','xpLevel',
                   'parseResult','buildProgramSystem','programContext','buildSystem','isAiError',
                   'unitWords','needsLesson','markLessonSeen','seedUnitWords','skipTask',
-                  'updateStreakOnTask','TASK_TYPES','dateStr','isNoAudio',
+                  'updateStreakOnTask','TASK_TYPES','dateStr','isNoAudio','teardownRec',
                   'CURRICULUM','LEVELS','PASS_THRESHOLD','MAX_DAILY_TASKS','TASKS_PER_UNIT','TASK_GUIDE',
                   'MAX_ATTEMPTS_BEFORE_SKIP',
                   'entitlementOf','limitFor','tasksFor','trialDaysLeft','dailyTasks','myEntitlement',
                   'adoptSub','freeModeGate',
                   'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
                   'TASKS_ACTIVE','TASKS_FREE','DAY_MS'];
-const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user };`);
+const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user,
+  setBusy:(p,c)=>{ programBusy=p; chatBusy=c; }, getBusy:()=>({ programBusy, chatBusy }) };`);
 const api = runner(...names.map(n => stubs[n]));
 
 let fails = 0;
@@ -448,6 +449,17 @@ t('speak check promptida transkripsiyani to\'qish taqiqlangan',
 t('isNoAudio() belgini topadi', api.isNoAudio('📊 NATIJA: 0/5\n[AUDIO_YOQ] Ovoz eshitilmadi.') === true);
 t('isNoAudio() oddiy javobda false', api.isNoAudio('📊 NATIJA: 4/5\n❌ Xato: ...') === false);
 
+// Yozuvni to'xtatish band bayrog'ini ham tushirishi SHART. Aks holda speak
+// vazifasida yozib turib pastki nav orqali chiqqan foydalanuvchi qaytganda
+// hamma tugma o'lik bo'lib qolardi (reload'gacha).
+api.setBusy(true, true);
+api.teardownRec();
+t('teardownRec() programBusy ni tushiradi', api.getBusy().programBusy === false);
+t('teardownRec() chatBusy ni tushiradi', api.getBusy().chatBusy === false);
+api.teardownRec();
+t('teardownRec() ikkinchi chaqiruvda ham xavfsiz',
+  api.getBusy().programBusy === false && api.getBusy().chatBusy === false);
+
 // --- Streak vazifaga bog'langan
 console.log('20. Streak vazifa bo\'yicha:');
 const u11 = { name:'T11', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[],
@@ -469,6 +481,26 @@ t('uzilgan kunlardan keyin streak 1 ga tushadi',
   api.updateStreakOnTask() === true && u11.streak === 1);
 t('kirish streak\'ni oshirmaydi (updateStreak funksiyasi yo\'q)',
   typeof api.updateStreakOnTask === 'function');
+
+// Ro'yxatdan o'tishning o'zi streak boshlamaydi: yangi foydalanuvchida
+// lastTaskDay=null, streak=0. Ilgari onboarding lastTaskDay:today qo'yardi va
+// ertasi kuni birinchi vazifa streak'ni 2 qilardi — bitta vazifa bilan.
+const u11b = { name:'T11b', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[],
+               streak:0, lastTaskDay: null };
+u11b.program = api.initProgram('A1');
+api.setUser(u11b);
+api.issueTask('translate', 'p');
+api.applyResult({ correct:5, total:5 });
+t('yangi foydalanuvchi: birinchi vazifadan keyin streak 1', u11b.streak === 1);
+t('yangi foydalanuvchi: lastTaskDay bugunga yozildi', u11b.lastTaskDay === api.todayStr());
+
+// Ro'yxatdan o'tib ERTASI kuni birinchi vazifa — hamon 1, 2 emas.
+const u11c = { name:'T11c', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[],
+               streak:0, lastTaskDay: null, lastVisit: api.dateStr(-1) };
+u11c.program = api.initProgram('A1');
+api.setUser(u11c);
+t('ro\'yxatdan o\'tib ertasi kuni birinchi vazifa → streak 1',
+  api.updateStreakOnTask() === true && u11c.streak === 1);
 
 // --- Obuna va trial (docs/specs/subscription-stars.md)
 console.log('21. Obuna huquqi (entitlement):');
