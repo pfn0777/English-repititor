@@ -184,7 +184,15 @@ for (let li = READY.indexOf(u2.program.level); li < READY.length; li++) {
     t(`${next}-01 ochildi`, api.getUnit()?.id === `${next}-01`);
   }
 }
-t("oxirgi darajadan keyin syllabussiz darajaga chiqdi", !api.CURRICULUM[u2.program.level]?.length);
+// Oxirgi daraja: LEVELS oxiri bo'lsa dastur tugaydi, aks holda syllabussiz darajaga chiqadi
+const lastReady = READY[READY.length - 1];
+const atTop = lastReady === api.LEVELS[api.LEVELS.length - 1];
+if (atTop) {
+  t("eng yuqori daraja imtihonidan keyin completed=true", u2.program.completed === true);
+  t("daraja eng yuqorida qoldi (qaytadan boshlanmadi)", u2.program.level === lastReady);
+} else {
+  t("syllabussiz darajaga chiqdi", !api.CURRICULUM[u2.program.level]?.length);
+}
 t("getTaskType()=null", api.getTaskType() === null);
 t("canStartTask reason='level_not_ready'", api.canStartTask().reason === 'level_not_ready');
 
