@@ -7,13 +7,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const LEVELS = ['A1', 'A2', 'B1'];
+const LEVELS = ['A1', 'A2', 'B1', 'B2'];
 const TASK_TYPES = ['translate', 'build', 'write', 'listen', 'speak'];
 const WORDS_PER_UNIT = 25;
 const TASKS_PER_UNIT = 6;
 const UNITS_PER_LEVEL = 12;
 const NO_WRITE_YET = ['A1-01', 'A1-02', 'A1-03'];   // bu unitlarda yozma vazifa hali erta
 const NO_SPEAK_YET = ['A1-01'];                     // birinchi unit — avval so'zlar tanilsin
+const CYRILLIC = /[Ѐ-ӿ]/;                 // o'zbekcha matn faqat lotin yozuvida
 
 const errors = [];
 const warnings = [];
@@ -39,6 +40,7 @@ for (const lv of LEVELS) {
 
     for (const k of ['title', 'can', 'grammar', 'explain']) {
       if (typeof u[k] !== 'string' || !u[k].trim()) errors.push(`${u.id}: "${k}" bo'sh yoki matn emas`);
+      else if (CYRILLIC.test(u[k])) errors.push(`${u.id}: "${k}" ichida kirill harfi bor — o'zbek lotin yozuvi kerak`);
     }
 
     if (!Array.isArray(u.words) || u.words.length !== WORDS_PER_UNIT) {
@@ -58,6 +60,11 @@ for (const lv of LEVELS) {
           }
         }
         if (bad) continue;
+        // Kirill harfi lotin harfiga juda o'xshaydi (а, е, о, с...) — ko'z bilan topib bo'lmaydi.
+        if (CYRILLIC.test(w.uz)) {
+          errors.push(`${u.id}: "${w.en}" tarjimasida kirill harfi bor — o'zbek lotin yozuvi kerak`);
+          continue;
+        }
         if (w.en !== w.en.toLowerCase()) {
           errors.push(`${u.id}: "${w.en}" — en kichik harfda bo'lsin`);
           continue;
