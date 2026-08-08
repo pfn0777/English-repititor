@@ -100,7 +100,7 @@
         { "en": "regardless", "uz": "qaramasdan", "ipa": "rɪˈɡɑːrdləs" },
         { "en": "nevertheless", "uz": "shunga qaramay", "ipa": "ˌnevərðəˈles" },
         { "en": "presumably", "uz": "ehtimol, taxminan", "ipa": "prɪˈzuːməbli" },
-        { "en": "arguably", "uz": "bahsli ravishda", "ipa": "ˈɑːrɡjuəbli" },
+        { "en": "arguably", "uz": "aytish mumkinki, ehtimol", "ipa": "ˈɑːrɡjuəbli" },
         { "en": "conceivably", "uz": "tasavvur qilish mumkinki", "ipa": "kənˈsiːvəbli" }
       ],
       "tasks": ["write", "translate", "build", "speak", "listen", "build"]
