@@ -54,6 +54,10 @@ async function hmacSha256(key: ArrayBuffer | Uint8Array, msg: string): Promise<U
 
 const toHex = (b: Uint8Array) => Array.from(b).map((x) => x.toString(16).padStart(2, '0')).join('');
 
+async function sha256(msg: string): Promise<Uint8Array> {
+  return new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg)));
+}
+
 // Vaqti doimiy solishtirish — hash'ni belgima-belgi taxmin qilishga yo'l qo'ymaslik uchun.
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -105,21 +109,21 @@ export async function verifyInitData(initData: string, botToken: string, out?: {
     const expectedRaw = toHex(await hmacSha256(secretKey, rawDcs));
     const rawMatches = timingSafeEqual(expectedRaw, hash);
 
-    const userRaw = params.get('user') || '';
-    let userParseOk = false;
-    let userKeysStr = '';
-    try {
-      const parsed = JSON.parse(userRaw);
-      userParseOk = true;
-      userKeysStr = Object.keys(parsed).join(',');
-    } catch { /* userParseOk stays false */ }
+    // VAQTINCHA (5-bosqich): "Login Widget" uslubidagi muqobil sxema —
+    // secret_key = SHA256(bot_token) to'g'ridan-to'g'ri (WebAppData oraliq
+    // HMAC bosqichisiz). Rasmiy WebApp hujjatiga zid, lekin boshqa hech
+    // narsa mos kelmagani uchun sinab ko'ramiz.
+    const loginSecret = await sha256(botToken);
+    const expectedLogin = toHex(await hmacSha256(loginSecret, dataCheckString));
+    const loginMatches = timingSafeEqual(expectedLogin, hash);
 
     return fail(
-      'bad_hash keys=' + keys + ' bot=' + botToken.split(':')[0] + ' hlen=' + hash.length +
+      'bad_hash bot=' + botToken.split(':')[0] +
       ' exp8=' + expected.slice(0, 8) + ' got8=' + hash.slice(0, 8) +
-      ' dlen=' + dataCheckString.length +
-      ' rawMatches=' + rawMatches + ' expRaw8=' + expectedRaw.slice(0, 8) +
-      ' userLen=' + userRaw.length + ' userOk=' + userParseOk + ' userKeys=' + userKeysStr
+      ' rawM=' + rawMatches +
+      ' loginM=' + loginMatches + ' expLogin8=' + expectedLogin.slice(0, 8) +
+      ' authDate=' + params.get('auth_date') + ' qidLen=' + (params.get('query_id') || '').length +
+      ' dlen=' + dataCheckString.length
     );
   }
 
