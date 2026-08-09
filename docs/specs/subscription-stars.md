@@ -103,6 +103,7 @@ create table payments (
   stars      int not null,
   charge_id  text unique not null,   -- telegram_payment_charge_id, idempotentlik
   payload    text,
+  source     text not null default 'stars',  -- 'stars' | 'manual' (admin qo'lda bergan)
   created_at timestamptz default now()
 );
 
