@@ -52,9 +52,22 @@ Saralash: `last_seen desc`. Chegaralar bo'limiga qarang (100 ta).
 
 ### 3. Qo'lda obuna berish
 
-Yangi action: `grant_sub`.
+Yangi action: `grant_sub`. Nishon **ikki yo'l** bilan tanlanadi:
 
-- Kirish: `userId`, `days` (`7 | 30 | 90 | -1`).
+- **`userId`** — jadvaldagi mavjud qator (qatorli `+7/+30/+90/✕` tugmalari).
+- **`tgId`** (+ ixtiyoriy `tgUsername`) — panel tepasidagi forma. Qator
+  mavjud bo'lmasa **yaratiladi**, ya'ni odam ilovaga hech kirmagan bo'lsa ham
+  obuna berish mumkin va u Mini App'ni ochganda tayyor turadi. Bu yangi naqsh
+  emas — `tg-webhook` "Mini App'ga kirmasdan to'lagan" holatda aynan shuni
+  qiladi. `users_tg_id_key` — *partial* unique index, shuning uchun PostgREST
+  `upsert onConflict` ishlamaydi: `select` → `insert`, `23505` kelsa qayta
+  `select` qilinib mavjud qator yo'liga o'tiladi.
+
+Bu ikkinchi yo'lsiz feature amalda o'lik edi: birinchi versiyada bazadagi
+18 ta qatordan **hech birida `tg_id` yo'q edi**, ya'ni tugma hech kimga
+ishlamasdi.
+
+- Kirish: `userId` **yoki** `tgId`, `days` (`7 | 30 | 90 | -1`).
 - `days > 0` → `subscription_until` **ustiga qo'shiladi** (`tg-webhook` bilan
   aynan bir xil mantiq: `from = max(now, mavjud subscription_until)`).
 - `days === -1` → bekor qilish: `subscription_until = null`.
@@ -96,7 +109,13 @@ Mavjud qatorlar avtomatik `'stars'` bo'ladi — real to'lov statistikasi buzilma
   (`C:\Users\user\Documents\English bot`), bu spec unga tegmaydi. Admin o'zi
   yozadi.
 - **`tg_id` siz (brauzer) foydalanuvchiga obuna berish** — texnik jihatdan
-  mumkin emas (pastga qarang). Tugma o'chirilgan holatda ko'rsatiladi.
+  mumkin emas (pastga qarang). Tugma o'chirilgan holatda ko'rsatiladi;
+  o'rniga `tg_id` bo'yicha berish formasi taklif qilinadi.
+- **Mavjud anonim qatorga `tg_id` biriktirish** — noto'g'ri biriktirish
+  boshqa odamning qatorini egallaydi, alohida qaror talab qiladi.
+- **`@username` dan `tg_id` ni aniqlash** — Bot API buni oddiy
+  foydalanuvchilar uchun ishonchli qilmaydi. `tgUsername` faqat belgi
+  (label) sifatida saqlanadi.
 - **Obuna narxini yoki `TRIAL_DAYS` ni paneldan o'zgartirish** — kod
   konstantasi bo'lib qoladi.
 - **Foydalanuvchini o'chirish / bloklash** — alohida spec.
