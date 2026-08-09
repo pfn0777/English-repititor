@@ -64,18 +64,21 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 // Telegram rasmiy algoritmi: core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
 // Qaytadi: { tgId, username } yoki null. null = ISHONMA (imzo yo'q/xato/eski).
-export async function verifyInitData(initData: string, botToken: string): Promise<{ tgId: number; username: string | null } | null> {
-  if (!initData || !botToken) return null;
+// VAQTINCHA (diagnostika): `out.reason` ga rad etish sababi yoziladi va u 401
+// javobiga qo'shiladi. Edge Function loglarida `chat` chaqiruvlari ko'rinmagani
+// uchun sababni boshqa yo'l bilan bilib bo'lmadi. Sabab maxfiy emas — faqat
+// kalit NOMLARI va yosh; hash/user qiymatlari hech qachon chiqmaydi.
+// Muammo topilgach OLIB TASHLA.
+export async function verifyInitData(initData: string, botToken: string, out?: { reason?: string }): Promise<{ tgId: number; username: string | null } | null> {
+  const fail = (why: string) => { console.error('initdata_reject ' + why); if (out) out.reason = why; return null; };
+  if (!initData || !botToken) return fail('no_input');
   let params: URLSearchParams;
-  try { params = new URLSearchParams(initData); } catch { return null; }
+  try { params = new URLSearchParams(initData); } catch { return fail('unparsable'); }
 
-  // Rad etish sababi logga yoziladi: klientga barcha holatda bir xil xabar ketadi
-  // ("tekshiruvdan o'tmadi"), shuning uchun sababsiz log bilan farqlab bo'lmaydi.
-  // Faqat kalit NOMLARI va yosh yoziladi — qiymatlar (hash, user) hech qachon.
   const keys = [...params.keys()].sort().join(',');
 
   const hash = params.get('hash');
-  if (!hash) { console.error('initdata_reject no_hash keys=' + keys); return null; }
+  if (!hash) return fail('no_hash keys=' + keys);
 
   const dataCheckString = [...params.entries()]
     .filter(([k]) => k !== 'hash' && k !== 'signature')
@@ -86,23 +89,19 @@ export async function verifyInitData(initData: string, botToken: string): Promis
   const secretKey = await hmacSha256(new TextEncoder().encode('WebAppData'), botToken);
   const expected = toHex(await hmacSha256(secretKey, dataCheckString));
   if (!timingSafeEqual(expected, hash)) {
-    console.error('initdata_reject bad_hash keys=' + keys + ' bot=' + botToken.split(':')[0]);
-    return null;
+    return fail('bad_hash keys=' + keys + ' bot=' + botToken.split(':')[0] + ' hlen=' + hash.length);
   }
 
   // Eski initData'ni qayta ishlatishga yo'l qo'ymaslik.
   const authDate = Number(params.get('auth_date') || 0);
   const ageS = authDate ? Math.floor(Date.now() / 1000) - authDate : -1;
-  if (!authDate || ageS > INITDATA_MAX_AGE_S) {
-    console.error('initdata_reject stale age_s=' + ageS);
-    return null;
-  }
+  if (!authDate || ageS > INITDATA_MAX_AGE_S) return fail('stale age_s=' + ageS);
 
   try {
     const u = JSON.parse(params.get('user') || 'null');
-    if (!u || typeof u.id !== 'number') { console.error('initdata_reject no_user keys=' + keys); return null; }
+    if (!u || typeof u.id !== 'number') return fail('no_user keys=' + keys);
     return { tgId: u.id, username: u.username ?? null };
-  } catch { console.error('initdata_reject bad_user_json'); return null; }
+  } catch { return fail('bad_user_json'); }
 }
 
 function corsFor(req: Request) {
@@ -165,9 +164,11 @@ Deno.serve(async (req: Request) => {
     // bot_token qo'yilmaguncha Mini App yo'q: initData'siz so'rov eski xatti-harakatda
     // qoladi (trial). Token qo'yilgach — brauzerdan kelgan so'rov 'free' bo'ladi.
     const tgEnabled = !!s.bot_token;
-    const tg = initData ? await verifyInitData(String(initData), String(s.bot_token || '')) : null;
+    const diag: { reason?: string } = {};
+    const tg = initData ? await verifyInitData(String(initData), String(s.bot_token || ''), diag) : null;
     if (tgEnabled && initData && !tg) {
-      return json({ error: 'bad_auth', message: 'Telegram tekshiruvidan o‘tmadi' }, 401, cors);
+      // VAQTINCHA: sabab xabarga qo'shilyapti (yuqoridagi izohga qara).
+      return json({ error: 'bad_auth', message: 'Telegram tekshiruvidan o‘tmadi — ' + (diag.reason || 'nomalum') }, 401, cors);
     }
 
     const nowMs = Date.now();
