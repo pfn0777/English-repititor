@@ -89,20 +89,37 @@ export async function verifyInitData(initData: string, botToken: string, out?: {
   const secretKey = await hmacSha256(new TextEncoder().encode('WebAppData'), botToken);
   const expected = toHex(await hmacSha256(secretKey, dataCheckString));
   if (!timingSafeEqual(expected, hash)) {
-    // VAQTINCHA (2-bosqich): to'liq dataCheckString faqat SERVER logiga yoziladi
-    // (foydalanuvchiga qaytmaydi) — token/algoritm to'g'ri ekani probe orqali
-    // isbotlangan, endi haqiqiy Telegram initData'ning bayt darajasida qanday
-    // farq qilishini ko'rish kerak. Muammo topilgach OLIB TASHLA.
-    console.error('bad_hash_full_dcs >>>' + dataCheckString + '<<<');
-    // VAQTINCHA (3-bosqich): xom initData'ning bir qismi xabarga qo'shiladi —
-    // bu faqat foydalanuvchining O'Z ekranida ko'rinadi, hech qayerga
-    // jo'natilmaydi. Server log orqali ko'rinmagani uchun shu yo'l qoldi.
-    // Muammo topilgach OLIB TASHLA.
+    // VAQTINCHA (4-bosqich): ikkinchi gipotezani sinaymiz — balki Telegram hash'ni
+    // DEKODLANMAGAN (xom, % bilan) qiymatlar ustida hisoblagan, standart hujjatga
+    // zid. Buni tekshirish uchun initData'ni o'zimiz '&'/'=' bo'yicha bo'lib,
+    // URLSearchParams dekodlashisiz xom dataCheckString qurib ko'ramiz.
+    const rawPairs = initData.split('&').map((p) => {
+      const i = p.indexOf('=');
+      return i === -1 ? [p, ''] : [p.slice(0, i), p.slice(i + 1)];
+    });
+    const rawDcs = rawPairs
+      .filter(([k]) => k !== 'hash' && k !== 'signature')
+      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+      .map(([k, v]) => `${k}=${v}`)
+      .join('\n');
+    const expectedRaw = toHex(await hmacSha256(secretKey, rawDcs));
+    const rawMatches = timingSafeEqual(expectedRaw, hash);
+
+    const userRaw = params.get('user') || '';
+    let userParseOk = false;
+    let userKeysStr = '';
+    try {
+      const parsed = JSON.parse(userRaw);
+      userParseOk = true;
+      userKeysStr = Object.keys(parsed).join(',');
+    } catch { /* userParseOk stays false */ }
+
     return fail(
       'bad_hash keys=' + keys + ' bot=' + botToken.split(':')[0] + ' hlen=' + hash.length +
       ' exp8=' + expected.slice(0, 8) + ' got8=' + hash.slice(0, 8) +
-      ' dlen=' + dataCheckString.length + ' hasPlus=' + initData.includes('+') +
-      ' raw=' + initData.slice(0, 260)
+      ' dlen=' + dataCheckString.length +
+      ' rawMatches=' + rawMatches + ' expRaw8=' + expectedRaw.slice(0, 8) +
+      ' userLen=' + userRaw.length + ' userOk=' + userParseOk + ' userKeys=' + userKeysStr
     );
   }
 
