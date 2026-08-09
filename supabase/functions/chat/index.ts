@@ -69,8 +69,13 @@ export async function verifyInitData(initData: string, botToken: string): Promis
   let params: URLSearchParams;
   try { params = new URLSearchParams(initData); } catch { return null; }
 
+  // Rad etish sababi logga yoziladi: klientga barcha holatda bir xil xabar ketadi
+  // ("tekshiruvdan o'tmadi"), shuning uchun sababsiz log bilan farqlab bo'lmaydi.
+  // Faqat kalit NOMLARI va yosh yoziladi — qiymatlar (hash, user) hech qachon.
+  const keys = [...params.keys()].sort().join(',');
+
   const hash = params.get('hash');
-  if (!hash) return null;
+  if (!hash) { console.error('initdata_reject no_hash keys=' + keys); return null; }
 
   const dataCheckString = [...params.entries()]
     .filter(([k]) => k !== 'hash' && k !== 'signature')
@@ -80,17 +85,24 @@ export async function verifyInitData(initData: string, botToken: string): Promis
 
   const secretKey = await hmacSha256(new TextEncoder().encode('WebAppData'), botToken);
   const expected = toHex(await hmacSha256(secretKey, dataCheckString));
-  if (!timingSafeEqual(expected, hash)) return null;
+  if (!timingSafeEqual(expected, hash)) {
+    console.error('initdata_reject bad_hash keys=' + keys + ' bot=' + botToken.split(':')[0]);
+    return null;
+  }
 
   // Eski initData'ni qayta ishlatishga yo'l qo'ymaslik.
   const authDate = Number(params.get('auth_date') || 0);
-  if (!authDate || Math.floor(Date.now() / 1000) - authDate > INITDATA_MAX_AGE_S) return null;
+  const ageS = authDate ? Math.floor(Date.now() / 1000) - authDate : -1;
+  if (!authDate || ageS > INITDATA_MAX_AGE_S) {
+    console.error('initdata_reject stale age_s=' + ageS);
+    return null;
+  }
 
   try {
     const u = JSON.parse(params.get('user') || 'null');
-    if (!u || typeof u.id !== 'number') return null;
+    if (!u || typeof u.id !== 'number') { console.error('initdata_reject no_user keys=' + keys); return null; }
     return { tgId: u.id, username: u.username ?? null };
-  } catch { return null; }
+  } catch { console.error('initdata_reject bad_user_json'); return null; }
 }
 
 function corsFor(req: Request) {
