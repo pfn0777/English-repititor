@@ -2462,15 +2462,19 @@ function tgName() {
   return (u && (u.first_name || u.username)) || '';
 }
 
-// VAQTINCHA (diagnostika): `?dbg=1` bilan ochilganda xom `initData` ni ekranga
-// chiqaradi, shunda uni nusxalab lokal tekshirsa bo'ladi
-// (`node scripts/initdata-probe.mjs --verify "<initData>" <token>`).
-// Server 401 `bad_hash` sababini boshqa yo'l bilan aniqlab bo'lmadi. MUAMMO
-// HAL BO'LGACH OLIB TASHLA.
-function dbgInitData() {
+// VAQTINCHA (diagnostika): xom `initData` ni ekranga chiqaradi, shunda uni
+// nusxalab lokal tekshirsa bo'ladi:
+//   node scripts/initdata-probe.mjs --verify "<initData>" <token>
+// Ikki yo'l bilan ochiladi: `?dbg=1` bilan, yoki server 401 `bad_auth` qaytarganda
+// avtomatik (menyu tugmasi URL'iga parametr qo'shib bo'lmaydi). Server 401
+// `bad_hash` sababini boshqa yo'l bilan aniqlab bo'lmadi.
+// MUAMMO HAL BO'LGACH OLIB TASHLA.
+function dbgInitData(force) {
   try {
-    if (new URLSearchParams(location.search).get('dbg') !== '1') return;
+    if (!force && new URLSearchParams(location.search).get('dbg') !== '1') return;
+    if (document.getElementById('dbg-initdata')) return;
     const box = document.createElement('div');
+    box.id = 'dbg-initdata';
     box.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#0f172a;color:#e2e8f0;padding:12px;font:12px monospace;overflow:auto';
     const ta = document.createElement('textarea');
     ta.value = getInitData() || '(BO\'SH — Telegram tashqarisida)';
@@ -3648,6 +3652,7 @@ async function callAI(userMsg, opts={}) {
     adoptSub(data.sub);
     if (!res.ok) {
       history.pop();
+      if (data.error === 'bad_auth') dbgInitData(true);   // VAQTINCHA — pastdagi izohga qara
       if (res.status===429) return '⏳ ' + (data.message || "Bugungi limit tugadi.");
       return `❌ ${data.message || 'Xatolik. Qayta urinib ko\'ring.'}`;
     }
