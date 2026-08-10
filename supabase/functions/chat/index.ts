@@ -150,13 +150,10 @@ Deno.serve(async (req: Request) => {
     if (!s) return json({ error: 'no_config', message: 'Sozlama topilmadi' }, 500, cors);
 
     // ─── Kimligi va huquqi ──────────────────────────────────────────
-    // bot_token qo'yilmaguncha Mini App yo'q: initData'siz so'rov eski xatti-harakatda
-    // qoladi (trial). Token qo'yilgach — brauzerdan kelgan so'rov 'free' bo'ladi.
-    const tgEnabled = !!s.bot_token;
+    // initData tekshiruvi o'tmasa ham so'rovni bloklamaymiz va jarima sifatida
+    // 'free'ga tushirmaymiz — brauzer holatidagi kabi tg_id'siz davom etadi,
+    // pastda entitlementOf sana asosida hisoblaydi (yangi/sanasiz → 'trial').
     const tg = initData ? await verifyInitData(String(initData), String(s.bot_token || '')) : null;
-    if (tgEnabled && initData && !tg) {
-      return json({ error: 'bad_auth', message: 'Telegram tekshiruvidan o‘tmadi' }, 401, cors);
-    }
 
     const nowMs = Date.now();
     const profileFields = {
@@ -188,9 +185,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const uid = (row?.id as string) ?? userId;
-    const ent = tgEnabled && !tg
-      ? 'free' as Ent
-      : entitlementOf(row as { trial_started_at?: string | null; subscription_until?: string | null }, nowMs);
+    const ent = entitlementOf(row as { trial_started_at?: string | null; subscription_until?: string | null }, nowMs);
 
     // Admin qo'lda qo'ygan limit hamma narsadan ustun turadi.
     const override = (row?.daily_limit ?? null) as number | null;
