@@ -54,10 +54,6 @@ async function hmacSha256(key: ArrayBuffer | Uint8Array, msg: string): Promise<U
 
 const toHex = (b: Uint8Array) => Array.from(b).map((x) => x.toString(16).padStart(2, '0')).join('');
 
-async function sha256(msg: string): Promise<Uint8Array> {
-  return new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg)));
-}
-
 // Vaqti doimiy solishtirish — hash'ni belgima-belgi taxmin qilishga yo'l qo'ymaslik uchun.
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -68,21 +64,13 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 // Telegram rasmiy algoritmi: core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
 // Qaytadi: { tgId, username } yoki null. null = ISHONMA (imzo yo'q/xato/eski).
-// VAQTINCHA (diagnostika): `out.reason` ga rad etish sababi yoziladi va u 401
-// javobiga qo'shiladi. Edge Function loglarida `chat` chaqiruvlari ko'rinmagani
-// uchun sababni boshqa yo'l bilan bilib bo'lmadi. Sabab maxfiy emas — faqat
-// kalit NOMLARI va yosh; hash/user qiymatlari hech qachon chiqmaydi.
-// Muammo topilgach OLIB TASHLA.
-export async function verifyInitData(initData: string, botToken: string, out?: { reason?: string }): Promise<{ tgId: number; username: string | null } | null> {
-  const fail = (why: string) => { console.error('initdata_reject ' + why); if (out) out.reason = why; return null; };
-  if (!initData || !botToken) return fail('no_input');
+export async function verifyInitData(initData: string, botToken: string): Promise<{ tgId: number; username: string | null } | null> {
+  if (!initData || !botToken) return null;
   let params: URLSearchParams;
-  try { params = new URLSearchParams(initData); } catch { return fail('unparsable'); }
-
-  const keys = [...params.keys()].sort().join(',');
+  try { params = new URLSearchParams(initData); } catch { return null; }
 
   const hash = params.get('hash');
-  if (!hash) return fail('no_hash keys=' + keys);
+  if (!hash) return null;
 
   const dataCheckString = [...params.entries()]
     .filter(([k]) => k !== 'hash' && k !== 'signature')
@@ -92,51 +80,17 @@ export async function verifyInitData(initData: string, botToken: string, out?: {
 
   const secretKey = await hmacSha256(new TextEncoder().encode('WebAppData'), botToken);
   const expected = toHex(await hmacSha256(secretKey, dataCheckString));
-  if (!timingSafeEqual(expected, hash)) {
-    // VAQTINCHA (4-bosqich): ikkinchi gipotezani sinaymiz — balki Telegram hash'ni
-    // DEKODLANMAGAN (xom, % bilan) qiymatlar ustida hisoblagan, standart hujjatga
-    // zid. Buni tekshirish uchun initData'ni o'zimiz '&'/'=' bo'yicha bo'lib,
-    // URLSearchParams dekodlashisiz xom dataCheckString qurib ko'ramiz.
-    const rawPairs = initData.split('&').map((p) => {
-      const i = p.indexOf('=');
-      return i === -1 ? [p, ''] : [p.slice(0, i), p.slice(i + 1)];
-    });
-    const rawDcs = rawPairs
-      .filter(([k]) => k !== 'hash' && k !== 'signature')
-      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
-      .map(([k, v]) => `${k}=${v}`)
-      .join('\n');
-    const expectedRaw = toHex(await hmacSha256(secretKey, rawDcs));
-    const rawMatches = timingSafeEqual(expectedRaw, hash);
-
-    // VAQTINCHA (5-bosqich): "Login Widget" uslubidagi muqobil sxema —
-    // secret_key = SHA256(bot_token) to'g'ridan-to'g'ri (WebAppData oraliq
-    // HMAC bosqichisiz). Rasmiy WebApp hujjatiga zid, lekin boshqa hech
-    // narsa mos kelmagani uchun sinab ko'ramiz.
-    const loginSecret = await sha256(botToken);
-    const expectedLogin = toHex(await hmacSha256(loginSecret, dataCheckString));
-    const loginMatches = timingSafeEqual(expectedLogin, hash);
-
-    return fail(
-      'bad_hash bot=' + botToken.split(':')[0] +
-      ' exp8=' + expected.slice(0, 8) + ' got8=' + hash.slice(0, 8) +
-      ' rawM=' + rawMatches +
-      ' loginM=' + loginMatches + ' expLogin8=' + expectedLogin.slice(0, 8) +
-      ' authDate=' + params.get('auth_date') + ' qidLen=' + (params.get('query_id') || '').length +
-      ' dlen=' + dataCheckString.length
-    );
-  }
+  if (!timingSafeEqual(expected, hash)) return null;
 
   // Eski initData'ni qayta ishlatishga yo'l qo'ymaslik.
   const authDate = Number(params.get('auth_date') || 0);
-  const ageS = authDate ? Math.floor(Date.now() / 1000) - authDate : -1;
-  if (!authDate || ageS > INITDATA_MAX_AGE_S) return fail('stale age_s=' + ageS);
+  if (!authDate || Math.floor(Date.now() / 1000) - authDate > INITDATA_MAX_AGE_S) return null;
 
   try {
     const u = JSON.parse(params.get('user') || 'null');
-    if (!u || typeof u.id !== 'number') return fail('no_user keys=' + keys);
+    if (!u || typeof u.id !== 'number') return null;
     return { tgId: u.id, username: u.username ?? null };
-  } catch { return fail('bad_user_json'); }
+  } catch { return null; }
 }
 
 function corsFor(req: Request) {
@@ -199,11 +153,9 @@ Deno.serve(async (req: Request) => {
     // bot_token qo'yilmaguncha Mini App yo'q: initData'siz so'rov eski xatti-harakatda
     // qoladi (trial). Token qo'yilgach — brauzerdan kelgan so'rov 'free' bo'ladi.
     const tgEnabled = !!s.bot_token;
-    const diag: { reason?: string } = {};
-    const tg = initData ? await verifyInitData(String(initData), String(s.bot_token || ''), diag) : null;
+    const tg = initData ? await verifyInitData(String(initData), String(s.bot_token || '')) : null;
     if (tgEnabled && initData && !tg) {
-      // VAQTINCHA: sabab xabarga qo'shilyapti (yuqoridagi izohga qara).
-      return json({ error: 'bad_auth', message: 'Telegram tekshiruvidan o‘tmadi — ' + (diag.reason || 'nomalum') }, 401, cors);
+      return json({ error: 'bad_auth', message: 'Telegram tekshiruvidan o‘tmadi' }, 401, cors);
     }
 
     const nowMs = Date.now();

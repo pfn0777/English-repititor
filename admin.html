@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen">
-<div id="app" class="max-w-6xl mx-auto px-4 py-8"></div>
+<div id="app" class="max-w-3xl mx-auto px-4 py-8"></div>
 
 <script>
 const SB_URL = 'https://wbcwavqbxjflgtxepdmf.supabase.co';
@@ -15,9 +15,6 @@ const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 
 // Credentials kept only in memory for the session — never persisted.
 let auth = { username: '', password: '' };
-
-// Qidiruv/filtr holati. Jadval qayta yuklanganda saqlanib qoladi.
-let view = { q: '', ent: '' };
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const app = () => document.getElementById('app');
@@ -80,80 +77,32 @@ function renderLogin() {
   document.getElementById('lg-pass').addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
 }
 
-// ─── HELPERS ────────────────────────────────────────────
-const GOAL_LABEL = { travel:'✈️ Sayohat', work:'💼 Ish', ielts:'📝 IELTS', daily:'💬 Kundalik', general:'🌟 Umumiy' };
-const ENT_FILTERS = [['', 'Hammasi'], ['active', 'Active'], ['trial', 'Trial'], ['free', 'Free']];
-
-function entBadge(u) {
-  const base = 'inline-block px-2 py-0.5 rounded-lg text-xs whitespace-nowrap ';
-  if (u.ent_state === 'active') return `<span class="${base}bg-green-500/15 text-green-300">✅ ${u.days_left} kun</span>`;
-  if (u.ent_state === 'trial')  return `<span class="${base}bg-amber-500/15 text-amber-300">⏳ Trial ${u.days_left} kun</span>`;
-  return `<span class="${base}bg-slate-600/40 text-slate-400">⚪ Free</span>`;
-}
-
-function tgCell(u) {
-  if (u.tg_username) return `<span class="text-sky-300">@${esc(u.tg_username)}</span>`;
-  if (u.tg_id) return `<span class="text-slate-400 text-xs">id:${esc(u.tg_id)}</span>`;
-  return `<span class="text-slate-600">—</span>`;
-}
-
-function grantCell(u, defLimit) {
-  // tg_id yo'q bo'lsa obuna hech narsa bermaydi — chat funksiyasi initData'siz
-  // foydalanuvchini har doim 'free' deb hisoblaydi.
-  const noTg = !u.tg_id;
-  const dis = noTg ? 'disabled' : '';
-  const cls = noTg
-    ? 'bg-slate-700/50 text-slate-600 cursor-not-allowed'
-    : 'bg-slate-600 hover:bg-green-600 text-slate-100';
-  const title = noTg ? "Telegram ID yo'q — yuqoridagi forma orqali tg_id bilan bering" : '';
-  const btn = (d, label) => `<button data-uid="${esc(u.id)}" data-days="${d}" ${dis} title="${esc(title)}"
-    class="gr-btn ${cls} rounded-lg px-1.5 py-1 text-xs transition-colors">${label}</button>`;
-  return `
-    <div class="flex items-center gap-1 whitespace-nowrap">
-      ${btn(7, '+7')}${btn(30, '+30')}${btn(90, '+90')}
-      <button data-uid="${esc(u.id)}" data-days="-1"
-        class="gr-btn bg-slate-700 hover:bg-red-600 rounded-lg px-1.5 py-1 text-xs transition-colors" title="Obunani bekor qilish">✕</button>
-    </div>`;
-}
-
-function userRow(u, defLimit) {
-  return `
-    <tr class="border-b border-slate-700/50" data-row="${esc(u.id)}">
-      <td class="py-2 pr-3">${esc(u.name || '—')}</td>
-      <td class="py-2 pr-3">${tgCell(u)}</td>
-      <td class="py-2 pr-3 ent-cell" data-uid="${esc(u.id)}">${entBadge(u)}</td>
-      <td class="py-2 pr-3 text-slate-400">${esc(u.level || '—')}</td>
-      <td class="py-2 pr-3">${esc(GOAL_LABEL[u.goal] || u.goal || '—')}</td>
-      <td class="py-2 pr-3 text-center text-indigo-300">${u.today_req ?? 0}</td>
-      <td class="py-2 pr-3 text-center text-slate-400">${u.total_req ?? 0}</td>
-      <td class="py-2 pr-3 text-slate-500 text-xs whitespace-nowrap">${u.last_seen ? new Date(u.last_seen).toLocaleDateString('uz') : '—'}</td>
-      <td class="py-2 pr-3 whitespace-nowrap">
-        <input type="number" min="0" value="${u.daily_limit ?? ''}" placeholder="${esc(defLimit)}" data-uid="${esc(u.id)}"
-          class="lim-in w-14 bg-slate-700 rounded-lg px-2 py-1 text-xs border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
-        <button data-uid="${esc(u.id)}" class="lim-save bg-slate-600 hover:bg-indigo-600 rounded-lg px-2 py-1 text-xs transition-colors">✓</button>
-      </td>
-      <td class="py-2">${grantCell(u, defLimit)}</td>
-    </tr>`;
-}
-
-function statCard(value, label, color) {
-  return `
-    <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
-      <div class="text-2xl font-bold ${color}">${value}</div>
-      <div class="text-xs text-slate-400 mt-1">${label}</div>
-    </div>`;
-}
-
 // ─── PANEL ──────────────────────────────────────────────
 async function renderPanel() {
   app().innerHTML = `<div class="text-center text-slate-400 mt-16">Yuklanmoqda...</div>`;
-  const { ok, status, data } = await api('stats', { q: view.q, ent: view.ent });
+  const { ok, status, data } = await api('stats');
   if (!ok || !data.ok) {
     if (status === 401) { auth = { username: '', password: '' }; return renderLogin(); }
     app().innerHTML = `<div class="text-center text-red-400 mt-16">Xatolik: ${esc(data.message || 'qayta urinib ko\'ring')}</div>`;
     return;
   }
   const s = data.settings;
+  const goalLabel = { travel:'✈️ Sayohat', work:'💼 Ish', ielts:'📝 IELTS', daily:'💬 Kundalik', general:'🌟 Umumiy' };
+  const modeRows = Object.entries(data.byMode || {}).sort((a,b)=>b[1]-a[1])
+    .map(([m,c]) => `<div class="flex justify-between text-sm py-1 border-b border-slate-700/50"><span class="text-slate-300">${esc(m)}</span><span class="text-indigo-300 font-medium">${c}</span></div>`).join('') || '<div class="text-slate-500 text-sm">Ma\'lumot yo\'q</div>';
+  const defLimit = s.daily_limit;
+  const userRows = (data.users || []).map(u => `
+    <tr class="border-b border-slate-700/50">
+      <td class="py-2 pr-3">${esc(u.name || '—')}</td>
+      <td class="py-2 pr-3 text-slate-400">${esc(u.level || '—')}</td>
+      <td class="py-2 pr-3">${esc(goalLabel[u.goal] || u.goal || '—')}</td>
+      <td class="py-2 pr-3 text-slate-500 text-xs">${u.last_seen ? new Date(u.last_seen).toLocaleDateString('uz') : '—'}</td>
+      <td class="py-2 whitespace-nowrap">
+        <input type="number" min="0" value="${u.daily_limit ?? ''}" placeholder="${esc(defLimit)}" data-uid="${esc(u.id)}"
+          class="lim-in w-16 bg-slate-700 rounded-lg px-2 py-1 text-xs border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
+        <button data-uid="${esc(u.id)}" class="lim-save bg-slate-600 hover:bg-indigo-600 rounded-lg px-2 py-1 text-xs transition-colors">✓</button>
+      </td>
+    </tr>`).join('') || '<tr><td colspan="5" class="py-3 text-slate-500 text-sm">Foydalanuvchi yo\'q</td></tr>';
 
   app().innerHTML = `
     <div class="flex items-center justify-between mb-6">
@@ -161,55 +110,19 @@ async function renderPanel() {
       <button id="ap-logout" class="bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-1.5 text-xs transition-colors">Chiqish</button>
     </div>
 
-    <div id="ap-cards" class="grid grid-cols-3 md:grid-cols-6 gap-3 mb-2"></div>
-    <p id="ap-pay" class="text-xs text-slate-500 mb-6"></p>
-
-    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 mb-6">
-      <h2 class="font-semibold mb-1">Telegram ID bo'yicha obuna berish</h2>
-      <p class="text-xs text-slate-500 mb-3">Odam ilovaga hali kirmagan bo'lsa ham bo'ladi — obuna uni kutib turadi. Telegram ID raqamini <span class="text-slate-400">@userinfobot</span> dan olish mumkin.</p>
-      <div class="flex flex-wrap gap-2">
-        <input id="tg-id" type="number" min="1" placeholder="Telegram ID (masalan 123456789)"
-          class="flex-1 min-w-[200px] bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
-        <input id="tg-un" type="text" placeholder="@username (ixtiyoriy)"
-          class="w-44 bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
-        <select id="tg-days" class="bg-slate-700 rounded-xl px-4 py-2.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
-          <option value="7">7 kun</option>
-          <option value="30" selected>30 kun</option>
-          <option value="90">90 kun</option>
-        </select>
-        <button id="tg-go" class="bg-green-600 hover:bg-green-500 rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors">Berish</button>
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+        <div class="text-2xl font-bold text-indigo-400">${data.userCount}</div>
+        <div class="text-xs text-slate-400 mt-1">Foydalanuvchi</div>
       </div>
-    </div>
-
-    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 mb-6">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-        <h2 class="font-semibold">Foydalanuvchilar <span id="ap-ucount" class="text-slate-500 text-sm"></span></h2>
-        <div class="flex flex-wrap items-center gap-2">
-          <input id="ap-q" type="text" value="${esc(view.q)}" placeholder="Ism, @username yoki tg_id"
-            class="bg-slate-700 rounded-xl px-3 py-1.5 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none w-56"/>
-          <div class="flex gap-1">
-            ${ENT_FILTERS.map(([v, label]) => `<button data-ent="${v}" class="ent-btn rounded-lg px-2.5 py-1.5 text-xs transition-colors">${label}</button>`).join('')}
-          </div>
-        </div>
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+        <div class="text-2xl font-bold text-green-400">${data.todayReq}</div>
+        <div class="text-xs text-slate-400 mt-1">Bugungi so'rov</div>
       </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
-          <thead><tr class="text-left text-slate-400 border-b border-slate-700">
-            <th class="py-2 pr-3 font-medium">Ism</th>
-            <th class="py-2 pr-3 font-medium">TG</th>
-            <th class="py-2 pr-3 font-medium">Obuna</th>
-            <th class="py-2 pr-3 font-medium">Daraja</th>
-            <th class="py-2 pr-3 font-medium">Maqsad</th>
-            <th class="py-2 pr-3 font-medium text-center">Bugun</th>
-            <th class="py-2 pr-3 font-medium text-center">Jami</th>
-            <th class="py-2 pr-3 font-medium">Oxirgi</th>
-            <th class="py-2 pr-3 font-medium">Limit</th>
-            <th class="py-2 font-medium">Obuna berish</th>
-          </tr></thead>
-          <tbody id="ap-tbody"></tbody>
-        </table>
+      <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 text-center">
+        <div class="text-2xl font-bold text-amber-400">${data.totalReq}</div>
+        <div class="text-xs text-slate-400 mt-1">Jami so'rov</div>
       </div>
-      <p id="ap-hint" class="text-xs text-slate-500 mt-3"></p>
     </div>
 
     <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 mb-6">
@@ -246,53 +159,28 @@ async function renderPanel() {
       </div>
     </div>
 
-    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700 mb-6">
       <h2 class="font-semibold mb-3">Rejimlar bo'yicha statistika</h2>
-      <div id="ap-modes"></div>
+      ${modeRows}
+    </div>
+
+    <div class="bg-slate-800 rounded-2xl p-5 border border-slate-700">
+      <h2 class="font-semibold mb-3">Foydalanuvchilar (${data.userCount})</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="text-left text-slate-400 border-b border-slate-700">
+            <th class="py-2 pr-3 font-medium">Ism</th>
+            <th class="py-2 pr-3 font-medium">Daraja</th>
+            <th class="py-2 pr-3 font-medium">Maqsad</th>
+            <th class="py-2 pr-3 font-medium">Oxirgi</th>
+            <th class="py-2 font-medium">Limit</th>
+          </tr></thead>
+          <tbody>${userRows}</tbody>
+        </table>
+      </div>
     </div>`;
 
-  fillData(data);
-
-  document.getElementById('ap-logout').onclick = () => {
-    auth = { username: '', password: '' };
-    view = { q: '', ent: '' };
-    renderLogin();
-  };
-
-  // Qidiruv: qobiq qayta chizilmaydi, faqat jadval yangilanadi — fokus va
-  // kursor joyida qoladi.
-  let timer = null;
-  document.getElementById('ap-q').oninput = e => {
-    view.q = e.target.value;
-    clearTimeout(timer);
-    timer = setTimeout(refreshUsers, 300);
-  };
-  document.querySelectorAll('.ent-btn').forEach(b => {
-    b.onclick = () => { view.ent = b.dataset.ent; paintFilters(); refreshUsers(); };
-  });
-  paintFilters();
-
-  // tg_id bo'yicha obuna: odam hali ilovaga kirmagan bo'lsa qator yaratiladi.
-  document.getElementById('tg-go').onclick = async () => {
-    const idEl = document.getElementById('tg-id');
-    const unEl = document.getElementById('tg-un');
-    const raw = idEl.value.trim();
-    const n = Number(raw);
-    if (!raw || !Number.isInteger(n) || n <= 0) {
-      return toast("Telegram ID musbat butun son bo'lishi kerak", 'error');
-    }
-    const days = Number(document.getElementById('tg-days').value);
-    const btn = document.getElementById('tg-go');
-    btn.disabled = true; btn.textContent = 'Berilmoqda...';
-    const { ok, data } = await api('grant_sub', { tgId: n, tgUsername: unEl.value.trim(), days });
-    btn.disabled = false; btn.textContent = 'Berish';
-    if (!ok || !data.ok) return toast(data.message || 'Bajarilmadi', 'error');
-    toast(`Obuna: ${new Date(data.subscription_until).toLocaleDateString('uz')} gacha`, 'success');
-    if (data.audit === false) toast("Diqqat: audit yozuvi yozilmadi", 'error');
-    idEl.value = ''; unEl.value = '';
-    refreshUsers();
-  };
-
+  document.getElementById('ap-logout').onclick = () => { auth = { username: '', password: '' }; renderLogin(); };
   // Model field is filled from list_models so a retired model name can't be typed in by hand.
   const modelField = { models: null, warning: '' };
   const drawModelField = () => {
@@ -342,61 +230,7 @@ async function renderPanel() {
     toast('Saqlandi', 'success');
     renderPanel();
   };
-}
 
-function paintFilters() {
-  document.querySelectorAll('.ent-btn').forEach(b => {
-    const on = b.dataset.ent === view.ent;
-    b.className = `ent-btn rounded-lg px-2.5 py-1.5 text-xs transition-colors ${on ? 'bg-indigo-600 text-white' : 'bg-slate-700 hover:bg-slate-600 text-slate-300'}`;
-  });
-}
-
-// Qobiqqa tegmasdan jadval + kartochkalarni to'ldiradi.
-function fillData(data) {
-  const s = data.settings;
-  document.getElementById('ap-cards').innerHTML = [
-    statCard(data.userCount, 'Foydalanuvchi', 'text-indigo-400'),
-    statCard(data.activeSubs, 'Faol obuna', 'text-green-400'),
-    statCard(data.trialUsers, `Trial (${data.trialDays} kun)`, 'text-amber-400'),
-    statCard(data.freeUsers, 'Free', 'text-slate-400'),
-    statCard(`${data.todayReq}<span class="text-sm text-slate-500">/${data.globalLimit}</span>`, "Bugungi so'rov", 'text-green-400'),
-    statCard(data.totalReq, "Jami so'rov", 'text-sky-400'),
-  ].join('');
-
-  document.getElementById('ap-pay').innerHTML =
-    `To'lovlar: <span class="text-slate-300">${data.paidCount}</span> ta (${data.starsTotal} ⭐) · ` +
-    `qo'lda berilgan: <span class="text-slate-300">${data.manualCount}</span> ta`;
-
-  document.getElementById('ap-modes').innerHTML =
-    Object.entries(data.byMode || {}).sort((a,b)=>b[1]-a[1])
-      .map(([m,c]) => `<div class="flex justify-between text-sm py-1 border-b border-slate-700/50"><span class="text-slate-300">${esc(m)}</span><span class="text-indigo-300 font-medium">${c}</span></div>`)
-      .join('') || '<div class="text-slate-500 text-sm">Ma\'lumot yo\'q</div>';
-
-  const users = data.users || [];
-  document.getElementById('ap-ucount').textContent =
-    `(${users.length}${users.length >= 100 ? '+, qidiruvdan foydalaning' : ''})`;
-  document.getElementById('ap-tbody').innerHTML =
-    users.map(u => userRow(u, s.daily_limit)).join('')
-    || '<tr><td colspan="10" class="py-3 text-slate-500 text-sm">Foydalanuvchi topilmadi</td></tr>';
-
-  const noTgCount = users.filter(u => !u.tg_id).length;
-  document.getElementById('ap-hint').textContent = noTgCount
-    ? `${noTgCount} ta foydalanuvchi Telegram orqali kirmagan (tg_id yo'q) — ularning tugmalari kulrang. Obunani yuqoridagi "Telegram ID bo'yicha" forma orqali bering.`
-    : '';
-
-  bindRowActions();
-}
-
-async function refreshUsers() {
-  const { ok, status, data } = await api('stats', { q: view.q, ent: view.ent });
-  if (!ok || !data.ok) {
-    if (status === 401) { auth = { username: '', password: '' }; return renderLogin(); }
-    return toast(data.message || "Ro'yxat yangilanmadi", 'error');
-  }
-  fillData(data);
-}
-
-function bindRowActions() {
   document.querySelectorAll('.lim-save').forEach(btn => {
     btn.onclick = async () => {
       const uid = btn.dataset.uid;
@@ -411,27 +245,6 @@ function bindRowActions() {
       btn.disabled = false;
       if (!ok || !data.ok) return toast(data.message || 'Saqlanmadi', 'error');
       toast(limit === null ? 'Umumiy limitga qaytdi' : `Limit: ${limit}`, 'success');
-    };
-  });
-
-  document.querySelectorAll('.gr-btn').forEach(btn => {
-    btn.onclick = async () => {
-      const uid = btn.dataset.uid;
-      const days = Number(btn.dataset.days);
-      if (days === -1 && !confirm('Obunani bekor qilamizmi? Foydalanuvchi darhol chegaralanadi.')) return;
-      // Butun guruh bloklanadi — ikki marta bosish obunani ikki marta uzaytirmasin.
-      const group = document.querySelectorAll(`.gr-btn[data-uid="${uid}"]`);
-      group.forEach(b => { b.dataset.wasDisabled = b.disabled ? '1' : ''; b.disabled = true; });
-      const { ok, data } = await api('grant_sub', { userId: uid, days });
-      group.forEach(b => { b.disabled = b.dataset.wasDisabled === '1'; });
-      if (!ok || !data.ok) return toast(data.message || 'Bajarilmadi', 'error');
-
-      const cell = document.querySelector(`.ent-cell[data-uid="${uid}"]`);
-      if (cell) cell.innerHTML = entBadge({ ent_state: data.ent, days_left: data.days_left });
-      toast(data.subscription_until
-        ? `Obuna: ${new Date(data.subscription_until).toLocaleDateString('uz')} gacha`
-        : 'Obuna bekor qilindi', 'success');
-      if (data.audit === false) toast("Diqqat: audit yozuvi yozilmadi", 'error');
     };
   });
 }

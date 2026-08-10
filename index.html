@@ -2462,38 +2462,7 @@ function tgName() {
   return (u && (u.first_name || u.username)) || '';
 }
 
-// VAQTINCHA (diagnostika): xom `initData` ni ekranga chiqaradi, shunda uni
-// nusxalab lokal tekshirsa bo'ladi:
-//   node scripts/initdata-probe.mjs --verify "<initData>" <token>
-// Ikki yo'l bilan ochiladi: `?dbg=1` bilan, yoki server 401 `bad_auth` qaytarganda
-// avtomatik (menyu tugmasi URL'iga parametr qo'shib bo'lmaydi). Server 401
-// `bad_hash` sababini boshqa yo'l bilan aniqlab bo'lmadi.
-// MUAMMO HAL BO'LGACH OLIB TASHLA.
-function dbgInitData(force) {
-  try {
-    if (!force && new URLSearchParams(location.search).get('dbg') !== '1') return;
-    if (document.getElementById('dbg-initdata')) return;
-    const box = document.createElement('div');
-    box.id = 'dbg-initdata';
-    box.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#0f172a;color:#e2e8f0;padding:12px;font:12px monospace;overflow:auto';
-    const ta = document.createElement('textarea');
-    ta.value = getInitData() || '(BO\'SH — Telegram tashqarisida)';
-    ta.style.cssText = 'width:100%;height:45vh;background:#1e293b;color:#e2e8f0;border:1px solid #334155;padding:8px';
-    const btn = document.createElement('button');
-    btn.textContent = 'Nusxa olish';
-    btn.style.cssText = 'margin-top:8px;padding:8px 14px;background:#2563eb;color:#fff;border:0;border-radius:6px';
-    btn.onclick = () => { ta.select(); document.execCommand('copy'); btn.textContent = 'Nusxalandi'; };
-    const close = document.createElement('button');
-    close.textContent = 'Yopish';
-    close.style.cssText = 'margin:8px 0 0 8px;padding:8px 14px;background:#475569;color:#fff;border:0;border-radius:6px';
-    close.onclick = () => box.remove();
-    box.append('initData (xom):', ta, btn, close);
-    document.body.appendChild(box);
-  } catch (e) { console.warn('dbgInitData', e); }
-}
-
 function tgInit() {
-  dbgInitData();
   const a = tgApp();
   if (!a) return;
   try {
@@ -3652,7 +3621,6 @@ async function callAI(userMsg, opts={}) {
     adoptSub(data.sub);
     if (!res.ok) {
       history.pop();
-      if (data.error === 'bad_auth') dbgInitData(true);   // VAQTINCHA — pastdagi izohga qara
       if (res.status===429) return '⏳ ' + (data.message || "Bugungi limit tugadi.");
       return `❌ ${data.message || 'Xatolik. Qayta urinib ko\'ring.'}`;
     }

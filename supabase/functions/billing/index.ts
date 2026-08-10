@@ -63,11 +63,8 @@ async function verifyInitData(initData: string, botToken: string): Promise<{ tgI
   let params: URLSearchParams;
   try { params = new URLSearchParams(initData); } catch { return null; }
 
-  // chat/index.ts dagi bilan bir xil — rad etish sababi logga tushadi.
-  const keys = [...params.keys()].sort().join(',');
-
   const hash = params.get('hash');
-  if (!hash) { console.error('initdata_reject no_hash keys=' + keys); return null; }
+  if (!hash) return null;
 
   const dataCheckString = [...params.entries()]
     .filter(([k]) => k !== 'hash' && k !== 'signature')
@@ -76,23 +73,16 @@ async function verifyInitData(initData: string, botToken: string): Promise<{ tgI
     .join('\n');
 
   const secretKey = await hmacSha256(new TextEncoder().encode('WebAppData'), botToken);
-  if (!timingSafeEqual(toHex(await hmacSha256(secretKey, dataCheckString)), hash)) {
-    console.error('initdata_reject bad_hash keys=' + keys + ' bot=' + botToken.split(':')[0]);
-    return null;
-  }
+  if (!timingSafeEqual(toHex(await hmacSha256(secretKey, dataCheckString)), hash)) return null;
 
   const authDate = Number(params.get('auth_date') || 0);
-  const ageS = authDate ? Math.floor(Date.now() / 1000) - authDate : -1;
-  if (!authDate || ageS > INITDATA_MAX_AGE_S) {
-    console.error('initdata_reject stale age_s=' + ageS);
-    return null;
-  }
+  if (!authDate || Math.floor(Date.now() / 1000) - authDate > INITDATA_MAX_AGE_S) return null;
 
   try {
     const u = JSON.parse(params.get('user') || 'null');
-    if (!u || typeof u.id !== 'number') { console.error('initdata_reject no_user keys=' + keys); return null; }
+    if (!u || typeof u.id !== 'number') return null;
     return { tgId: u.id, username: u.username ?? null };
-  } catch { console.error('initdata_reject bad_user_json'); return null; }
+  } catch { return null; }
 }
 
 Deno.serve(async (req: Request) => {

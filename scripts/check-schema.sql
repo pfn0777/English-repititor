@@ -62,36 +62,6 @@ with checks as (
       where tg_id is not null
       group by tg_id having count(*) > 1
     )
-
-  union all select
-    'payments.source exists',
-    'admin grant_sub writes source = manual; revenue counting filters on source = stars',
-    exists (
-      select 1 from information_schema.columns
-      where table_schema = 'public' and table_name = 'payments' and column_name = 'source'
-    )
-
-  union all select
-    'admin_user_rows is not callable by anon',
-    'Postgres grants EXECUTE to PUBLIC by default; the anon key is public, so this would leak every user row',
-    not (
-      has_function_privilege('anon', 'public.admin_user_rows(text,text,int)', 'execute')
-      or has_function_privilege('authenticated', 'public.admin_user_rows(text,text,int)', 'execute')
-    )
-
-  union all select
-    'admin_summary is not callable by anon',
-    'same default-grant trap as admin_user_rows',
-    not (
-      has_function_privilege('anon', 'public.admin_summary()', 'execute')
-      or has_function_privilege('authenticated', 'public.admin_summary()', 'execute')
-    )
-
-  union all select
-    'admin functions are callable by service_role',
-    'the admin Edge Function calls them with the service-role key; a bad revoke breaks the whole panel',
-    has_function_privilege('service_role', 'public.admin_user_rows(text,text,int)', 'execute')
-      and has_function_privilege('service_role', 'public.admin_summary()', 'execute')
 )
 select
   case when ok then 'OK  ' else 'FAIL' end as status,
