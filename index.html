@@ -3621,6 +3621,9 @@ async function callAI(userMsg, opts={}) {
     adoptSub(data.sub);
     if (!res.ok) {
       history.pop();
+      // 503/busy — AI provayderi band. Limit tugagani EMAS, shuning uchun matn boshqa;
+      // '⏳' prefiksi isAiError'ga tushadi → urinish sanalmaydi.
+      if (res.status===503 || data.error==='busy') return '⏳ ' + (data.message || "AI hozir band. Biroz kuting va qayta urinib ko'ring.");
       if (res.status===429) return '⏳ ' + (data.message || "Bugungi limit tugadi.");
       return `❌ ${data.message || 'Xatolik. Qayta urinib ko\'ring.'}`;
     }

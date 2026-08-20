@@ -17,6 +17,9 @@ const MAX_AUDIO_B64 = 2_000_000; // ~1.5MB; ~60s opus is enough
 // default, but the fallback alias does not, so the budget must still cover thinking + answer.
 // thinkingConfig is rejected by the alias, so it is not set here.
 const MAX_OUTPUT_TOKENS = 4000;
+// Gemini 503 UNAVAILABLE ("This model is currently experiencing high demand") vaqtinchalik —
+// qayta urinilsa odatda o'tadi. Kechikish jami ~2.5s, foydalanuvchi kutishi maqbul chegarada.
+const GEMINI_RETRY_DELAYS_MS = [700, 1800];
 const ALLOWED_AUDIO_MIME = ['audio/webm', 'audio/ogg', 'audio/mp4', 'audio/mpeg', 'audio/wav'];
 
 // ─── Obuna (docs/specs/subscription-stars.md) ────────────────────
@@ -92,6 +95,18 @@ export async function verifyInitData(initData: string, botToken: string): Promis
     return { tgId: u.id, username: u.username ?? null };
   } catch { return null; }
 }
+
+// Gemini 503/UNAVAILABLE — model band, xato emas. Status ham, matn ham tekshiriladi:
+// Google ba'zan 503 ni boshqa status matni bilan qaytaradi.
+function isOverloaded(r: Response, d: unknown): boolean {
+  if (r.ok) return false;
+  const e = (d as { error?: { message?: string; status?: string } } | null)?.error;
+  if (r.status === 503) return true;
+  if (String(e?.status || '') === 'UNAVAILABLE') return true;
+  return /high demand|overloaded|unavailable|try again later/i.test(String(e?.message || ''));
+}
+
+const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 function corsFor(req: Request) {
   const origin = req.headers.get('origin') || '';
@@ -231,7 +246,10 @@ Deno.serve(async (req: Request) => {
       const d = await r.json();
       if (!r.ok) {
         console.error('claude_error', r.status, JSON.stringify(d.error || d));
-        return json({ error: 'ai', message: d.error?.message || 'AI xatosi' }, 502, cors);
+        if (r.status === 529 || r.status === 503) {
+          return json({ error: 'busy', message: "AI hozir juda band. 10-15 soniyadan keyin qayta urinib ko'ring.", sub: subState }, 503, cors);
+        }
+        return json({ error: 'ai', message: "AI javob bera olmadi. Qayta urinib ko'ring.", sub: subState }, 502, cors);
       }
       text = d.content?.[0]?.text || '';
     } else {
@@ -271,22 +289,43 @@ Deno.serve(async (req: Request) => {
         { method: 'POST', headers: { 'Content-Type': 'application/json' }, body },
       );
 
-      let r = await callGemini(model);
-      let d = await r.json();
+      // 503 (band) vaqtinchalik — backoff bilan qayta urinamiz. 404/boshqa xatolar
+      // retry bilan tuzalmaydi, shuning uchun darhol qaytadi.
+      const callWithRetry = async (m: string) => {
+        let r = await callGemini(m);
+        let d = await r.json().catch(() => ({}));
+        for (const delay of GEMINI_RETRY_DELAYS_MS) {
+          if (!isOverloaded(r, d)) break;
+          console.error('gemini_overloaded_retry', m, r.status, 'wait', delay);
+          await sleep(delay);
+          r = await callGemini(m);
+          d = await r.json().catch(() => ({}));
+        }
+        return { r, d };
+      };
+
+      let { r, d } = await callWithRetry(model);
+      // Birinchi urinish xatosi ham loglanadi — fallback'dan keyin uni bilib bo'lmasdi.
+      if (!r.ok) console.error('gemini_error_1', model, r.status, JSON.stringify(d?.error || d));
       // Pinned Gemini versions get retired over time; retry once on the always-current alias
-      // so a stale admin setting doesn't take the bot down.
-      const retired = !r.ok && (r.status === 404 || /no longer available|not found|not supported/i.test(String(d?.error?.message || '')));
+      // so a stale admin setting doesn't take the bot down. Band model "retired" EMAS —
+      // aks holda har 503 da keraksiz ikkinchi modelga o'tib, kechikish ikkilanadi.
+      const retired = !r.ok && !isOverloaded(r, d)
+        && (r.status === 404 || /no longer available|not found|not supported/i.test(String(d?.error?.message || '')));
       if (retired && model !== GEMINI_FALLBACK_MODEL) {
         console.error('gemini_model_retired', model, '-> fallback', GEMINI_FALLBACK_MODEL);
-        r = await callGemini(GEMINI_FALLBACK_MODEL);
-        d = await r.json();
+        ({ r, d } = await callWithRetry(GEMINI_FALLBACK_MODEL));
       }
       if (!r.ok) {
         console.error('gemini_error', r.status, JSON.stringify(d.error || d));
-        if (r.status === 429) {
-          return json({ error: 'rate_limit', message: "Hozir band, biroz kuting va qayta urinib ko'ring." }, 429, cors);
+        if (isOverloaded(r, d)) {
+          return json({ error: 'busy', message: "AI hozir juda band. 10-15 soniyadan keyin qayta urinib ko'ring.", sub: subState }, 503, cors);
         }
-        return json({ error: 'ai', message: d.error?.message || 'AI xatosi' }, 502, cors);
+        if (r.status === 429) {
+          return json({ error: 'rate_limit', message: "Hozir band, biroz kuting va qayta urinib ko'ring.", sub: subState }, 429, cors);
+        }
+        // Xom provayder matni inglizcha va texnik — u faqat logda qoladi.
+        return json({ error: 'ai', message: "AI javob bera olmadi. Qayta urinib ko'ring.", sub: subState }, 502, cors);
       }
       text = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
       // Surfaced so a silent truncation shows up in logs instead of looking like a bad answer.
