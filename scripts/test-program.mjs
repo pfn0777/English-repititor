@@ -65,7 +65,7 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'entitlementOf','limitFor','tasksFor','trialDaysLeft','dailyTasks','myEntitlement',
                   'adoptSub','freeModeGate',
                   'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
-                  'TASKS_ACTIVE','TASKS_FREE','DAY_MS'];
+                  'TASKS_ACTIVE','TASKS_TRIAL','TASKS_FREE','DAY_MS'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user,
   setBusy:(p,c)=>{ programBusy=p; chatBusy=c; }, getBusy:()=>({ programBusy, chatBusy }) };`);
 const api = runner(...names.map(n => stubs[n]));
@@ -611,8 +611,14 @@ t("buzuq sana → 'trial' (foydalanuvchi zarar ko'rmaydi)",
 t('limit: active=60, trial=40, free=5',
   api.limitFor('active') === 60 && api.limitFor('trial') === 40 && api.limitFor('free') === 5);
 t("noma'lum holat → eng past limit", api.limitFor('???') === api.LIMIT_FREE);
-t('vazifa: active=3, trial=3, free=1',
-  api.tasksFor('active') === 3 && api.tasksFor('trial') === 3 && api.tasksFor('free') === 1);
+t('vazifa: active=5, trial=3, free=1',
+  api.tasksFor('active') === 5 && api.tasksFor('trial') === 3 && api.tasksFor('free') === 1);
+// Normani faqat klient cheklaydi; server esa AI chaqiruvlarini cheklaydi. Norma
+// chaqiruv shiftidan oshib ketsa, obunachi kun o'rtasida 429 oladi.
+t("kunlik norma AI chaqiruv shiftiga sig'adi (vazifa ~3 chaqiruv)",
+  api.tasksFor('active') * 3 <= api.LIMIT_ACTIVE
+  && api.tasksFor('trial') * 3 <= api.LIMIT_TRIAL
+  && api.tasksFor('free') * 3 <= api.LIMIT_FREE);
 
 t("qolgan kun: boshlanmagan → 7", api.trialDaysLeft(null, NOW) === 7);
 t('qolgan kun: 3 kun o\'tgan → 4', api.trialDaysLeft({ trial_started_at: ago(3) }, NOW) === 4);
@@ -645,7 +651,7 @@ u12.program.doneToday = { date: api.todayStr(), count: 1 };
 
 u12.sub = { trial_started_at: ago(30), subscription_until: ahead(20) };
 t("to'lovdan keyin → 'active'", api.myEntitlement() === 'active');
-t('active → kuniga 3 vazifa', api.dailyTasks() === 3);
+t('active → kuniga 5 vazifa', api.dailyTasks() === 5);
 u12.program.doneToday = { date: api.todayStr(), count: 1 };
 t('active: 2-vazifa ochiq', api.canStartTask().ok === true);
 t('active: erkin rejimlar ochiq', api.freeModeGate().ok === true);

@@ -44,6 +44,9 @@ function entitlementOf(row: { trial_started_at?: string | null; subscription_unt
   return tr + TRIAL_DAYS * DAY_MS > now ? 'trial' : 'free';
 }
 
+// DIQQAT: bu AI CHAQIRUVLARI chegarasi. Kunlik VAZIFA normasi (tasksFor)
+// faqat klientda: bu funksiya vazifalarni sanamaydi. Normani ko'targanda
+// shu chegara sig'ishini tekshir — bitta vazifa ~2-3 chaqiruv.
 function limitFor(ent: Ent): number {
   if (ent === 'active') return LIMIT_ACTIVE;
   if (ent === 'trial') return LIMIT_TRIAL;
@@ -218,7 +221,7 @@ Deno.serve(async (req: Request) => {
       return json({
         error: 'limit',
         message: ent === 'free'
-          ? 'Bepul rejim tugadi. Obuna bo‘lsangiz kuniga 3 vazifa ochiladi.'
+          ? 'Bepul rejim tugadi. Obuna bo‘lsangiz kuniga 5 vazifa ochiladi.'
           : "Bugungi limit tugadi. Ertaga qayta urinib ko'ring.",
         sub: subState,
       }, 429, cors);

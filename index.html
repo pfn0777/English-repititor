@@ -64,7 +64,7 @@ const MODES = {
 // ─── 1b. DASTUR (CEFR PROGRAM) ───────────────────────────────────
 const TASKS_PER_UNIT            = 6;    // unit ichidagi vazifalar; 7-qadam = unit imtihoni
 const PASS_THRESHOLD            = 0.8;  // 4/5 o'tadi, 3/5 yiqiladi
-const MAX_DAILY_TASKS           = 3;    // kuniga maksimum
+const MAX_DAILY_TASKS           = 5;    // eng yuqori kunlik norma (obunachi)
 const DAILY_QUOTA               = 1;    // erkin mashqlar ochilishi uchun kerakli vazifa (≤ MAX_DAILY_TASKS)
 const MAX_ATTEMPTS_BEFORE_RELIEF= 3;    // shundan keyin AI to'liq tushuntirib yengillashtiradi
 const MAX_ATTEMPTS_BEFORE_SKIP  = 5;    // shundan keyin o'tkazib yuborish ochiladi (tiqilib qolmasin)
@@ -85,7 +85,8 @@ const SUB_DAYS     = 30;
 const LIMIT_ACTIVE = 60;    // obunachining kunlik AI chaqiruvlari
 const LIMIT_TRIAL  = 40;
 const LIMIT_FREE   = 5;
-const TASKS_ACTIVE = MAX_DAILY_TASKS;  // obunachi va trial — to'liq norma
+const TASKS_ACTIVE = MAX_DAILY_TASKS;  // obunachi — to'liq norma
+const TASKS_TRIAL  = 3;                // trial — obunaga o'sish uchun joy qoldiradi
 const TASKS_FREE   = 1;                // trial tugagan, obunasiz
 const DAY_MS       = 86400000;
 
@@ -3160,7 +3161,15 @@ function limitFor(ent) {
   return LIMIT_FREE;
 }
 
-function tasksFor(ent) { return ent === 'free' ? TASKS_FREE : TASKS_ACTIVE; }
+// Kunlik vazifa normasi. Serverda EMAS, faqat shu yerda cheklanadi — chat/index.ts
+// vazifa sonini sanamaydi, u faqat AI chaqiruvlarini (limitFor) cheklaydi.
+// Shuning uchun LIMIT_* qiymati normani ko'tara oladigan darajada bo'lishi shart:
+// bitta vazifa ~2-3 chaqiruv, ya'ni 5 vazifa ≤ 15 chaqiruv < LIMIT_ACTIVE (60).
+function tasksFor(ent) {
+  if (ent === 'active') return TASKS_ACTIVE;
+  if (ent === 'trial')  return TASKS_TRIAL;
+  return TASKS_FREE;
+}
 
 // Trial holatida qolgan kun (yuqoriga yaxlitlanadi: "1 kun qoldi" oxirgi kungacha
 // turadi). Trial emas — null, ya'ni chaqiruvchi hech narsa chizmasligi kerak.
