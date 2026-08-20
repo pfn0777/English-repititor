@@ -62,6 +62,8 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'CURRICULUM','LEVELS','PASS_THRESHOLD','MAX_DAILY_TASKS','TASKS_PER_UNIT','TASK_GUIDE',
                   'MAX_ATTEMPTS_BEFORE_SKIP','REMEDIAL_TASKS','markWeakUnit','reconcileScore',
                   'normAnswer','answerAlternatives','checkReviewAnswer','levDist','SRS_DAYS',
+                  'placementPool','buildPlacement','scorePlacement','playableLevel','pickN',
+                  'PLACEMENT_LEVELS','PLACEMENT_PER_LEVEL','PLACEMENT_PASS',
                   'entitlementOf','limitFor','tasksFor','trialDaysLeft','dailyTasks','myEntitlement',
                   'adoptSub','freeModeGate',
                   'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
@@ -468,6 +470,66 @@ t('mutlaqo boshqa javob', ca('kitob', 'salom') === false);
 t('apostrof shakllari birxillashtiriladi', ca('o‘qituvchi', "o'qituvchi") === true);
 t('levDist sanaydi', api.levDist('kitob','kitab') === 1 && api.levDist('a','a') === 0);
 t('SRS_DAYS[0] = 1 kun (lapse ertaga qaytadi)', api.SRS_DAYS[0] === 1);
+
+// --- Joylashtirish testi (docs/specs/placement-test.md)
+console.log('17e. Joylashtirish testi:');
+// Deterministik rng - Math.random bilan testni takrorlab bo'lmaydi.
+const mkRng = (seed) => () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+
+const pool = api.placementPool();
+t("pool barcha 5 darajani qamraydi",
+  api.PLACEMENT_LEVELS.every(l => (pool[l] || []).length > 0));
+t("pool C2 ni o'z ichiga olmaydi", pool.C2 === undefined);
+t("har so'zda en va uz bor",
+  api.PLACEMENT_LEVELS.every(l => pool[l].every(w => w.en && w.uz && w.level === l)));
+
+const qs = api.buildPlacement(mkRng(42));
+t(`savollar soni = ${api.PLACEMENT_LEVELS.length * api.PLACEMENT_PER_LEVEL}`,
+  qs.length === api.PLACEMENT_LEVELS.length * api.PLACEMENT_PER_LEVEL);
+t("har darajadan aynan 3 ta",
+  api.PLACEMENT_LEVELS.every(l => qs.filter(q => q.level === l).length === api.PLACEMENT_PER_LEVEL));
+t("har savolda 4 variant", qs.every(q => q.options.length === 4));
+t("to'g'ri javob variantlar ichida", qs.every(q => q.options.includes(q.answer)));
+t("variantlar takrorlanmaydi", qs.every(q => new Set(q.options).size === 4));
+t("bir so'z ikki marta so'ralmaydi", new Set(qs.map(q => q.en)).size === qs.length);
+// Chalg'ituvchi bir unitdan olinsa "aka/uka" kabi yaqin ma'nolar chiqadi - shuning
+// uchun ular boshqa darajalardan olinishi shart.
+t("chalg'ituvchilar target darajasidan emas", qs.every(q => {
+  const same = pool[q.level].map(w => w.uz);
+  return q.options.filter(o => o !== q.answer).every(o => !same.includes(o));
+}));
+t("deterministik: bir xil urug' = bir xil savollar",
+  JSON.stringify(api.buildPlacement(mkRng(42))) === JSON.stringify(qs));
+t("boshqa urug' = boshqa savollar",
+  JSON.stringify(api.buildPlacement(mkRng(7))) !== JSON.stringify(qs));
+
+// Baholash zanjiri
+const res = (spec) => api.PLACEMENT_LEVELS.flatMap(l =>
+  Array.from({ length: api.PLACEMENT_PER_LEVEL }, (_, i) => ({ level: l, correct: i < (spec[l] ?? 0) })));
+
+t("hech narsa bilmaydi -> A1", api.scorePlacement(res({})).level === 'A1');
+t("A1 o'zlashtirilgan, A2 yo'q -> A2",
+  api.scorePlacement(res({ A1:3 })).level === 'A2');
+t("chegara: 2/3 o'tadi", api.scorePlacement(res({ A1:2, A2:0 })).level === 'A2');
+t("chegara: 1/3 o'tmaydi", api.scorePlacement(res({ A1:1, A2:3 })).level === 'A1');
+t("A1-B1 o'zlashtirilgan -> B2",
+  api.scorePlacement(res({ A1:3, A2:3, B1:3 })).level === 'B2');
+t("hammasi o'zlashtirilgan -> C2",
+  api.scorePlacement(res({ A1:3, A2:3, B1:3, B2:3, C1:3 })).level === 'C2');
+// Zanjir: yuqorini bilib pastini bilmaslik - xavfsiz tomonga xato
+t("yuqorini bilib pastini bilmasa -> pastdan boshlanadi",
+  api.scorePlacement(res({ A1:0, A2:3, B1:3, B2:3, C1:3 })).level === 'A1');
+t("to'g'ri javoblar sanaladi", api.scorePlacement(res({ A1:3, A2:2 })).correct === 5);
+t("bo'sh/buzuq kirish yiqilmaydi",
+  api.scorePlacement(null).level === 'A1' && api.scorePlacement([null, { level:'ZZ' }]).level === 'A1');
+// Savol berilmagan daraja hukm qilmasin
+t("savol berilmagan daraja o'tkazib yuboriladi",
+  api.scorePlacement([{ level:'A1', correct:true }, { level:'A1', correct:true },
+                      { level:'B1', correct:true }, { level:'B1', correct:true }]).level === 'B2');
+
+t("playableLevel syllabusi borni qaytaradi", api.playableLevel('B2') === 'B2');
+t("playableLevel noma'lum darajani tushiradi",
+  api.LEVELS.includes(api.playableLevel('Z9')));
 
 // --- Yangi kontekst formati va payload chegarasi
 console.log('18. Kontekst formati va payload:');

@@ -3209,6 +3209,96 @@ function adoptSub(sub) {
   return true;
 }
 
+// ─── 4.7 JOYLASHTIRISH TESTI (docs/specs/placement-test.md) ────
+// Sof funksiyalar: AI chaqiruvi yo'q, DOM yo'q, tarmoq yo'q — manba CURRICULUM.
+// Shuning uchun test 0 token turadi va offlineda ham ishlaydi.
+const PLACEMENT_LEVELS    = ['A1','A2','B1','B2','C1'];
+const PLACEMENT_PER_LEVEL = 3;
+const PLACEMENT_PASS      = 2;   // 3 tadan shuncha to'g'ri = daraja o'zlashtirilgan
+
+// Daraja → so'zlar. Faqat uz tarjimasi borlari: variant matni o'sha tarjimadan olinadi.
+function placementPool() {
+  const pool = {};
+  for (const lv of PLACEMENT_LEVELS) {
+    const ws = [];
+    for (const u of (CURRICULUM[lv] || [])) {
+      for (const w of unitWords(u)) if (w.en && w.uz) ws.push({ en:w.en, uz:w.uz, ipa:w.ipa, level:lv });
+    }
+    pool[lv] = ws;
+  }
+  return pool;
+}
+
+// Takrorlanmaydigan n ta element. rng tashqaridan keladi — aks holda testni
+// takrorlab bo'lmasdi (Math.random natijani har safar o'zgartiradi).
+function pickN(list, n, rng) {
+  const a = (list || []).slice(), out = [];
+  while (a.length && out.length < n) out.push(a.splice(Math.floor(rng() * a.length), 1)[0]);
+  return out;
+}
+
+// Har darajadan PLACEMENT_PER_LEVEL savol. Chalg'ituvchilar BOSHQA darajalardan:
+// bitta unit ichidan olinsa ma'nolar yaqin bo'lib qoladi (aka/uka, opa/singil) va
+// savol lug'at hajmini emas, nozik farqni sinaydigan bo'lib qoladi.
+function buildPlacement(rng) {
+  const r = typeof rng === 'function' ? rng : Math.random;
+  const pool = placementPool();
+  const all  = PLACEMENT_LEVELS.reduce((acc, lv) => acc.concat(pool[lv]), []);
+  const qs = [], usedEn = new Set();
+
+  for (const lv of PLACEMENT_LEVELS) {
+    const targets = pickN(pool[lv].filter(w => !usedEn.has(w.en)), PLACEMENT_PER_LEVEL, r);
+    for (const t of targets) {
+      usedEn.add(t.en);
+      const seen = new Set([t.uz]);
+      const distractors = [];
+      for (const d of pickN(all.filter(w => w.level !== lv), 40, r)) {
+        if (seen.has(d.uz)) continue;
+        seen.add(d.uz);
+        distractors.push(d.uz);
+        if (distractors.length === 3) break;
+      }
+      qs.push({ level:lv, en:t.en, ipa:t.ipa, answer:t.uz,
+                options: pickN([t.uz].concat(distractors), 4, r) });
+    }
+  }
+  return qs;
+}
+
+// Zanjir qoidasi: pastdan yuqoriga yuriladi, birinchi O'ZLASHTIRILMAGAN daraja — natija.
+// Bilgan eng yuqori daraja emas: dastur o'rgatish uchun, tasdiqlash uchun emas.
+// Savol berilmagan daraja hukm qilmaydi (syllabusi yo'q daraja butun testni buzmasin).
+function scorePlacement(results) {
+  const list = Array.isArray(results) ? results : [];
+  const ok = {}, asked = {};
+  let correct = 0;
+  for (const r of list) {
+    if (!r || !PLACEMENT_LEVELS.includes(r.level)) continue;
+    asked[r.level] = (asked[r.level] || 0) + 1;
+    if (r.correct) { ok[r.level] = (ok[r.level] || 0) + 1; correct++; }
+  }
+  let lastAsked = null;
+  for (const lv of PLACEMENT_LEVELS) {
+    if (!asked[lv]) continue;
+    lastAsked = lv;
+    if ((ok[lv] || 0) < PLACEMENT_PASS) return { level:lv, correct, total:list.length, ok, asked };
+  }
+  // Hech narsa so'ralmagan (bo'sh yoki buzuq kirish) — eng past daraja. C2 qaytarish
+  // ma'lumotsiz holatda foydalanuvchini eng tepaga otib yuborardi.
+  if (!lastAsked) return { level: LEVELS[0], correct, total:list.length, ok, asked };
+  // So'ralgan darajalarning hammasi o'zlashtirilgan — so'ralgan eng yuqorisidan KEYINGISI.
+  // "Eng yuqori daraja" deb qaytarish faqat to'liq zinapoya so'ralganda to'g'ri bo'lardi.
+  const i = LEVELS.indexOf(lastAsked);
+  return { level: LEVELS[Math.min(LEVELS.length - 1, i + 1)], correct, total:list.length, ok, asked };
+}
+
+// Natijani syllabusi BOR darajaga tushiradi — onboardingdagi bir xil qoida.
+function playableLevel(level) {
+  if (CURRICULUM[level] && CURRICULUM[level].length) return level;
+  const ready = LEVELS.filter(l => CURRICULUM[l] && CURRICULUM[l].length);
+  return ready[ready.length - 1] || 'A1';
+}
+
 // ─── 5. WORD PARSER ──────────────────────────────────────────────
 function parseWords(text) {
   const re = /📌 \*\*(.+?)\*\*\s*(?:\((.+?)\))?\s*— (.+?)(?:\n|$)/g;
@@ -3878,7 +3968,9 @@ function showSettingsModal() {
 }
 
 // ─── 9. VIEW: ONBOARDING ─────────────────────────────────────────
-function renderOnboarding() {
+// prefill — joylashtirish testidan qaytganda forma bo'shab qolmasligi uchun.
+function renderOnboarding(prefill) {
+  const pre = prefill || {};
   currentView = 'onboarding';
   document.getElementById('app').innerHTML = `
   <div class="min-h-screen flex items-center justify-center p-4 view-fade">
@@ -3891,31 +3983,31 @@ function renderOnboarding() {
       <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 space-y-4">
         <div>
           <label class="block text-sm font-medium text-slate-300 mb-1.5">Ismingiz</label>
-          <input id="ob-name" type="text" placeholder="Masalan: Sardor"
+          <input id="ob-name" type="text" placeholder="Masalan: Sardor" value="${esc(pre.name || '')}"
             class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none"/>
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-300 mb-1.5">Darajangiz</label>
           <select id="ob-level" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
-            <option value="A1" selected>A1 — Yangi boshlovchi</option>
-            <option value="A2">A2 — Boshlang'ich</option>
-            <option value="B1">B1 — O'rta</option>
-            <option value="B2">B2 — O'rta-yuqori</option>
-            <option value="C1">C1 — Ilg'or</option>
-            <option value="C2">C2 — Mukammal</option>
+            ${[['A1','Yangi boshlovchi'],['A2',"Boshlang'ich"],['B1',"O'rta"],['B2',"O'rta-yuqori"],['C1',"Ilg'or"],['C2','Mukammal']]
+              .map(([v,t]) => `<option value="${v}" ${v === (pre.level || 'A1') ? 'selected' : ''}>${v} — ${t}</option>`).join('')}
           </select>
+          <button id="ob-place" class="w-full mt-2 bg-slate-700 hover:bg-slate-600 rounded-xl py-2.5 text-sm transition-colors">
+            🎯 Darajamni bilmayman — 2 daqiqalik test
+          </button>
+          ${pre.placed ? `<div class="text-xs text-emerald-400 mt-2">Test natijasi: <b>${esc(pre.level)}</b> — ${pre.correct}/${pre.total} to'g'ri. Xohlasangiz yuqoridan o'zgartiring.</div>` : ''}
         </div>
         <div>
           <label class="block text-sm font-medium text-slate-300 mb-1.5">Maqsadingiz</label>
           <select id="ob-goal" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
-            <option value="travel">✈️ Sayohat uchun</option>
-            <option value="work">💼 Ish/biznes uchun</option>
-            <option value="ielts">📝 IELTS/imtihon</option>
-            <option value="daily">💬 Kundalik muloqot</option>
-            <option value="general">🌟 Umumiy rivojlanish</option>
+            <option value="travel" ${pre.goal === 'travel' ? 'selected' : ''}>✈️ Sayohat uchun</option>
+            <option value="work" ${pre.goal === 'work' ? 'selected' : ''}>💼 Ish/biznes uchun</option>
+            <option value="ielts" ${pre.goal === 'ielts' ? 'selected' : ''}>📝 IELTS/imtihon</option>
+            <option value="daily" ${pre.goal === 'daily' ? 'selected' : ''}>💬 Kundalik muloqot</option>
+            <option value="general" ${pre.goal === 'general' ? 'selected' : ''}>🌟 Umumiy rivojlanish</option>
           </select>
         </div>
-        <div id="ob-band-wrap" class="hidden">
+        <div id="ob-band-wrap" class="${pre.goal === 'ielts' ? '' : 'hidden'}">
           <label class="block text-sm font-medium text-slate-300 mb-1.5">Maqsad band (IELTS)</label>
           <select id="ob-band" class="w-full bg-slate-700 rounded-xl px-4 py-3 text-sm border border-slate-600 focus:border-indigo-500 focus:outline-none">
             <option value="5">5.0</option>
@@ -3939,6 +4031,12 @@ function renderOnboarding() {
   const bandWrap = document.getElementById('ob-band-wrap');
   goalSel.addEventListener('change', () => {
     bandWrap.classList.toggle('hidden', goalSel.value !== 'ielts');
+  });
+
+  // Testga o'tishdan oldin forma holatini olib ketamiz — qaytganda qayta yozdirmaymiz.
+  document.getElementById('ob-place').onclick = () => renderPlacement({
+    name: document.getElementById('ob-name').value.trim(),
+    goal: goalSel.value,
   });
 
   document.getElementById('ob-btn').onclick = () => {
@@ -3966,6 +4064,81 @@ function renderOnboarding() {
     if (start !== level) toast(`${level} dasturi hali tayyorlanmoqda — ${start} dan boshlaymiz`, 'info');
     renderPathIntro();
   };
+}
+
+// ─── VIEW: JOYLASHTIRISH TESTI (docs/specs/placement-test.md) ────
+// Lokal test — AI chaqirilmaydi. Natija tavsiya: foydalanuvchi darajani baribir
+// onboardingda o'zgartira oladi.
+function renderPlacement(pre) {
+  currentView = 'placement';
+  const qs = buildPlacement();
+  const results = [];
+  let idx = 0;
+
+  const finish = () => {
+    const r = scorePlacement(results);
+    const lv = playableLevel(r.level);
+    document.getElementById('app').innerHTML = `
+    <div class="min-h-screen flex items-center justify-center p-4 view-fade">
+      <div class="max-w-md w-full bg-slate-800 rounded-2xl p-6 border border-indigo-600 text-center">
+        <div class="text-5xl mb-3">🎯</div>
+        <h2 class="text-xl font-bold mb-1">Sizning darajangiz: ${esc(lv)}</h2>
+        <div class="text-slate-400 text-sm mb-4">${r.correct}/${r.total} savolga to'g'ri javob berdingiz</div>
+        <div class="bg-slate-900 rounded-xl p-4 mb-4 text-left text-xs text-slate-400 space-y-1">
+          ${PLACEMENT_LEVELS.map(l => `<div class="flex justify-between">
+            <span>${l}</span>
+            <span class="${(r.ok[l] || 0) >= PLACEMENT_PASS ? 'text-emerald-400' : 'text-slate-500'}">${r.ok[l] || 0}/${r.asked[l] || 0}</span>
+          </div>`).join('')}
+        </div>
+        <div class="text-xs text-slate-500 mb-4">Bu test lug'at bilimini o'lchaydi. Dastlabki 3 vazifadan keyin daraja yana bir marta aniqlashtiriladi.</div>
+        <button id="pl-go" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">Davom etish →</button>
+      </div>
+    </div>`;
+    document.getElementById('pl-go').onclick = () => renderOnboarding({
+      ...(pre || {}), level: lv, placed: true, correct: r.correct, total: r.total,
+    });
+  };
+
+  const show = () => {
+    if (idx >= qs.length) return finish();
+    const q = qs[idx];
+    document.getElementById('app').innerHTML = `
+    <div class="min-h-screen flex items-center justify-center p-4 view-fade">
+      <div class="max-w-md w-full">
+        <div class="flex items-center justify-between mb-3 text-sm text-slate-400">
+          <button id="pl-exit" class="hover:text-white">← Bekor qilish</button>
+          <span>${idx + 1}/${qs.length}</span>
+        </div>
+        <div class="h-1 bg-slate-700 rounded-full mb-5 overflow-hidden">
+          <div class="h-full bg-indigo-500 transition-all" style="width:${Math.round(idx / qs.length * 100)}%"></div>
+        </div>
+        <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 text-center mb-4">
+          <div class="text-2xl font-bold">${esc(q.en)}</div>
+          ${q.ipa ? `<div class="text-slate-500 text-sm mt-1">(${esc(q.ipa)})</div>` : ''}
+          <div class="text-slate-400 text-xs mt-2">O'zbekcha ma'nosi qaysi?</div>
+        </div>
+        <div class="space-y-2">
+          ${q.options.map((o, i) => `<button class="pl-opt w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl px-4 py-3 text-sm text-left transition-colors" data-i="${i}">${esc(o)}</button>`).join('')}
+        </div>
+        <button id="pl-skip" class="w-full mt-3 text-slate-500 hover:text-slate-300 text-sm py-2 transition-colors">Bilmayman</button>
+      </div>
+    </div>`;
+
+    const answer = (chosen) => {
+      results.push({ level: q.level, correct: chosen === q.answer });
+      idx++;
+      show();
+    };
+    document.querySelectorAll('.pl-opt').forEach(b => {
+      b.onclick = () => answer(q.options[Number(b.dataset.i)]);
+    });
+    // "Bilmayman" NOTO'G'RI sanaladi: 4 variantdan tasodifiy tanlash 25% to'g'ri
+    // beradi va joylashtirishni yuqoriga surib yuboradi — taxminga muqobil kerak.
+    document.getElementById('pl-skip').onclick = () => answer(null);
+    document.getElementById('pl-exit').onclick = () => renderOnboarding(pre || {});
+  };
+
+  show();
 }
 
 // Onboarding va birinchi vazifa orasidagi yagona tushuntirish ekrani.
