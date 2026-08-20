@@ -3,7 +3,7 @@
 // mavzu darsi (so'zlar + grammatika) va lug'at takrorlash (SRS) tarmoqqa muhtoj emas.
 // AI vazifalari baribir internet talab qiladi; ular keshlanmaydi.
 
-const VERSION = 'eb-v4';
+const VERSION = 'eb-v5';
 const SHELL_CACHE = `${VERSION}-shell`;
 const CDN_CACHE = `${VERSION}-cdn`;
 const SHELL = ['./', './index.html', './manifest.json'];
