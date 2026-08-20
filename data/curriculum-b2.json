@@ -33,7 +33,21 @@
         { "en": "recount", "uz": "batafsil so'zlab bermoq", "ipa": "rɪˈkaʊnt" },
         { "en": "backdrop", "uz": "fon, orqa manzara", "ipa": "ˈbækdrɑːp" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Murakkab voqealarni bayon qilishda biz bir nechta o'tgan zamonlarni birgalikda ishlatamiz. Asosiy voqea uchun Past Simple, uning fonida davom etayotgan harakat uchun Past Continuous, va eng muhimi — boshqa o'tmishdagi ishdan oldin ma'lum muddat davom etgan ishni ko'rsatish uchun Past Perfect Continuous (had been + fe'l + -ing) ishlatiladi.\nO'zbek tilida zamonlar oddiyroq tuslanadi, lekin ingliz tilida voqealar ketma-ketligi (sequence) juda muhim. O'quvchilar ko'pincha barcha voqealarga bir xil zamonni ishlatib adashadilar. Avval sodir bo'lgan va davom etgan jarayon uchun doim 'had been' qo'shilishini unutmang.",
+        "examples": [
+          { "en": "She had been waiting for an hour when the news finally arrived.", "uz": "Xabar yetib kelganda u bir soatdan beri kutayotgan edi.", "note": "Kutish jarayoni xabar kelishidan oldin davom etgan." },
+          { "en": "They were exhausted because they had been working all night.", "uz": "Ular charchagan edi, chunki tun bo'yi ishlagandi.", "note": "Charchash natija, ishlash esa oldingi davomiy jarayon." },
+          { "en": "The incident occurred while the prolonged negotiations were ongoing.", "uz": "Uzoq davom etayotgan muzokaralar davom etayotgan paytda voqea yuz berdi.", "note": "Fon (ongoing) va to'satdan sodir bo'lgan ish (occurred)." },
+          { "en": "Beforehand, they had carefully planned every single phase of the journey.", "uz": "Oldindan ular safarning har bir bosqichini diqqat bilan rejalashtirgan edilar.", "note": "Boshqa o'tmishdan oldingi harakat uchun Past Perfect." }
+        ],
+        "practice": [
+          { "q": "By the time the manager arrived, we ___ on the project for three hours.", "options": [ "had been working", "have been working", "were work" ], "answer": 0 },
+          { "q": "The minor argument quickly ___ into a major conflict before anyone could stop it.", "options": [ "escalating", "escalated", "had escalating" ], "answer": 1 },
+          { "q": "What is the correct English translation for the word 'oqibat, keyingi holat'?", "options": [ "backdrop", "aftermath", "sequence" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B2-02",
@@ -68,7 +82,21 @@
         { "en": "exceed", "uz": "oshib ketmoq", "ipa": "ɪkˈsiːd" },
         { "en": "surpass", "uz": "o'zib ketmoq", "ipa": "sərˈpæs" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Kelajakda aniq bir vaqtda nima davom etishini aytish uchun \"will be + fe'l-ing\" ishlatiladi. Masalan, ertaga soat 5 da ishlayotgan bo'laman.\nKelajakdagi muayyan vaqtgacha esa biror ish tugab bo'lishini bildirish uchun \"will have + fe'lning 3-shakli\" (Past Participle) ishlatiladi.\nO'zbek tilida bu zamonlar ko'pincha \"-ayotgan bo'laman\" yoki \"-gan bo'lamiz\" tarzida tarjima qilinadi. O'quvchilar ko'pincha \"will have\" dan keyin fe'lning 1-shaklini ishlatib adashishadi, lekin har doim 3-shakl kelishi shart.",
+        "examples": [
+          { "en": "This time tomorrow we will be finalising the roadmap.", "uz": "Ertaga shu vaqtda biz yo'l xaritasini yakunlayotgan bo'lamiz.", "note": "Aniq vaqtda davom etayotgan jarayon." },
+          { "en": "By next week we will have achieved our target.", "uz": "Kelasi haftagacha biz o'z mo'ljalimizga erishgan bo'lamiz.", "note": "Belgilangan muddatgacha tugallanadigan ish." },
+          { "en": "They will be anticipating the upcoming milestone.", "uz": "Ular bo'lajak muhim bosqichni oldindan kutib o'tirgan bo'lishadi.", "note": "Kelajakdagi davomiy harakat." },
+          { "en": "The team will have surpassed all projections by Friday.", "uz": "Juma kuniga kelib jamoa barcha prognozlardan oshib tushgan bo'ladi.", "note": "'Will have' dan keyin fe'lning 3-shakli (surpassed)." }
+        ],
+        "practice": [
+          { "q": "By December, we ______ all pending issues.", "options": [ "will have finalised", "will be finalising", "will finalise" ], "answer": 0 },
+          { "q": "At 10 AM tomorrow, the director ______ the new strategy.", "options": [ "will have announce", "will be announcing", "will announcing" ], "answer": 1 },
+          { "q": "What does the word 'imminent' mean in Uzbek?", "options": [ "yaqin, muqarrar", "ortda qoldirmoq", "taxminiy hisob" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B2-03",
@@ -103,7 +131,21 @@
         { "en": "arguably", "uz": "aytish mumkinki, ehtimol", "ipa": "ˈɑːrɡjuəbli" },
         { "en": "conceivably", "uz": "tasavvur qilish mumkinki", "ipa": "kənˈsiːvəbli" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Aralash shart gaplar (Mixed Conditionals) o'tmishdagi harakat yoki holatning hozirgi paytdagi natijasini bildirish uchun ishlatiladi.\n\nFormula: If + had + fe'lning III shakli (o'tmishdagi faraziy sabab), + would + fe'l (hozirgi paytdagi natija).\n\nO'zbek tilida bu holat '... qilganimda, hozir ... bo'lardim' tarzida tarjima qilinadi. O'zbek tilidan farqli ravishda, ingliz tilida shart qismida o'tmish zamon (had III), natija qismida esa hozirgi zamon (would + fe'l) qat'iy qo'llanilishi shart. O'quvchilar ko'pincha ikkala qismga ham o'tmish zamonni ishlatib adashishadi.",
+        "examples": [
+          { "en": "If I had studied medicine, I would be a doctor now.", "uz": "Tibbiyotni o'qiganimda, hozir shifokor bo'lardim.", "note": "O'tmishdagi o'qish hozirgi kasbga ta'sir qilmoqda." },
+          { "en": "If we had planned this scenario carefully, the outcome would be different.", "uz": "Bu ssenariyni sinchiklab rejalashtirganimizda, natija boshqacha bo'lar edi.", "note": "scenario so'zi qo'llandi." },
+          { "en": "If she had used foresight, she wouldn't face this inevitable problem today.", "uz": "U uzoqni ko'ra bilganida, bugun bu muqarrar muammoga duch kelmas edi.", "note": "foresight va inevitable so'zlari ishlatildi." },
+          { "en": "If they had used foresight, the damage would be reversible now.", "uz": "Ular uzoqni ko'ra bilganida, zarar hozir qaytarib bo'ladigan bo'lar edi.", "note": "O'tmishdagi shart (had + III) — hozirgi natija (would be)." }
+        ],
+        "practice": [
+          { "q": "If they ____ harder in the past, they would have a better job now.", "options": [ "studied", "had studied", "would study" ], "answer": 1 },
+          { "q": "If I had known the implication, I ____ take this risk today.", "options": [ "won't", "wouldn't", "didn't" ], "answer": 1 },
+          { "q": "The mistake was ____, meaning we cannot undo it in retrospect.", "options": [ "reversible", "avoidable", "irreversible" ], "answer": 2 }
+        ]
+      }
     },
     {
       "id": "B2-04",
@@ -138,7 +180,21 @@
         { "en": "statistic", "uz": "statistik ko'rsatkich", "ipa": "stəˈtɪstɪk" },
         { "en": "majority", "uz": "ko'pchilik", "ipa": "məˈdʒɔːrəti" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Manbani ko'rsatmasdan, umumiy fikrni rasmiy uslubda bildirish uchun shaxssiz majhul nisbat ishlatiladi.\n\nFormulalar:\n1. It is + fe'l (said/believed/thought) + that + gap\n2. Ega + is/are + fe'l (said/believed) + to + fe'l (asosiy shaklda)\n\nO'zbek tilida bu '... deyiladi', '... deb hisoblanadi' deb tarjima qilinadi. Ingliz tilida subyekt aniq bo'lmaganda yoki uni yashirish kerak bo'lganda 'It' bilan boshlash yoki egani oldinga chiqarish talab etiladi. O'zbek tilidagi faol shakldan farqli ravishda, bu yerda ish-harakatni bajarmagan narsa ega vazifasiga keladi.",
+        "examples": [
+          { "en": "It is said that the new research finding is very important.", "uz": "Yangi tadqiqot xulosasi juda muhim deyiladi.", "note": "It is said that + gap strukturasi." },
+          { "en": "He is believed to be an official authority in this institution.", "uz": "U bu muassasada rasmiy vakolatli shaxs deb hisoblanadi.", "note": "Ega + is believed to + fe'l." },
+          { "en": "This agency is commonly regarded as a reliable source.", "uz": "Bu agentlik odatda ishonchli manba deb hisoblanadi.", "note": "Kim hisoblashi aytilmaydi — majhul shakl." },
+          { "en": "The survey results are widely acknowledged by the source.", "uz": "So'rovnoma natijalari manba tomonidan keng doirada e'tirof etiladi.", "note": "widely acknowledged birikmasi." }
+        ],
+        "practice": [
+          { "q": "It ___ that the statistic is correct.", "options": [ "is said", "are said", "say" ], "answer": 0 },
+          { "q": "The company ___ to be facing financial problems.", "options": [ "is alleged", "is allege", "alleged" ], "answer": 0 },
+          { "q": "What does 'allegedly' mean in Uzbek?", "options": [ "aniq dalillar bilan", "aytilishicha", "rasmiy ravishda" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B2-05",
@@ -173,7 +229,21 @@
         { "en": "hesitation", "uz": "ikkilanish", "ipa": "ˌhezɪˈteɪʃn" },
         { "en": "reluctance", "uz": "istamaslik", "ipa": "rɪˈlʌktəns" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tmishdagi taxmin va afsuslarni bildirish uchun \"modal fe'l + have + fe'lning 3-shakli (V3)\" qolipidan foydalanamiz.\n\n1. must have + V3: O'tmishda sodir bo'lgan ishga 90% aniqlikdagi ishonchli taxmin (\"...gan bo'lsa kerak\").\n2. can't have + V3: O'tmishda sodir bo'lishi aslo mumkin emasligi haqidagi mantiqiy xulosa (\"...gan bo'lishi mumkin emas\").\n3. should have + V3: O'tmishda qilinishi kerak bo'lgan, lekin afsuski bajarilmagan ish yoki tanqid (\"...kerak edi, lekin qilinmadi\").\n\nO'zbek tilida bu fe'llarimiz odatda bitta so'z bilan ifodalanadi, shuning uchun ingliz tilida ma'no farqiga (taxmin yoki afsus) alohida e'tibor bering.",
+        "examples": [
+          { "en": "You should have told me earlier about this oversight.", "uz": "Bu e'tibordan chetda qolgan holat haqida menga oldinroq aytishing kerak edi.", "note": "Afsus yoki bajarilmagan ishni bildiradi." },
+          { "en": "He must have forgotten the meeting due to carelessness.", "uz": "E'tiborsizlik tufayli u yig'ilishni unutgan bo'lsa kerak.", "note": "Yuqori ehtimollikdagi taxmin." },
+          { "en": "They can't have made such a careless mistake on purpose.", "uz": "Ular bunday e'tiborsiz xatoni ataylab qilgan bo'lishlari mutlaqo mumkin emas.", "note": "Mantiqan imkonsizligini ko'rsatadi." },
+          { "en": "She should have taken more precautions before the trip.", "uz": "U safardan oldinroq ko'proq ehtiyot choralarini ko'rishi kerak edi.", "note": "Bajarilmay qolgan to'g'ri qadam." }
+        ],
+        "practice": [
+          { "q": "She ______ seen the warning sign because she ignored it completely.", "options": [ "must have", "should have", "can't have" ], "answer": 0 },
+          { "q": "You ______ checked everything thoroughly before submitting the report.", "options": [ "must have", "should have", "can't have" ], "answer": 1 },
+          { "q": "His lack of action and constant ______ led to this big failure.", "options": [ "precaution", "hesitation", "thorough" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B2-06",
@@ -208,7 +278,21 @@
         { "en": "architecture", "uz": "me'morchilik", "ipa": "ˈɑːrkɪtektʃər" },
         { "en": "ruins", "uz": "vayronalar", "ipa": "ˈruːɪnz" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ingliz tilida qo'shimcha ma'lumot berish uchun relative olmoshlaridan foydalanamiz.\n1. Defining (aniqlovchi) gaplar: kim yoki nima haqida ketayotganini aniqlaydi, VERGUL QO'YILMAYDI. 'That' ishlatish mumkin.\n2. Non-defining (izohlovchi) gaplar: shunchaki qo'shimcha ma'lumot beradi, gapdan olib tashlasang ham ma'no o'zgarmaydi, DOIM VERGUL BILAN AJratiladi. 'That' ishlatib BO'LMAYDI.\n\nO'zbek tilidan farqi: bizda bu farq aniq ko'rinmaydi, lekin ingliz tilida vergul qo'yish yoki qo'ymaslik ma'noni tubdan o'zgartiradi!",
+        "examples": [
+          { "en": "The headquarters which was built last year is very modern.", "uz": "O'tgan yili qurilgan bosh qarorgoh juda zamonaviy.", "note": "Defining: qaysi bosh qarorgoh ekanini aniqlayapti, vergul yo'q." },
+          { "en": "Tashkent, which is the capital, has a dry climate.", "uz": "Toshkent, poytaxt bo'lgan shahar, quruq iqlimga ega.", "note": "Non-defining: Toshkentning o'zi ma'lum, bu shunchaki qo'shimcha izoh." },
+          { "en": "An individual who works in this sector must be creative.", "uz": "Bu sohada ishlaydigan alohida shaxs ijodiy bo'lishi kerak.", "note": "Defining: qaysi shaxs ekanini aniqlab beryapti." },
+          { "en": "The branch, where my friend works, is closing down.", "uz": "Do'stim ishlaydigan filial yopilyapti.", "note": "Non-defining: filial ma'lum, qayerda ishlashi qo'shimcha ma'lumot." }
+        ],
+        "practice": [
+          { "q": "My office, _______ is in the capital, has a great view of the valley.", "options": [ "that", "which", "what" ], "answer": 1 },
+          { "q": "The establishment _______ was founded in 1995 is now a famous landmark.", "options": [ "which", ", which,", ", that," ], "answer": 0 },
+          { "q": "Our company's main _______ is located in London, but we have a small branch in Tashkent.", "options": [ "headquarters", "ruins", "desert" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B2-07",
@@ -243,7 +327,21 @@
         { "en": "torment", "uz": "qiynoq", "ipa": "ˈtɔːrment" },
         { "en": "mournful", "uz": "qayg'uli", "ipa": "ˈmɔːrnfl" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Hozirgi paytdagi afsus yoki istaklarni bildirish uchun \"wish\" yoki \"if only\" so'zlaridan keyin o'tmish zamon (Past Simple) ishlatiladi. Masalan: \"I wish I knew\" — Hozir bilmayman, lekin bilishni istayman (o'zbek tilida \"qaniydi... bilsam\").\nO'tmishdagi ishlarga afsuslanganda esa \"had + fe'lning 3-shakli\" qo'llaniladi. Shuningdek, boshqa birovning harakatini o'zgartirishni xohlasak \"would rather + Past Simple\" ishlatamiz.\nO'zbek tilida biz ko'pincha hozirgi zamon fe'lini ishlatamiz, ammo ingliz tilida ma'no bir zinapoya o'tmishga (Past) siljiydi. Aynan shu joyda o'quvchilar ko'p xato qiladi.",
+        "examples": [
+          { "en": "I wish I could forgive him and let go of the grudge.", "uz": "Qaniydi uni kechirib, adovatni tark eta olsam.", "note": "Hozirgi istak uchun could/Past Simple ishlatildi." },
+          { "en": "If only I hadn't felt so bitter about the apology.", "uz": "Qaniydi uzr so'raganida bunchalik achchiqlik his qilmaganimda.", "note": "O'tmishdagi afsus uchun had + III shakl." },
+          { "en": "I'd rather you didn't resent her for the distress she caused.", "uz": "U keltirgan iztirob uchun unga ich-ichingdan norozi bo'lmaganingni afzal ko'rardim.", "note": "Boshqa odam harakati uchun Past Simple." },
+          { "en": "She craves sympathy, yet she yearns for true empathy.", "uz": "U hamdardlikni juda tusaydi, lekin haqiqiy empatiyani intizorlik bilan kutadi.", "note": "Unit so'zlari amalda." }
+        ],
+        "practice": [
+          { "q": "I wish I _____ the answer to your distress right now.", "options": [ "know", "knew", "had known" ], "answer": 1 },
+          { "q": "I'd rather you _____ hold a grudge against him.", "options": [ "don't", "didn't", "hadn't" ], "answer": 1 },
+          { "q": "What do we call a deep feeling of guilt or regret?", "options": [ "remorse", "comfort", "empathy" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B2-08",
@@ -278,7 +376,21 @@
         { "en": "pipe", "uz": "quvur", "ipa": "paɪp" },
         { "en": "tile", "uz": "kafel, plitka", "ipa": "taɪl" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Kauzativ qurilma ishni o'zingiz emas, balki boshqa birovga (masalan, ustaga) bajartirganingizni aytish uchun ishlatiladi.\n\nFormulalar:\n1. Hozirgi zamon: have/get + narsa (object) + fe'lning 3-shakli (V3)\n2. O'tgan zamon: had/got + narsa + V3\n3. Davomiy zamon: are/is having + narsa + V3\n\nO'zbek tilida bu 'mashinamni tuzatdirdim' deb bir so'z bilan aytiladi. Ingliz tilida esa ega o'zi bajarmayotganini ko'rsatish uchun 'have' yoki 'get' fe'li va V3 ishlatiladi. E'tibor bering: narsa (object) har doim fe'ldan oldin keladi!",
+        "examples": [
+          { "en": "I had my car repaired yesterday.", "uz": "Kecha mashinamni ta'mirlatdim.", "note": "Ishni mexanik bajargan, o'zim emas." },
+          { "en": "We are getting the roof replaced.", "uz": "Tomni almashtirtiryapmiz.", "note": "Hozirgi davomiy zamonda get ishlatildi." },
+          { "en": "She wants to have her apartment renovated.", "uz": "U kvartirasini ta'mirdan chiqartirmoqchi.", "note": "have + narsa + V3 — ishni usta bajaradi." },
+          { "en": "The plumber fixed the broken pipe.", "uz": "Suv ustasi singan quvurni tuzatdi.", "note": "Unit so'zi: plumber - suv ustasi." }
+        ],
+        "practice": [
+          { "q": "I usually have my hair ___ once a month by a professional barber.", "options": [ "cut", "cutting", "cuts" ], "answer": 0 },
+          { "q": "She got her living room ___ with new furniture last week.", "options": [ "decorate", "decorating", "decorated" ], "answer": 2 },
+          { "q": "Which person repairs cars in a garage?", "options": [ "Plumber", "Mechanic", "Tailor" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B2-09",
@@ -313,7 +425,21 @@
         { "en": "profound", "uz": "chuqur, teran", "ipa": "prəˈfaʊnd" },
         { "en": "vivid", "uz": "yorqin, jonli", "ipa": "ˈvɪvɪd" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "B2 darajasida nutqimizni boyitish uchun inkor va kuchaytiruvchi so'zlarni gap boshiga qo'yib inversiya (ega va yordamchi fe'l o'rin almashinuvi) qilamiz.\n\nFormulasi:\nInkor so'z (Never, Not only...) + Yordamchi fe'l + Ega + Asosiy fe'l...\n\nO'zbek tilidan farqi: bizda so'z tartibi o'zgarmaydi, ingliz tilida esa savol gapdagidek yordamchi fe'l egadan oldinga o'tadi. O'quvchilar ko'pincha 'Never I have seen' deb xato qilishadi, to'g'risi 'Never have I seen'. Bu usul gapga kuchli ta'sir va rasmiy tus beradi.",
+        "examples": [
+          { "en": "Never have I witnessed such a striking performance.", "uz": "Men hech qachon bunday diqqatni tortadigan tomoshani ko'rmaganman.", "note": "Never gap boshida kelgani uchun have oldinga o'tdi." },
+          { "en": "Not only did he apologise, but he also paid for the damage.", "uz": "U nafaqat uzr so'radi, balki zararni ham to'ladi.", "note": "Not only dan keyin did yordamchi fe'li ishlatildi." },
+          { "en": "Seldom do we see such a profound understanding.", "uz": "Biz bunday chuqur tushunishni kamdan-kam hollarda ko'ramiz.", "note": "Seldom so'zidan keyin do kelib inversiya hosil qildi." },
+          { "en": "Scarcely had she arrived when the meeting began.", "uz": "U arang yetib kelgandi, yig'ilish boshlanib ketdi.", "note": "Scarcely had bilan o'tgan zamonda qo'llandi." }
+        ],
+        "practice": [
+          { "q": "Choose the correct inverted sentence:", "options": [ "Never I have seen such a vivid picture.", "Never have I seen such a vivid picture.", "Never did I has seen such a vivid picture." ], "answer": 1 },
+          { "q": "Not only ____ finish the report, but he also presented it.", "options": [ "he did", "did he", "he" ], "answer": 1 },
+          { "q": "What does the word 'striking' mean in this unit?", "options": [ "Diqqatni tortadigan, ajralib turadigan", "Kamdan-kam hollarda", "Mutlaqo, to'liq" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B2-10",
@@ -348,7 +474,21 @@
         { "en": "viewpoint", "uz": "nuqtai nazar", "ipa": "ˈvjuːpɔɪnt" },
         { "en": "standpoint", "uz": "mavqe, pozitsiya", "ipa": "ˈstændpɔɪnt" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Qarama-qarshi fikrlarni bog'lash uchun turli so'zlardan foydalanamiz.\n1. Although + ega va kesimdan iborat to'liq gap (Although it was expensive).\n2. Despite + ot yoki -ing shaklidagi so'z (Despite the rain). Unutmang, despite so'zidan keyin of ishlatilmaydi!\n3. Whereas ikki zid holatni qiyoslaydi.\n4. However esa yangi gap boshida kelib, vergul bilan ajratiladi.\nO'zbek tilida '-sa ham' qo'shimchasi barchasiga mos kelsa-da, ingliz tilida ularning qoidasi qat'iy farq qiladi.",
+        "examples": [
+          { "en": "Although it was expensive, we bought it.", "uz": "Qimmat bo'lsa ham, biz uni sotib oldik.", "note": "Although dan keyin to'liq gap keladi." },
+          { "en": "Despite the rain, the event continued.", "uz": "Yomg'irga qaramay, tadbir davom etdi.", "note": "Despite dan keyin faqat ot keldi." },
+          { "en": "He loves reading, whereas his brother prefers gaming.", "uz": "U o'qishni yaxshi ko'radi, holbuki ukasi o'yin o'ynashni afzal ko'radi.", "note": "Whereas ikki qarashni qiyoslaydi." },
+          { "en": "The plan had a flaw; however, the benefit was greater.", "uz": "Rejada nuqson bor edi; shunga qaramasdan, foydasi kattaroq edi.", "note": "However nuqtadan keyin vergul oladi." }
+        ],
+        "practice": [
+          { "q": "___ the heavy traffic, she arrived on time.", "options": [ "Although", "Despite", "Whereas" ], "answer": 1 },
+          { "q": "He worked hard; ___, he failed the exam.", "options": [ "however", "despite", "although" ], "answer": 0 },
+          { "q": "Every system has a ___ and a benefit.", "options": [ "contrast", "drawback", "balance" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B2-11",
@@ -383,7 +523,21 @@
         { "en": "refrain", "uz": "o'zini tiymoq", "ipa": "rɪˈfreɪn" },
         { "en": "yield", "uz": "yon bermoq; hosil bermoq", "ipa": "jiːld" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Bazi fe'llardan keyin 'ing' (gerund) yoki 'to' (infinitiv) kelishi ma'noni butunlay o'zgartiradi.\n\nFormulalar:\n1. Fe'l + doing = o'sha ishning o'zini to'xtatish yoki bajarib bo'lganini bildiradi.\n2. Fe'l + to do = boshqa bir ishni qilish uchun hozirgi ishni to'xtatishni bildiradi.\n\nO'zbek tilida bu farq faqat qo'shimchalar orqali emas, balki so'z birikmalari bilan ifodalanadi. O'quvchilar ko'pincha 'stop smoking' va 'stop to do'ni adashtiradilar: birinchisi odatni tashlash, ikkinchisi esa shunchaki tanaffus qilish.",
+        "examples": [
+          { "en": "He stopped smoking last year.", "uz": "U o'tgan yili chekishni tashladi.", "note": "stop + doing = odatni butunlay to'xtatish." },
+          { "en": "He stopped to smoke during the trip.", "uz": "U safar davomida chekish uchun to'xtadi.", "note": "stop + to do = boshqa ishni qilish uchun to'xtash." },
+          { "en": "I remember meeting him in Tashkent.", "uz": "Men uni Toshkentda uchratganimni eslayman.", "note": "remember + doing = o'tmishdagi voqeani eslash." },
+          { "en": "Remember to postpone the meeting.", "uz": "Yig'ilishni keyinga surishni unutmang.", "note": "remember + to do = bajarilishi kerak bo'lgan ish." }
+        ],
+        "practice": [
+          { "q": "I remember ___ the meeting last week, so it is on Friday now.", "options": [ "to postpone", "postponing", "postpone" ], "answer": 1 },
+          { "q": "On the way home he stopped ___ a coffee, then he drove on.", "options": [ "drinking", "to drink", "drink" ], "answer": 1 },
+          { "q": "I can no longer ___ such bad behaviour in the office.", "options": [ "tolerate", "tolerating", "to tolerating" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B2-12",
@@ -418,7 +572,21 @@
         { "en": "appeal", "uz": "shikoyat, apellyatsiya", "ipa": "əˈpiːl" },
         { "en": "settle", "uz": "kelishib hal qilmoq", "ipa": "ˈsetl" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Boshqalarning so'zlarini aniq yetkazish uchun maxsus fe'llar ishlatiladi.\n\nFormulalar:\n1. accuse somebody OF doing - biror narsada ayblamoq\n2. deny / admit + -ing - inkor qilmoq / tan olmoq\n3. insist ON doing - qat'iy talab qilmoq\n4. refuse / promise + to do - rad etmoq / va'da bermoq\n\nO'zbek tilidan farqi: ingliz tilida bu fe'llardan keyin to'g'ridan-to'g'ri fe'l kelmaydi, balki -ing yoki to + fe'l shakli talab qilinadi. Masalan, \"deny\"dan keyin har doim -ing keladi, to kelmaydi.",
+        "examples": [
+          { "en": "She accused him of taking the money without permission.", "uz": "U uni ruxsatsiz pulni olganlikda aybladi.", "note": "accuse fe'lidan keyin 'of' va -ing ishlatiladi." },
+          { "en": "He denied breaking the office window during the trial.", "uz": "U sud jarayonida ofis derazasini sindirganini inkor qildi.", "note": "deny fe'lidan keyin to'g'ridan-to'g'ri -ing keladi." },
+          { "en": "The lawyer insisted on presenting new testimony in court.", "uz": "Advokat sudda yangi guvohlik ko'rsatmasini taqdim etishni qat'iy talab qildi.", "note": "insistdan keyin 'on' va -ing qo'yiladi." },
+          { "en": "The judge refused to accept the false accusation.", "uz": "Sudya soxta ayblovni qabul qilishni rad etdi.", "note": "refuse fe'lidan keyin to + fe'l ishlatiladi." }
+        ],
+        "practice": [
+          { "q": "She denied ... the company documents.", "options": [ "to steal", "stealing", "of stealing" ], "answer": 1 },
+          { "q": "They accused him ... leaking confidential information.", "options": [ "for", "to", "of" ], "answer": 2 },
+          { "q": "He insisted ... seeing his lawyer before the trial.", "options": [ "to", "of", "on" ], "answer": 2 }
+        ]
+      }
     }
   ]
 }

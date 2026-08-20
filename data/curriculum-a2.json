@@ -33,7 +33,21 @@
         { "en": "suddenly", "uz": "to'satdan", "ipa": "ˈsʌdənli" },
         { "en": "finally", "uz": "nihoyat", "ipa": "ˈfaɪnəli" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tmishdagi ishlarni aytish uchun Past Simple (O'tgan oddiy zamon) ishlatamiz.\nO'zbek tilida fe'lga '-di' qo'shimchasi qo'shilsa, ingliz tilida noto'g'ri fe'llarning shakli butunlay o'zgaradi (masalan: become -> became).\nO'zbek o'quvchilari ko'pincha noto'g'ri fe'llarga adashib '-ed' qo'shib qo'yadilar (masalan: becomed - XATO).\nFormula:\n(+) Ega + Noto'g'ri fe'lning 2-shakli + ...\n(-) Ega + didn't + fe'lning 1-shakli...\n(?) Did + ega + fe'lning 1-shakli...?",
+        "examples": [
+          { "en": "She brought a book to the lesson.", "uz": "U darsga kitob olib keldi.", "note": "bring fe'lining o'tmish shakli brought bo'ladi." },
+          { "en": "I lost my keys yesterday.", "uz": "Kecha kalitlarimni yo'qotdim.", "note": "lose fe'li lost ga o'zgaradi." },
+          { "en": "He found a new job finally.", "uz": "U nihoyat yangi ish topdi.", "note": "find -> found noto'g'ri fe'l." },
+          { "en": "They spent a lot of money.", "uz": "Ular ko'p pul sarflashdi.", "note": "spend fe'li spent ga o'zgaradi." }
+        ],
+        "practice": [
+          { "q": "She _____ a nice dress for the party yesterday.", "options": [ "choose", "choosed", "chose" ], "answer": 2 },
+          { "q": "They didn't _____ the truth about the accident.", "options": [ "hear", "heard", "heared" ], "answer": 0 },
+          { "q": "The weather was cold, so I _____ my jacket.", "options": [ "bring", "brought", "catch" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "A2-02",
@@ -68,7 +82,21 @@
         { "en": "quite", "uz": "ancha, ancha-muncha", "ipa": "kwaɪt" },
         { "en": "similar", "uz": "o'xshash", "ipa": "ˈsɪmələr" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ikki narsani taqqoslash uchun qiyosiy darajadan foydalanamiz.\n1. Qisqa sifatlar (1-2 bo'g'inli): sifat oxiriga '-er' qo'shiladi va keyin 'than'(-dan) keladi. Masalan: heavy -> heavier than.\n2. Uzun sifatlar (3 va undan ko'p bo'g'inli): sifat oldidan 'more' ishlatiladi va keyin 'than' keladi. Masalan: more modern than.\nO'zbek tilida faqat '-roq' qo'shimchasi ishlatilsa, ingliz tilida so'z uzunligiga qarab qoida o'zgaradi. O'quvchilar ko'pincha uzun sifatlarga ham '-er' qo'shib xato qilishadi ('more beautiful' o'rniga 'beautifuler' deyishadi).",
+        "examples": [
+          { "en": "This bag is heavier than that one.", "uz": "Bu sumka anavidan og'irroq.", "note": "heavy so'zi y- bilan tugagani uchun -ier bo'ldi." },
+          { "en": "Tashkent is more modern than my village.", "uz": "Toshkent qishlog'imdan zamonaviyroq.", "note": "modern uzun sifat, shuning uchun 'more' oldidan keldi." },
+          { "en": "My brother is taller than me.", "uz": "Ukam mendan baland bo'yli.", "note": "tall - qisqa sifat, oxiriga -er qo'shildi." },
+          { "en": "This armchair is more comfortable than that chair.", "uz": "Bu kreslo anavi stuldan qulayroq.", "note": "comfortable uzun sifat, shuning uchun 'more' ishlatildi." }
+        ],
+        "practice": [
+          { "q": "My house is _____ than yours.", "options": [ "more big", "bigger", "biggest" ], "answer": 1 },
+          { "q": "English is _____ than mathematics for me.", "options": [ "interestinger", "more interesting", "interestig" ], "answer": 1 },
+          { "q": "A lion is _____ than a cat.", "options": [ "stronger", "more weak", "weaker" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-03",
@@ -103,7 +131,21 @@
         { "en": "among", "uz": "orasida (ko'plik)", "ipa": "əˈmʌŋ" },
         { "en": "mountain", "uz": "tog'", "ipa": "ˈmaʊntn" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Guruh ichidan bitta narsani eng zo'ri yoki eng yomoni deb ajratish uchun orttirma daraja ishlatiladi.\n\nFormulalar:\n1. Qisqa sifatlar: the + sifat + -est (masalan: high -> the highest).\n2. Uzun sifatlar (2 yoki undan ortiq bo'g'in): the + most + sifat (masalan: beautiful -> the most beautiful).\n\nO'zbek tilida 'eng' so'zi hamma joyda bir xil keladi, lekin ingliz tilida sifat uzunligiga qarab -est qo'shimchasi yoki most so'zi qo'shiladi. 'The' so'zini tushirib qoldirmang!",
+        "examples": [
+          { "en": "This is the highest mountain among them.", "uz": "Bu ular orasidagi eng baland tog'.", "note": "high - qisqa sifat, shuning uchun -est qo'shildi." },
+          { "en": "She is the most beautiful singer here.", "uz": "U bu yerdagi eng go'zal qo'shiqchi.", "note": "beautiful - uzun sifat, oldidan most keldi." },
+          { "en": "This is the worst choice ever.", "uz": "Bu shu paytgacha bo'lgan eng yomon tanlov.", "note": "bad so'zining orttirma darajasi noto'g'ri yasaladi: worst." },
+          { "en": "It was the most important place to visit.", "uz": "Bu tashrif buyurish uchun eng muhim joy edi.", "note": "important - uzun sifat." }
+        ],
+        "practice": [
+          { "q": "This is ___ mountain in the world.", "options": [ "the highest", "highest", "most high" ], "answer": 0 },
+          { "q": "She is ___ singer in our group.", "options": [ "the most beautiful", "most beautiful", "the beautifulest" ], "answer": 0 },
+          { "q": "What is the opposite of 'best'?", "options": [ "worst", "poorer", "uglier" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-04",
@@ -138,7 +180,21 @@
         { "en": "schedule", "uz": "jadval", "ipa": "ˈskedʒuːl" },
         { "en": "abroad", "uz": "chet elda", "ipa": "əˈbrɔːd" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Oldindan aniq tuzilgan rejalar va niyatlar haqida gapirish uchun \"be going to + fe'l\" qolipidan foydalanamiz.\nFormula: I am, He/She/It is, We/You/They are + going to + fe'lning 1-shakli.\n\nO'zbek tilidan farqi: Biz o'zbek tilida shunchaki \"sayohat qilaman\" deymiz, lekin ingliz tilida bu oldindan o'ylangan reja ekanini ko'rsatish uchun \"am/is/are going to\" so'zlarini qo'shish shart.\nMasalan: I am going to pack my luggage tonight. (Bugun kechqurun chamadonimni joylamoqchiman — rejam bor).",
+        "examples": [
+          { "en": "I am going to travel next week.", "uz": "Kelasi hafta sayohat qilmoqchiman.", "note": "Oldindan belgilangan reja." },
+          { "en": "They are going to buy a ticket soon.", "uz": "Ular tez orada chipta sotib olishmoqchi.", "note": "They bilan are ishlatiladi." },
+          { "en": "She is going to visit the museum tonight.", "uz": "U bugun kechqurun muzeyga bormoqchi.", "note": "She bilan is ishlatiladi." },
+          { "en": "We are going to prepare our passport.", "uz": "Biz pasportimizni tayyorlamoqchimiz.", "note": "We bilan are keladi." }
+        ],
+        "practice": [
+          { "q": "I _____ going to pack my luggage tomorrow.", "options": [ "is", "am", "are" ], "answer": 1 },
+          { "q": "She _____ going to visit the museum.", "options": [ "am", "are", "is" ], "answer": 2 },
+          { "q": "I need to buy a _____ before my trip abroad.", "options": [ "ticket", "beach", "guide" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-05",
@@ -173,7 +229,21 @@
         { "en": "reply", "uz": "javob bermoq", "ipa": "rɪˈplaɪ" },
         { "en": "idea", "uz": "fikr, g'oya", "ipa": "aɪˈdiːə" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Kelajakda nima bo'lishini taxmin qilish yoki shu soniyada xayolga kelgan qarorni aytish uchun \"will\" so'zidan foydalanamiz.\nFormula: Egadir + will + fe'l (1-shakl). Inkor shakli: won't (will not).\nO'zbek tilida fe'lga \"-adi\" qo'shimchasi qo'shiladi va barcha shaxslar (I, you, he, she...) uchun \"will\" o'zgarmaydi.\nDiqqat qiling: o'zbek tilidan farqli o'laroq, ingliz tilida \"will\" yordamchi fe'li asosiy fe'ldan oldin albatta alohida yoziladi.",
+        "examples": [
+          { "en": "I think it will rain tomorrow.", "uz": "Menimcha, ertaga yomg'ir yog'adi.", "note": "Taxmin bildirish uchun ishlatildi." },
+          { "en": "I won't forget your message.", "uz": "Xabaringizni unutmayman.", "note": "Won't - will not ning qisqartmasi." },
+          { "en": "Wait, I will help you with that order.", "uz": "Kuting, men o'sha buyurtma bo'yicha sizga yordam beraman.", "note": "Shu zahoti qabul qilingan qaror." },
+          { "en": "She will probably reply later.", "uz": "U ehtimol keyinroq javob beradi.", "note": "Probably so'zi will dan keyin keladi." }
+        ],
+        "practice": [
+          { "q": "I believe they ___ win the game tomorrow.", "options": [ "will", "is", "to will" ], "answer": 0 },
+          { "q": "Don't worry, I ___ tell anyone your secret.", "options": [ "not will", "won't", "will not to" ], "answer": 1 },
+          { "q": "Can you make a ___ about the weather for tomorrow?", "options": [ "forecast", "reply", "message" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-06",
@@ -208,7 +278,21 @@
         { "en": "since", "uz": "-dan beri", "ipa": "sɪns" },
         { "en": "island", "uz": "orol", "ipa": "ˈaɪlənd" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Present Perfect zamonini o'tmishda boshlanib, natijasi hozir ham muhim bo'lgan ish-harakatlar uchun ishlatamiz.\nFormula: I/We/You/They + have + fe'lning III shakli (V3).\nHe/She/It + has + fe'lning III shakli (V3).\nO'zbek tilidan farqi: biz o'tmishni oddiygina '-di' qo'shimchasi bilan aytamiz, ingliz tilida esa natija muhim. \n'Ever' (savolda), 'never' (hech qachon) va 'just' (hozirgina) so'zlari ko'pincha 'have/has' va III shakl orasida keladi.",
+        "examples": [
+          { "en": "I have never been to London.", "uz": "Men hech qachon Londonda bo'lmaganman.", "note": "Never so'zi inkor ma'no beradi." },
+          { "en": "She has just finished her work.", "uz": "U hozirgina ishini tugatdi.", "note": "Just so'zi ish hozirgina bitganini bildiradi." },
+          { "en": "Have you ever tried sushi?", "uz": "Siz qachondir sushi tatib ko'rganmisiz?", "note": "Ever savol gaplarda ishlatiladi." },
+          { "en": "He has climbed that high mountain.", "uz": "U o'sha baland tog'ga chiqdi.", "note": "He olmoshi uchun has ishlatiladi." }
+        ],
+        "practice": [
+          { "q": "She ... just finished her homework.", "options": [ "have", "has", "is" ], "answer": 1 },
+          { "q": "They ... never been to a foreign island.", "options": [ "has", "is", "have" ], "answer": 2 },
+          { "q": "Which word means 'hozirgina'?", "options": [ "just", "ever", "never" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-07",
@@ -243,7 +327,21 @@
         { "en": "honey", "uz": "asal", "ipa": "ˈhʌni" },
         { "en": "flour", "uz": "un", "ipa": "ˈflaʊər" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Narsalar miqdorini aytish uchun quantifiers ishlatiladi.\n- Sanaladigan otlar (masalan: eggs, bottles) bilan: many (ko'p), a few (ozgina, yetarli).\n- Sanalmaydigan otlar (masalan: milk, sugar) bilan: much (ko'p), a little (ozgina, yetarli).\n- a lot of / plenty: ikkalasi bilan ham ishlaydi, ko'p ma'nosini beradi.\n- some: tasdiq gaplarda (ba'zi, ozroq).\n- any: inkor va savol gaplarda (biror, hech).\n\nO'zbek tilidan farqi: bizda 'ko'p sut' deymiz, ingliz tilida esa ot sanalishiga qarab much yoki many tanlash shart!",
+        "examples": [
+          { "en": "I need a few eggs for the cake.", "uz": "Tort uchun menga bir nechta tuxum kerak.", "note": "Eggs sanaladi, shuning uchun a few ishlatildi." },
+          { "en": "There isn't much milk in the bottle.", "uz": "Shishada sut ko'p emas.", "note": "Milk sanalmaydi, inkor gapda much keldi." },
+          { "en": "Do we have any sugar at home?", "uz": "Uyda shakar bormi?", "note": "Savol gapda any ishlatildi." },
+          { "en": "She added a little butter to the soup.", "uz": "U sho'rvaga ozgina sariyog' qo'shdi.", "note": "Butter sanalmaydi, ijobiy ma'noda a little." }
+        ],
+        "practice": [
+          { "q": "How ___ rice do we need for lunch?", "options": [ "many", "much", "few" ], "answer": 1 },
+          { "q": "I have ___ apples in my bag, let's share.", "options": [ "a little", "much", "a few" ], "answer": 2 },
+          { "q": "Can you cut me a ___ of cheese, please?", "options": [ "slice", "bottle", "bowl" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-08",
@@ -278,7 +376,21 @@
         { "en": "necessary", "uz": "zarur", "ipa": "ˈnesəseri" },
         { "en": "smoke", "uz": "chekmoq", "ipa": "smoʊk" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Salom! Bugun maslahat berish va majburiyatlarni o'rganamiz.\n\n1. SHOULD — maslahat berish uchun (kerak).\nFormula: Ega + should + fe'l\nMisol: You should rest more. (Ko'proq dam olishing kerak).\n\n2. MUST — ichki, qat'iy majburiyat yoki shaxsiy qaror (shart).\nFormula: Ega + must + fe'l\nMisol: I must be careful. (Ehtiyot bo'lishim shart).\n\n3. HAVE TO — tashqi qoida yoki qonun bo'yicha majburiyat.\nFormula: Ega + have to (yoki has to) + fe'l\nMisol: We have to obey the rules. (Qoidalarga bo'ysunishimiz majburiy).\n\nAdashmang: 'Must' o'zimizning xohishimiz bilan, 'have to' esa boshqalarning qoidasi bilan bajariladigan ishlar uchun ishlatiladi!",
+        "examples": [
+          { "en": "You should see a doctor for your health.", "uz": "Sog'liging uchun shifokorga ko'rinishing kerak.", "note": "Maslahat berishda 'should' ishlatamiz." },
+          { "en": "We must respect our teachers.", "uz": "O'qituvchilarimizni hurmat qilishimiz shart.", "note": "Ichki burch va muhim majburiyat uchun 'must'." },
+          { "en": "Children have to go to school.", "uz": "Bolalar maktabga borishi shart.", "note": "Bu tashqi qonun-qoida, shuning uchun 'have to'." },
+          { "en": "You must not smoke near this warning sign.", "uz": "Bu ogohlantiruvchi belgi yaqinida chekmasliging shart.", "note": "Qat'iy taqiq uchun 'must not'." }
+        ],
+        "practice": [
+          { "q": "I think you _____ take this medicine, it will help.", "options": [ "should", "must", "has to" ], "answer": 0 },
+          { "q": "We _____ obey the school rules every day.", "options": [ "must to", "have to", "has to" ], "answer": 1 },
+          { "q": "What is the English word for 'qoida'?", "options": [ "law", "rule", "duty" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "A2-09",
@@ -313,7 +425,21 @@
         { "en": "voice", "uz": "ovoz", "ipa": "vɔɪs" },
         { "en": "movement", "uz": "harakat", "ipa": "ˈmuːvmənt" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Tarz ravishlari ish-harakat qanday bajarilganini bildiradi.\nFormula: sifat + ly = ravish (masalan: careful → carefully, quick → quickly).\nO'zbek tilida 'ehtiyotkor' so'zi ham sifat, ham ravish bo'lib kelaveradi ('ehtiyotkor bola', 'ehtiyotkor yozdi'). Ingliz tilida esa bu farqlanadi: sifat otni ta'riflaydi (He is a careful driver), ravish esa fe'lni izohlaydi (He drives carefully). O'quvchilar ko'pincha fe'ldan keyin sifat ishlatib adashishadi, buni esda saqlang: harakatga nisbatan har doim ravish ishlatiladi (-ly bilan tugaydigan so'zlar).",
+        "examples": [
+          { "en": "He is a careful driver.", "uz": "U ehtiyotkor haydovchi.", "note": "Careful - sifat, driver otini izohlayapti." },
+          { "en": "He drives carefully.", "uz": "U ehtiyotkorlik bilan haydaydi.", "note": "Carefully - ravish, drives fe'lini izohlayapti." },
+          { "en": "She spoke very quietly.", "uz": "U juda ohista gapirdi.", "note": "Quietly so'zi spoke fe'lining qanday bajarilganini ko'rsatmoqda." },
+          { "en": "They finished the test easily.", "uz": "Ular testni osonlik bilan tugatishdi.", "note": "Easy sifatiga -ly qo'shilib easily ravishini yasadi." }
+        ],
+        "practice": [
+          { "q": "She is a quick learner. She learns languages very ...", "options": [ "quick", "quickly", "quickily" ], "answer": 1 },
+          { "q": "He is a bad singer. He sings very ...", "options": [ "badly", "bad", "badlyly" ], "answer": 0 },
+          { "q": "Please speak more ..., I cannot hear you.", "options": [ "quietly", "loudly", "slowly" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "A2-10",
@@ -348,7 +474,21 @@
         { "en": "situation", "uz": "vaziyat", "ipa": "ˌsɪtʃuˈeɪʃn" },
         { "en": "depend", "uz": "bog'liq bo'lmoq", "ipa": "dɪˈpend" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Birinchi shart gap (First Conditional) kelajakda amalga oshishi mumkin bo'lgan shart va uning natijasini aytish uchun ishlatiladi.\n\nFormulasi: If + Present Simple, will + fe'l.\n\nO'zbek tilidan farqi: biz shart qismida ham kelajak zamonni ishlatishni xohlaymiz, lekin ingliz tilida 'if'dan keyin FAQAT hozirgi zamon (Present Simple) kelishi shart! Asosiy qismida esa 'will' va fe'l ishlatiladi.\n\nEng ko'p uchraydigan xato: 'If it will rain, we will stay at home' deb yozish. To'g'risi: 'If it rains, we will stay at home.'",
+        "examples": [
+          { "en": "If you study hard, you will succeed.", "uz": "Agar qattiq o'qisang, muvaffaqiyat qozonasan.", "note": "If dan keyin study (Present Simple) keldi." },
+          { "en": "If it rains, we will stay at home.", "uz": "Agar yomg'ir yog'sa, uyda qolamiz.", "note": "Uchinchi shaxs birlikda rains bo'ladi." },
+          { "en": "If we save money, we will buy a new car.", "uz": "Agar pul tejasak, yangi mashina sotib olamiz.", "note": "save - tejamoq, saqlamoq" },
+          { "en": "If you avoid mistakes, you will succeed.", "uz": "Agar xatolardan qochsang, muvaffaqiyat qozonasan.", "note": "avoid - qochmoq, chetlab o'tmoq" }
+        ],
+        "practice": [
+          { "q": "If you ____ hard, you will pass the exam.", "options": [ "will study", "study", "studies" ], "answer": 1 },
+          { "q": "If she is late, we ____ without her.", "options": [ "leave", "will leave", "leaving" ], "answer": 1 },
+          { "q": "What is the English word for 'oldini olmoq'?", "options": [ "prevent", "avoid", "repair" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-11",
@@ -383,7 +523,21 @@
         { "en": "team", "uz": "jamoa", "ipa": "tiːm" },
         { "en": "goal", "uz": "maqsad", "ipa": "ɡoʊl" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Qoida: O'tgan ishlar haqida gapirganda vaqt muhim!\n1. Agar aniq vaqt (yesterday, in 2020) ko'rsatilsa, Past Simple ishlatiladi: \"I worked in 2020.\"\n2. Agar aniq vaqt aytilmasa va tajriba muhim bo'lsa, Present Perfect ishlatiladi: \"I have worked here.\"\nO'zbek tilida bu farq aniq sezilmaydi, lekin ingliz tilida aniq vaqt bo'lsa 'have' qo'shib bo'lmaydi. O'quvchilar ko'pincha \"I have went yesterday\" deb xato qilishadi, bu qat'iyan taqiqlangan!",
+        "examples": [
+          { "en": "I have worked at this company lately.", "uz": "So'nggi paytlarda ushbu kompaniyada ishladim.", "note": "Aniq vaqt yo'q, shuning uchun Present Perfect." },
+          { "en": "She joined the team in 2022.", "uz": "U jamoaga 2022-yilda qo'shildi.", "note": "Aniq yil ('in 2022') bor, shuning uchun Past Simple." },
+          { "en": "He has improved his career skills.", "uz": "U o'z kasbiy ko'nikmalarini yaxshilagan.", "note": "Natija muhim, vaqt ko'rsatilmagan." },
+          { "en": "They interviewed a new manager yesterday.", "uz": "Ular kecha yangi menejer bilan suhbat o'tkazishdi.", "note": "'Yesterday' so'zi Past Simple talab qiladi." }
+        ],
+        "practice": [
+          { "q": "I ___ a new job last week.", "options": [ "have found", "found", "finding" ], "answer": 1 },
+          { "q": "She ___ three projects this year, but she started a new one yesterday.", "options": [ "finished", "has finished", "finish" ], "answer": 1 },
+          { "q": "The ___ was very happy with our new service.", "options": [ "customer", "salary", "career" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A2-12",
@@ -418,7 +572,21 @@
         { "en": "government", "uz": "hukumat", "ipa": "ˈɡʌvərnmənt" },
         { "en": "language", "uz": "til", "ipa": "ˈlæŋɡwɪdʒ" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Narsa kim tomonidan yoki qayerda qilinganini aytish uchun Majhul nisbat (Present Simple Passive) ishlatamiz.\nFormula: is/are + fe'lning III shakli (past participle).\nAgar kim qilgani muhim bo'lsa, gap oxirida 'by' (tomonidan) so'zi qo'shiladi.\nO'zbek tilida 'qilinadi', 'yasaladi' deb qo'shimcha qo'shiladi, ingliz tilida esa 'is/are' va asosiy fe'lning 3-shakli ishlatiladi.\nDiqqat: O'zbek o'quvchilari kopiya qilib 'is make' deyishadi, bu xato. To'g'risi: 'is made'.",
+        "examples": [
+          { "en": "Cotton is grown in Uzbekistan.", "uz": "Paxta O'zbekistonda yetishtiriladi.", "note": "Birlikdagi 'cotton' uchun 'is' ishlatildi." },
+          { "en": "These cars are made by a big company.", "uz": "Bu mashinalar katta kompaniya tomonidan ishlab chiqariladi.", "note": "Ko'plikdagi 'cars' uchun 'are' ishlatildi." },
+          { "en": "New phones are designed in the office.", "uz": "Yangi telefonlar ofisda loyihalashtiriladi.", "note": "Fe'lning III shakli (-ed) qo'shilgan." },
+          { "en": "This product is exported to many countries.", "uz": "Bu mahsulot ko'p davlatlarga eksport qilinadi.", "note": "Ish-harakat egaga qaratilgan." }
+        ],
+        "practice": [
+          { "q": "English ___ in many countries.", "options": [ "is speak", "is spoken", "are speak" ], "answer": 1 },
+          { "q": "These houses ___ by the government.", "options": [ "is built", "are build", "are built" ], "answer": 2 },
+          { "q": "Where is this ___ made?", "options": [ "product", "farm", "industry" ], "answer": 0 }
+        ]
+      }
     }
   ]
 }

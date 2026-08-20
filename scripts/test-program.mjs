@@ -66,6 +66,9 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'PLACEMENT_LEVELS','PLACEMENT_PER_LEVEL','PLACEMENT_PASS',
                   'entitlementOf','limitFor','tasksFor','trialDaysLeft','dailyTasks','myEntitlement',
                   'adoptSub','freeModeGate',
+                  'hasStagedLesson','lessonSteps','lessonStep','openLesson','nextLessonStep',
+                  'checkLessonQuiz','finishLesson','unitProgressFraction','levelProgressPct',
+                  'LESSON_QUIZ_TOTAL','LESSON_QUIZ_PASS','WORDS_PER_LESSON_PAGE','STEPS_PER_UNIT',
                   'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
                   'TASKS_ACTIVE','TASKS_TRIAL','TASKS_FREE','DAY_MS'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user,
@@ -87,6 +90,10 @@ console.log('3. Dastur holati:');
 const u = { name:'Test', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
 u.program = api.initProgram('A1');
 api.setUser(u);
+
+// Dars endi vazifadan oldin turadi. Bu blok dars qulfini emas, vazifa mexanizmini
+// tekshiradi — shuning uchun darsni ko'rilgan deb belgilaymiz (qulfning o'z testi bor).
+api.markLessonSeen(api.getUnit().id);
 
 t('getUnit() = A1-01', api.getUnit()?.id === 'A1-01');
 t("getTaskType() = 'read' (yangi shablonda unit o'qishdan boshlanadi)", api.getTaskType() === 'read');
@@ -736,6 +743,7 @@ console.log('22. Huquq → kunlik norma:');
 const u12 = { name:'T12', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
 u12.program = api.initProgram('A1');
 api.setUser(u12);
+api.markLessonSeen(api.getUnit().id);   // huquq testi — dars qulfi bu yerga aralashmasin
 t("sub yo'q (eski foydalanuvchi) → trial huquqi", api.myEntitlement() === 'trial');
 t('trial → kuniga 3 vazifa', api.dailyTasks() === 3);
 
@@ -780,6 +788,97 @@ t("yangi holat o'zlashtiriladi",
   && api.myEntitlement() === 'trial');
 t("bir xil holat qayta yozilmaydi",
   api.adoptSub({ trial_started_at: ago(2), subscription_until: null }) === false);
+
+// --- Bosqichli dars (docs/specs/staged-lesson.md)
+console.log('24. Bosqichli dars:');
+const mkLessonUser = () => {
+  const x = { name:'TL', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[],
+              sub:{ trial_started_at:new Date().toISOString(), subscription_until:null } };
+  x.program = api.initProgram('A1');
+  api.setUser(x);
+  return x;
+};
+
+const ul = mkLessonUser();
+const unit1 = api.getUnit();
+t('A1-01 da bosqichli dars bor (etalon)', api.hasStagedLesson(unit1) === true);
+
+const steps = api.lessonSteps(unit1);
+const expSteps = 2 + Math.ceil(api.unitWords(unit1).length / api.WORDS_PER_LESSON_PAGE) + 1;
+t(`lessonSteps() = ${expSteps} bosqich`, steps.length === expSteps);
+t("bosqichlar tartibi: rule → examples → words:0 … → quiz",
+  steps[0] === 'rule' && steps[1] === 'examples' && steps[2] === 'words:0'
+  && steps[steps.length - 1] === 'quiz');
+
+t("lesson yo'q unit → ['flat'] (eski ekran, mini-tekshiruvsiz)",
+  JSON.stringify(api.lessonSteps({ id:'X-01', words:[], tasks:[] })) === '["flat"]');
+t("yarim data staged deb qabul qilinmaydi",
+  api.hasStagedLesson({ lesson:{ rule:'r', examples:[{}], practice:[] } }) === false);
+
+// Bosqichlar bo'ylab yurish
+api.openLesson(unit1.id);
+t('openLesson() 0-bosqichdan boshlaydi', api.lessonStep().index === 0);
+for (let i = 0; i < steps.length + 3; i++) api.nextLessonStep();
+t('nextLessonStep() oxirgi bosqichdan oshib ketmaydi',
+  api.lessonStep().index === steps.length - 1 && api.lessonStep().kind === 'quiz');
+
+// Mini-tekshiruv: 1/3 → yiqiladi
+const right = unit1.lesson.practice.map(q => q.answer);
+const wrongAll = right.map((a, i) => i === 0 ? a : (a + 1) % 3);
+let q = api.checkLessonQuiz(wrongAll);
+t('1/3 → o\'tmaydi', q.ok === false && q.correct === 1 && q.need === api.LESSON_QUIZ_PASS);
+t("yiqilganda lessonsSeen o'zgarmaydi", ul.program.lessonsSeen.length === 0);
+t("yiqilganda so'zlar lug'atga ko'chirilmaydi", ul.vocabulary.length === 0);
+t('yiqilgandan keyin qoidaga qaytariladi', api.lessonStep().kind === 'rule');
+t('quizFails hisoblanadi', ul.program.lessonProgress.quizFails === 1);
+t('yiqilganda vazifa hali qulf', api.canStartTask().reason === 'lesson_pending');
+
+// 2/3 — aynan chegara
+const half = right.map((a, i) => i === 2 ? (a + 1) % 3 : a);
+q = api.checkLessonQuiz(half);
+t(`${api.LESSON_QUIZ_PASS}/${api.LESSON_QUIZ_TOTAL} → o'tadi (chegara)`, q.ok === true && q.correct === 2);
+t('o\'tgach lessonsSeen ga qo\'shiladi', ul.program.lessonsSeen.includes(unit1.id));
+t("o'tgach so'zlar lug'atga ko'chadi", ul.vocabulary.length === api.unitWords(unit1).length);
+t('o\'tgach lessonProgress tozalanadi', ul.program.lessonProgress === null);
+t('o\'tgach vazifa ochiladi', api.canStartTask().ok === true);
+t('dars XP bermaydi', ul.xp === 0);
+t('dars kunlik normaga kirmaydi', ul.program.doneToday.count === 0);
+t("ko'rilgan unitda needsLesson() yolg'on — bosqichli rejim qayta yoqilmaydi",
+  api.needsLesson() === false);
+
+// Boshqa unitning yarmida qolib ketish
+const ul2 = mkLessonUser();
+ul2.program.lessonProgress = { unitId:'A1-07', step:4, quizFails:0 };
+t("boshqa unitning bosqichi e'tiborsiz — 0 dan boshlanadi", api.lessonStep().index === 0);
+
+// Qulf zanjiri tartibi: dars → vazifa → obuna
+const ul3 = mkLessonUser();
+ul3.sub = { trial_started_at:new Date(Date.now() - 30*api.DAY_MS).toISOString(), subscription_until:null };
+t('zanjir 1: dars ko\'rilmagan → lesson_pending',
+  api.freeModeGate().reason === 'lesson_pending');
+api.markLessonSeen(api.getUnit().id);
+t('zanjir 2: dars ko\'rilgan, norma yo\'q → quota_pending',
+  api.freeModeGate().reason === 'quota_pending');
+ul3.program.doneToday = { date: api.todayStr(), count: 1 };
+t('zanjir 3: norma bajarilgan, obuna yo\'q → needs_sub',
+  api.freeModeGate().reason === 'needs_sub');
+
+// Progress bar
+const ul4 = mkLessonUser();
+t('progress: dars ham, vazifa ham yo\'q → 0', api.unitProgressFraction() === 0);
+api.markLessonSeen(api.getUnit().id);
+t(`progress: faqat dars → 1/${api.STEPS_PER_UNIT}`,
+  Math.abs(api.unitProgressFraction() - 1/api.STEPS_PER_UNIT) < 1e-9);
+ul4.program.taskIndex = api.TASKS_PER_UNIT;
+t('progress: unit imtihoni oldida → 7/8',
+  Math.abs(api.unitProgressFraction() - (1 + api.TASKS_PER_UNIT)/api.STEPS_PER_UNIT) < 1e-9);
+t('levelProgressPct() 0..100 oralig\'ida',
+  api.levelProgressPct() > 0 && api.levelProgressPct() < 100);
+ul4.program.levelExam.pending = true;
+t('daraja imtihonida → 100%', api.levelProgressPct() === 100);
+
+// Eski foydalanuvchi: initProgram yangi maydonni beradi
+t('initProgram() lessonProgress = null', api.initProgram('A1').lessonProgress === null);
 
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);
 process.exit(fails === 0 ? 0 : 1);

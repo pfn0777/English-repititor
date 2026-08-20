@@ -6,6 +6,20 @@
       "can": "Salomlasha olaman va o'zim haqimda oddiy gaplar ayta olaman",
       "grammar": "'to be' fe'li — am/is/are shaxs olmoshlari bilan (verb to be)",
       "explain": "Formula: I + am · He/She/It + is · You/We/They + are\nMisol: I am a student. — Men talabaman.\nMisol: She is from Bukhara. — U Buxorodan.",
+      "lesson": {
+        "rule": "Ingliz tilida har bir gapda fe'l bo'lishi SHART. O'zbekchada \"Men talaba\" deymiz — fe'lsiz. Inglizchada esa 'to be' fe'li kerak: I am a student.\n\nFormula:\nI + am\nHe / She / It + is\nYou / We / They + are\n\nInkor: am/is/are dan keyin not — I am not a teacher.\nSavol: am/is/are gap boshiga chiqadi — Are you from Bukhara?",
+        "examples": [
+          { "en": "I am a student.", "uz": "Men talabaman.", "note": "I bilan doim am — boshqa shakli yo'q" },
+          { "en": "She is from Bukhara.", "uz": "U Buxorodan.", "note": "he/she/it bilan is" },
+          { "en": "We are teachers.", "uz": "Biz o'qituvchimiz.", "note": "you/we/they bilan are" },
+          { "en": "Nice to meet you!", "uz": "Tanishganimdan xursandman!", "note": "tanishuvda tayyor ibora — yodlab oling" }
+        ],
+        "practice": [
+          { "q": "___ a student. (Men talabaman)", "options": [ "I am", "I is", "I are" ], "answer": 0 },
+          { "q": "She ___ from Bukhara.", "options": [ "am", "is", "are" ], "answer": 1 },
+          { "q": "\"ism\" inglizcha qanday?", "options": [ "name", "morning", "meet" ], "answer": 0 }
+        ]
+      },
       "words": [
         { "en": "hello", "uz": "salom", "ipa": "həˈloʊ" },
         { "en": "hi", "uz": "salom (norasmiy)", "ipa": "haɪ" },
@@ -68,7 +82,21 @@
         { "en": "not", "uz": "emas", "ipa": "nɑːt" },
         { "en": "very", "uz": "juda", "ipa": "ˈveri" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "translate"],
+      "lesson": {
+        "rule": "Egalikni bildirish uchun 'have got' ishlatamiz.\nFormula: I/You/We/They + have got (bor) \nHe/She/It + has got (u uchun bor).\n\nO'zbek tilidan farqi: bizda 'mening akam bor' deyiladi, ingliz tilida esa 'I have got a brother' (men akaga egaman) deymiz.\n\nEgalik olmoshlari: my (mening), your (sening), his (uning - erkak), her (uning - ayol), our (bizning), their (ularning). Bular doim egadan oldin keladi: my family (mening oilam).",
+        "examples": [
+          { "en": "I have got a big family.", "uz": "Mening katta oilam bor.", "note": "Men uchun 'have got' ishlatildi." },
+          { "en": "She has got two brothers.", "uz": "Uning ikkita akasi bor.", "note": "U (ayol) uchun 'has got' ishlatiladi." },
+          { "en": "This is my mother and father.", "uz": "Bu mening onam va otam.", "note": "'my' - mening." },
+          { "en": "His brother is young.", "uz": "Uning akasi yosh.", "note": "'his' - erkak kishi uchun 'uning'." }
+        ],
+        "practice": [
+          { "q": "She ___ got a sister.", "options": [ "have", "has", "is" ], "answer": 1 },
+          { "q": "This is ___ father. (uning - ayol uchun)", "options": [ "his", "her", "my" ], "answer": 1 },
+          { "q": "My mother and father have got a son and a ___.", "options": [ "daughter", "brother", "friend" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A1-03",
@@ -103,7 +131,21 @@
         { "en": "that", "uz": "o'sha, ana u", "ipa": "ðæt" },
         { "en": "here", "uz": "shu yerda", "ipa": "hɪr" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "translate"],
+      "lesson": {
+        "rule": "Ingliz tilida otlar oldidan artikl ishlatiladi.\n\n1. 'A' va 'An' — noaniq artikllar. Biror narsani birinchi marta aytganda yoki umumiy gapirganda ishlatiladi. \n- 'A' undosh harf bilan boshlanadigan so'zlar oldidan keladi (masalan: a book).\n- 'An' unli harf bilan boshlanadigan so'zlar oldidan keladi (masalan: an apple).\n\n2. 'The' — aniq artikl. Avval aytilgan yoki suhbatdoshga oldindan tanish bo'lgan narsa oldidan ishlatiladi (masalan: The apple is big).\n\nO'zbek tilida artikl yo'q, shuning uchun o'quvchilar ko'pincha 'a' yoki 'the' ni tushirib qoldirishadi. Unutmang: birlikdagi sanaladigan ot artiklsiz ishlatilmaydi!",
+        "examples": [
+          { "en": "This is a book.", "uz": "Bu kitob.", "note": "'Book' undosh bilan boshlanadi, shuning uchun 'a'." },
+          { "en": "I have an apple.", "uz": "Menda olma bor.", "note": "'Apple' unli bilan boshlanadi, shuning uchun 'an'." },
+          { "en": "The book is new.", "uz": "O'sha kitob yangi.", "note": "Oldin aytilgan kitob haqida boryapti." },
+          { "en": "That is a big house.", "uz": "Ana u katta uy.", "note": "Umumiy bitta uy haqida gap ketmoqda." }
+        ],
+        "practice": [
+          { "q": "I have ___ pen and ___ apple.", "options": [ "a / an", "an / a", "the / the" ], "answer": 0 },
+          { "q": "Look at ___ moon! It is bright.", "options": [ "a", "an", "the" ], "answer": 2 },
+          { "q": "Which word means 'deraza' in English?", "options": [ "door", "window", "box" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "A1-04",
@@ -138,7 +180,21 @@
         { "en": "these", "uz": "bular", "ipa": "ðiːz" },
         { "en": "those", "uz": "o'shalar", "ipa": "ðoʊz" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ingliz tilida narsalar soni 1 tadan ko'p bo'lsa, ot oxiriga -s qo'shiladi (book -> books).\nAgar ot -s, -sh, -ch, -x bilan tugasa, oxiriga -es qo'shiladi (box -> boxes).\nO'zbek tilidan farqi: bizda 'besh kitob' deyiladi ('kitoblar' emas), lekin ingliz tilida son turganda ham ot ko'plikda bo'lishi shart! Masalan: five books.\nBa'zi otlar butunlay o'zgaradi (noto'g'ri ko'plik): child -> children, man -> men, woman -> women.",
+        "examples": [
+          { "en": "I have five books.", "uz": "Menda beshta kitob bor.", "note": "Besh sonidan keyin book so'ziga -s qo'shildi." },
+          { "en": "These are big boxes.", "uz": "Bular katta qutilar.", "note": "box so'zi -x bilan tugagani uchun -es oldi." },
+          { "en": "I see ten children.", "uz": "Men o'nta bola ko'ryapman.", "note": "child so'zining ko'plik shakli children." },
+          { "en": "Those men are from our city.", "uz": "O'sha erkaklar bizning shahrimizdan.", "note": "man so'zi men bo'lib o'zgardi." }
+        ],
+        "practice": [
+          { "q": "I have four ... in my bag.", "options": [ "book", "books", "bookes" ], "answer": 1 },
+          { "q": "There are three ... in the room.", "options": [ "childs", "child", "children" ], "answer": 2 },
+          { "q": "How many ... do you have? I have twenty.", "options": [ "numbers", "cities", "countries" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A1-05",
@@ -173,7 +229,21 @@
         { "en": "in", "uz": "ichida, -da", "ipa": "ɪn" },
         { "en": "on", "uz": "ustida", "ipa": "ɑːn" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Har kuni qiladigan ishlarimizni aytish uchun Hozirgi oddiy zamon (Present Simple) kerak bo'ladi.\n\nFormulalar:\n1) I, you, we, they + fe'l (masalan: I work)\n2) He, she, it + fe'l + s (masalan: He works)\n\nO'zbek tilida oxiriga qo'shimcha qo'shiladi (-di), ingliz tilida esa 3-shaxsda (u, u kishi) fe'l oxiriga 's' harfi qo'shiladi.\nO'quvchilar eng ko'p adashadigan joy — 'he work' deyish. To'g'risi: 'He works'. He/she/it kelganda fe'lni 's' bilan ishlatishni unutmang!",
+        "examples": [
+          { "en": "I work in an office.", "uz": "Men ofisda ishlayman.", "note": "I so'zidan keyin fe'l o'zgarishsiz qoladi." },
+          { "en": "She works every day.", "uz": "U har kuni ishlaydi.", "note": "She 3-shaxs bo'lgani uchun work+s bo'ldi." },
+          { "en": "We speak English at school.", "uz": "Biz maktabda ingliz tilida gapiramiz.", "note": "We uchun fe'l qo'shimcha olmaydi." },
+          { "en": "He likes music.", "uz": "Unga musiqa yoqadi.", "note": "He uchun like so'ziga -s qo'shildi." }
+        ],
+        "practice": [
+          { "q": "She ___ English every day.", "options": [ "study", "studys", "studies" ], "answer": 2 },
+          { "q": "I ___ water in the morning.", "options": [ "drink", "drinks", "drinking" ], "answer": 0 },
+          { "q": "What does 'read' mean in Uzbek?", "options": [ "yozmoq", "o'qimoq", "gapirmoq" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "A1-06",
@@ -208,7 +278,21 @@
         { "en": "usually", "uz": "odatda", "ipa": "ˈjuːʒuəli" },
         { "en": "because", "uz": "chunki", "ipa": "bɪˈkɔːz" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Hozirgi oddiy zamonda inkor va savol yasash uchun \"do\" va \"does\" yordamchi fe'llari ishlatiladi.\n\nFormulalar:\n1. Inkor: I/You/We/They + don't + fe'l | He/She/It + doesn't + fe'l\n2. Savol: Do + I/you/we/they + fe'l? | Does + he/she/it + fe'l?\n\nO'zbek tilidan farqi: bizda fe'lga \"-ma\" qo'shimchasi qo'shiladi (kelmaydi), ingliz tilida esa asosiy fe'ldan oldin \"don't\" yoki \"doesn't\" keladi. \nDIQQAT: \"Does\" kelganda fe'lning oxiridagi \"-s\" yo'qoladi (masalan: Does he speak, does he speaks emas).",
+        "examples": [
+          { "en": "I don't understand this question.", "uz": "Men bu savolni tushunmayapman.", "note": "\"I\" uchun don't ishlatiladi." },
+          { "en": "Does she speak English?", "uz": "U ingliz tilida gapiradimi?", "note": "\"She\" uchun boshiga Does keldi." },
+          { "en": "We don't know the answer.", "uz": "Biz javobni bilmaymiz.", "note": "We - don't." },
+          { "en": "Why do you always ask?", "uz": "Nega sen doim so'raysan?", "note": "Savol so'zidan keyin Do keldi." }
+        ],
+        "practice": [
+          { "q": "She ___ like apples.", "options": [ "don't", "doesn't", "not" ], "answer": 1 },
+          { "q": "___ you speak English?", "options": [ "Does", "Are", "Do" ], "answer": 2 },
+          { "q": "I don't ___ this word.", "options": [ "know", "knows", "knowing" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A1-07",
@@ -243,7 +327,21 @@
         { "en": "quiet", "uz": "tinch, jimjit", "ipa": "ˈkwaɪət" },
         { "en": "or", "uz": "yoki", "ipa": "ɔːr" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ingliz tilida biror joyda narsa borligini aytish uchun 'there is' va 'there are' ishlatamiz.\n\nFormula:\n- Birlik uchun (bitta narsa): There is + a/an + ot\n- Ko'plik uchun (ko'p narsalar): There are + son/ot (lar)\n\nO'zbek tilidan farqi: bizda oxirida '-bor' deyiladi va o'zgarmaydi. Ingliz tilida esa narsa bitta bo'lsa 'is', ko'p bo'lsa 'are' bo'lishi shart. Bitta do'kon uchun 'There is a shop', ikkita do'kon uchun 'There are two shops' deymiz.",
+        "examples": [
+          { "en": "There is a clean kitchen in my house.", "uz": "Uyimda toza oshxona bor.", "note": "Oshxona bitta bo'lgani uchun 'There is' keldi." },
+          { "en": "There are three bedrooms upstairs.", "uz": "Yuqori qavatda uchta yotoqxona bor.", "note": "Yotoqxonalar ko'p, shuning uchun 'There are'." },
+          { "en": "The shop is near the bank.", "uz": "Do'kon bankning yonida.", "note": "'Near' so'zi joy predlogi hisoblanadi." },
+          { "en": "There is a quiet park behind the hospital.", "uz": "Shifoxona orqasida tinch park bor.", "note": "'Behind' so'zi orqasida degan ma'noni beradi." }
+        ],
+        "practice": [
+          { "q": "___ a big garden behind my house.", "options": [ "There is", "There are", "There am" ], "answer": 0 },
+          { "q": "___ two clean bedrooms in the flat.", "options": [ "There is", "There are", "There be" ], "answer": 1 },
+          { "q": "We buy food at the ___.", "options": [ "hospital", "market", "wall" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "A1-08",
@@ -278,7 +376,21 @@
         { "en": "again", "uz": "yana", "ipa": "əˈɡen" },
         { "en": "together", "uz": "birgalikda", "ipa": "təˈɡeðər" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Kimdir nimani qila olishini aytish uchun 'can' modal fe'lidan foydalanamiz.\nFormula: shaxs + can + asosiy fe'l.\nMisol: I can swim (Men suza olaman).\nInkor shakli: shaxs + cannot (yoki can't) + asosiy fe'l.\nDiqqat qiling: o'zbek tilida fe'l oxiriga qo'shimcha qo'shilsa, ingliz tilida 'can' alohida so'z sifatida ishlatiladi va fe'lga hech qanday qo'shimcha qo'shilmaydi. 'To' ham ishlatilmaydi ('can to swim' deb bo'lmaydi). O'zbek tilidagi '-a olmoq' ma'nosini bildiradi.",
+        "examples": [
+          { "en": "I can swim very well.", "uz": "Men juda yaxshi suza olaman.", "note": "Can fe'lidan keyin 'to' ishlatilmaydi." },
+          { "en": "She can't drive a car.", "uz": "U mashina hayday olmaydi.", "note": "Inkor uchun cannot yoki can't yoziladi." },
+          { "en": "Can you run fast?", "uz": "Sen tez yugura olasanmi?", "note": "So'roqda can oldinga chiqadi." },
+          { "en": "They can cook together.", "uz": "Ular birgalikda ovqat pishira olishadi.", "note": "Shaxs o'zgarganda can o'zgarmaydi." }
+        ],
+        "practice": [
+          { "q": "He _____ ride a bike.", "options": [ "can", "cans", "can to" ], "answer": 0 },
+          { "q": "_____ you sing a song?", "options": [ "Do", "Can", "Are" ], "answer": 1 },
+          { "q": "I cannot _____ a car.", "options": [ "swim", "drive", "run" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "A1-09",
@@ -313,7 +425,21 @@
         { "en": "weather", "uz": "ob-havo", "ipa": "ˈweðər" },
         { "en": "at", "uz": "-da (joy yoki vaqt)", "ipa": "æt" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tgan zamonda 'edi' deyish uchun 'am/is/are' o'rniga 'was' yoki 'were' ishlatamiz.\n\nFormulalar:\n- I / He / She / It + was (Men/U + edi)\n- You / We / They + were (Sen/Biz/Ular + edilar)\n\nO'zbek tilidan farqi: Bizda fe'l oxiriga '-edi' qo'shimchasi qo'shiladi (masalan: charchagandim). Ingliz tilida esa alohida 'was/were' so'zi ishlatiladi. 'I was' demasdan, xato qilib 'I were' deyish keng tarqalgan xato. Shuning uchun I bilan faqat 'was' kelishini yodda saqla! Oxirida yesterday (kecha), last week (o'tgan hafta) yoki ... ago (... oldin) kabi vaqt so'zlarini qo'shamiz.",
+        "examples": [
+          { "en": "I was tired yesterday.", "uz": "Men kecha charchagandim.", "note": "I so'zidan keyin doim was keladi." },
+          { "en": "They were at home last night.", "uz": "Ular kecha tunda uyda edilar.", "note": "They ko'plik bo'lgani uchun were ishlatdik." },
+          { "en": "She was hungry two hours ago.", "uz": "U ikki soat oldin och edi.", "note": "She uchun was, ago so'zi oxirida keladi." },
+          { "en": "We were happy at home.", "uz": "Biz uyda baxtli edik.", "note": "We uchun were ishlatiladi." }
+        ],
+        "practice": [
+          { "q": "I ... tired yesterday.", "options": [ "were", "was", "is" ], "answer": 1 },
+          { "q": "They ... at home last night.", "options": [ "was", "is", "were" ], "answer": 2 },
+          { "q": "Men kecha och edim deb qanday aytamiz?", "options": [ "I was hungry yesterday.", "I were hungry yesterday.", "I am hungry yesterday." ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A1-10",
@@ -348,7 +474,21 @@
         { "en": "hotel", "uz": "mehmonxona", "ipa": "hoʊˈtel" },
         { "en": "then", "uz": "keyin, so'ng", "ipa": "ðen" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Salom! O'tgan zamonda gapirish uchun muntazam fe'llarga '-ed' qo'shimchasini qo'shamiz.\nFormula (darak): Fe'l + -ed (masalan: work - worked).\nFormula (inkor): didn't + fe'l (masalan: didn't work).\nDiqqat qil: O'zbek tilida 'ishladim' deb fe'lning o'zini o'zgartiramiz, ingliz tilida esa fe'lga '-ed' qo'shiladi va u barcha shaxslar (I, you, he, she...) uchun bir xil bo'ladi. Inkor gapda 'didn't' dan keyin fe'l o'zining boshlang'ich holatida qoladi, '-ed' tushib qoladi!",
+        "examples": [
+          { "en": "I visited my friend last week.", "uz": "O'tgan hafta do'stimnikiga bordim.", "note": "visit fe'liga -ed qo'shildi." },
+          { "en": "We didn't watch the film.", "uz": "Biz kinoni ko'rmadik.", "note": "didn't ishlatilganda watch o'zgarishsiz qoldi." },
+          { "en": "She arrived at the hotel yesterday.", "uz": "U kecha mehmonxonaga yetib keldi.", "note": "arrive oxirida e bor, shuning uchun faqat -d qo'shildi." },
+          { "en": "They walked to the station.", "uz": "Ular bekatga piyoda yurishdi.", "note": "walk fe'li o'tgan zamonda walked bo'ldi." }
+        ],
+        "practice": [
+          { "q": "I _____ my homework yesterday.", "options": [ "finish", "finished", "finishes" ], "answer": 1 },
+          { "q": "She _____ watch TV last night.", "options": [ "don't", "didn't", "doesn't" ], "answer": 1 },
+          { "q": "Biz tushdan keyin mehmonxonada qoldik.", "options": [ "We stayed at the hotel.", "We started at the hotel.", "We visited at the hotel." ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A1-11",
@@ -383,7 +523,21 @@
         { "en": "busy", "uz": "band", "ipa": "ˈbɪzi" },
         { "en": "of", "uz": "-ning", "ipa": "ʌv" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Hozirgi davomli zamon (Present Continuous) ayni damda sodir bo'layotgan ish-harakatni bildiradi.\nFormula: Ega + am/is/are + fe'l(-ing).\nI uchun - am, He/She/It uchun - is, We/You/They uchun - are ishlatiladi.\nO'zbek tilidan farqi: o'zbek tilida '-yapman' qo'shimchasi bitta so'zga qo'shilsa, ingliz tilida yordamchi fe'l (am/is/are) va asosiy fe'lga '-ing' qo'shimchasi alohida qo'shiladi. 'I am sleep' deyish xato, 'am sleeping' bo'lishi shart.",
+        "examples": [
+          { "en": "I am reading a book now.", "uz": "Men hozir kitob o'qiyapman.", "note": "I uchun am ishlatiladi." },
+          { "en": "They are sitting outside.", "uz": "Ular tashqarida o'tirishibdi.", "note": "They ko'plik bo'lgani uchun are." },
+          { "en": "She is wearing a nice dress.", "uz": "U chiroyli ko'ylak kiyib olgan.", "note": "She uchun is ishlatiladi." },
+          { "en": "He is sleeping now.", "uz": "U hozir uxlayapti.", "note": "Hozirgi payt uchun now so'zi keladi." }
+        ],
+        "practice": [
+          { "q": "She ... a new dress now.", "options": [ "is wear", "is wearing", "wearing" ], "answer": 1 },
+          { "q": "They ... outside at the moment.", "options": [ "is sit", "are sitting", "sitting" ], "answer": 1 },
+          { "q": "What does 'outside' mean in Uzbek?", "options": [ "tashqarida", "ichkarida", "hozir" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "A1-12",
@@ -418,7 +572,21 @@
         { "en": "while", "uz": "-ayotganda, vaqtida", "ipa": "waɪl" },
         { "en": "so", "uz": "shuning uchun", "ipa": "soʊ" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Odatdagi ishlar uchun Present Simple (verb) ishlatiladi: doimiy yoki takrorlanib turadigan harakatlar.\nMasalan: I eat bread every day (Men har kuni non yeyman).\nHozirgi daqiqada bo'layotgan ish uchun Present Continuous (am/is/are + verb-ing) ishlatiladi.\nO'zbek tilida 'nonushta qilaman' va 'nonushta qilyapman' degan farq ingliz tilida zamonlar orqali farqlanadi.\nEslash kerak: now, at the moment so'zlari davomiy zamonni bildiradi, every day esa odatni.",
+        "examples": [
+          { "en": "I drink coffee for breakfast every morning.", "uz": "Men har kuni ertalab nonushtaga kofe ichaman.", "note": "Har kuni takrorlanadigan odat." },
+          { "en": "Look! It is snowing right now.", "uz": "Qarang! Hozir qor yog'yapti.", "note": "Hozir sodir bo'layotgan ish." },
+          { "en": "She rarely eats meat for lunch.", "uz": "U tushlikka kamdan-kam go'sht yeydi.", "note": "Kamdan-kam bajariladigan odat." },
+          { "en": "We are having dinner at a restaurant now.", "uz": "Biz hozir restoranda kechki ovqat qilyapmiz.", "note": "Ayni damda sodir bo'layotgan ish." }
+        ],
+        "practice": [
+          { "q": "Look outside! It ___ now.", "options": [ "snow", "is snowing", "snows" ], "answer": 1 },
+          { "q": "My brother ___ coffee every morning.", "options": [ "drink", "is drinking", "drinks" ], "answer": 2 },
+          { "q": "\"mazali\" inglizcha qanday?", "options": [ "expensive", "delicious", "wind" ], "answer": 1 }
+        ]
+      }
     }
   ]
 }

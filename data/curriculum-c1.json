@@ -33,7 +33,21 @@
         { "en": "ultimate", "uz": "pirovard", "ipa": "ˈʌltɪmət" },
         { "en": "foremost", "uz": "birinchi navbatdagi", "ipa": "ˈfɔːrmoʊst" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C1 darajasida matnni jonlantirish va muhim fikrga urg'u berish uchun cleft sentences (ajratuvchi gaplar) juda muhim.\nFormula 1 (It-cleft): It + be + ajratilayotgan so'z + that/who + qolgan qism. Bunda asosiy e'tibor 'It was...' va 'that' orasidagi so'zga tushadi.\nFormula 2 (Wh-cleft): What + subject + verb + is/was + asosiy fikr. \nO'zbek tilida bu urg'u ohang yoki '-ki', '-dir' qo'shimchalari orqali berilsa, ingliz tilida maxsus so'z tartibi ishlatiladi. O'quvchilar ko'pincha 'What' bilan boshlangan gaplarda oxiriga fe'l qo'yishni unutishadi.",
+        "examples": [
+          { "en": "It was the fundamental crux of the problem that baffled experts.", "uz": "Mutaxassislarni dovdiratib qo'ygan narsa muammoning aynan tub mazmuni edi.", "note": "Aynan shu muammo ekanini ko'rsatish uchun 'It was... that' ishlatildi." },
+          { "en": "What we need most right now is a decisive and definitive action.", "uz": "Hozir bizga eng kerak bo'lgan narsa — qat'iy va yakuniy qadam.", "note": "Wh-cleft qurilmasi gap oxiridagi muhim so'zga urg'u beradi." },
+          { "en": "It was the paramount importance of the issue that made the CEO choose this pivotal strategy.", "uz": "Bosh direktorni bu hal qiluvchi strategiyani tanlashiga majbur qilgan narsa masalaning ustuvor ahamiyati edi.", "note": "Muhim qism 'It was' va 'that' orasiga qo'yildi." },
+          { "en": "What remains intrinsic to our success is substantial financial backing.", "uz": "Muvaffaqiyatimiz uchun ichki xos bo'lib qolayotgan narsa — salmoqli moliyaviy yordam.", "note": "Fikrning asosiy o'zagi oxirida keldi." }
+        ],
+        "practice": [
+          { "q": "--- was the stringent deadline that caused all the stress.", "options": [ "It", "What", "There" ], "answer": 0 },
+          { "q": "What matters most in this project --- the underlying quality.", "options": [ "are", "is", "were" ], "answer": 1 },
+          { "q": "Choose the word that means 'eng ustun turuvchi, birinchi navbatdagi':", "options": [ "negligible", "paramount", "trivial" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C1-02",
@@ -68,7 +82,21 @@
         { "en": "implement", "uz": "amalga oshirmoq", "ipa": "ˈɪmplɪment" },
         { "en": "enforce", "uz": "majburan bajartirmoq", "ipa": "ɪnˈfɔːrs" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ilmiy yoki rasmiy uslubda boshqalarning fikri yoki xabarlarni yetkazish uchun murakkab majhul nisbatdan foydalanamiz.\nFormula: Subyekt + is/was + said/thought/believed/reported + to have + fe'lning 3-shakli (V3).\nBu qolip o'tmishda sodir bo'lgan va hozirda muhokama qilinayotgan ish-harakatlar haqida gapirganda ishlatiladi. O'zbek tiliga '...degan taxmin bor' yoki '...xabar qilingan' deb tarjima qilinadi. O'zbek tilidan farqli o'laroq, ingliz tilida bu shaxsga nisbatan majhul nisbat orqali rasmiy tuziladi. Bunda 'to have V3' qismi asosiy harakatdan oldinroq sodir bo'lganini ko'rsatadi.",
+        "examples": [
+          { "en": "The ancient manuscript is believed to have been written in 1420.", "uz": "Qadimgi qo'lyozma 1420-yilda yozilgan deb hisoblanadi.", "note": "Hozirgi paytdagi ishonch o'tmishdagi harakatga qaratilgan." },
+          { "en": "The CEO was reported to have disclosed financial secrets.", "uz": "Bosh direktor moliyaviy sirlarni oshkor qilgani xabar qilingandi.", "note": "O'tmishdagi xabar va o'tmishdagi harakat." },
+          { "en": "New evidence is cited to substantiate the previous claim.", "uz": "Oldingi da'voni asoslash uchun yangi dalil keltirilmoqda.", "note": "Ilmiy matnlarda 'substantiate' so'zi dalillash uchun juda mos." },
+          { "en": "The policy was enacted to enforce strict market regulations.", "uz": "Qattiq bozor qoidalarini majburan bajartirish uchun siyosat qabul qilindi.", "note": "'Enact' va 'enforce' rasmiy huquqiy kontekstda keladi." }
+        ],
+        "practice": [
+          { "q": "The documents are known ____ stolen from the archive last week.", "options": [ "to have been", "have been", "to be" ], "answer": 0 },
+          { "q": "He ____ reported to have left the country before the scandal.", "options": [ "were", "was", "is being" ], "answer": 1 },
+          { "q": "Which word means to prove a statement is false or incorrect?", "options": [ "substantiate", "corroborate", "refute" ], "answer": 2 }
+        ]
+      }
     },
     {
       "id": "C1-03",
@@ -103,7 +131,21 @@
         { "en": "converge", "uz": "bir nuqtaga yaqinlashmoq", "ipa": "kənˈvɜːrdʒ" },
         { "en": "parallel", "uz": "o'xshash, parallel", "ipa": "ˈpærəlel" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C1 darajasida matnni ixcham va boy qilish uchun sifatdosh oborotlaridan foydalanamiz.\nFormula 1 (oldin sodir bo'lgan ish): Having + III shakl (masalan: Having reviewed... — Ko'rib chiqqandan keyin).\nFormula 2 (bir vaqtda sodir bo'lgan ish): Fe'l + ing (masalan: Encompassing all risks... — Barcha xavflarni qamrab olib).\nFormula 3 (sababni ko'rsatish): Being + sifat (masalan: Being aware... — Xabardor bo'lgani uchun).\nO'zbek tilida bu odatda \"-ib\" yoki \"-ganligi uchun\" qo'shimchalari orqali tarjima qilinadi. Ingliz tilida egasi bitta bo'lgan ikkita gapni bittaga birlashtirishda ega tushirib qoldiriladi va asosiy fe'l o'rniga sifatdosh ishlatiladi. Ehtiyot bo'ling: boshlang'ich bosqichda o'quvchilar \"Having wrote\" kabi xatoga yo'l qo'yadilar, doimo III shakl yoki -ing ishlatish kerak.",
+        "examples": [
+          { "en": "Having reviewed the data, we revised the strategic plan.", "uz": "Ma'lumotni ko'rib chiqib, biz strategik rejani qayta ko'rdik.", "note": "Oldin bajarilgan harakat uchun Having + III shakl." },
+          { "en": "Being aware of the risk, she acted early.", "uz": "Xavfdan xabardor bo'lgani uchun u erta harakat qildi.", "note": "Sababni ko'rsatish uchun Being ishlatildi." },
+          { "en": "Encompassing various sectors, the new policy will evolve over time.", "uz": "Turli sohalarni qamrab olgan holda, yangi siyosat vaqt o'tishi bilan rivojlanadi.", "note": "Bir vaqtda sodir bo'layotgan jarayon uchun -ing." },
+          { "en": "Having integrated both systems, they launched the product.", "uz": "Ikkala tizimni birlashtirgandan so'ng, ular mahsulotni ishga tushirishdi.", "note": "Tugallangan harakatni ko'rsatmoqda." }
+        ],
+        "practice": [
+          { "q": "___ all the documents, he signed the final agreement.", "options": [ "Having signed", "Have signed", "Having signing" ], "answer": 0 },
+          { "q": "___ unsure of the outcome, she hesitated to proceed.", "options": [ "Be", "Being", "Been" ], "answer": 1 },
+          { "q": "The modern curriculum tries to ___ theory and practice into a single framework.", "options": [ "comprise", "integrate", "culminate" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C1-04",
@@ -138,7 +180,21 @@
         { "en": "fluent", "uz": "ravon", "ipa": "ˈfluːənt" },
         { "en": "articulate", "uz": "fikrini aniq bayon qila oladigan", "ipa": "ɑːrˈtɪkjələt" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C1 darajasida matnni ortiqcha so'zlardan tozalash va ixchamlashtirish uchun ellipsis (tushirib qoldirish) va substitution (o'rin bosuvchilar: so, one, do) ishlatiladi.\n\nFormulalar:\n1. O'xshash fe'llarni takrorlamaslik uchun: ...and so + yordamchi fe'l + ega (She works hard and so do I).\n2. Ot takrorini oldini olish uchun: bitta sanaladigan ot o'rniga 'one' (masalan, a red one) qo'yiladi.\n3. Fe'l takrorini oldini olish uchun 'do' ishlatiladi.\n\nO'zbek tilidan farqi: O'zbek tilida ko'pincha gap oxiridagi fe'l yoki ot butunlay tashlab yuboriladi, ingliz tilida esa mazmunni saqlash uchun 'so', 'one' yoki yordamchi fe'l kabi o'rin bosuvchilar talab qilinadi.",
+        "examples": [
+          { "en": "She can speak French fluently and so can I.", "uz": "U fransuzcha ravon gapira oladi, men ham.", "note": "'so can I' takroriy fe'lni ixchamlaydi." },
+          { "en": "I need a concise report, not a verbose one.", "uz": "Menga ixcham hisobot kerak, uzunchoq emas.", "note": "'one' so'zi 'report' otini almashtirib keldi." },
+          { "en": "He promised to clarify the issue, and he did.", "uz": "U masalani aniqlashtirishga va'da berdi va bajardi.", "note": "'did' fe'li 'clarify the issue' o'rnini bosdi." },
+          { "en": "Her explanation was coherent, but his was implicit.", "uz": "Uning tushuntirishi izchil edi, uniki esa yashirin.", "note": "Ortiqcha so'zlarni tushirib qoldirish qo'llandi." }
+        ],
+        "practice": [
+          { "q": "My essay is very redundant, and yours ____.", "options": [ "is too", "does too", "so does" ], "answer": 0 },
+          { "q": "If you don't have a modern laptop, you should buy ____.", "options": [ "it", "one", "some" ], "answer": 1 },
+          { "q": "Choose the word which means 'containing too many unnecessary words':", "options": [ "concise", "verbose", "explicit" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C1-05",
@@ -173,7 +229,21 @@
         { "en": "accountability", "uz": "javobgarlik", "ipa": "əˌkaʊntəˈbɪləti" },
         { "en": "transparency", "uz": "shaffoflik", "ipa": "trænsˈpærənsi" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ilmiy va rasmiy uslubda gapirganda yoki yozganda, fe'lli oddiy gaplarni otli qurilmalarga aylantirish (nominalisation) muhim rol o'ynaydi.\nBu usul matnni qisqa, jiddiy va obyektiv qiladi.\n\nFormulasi: Fe'l + Egasi + To'ldiruvchi -> Ot shakli + of + ot\nMasalan: \"We assessed the risk\" o'rniga \"The assessment of the risk\" ishlatiladi.\nO'zbek tilida biz ko'pincha fe'llar bilan fikr bildiramiz (masalan, \"xavfni baholadik\"), ingliz akademik tilida esa harakatni otga aylantirib, holat sifatida ko'rsatish talab etiladi. Bu o'zbek tilidagi gap tuzilishidan keskin farq qiladi va aynan shu yerda xatolar ko'p kuzatiladi.",
+        "examples": [
+          { "en": "They implemented the rule quickly.", "uz": "Ular qoidani tezda amalga oshirdilar.", "note": "Fe'l bilan tuzilgan oddiy kundalik gap." },
+          { "en": "The implementation of the rule was rapid.", "uz": "Qoidaning amalga oshirilishi tezkor edi.", "note": "Implement fe'lidan implementation oti yasaldi." },
+          { "en": "We assessed the risk thoroughly.", "uz": "Biz xavfni puxta baholadik.", "note": "Assess fe'li ishtirok etgan." },
+          { "en": "The assessment of the risk was thorough.", "uz": "Xavfni baholash jarayoni puxta edi.", "note": "Ilmiy uslubdagi otli qurilma." }
+        ],
+        "practice": [
+          { "q": "Choose the correct nominalised form: 'They integrated the systems.'", "options": [ "The integration of the systems", "The integrate of the systems", "The integrated of the systems" ], "answer": 0 },
+          { "q": "Select the proper formal version: 'We evaluated the data.'", "options": [ "The evaluate of the data was done", "The evaluation of the data", "The evaluated of data" ], "answer": 1 },
+          { "q": "What is the correct translation of 'taqsimot' in academic English?", "options": [ "distribution", "allocate", "transform" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C1-06",
@@ -208,7 +278,21 @@
         { "en": "comparatively", "uz": "qiyoslaganda", "ipa": "kəmˈpærətɪvli" },
         { "en": "virtually", "uz": "amalda, deyarli", "ipa": "ˈvɜːrtʃuəli" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ilmiy uslubda qat'iy da'volar o'rniga ehtiyotkor bayon (hedging) ishlatiladi.\nFormula: Subyekt + tend to / appear to / may well + fe'l.\nYoki: It seems that + gap.\nBu vositalar fikrni butunlay inkor qilmaydi, faqat uni ehtimollik darajasiga tushiradi.\nO'zbek tilida fikrni yumshatish uchun '-ganga o'xshaydi', 'ehtimoldan xoli emas' so'zlari ishlatiladi.\nDiqqat: O'zbek tilidan farqli ravishda, ingliz tilida 'tend' fe'lidan keyin doim 'to' keladi va 'may well' ehtimollikni kuchaytiradi.",
+        "examples": [
+          { "en": "The results tend to support the theory.", "uz": "Natijalar nazariyani qo'llab-quvvatlaydiganga o'xshaydi.", "note": "tend to yordamida qat'iy fikr yumshatildi." },
+          { "en": "This may well be the main cause.", "uz": "Bu asosiy sabab bo'lishi ehtimoldan xoli emas.", "note": "may well yuqori ehtimolni bildiradi." },
+          { "en": "Researchers hypothesise that the virus originated in bats.", "uz": "Tadqiqotchilar virus ko'rshapalaklardan kelib chiqqan deb faraz qilishmoqda.", "note": "hypothesise ilmiy taxmin uchun ishlatiladi." },
+          { "en": "The proposed solution seems quite plausible.", "uz": "Taklif etilgan yechim ancha ishonarli ko'rinadi.", "note": "plausible so'zi ishonarli ma'nosini beradi." }
+        ],
+        "practice": [
+          { "q": "The evidence ___ to suggest a strong correlation between variables.", "options": [ "tend", "tends", "tending" ], "answer": 1 },
+          { "q": "This discovery ___ well change our understanding of physics.", "options": [ "may", "will", "should" ], "answer": 0 },
+          { "q": "Which word means 'ishonarli' in academic English?", "options": [ "plausible", "tentative", "provisional" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C1-07",
@@ -243,7 +327,21 @@
         { "en": "waiver", "uz": "huquqdan voz kechish", "ipa": "ˈweɪvər" },
         { "en": "consent", "uz": "rozilik", "ipa": "kənˈsent" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Rasmiy uslubda talab, taklif va zaruratni bildirish uchun 'suggest', 'recommend', 'demand', 'insist' kabi fe'llardan keyin 'that' ergash gap keladi.\nBunday gaplarda fe'l zamonga qarab o'zgarmaydi va hech qachon '-s' yoki '-ed' olmaydi — doim fe'lning boshlang'ich (asosiy) shakli ishlatiladi (Masalan: he be, she go).\nO'zbek tilida bu '...shini talab qiladi' deb tarjima qilinadi. O'quvchilar ko'pincha 'he is' yoki 'he goes' deb xato qilishadi, chunki ular ega birlikda deb o'ylashadi. C1 darajasida bu rasmiy grammatikani bilish muhim.",
+        "examples": [
+          { "en": "The board recommends that the rule be revised.", "uz": "Kengash qoidani qayta ko'rib chiqishni tavsiya qiladi.", "note": "'be' so'zi 'is' yoki 'are' bo'lib o'zgarmaydi." },
+          { "en": "It is essential that he attend the hearing.", "uz": "Uning tinglovda qatnashishi shart.", "note": "'he' bo'lsa ham 'attend' fe'liga '-s' qo'shilmaydi." },
+          { "en": "They proposed that the clause be removed from the contract.", "uz": "Ular shartnomadan ushbu bandni olib tashlashni taklif qilishdi.", "note": "O'tgan zamonda ham fe'l o'zgarmas qoladi." },
+          { "en": "She insisted that her petition be reviewed immediately.", "uz": "U o'z murojaatining zudlik bilan ko'rib chiqilishini qat'iy talab qildi.", "note": "Subjunctive kayfiyati rasmiy talabni bildiradi." }
+        ],
+        "practice": [
+          { "q": "The committee demanded that every member ___ present at the meeting.", "options": [ "is", "be", "are" ], "answer": 1 },
+          { "q": "It is vital that the applicant ___ the basic eligibility criteria.", "options": [ "meets", "meet", "met" ], "answer": 1 },
+          { "q": "A formal ___ is required before you can request a tax exemption.", "options": [ "petition", "threshold", "waiver" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C1-08",
@@ -278,7 +376,21 @@
         { "en": "instability", "uz": "beqarorlik", "ipa": "ˌɪnstəˈbɪləti" },
         { "en": "volatility", "uz": "keskin o'zgaruvchanlik", "ipa": "ˌvɑːləˈtɪləti" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C1 darajasida rasmiy va ilmiy uslubda shart gap tuzish uchun 'if' so'zi tushirib qoldiriladi va yordamchi fe'l egadan oldinga chiqariladi (inversiya).\n\nFormulalar:\n1. 2-tip (faraz): Were + ega + to do... (If I were to...) -> Were I to know...\n2. 3-tip (o'tgan zamon farazi): Had + ega + fe'lning 3-shakli... (If it had...) -> Had it not been for...\n3. 1-tip (ehtimol): Should + ega + fe'l... (If you should...) -> Should you need...\n\nO'zbek tilida bu 'agar shunday bo'lsa' deb oddiy tarjima qilinsa-da, ingliz tilida 'if'siz inversiya faqat yuqori rasmiy uslubda qo'llanadi va matnga dramatik tus beradi.",
+        "examples": [
+          { "en": "Were we to face any unexpected contingency, our reserve funds would cover it.", "uz": "Agar kutilmagan vaziyatga duch kelsak, zaxira jamg'armamiz buni qoplaydi.", "note": "If we were to face o'rniga Were we to face ishlatildi." },
+          { "en": "Had it not been for the robust safeguard, the crisis would have caused a total collapse.", "uz": "Mustahkam himoya chorasi bo'lmaganida, inqiroz butunlay qulashga olib kelgan bo'lardi.", "note": "If it had not been for o'rniga Had it not been for." },
+          { "en": "Should any disruption occur in the system, activate the immediate backup plan.", "uz": "Agar tizimda biron bir uzilish yuz bersa, darhol zaxira rejasini ishga tushiring.", "note": "If any disruption should occur o'rniga Should any disruption." },
+          { "en": "Were resilience not prioritized, the vulnerability to external threats would increase.", "uz": "Agar bardoshlilik ustuvor qilib belgilanmasa, tashqi tahdidlarga zaiflik ortadi.", "note": "Inkor shaklda ham yordamchi fe'l oldinga chiqadi." }
+        ],
+        "practice": [
+          { "q": "--- you require further assistance regarding the emergency, please contact the crisis team.", "options": [ "Should", "Were", "Had" ], "answer": 0 },
+          { "q": "--- it not been for the effective mitigation, the market volatility would have caused a collapse.", "options": [ "Were", "Had", "Should" ], "answer": 1 },
+          { "q": "What is the best English equivalent for 'kutilmagan holat rejasi' based on the unit vocabulary?", "options": [ "contingency", "vulnerability", "resilience" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C1-09",
@@ -313,7 +425,21 @@
         { "en": "cohesion", "uz": "bir-biriga bog'liqlik", "ipa": "koʊˈhiːʒn" },
         { "en": "paragraph", "uz": "xatboshi", "ipa": "ˈpærəɡræf" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C1 darajasida uzun matn yozish uchun shunchaki so'zlarni yig'ish yetarli emas, balki fikrlar orasidagi munosabatni aniq ko'rsatish kerak.\nE'tiroz bildirishda 'however' o'rniga 'that said' yoki 'concession' (yon berish) uchun 'admittedly' ishlatiladi. Xulosa yoki dalilni yumshatish uchun 'qualification' (cheklovchi izoh) juda muhim.\nO'zbek tilida '...ga qaramay' deb qo'ysak yetarli bo'ladi, lekin ingliz tilida bu maxsus 'transition' so'zlari orqali rasmiy va izchil qilib ko'rsatiladi.\nFikrlar o'rtasidagi 'cohesion' buzilmasligi uchun har bir xatboshi mantiqiy ravishda keyingisiga bog'lanishi shart.",
+        "examples": [
+          { "en": "The thesis seems solid; that said, the underlying rationale needs revision.", "uz": "Asosiy da'vo puxta ko'rinadi; shunday bo'lsa-da, ostki mantiqiy sabab qayta ko'rib chiqishni talab qiladi.", "note": "E'tiroz bildirish uchun ishlatildi." },
+          { "en": "Admittedly, the counterargument has merit, yet the main logic remains intact.", "uz": "Tan olish kerakki, qarshi dalil asosga ega, biroq asosiy mantiq o'zgarishsiz qolmoqda.", "note": "Yon berish (concession) uchun." },
+          { "en": "In essence, the reasoning relies heavily on a weak analogy.", "uz": "Mohiyatan, fikr yuritish kuchsiz o'xshatishga qattiq tayanadi.", "note": "Xulosa va asosiy fikrni ochish." },
+          { "en": "To avoid any digression, let us focus strictly on the established framework.", "uz": "Mavzudan chetga chiqishning oldini olish uchun, keling, faqat belgilangan asosiy tuzilmaga e'tibor qarataylik.", "note": "Tuzilmani saqlash uchun o'tish." }
+        ],
+        "practice": [
+          { "q": "Choose the best transition for a counterargument: 'The study is comprehensive; ________, the sample size is too small.'", "options": [ "furthermore", "that said", "in addition" ], "answer": 1 },
+          { "q": "Which word refers to the main claim of an essay?", "options": [ "thesis", "digression", "anecdote" ], "answer": 0 },
+          { "q": "Select the correct term for 'qarshi dalil':", "options": [ "rationale", "counterargument", "cohesion" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C1-10",
@@ -348,7 +474,21 @@
         { "en": "colloquial", "uz": "so'zlashuvga oid", "ipa": "kəˈloʊkwiəl" },
         { "en": "slang", "uz": "jargon, ko'cha tili", "ipa": "slæŋ" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C1 darajasida tilni mukammal egallash uchun literal (so'zma-so'z) va figurative (ko'chma) ma'nolarni farqlay olish o'ta muhim.\nO'zbek tilida ham 'ko'zi to'q' yoki 'oshig'i olchi' deganda so'zma-so'z ma'no yo'qolgandek, ingliz tilida ham idiomatik birikmalar va collocation'lar aynan shunday ishlaydi.\nQoida: ibora ma'nosi ayrim so'zlar yig'indisidan KELIB CHIQMAYDI — butunligicha yodlanadi.\nAgar ularni so'zma-so'z tarjima qilsangiz, suhbatdoshingiz sizni tushunmaydi yoki boshqa ma'no chiqib ketadi.\nMisol uchun, denotation (asosiy ma'no) va connotation (qo'shimcha tusi) o'rtasidagi nuance'ni (nozik farqni) tushunish C1 nutqining kalitidir.",
+        "examples": [
+          { "en": "He let the cat out of the bag by accident.", "uz": "U tasodifan sirni oshkor qilib qo'ydi.", "note": "Let the cat out of the bag — sirni ochmoq." },
+          { "en": "Her witty remark added a subtle nuance to the debate.", "uz": "Uning topqir gapi bahsga sezilar-sezilmas nozik ma'no qo'shdi.", "note": "Witty va nuance C1 darajasidagi so'zlardir." },
+          { "en": "Instead of being blunt, he used a clever understatement.", "uz": "Keskin va ochiq bo'lish o'rniga, u ataylab kamaytirib aytishdan foydalandi.", "note": "Blunt va understatement zid ma'noli tushunchalar." },
+          { "en": "The colloquial expression had a sarcastic undertone.", "uz": "Bu so'zlashuv ifodasida achchiq kesatiq yashirin ohangi bor edi.", "note": "Colloquial va undertone birikmasi." }
+        ],
+        "practice": [
+          { "q": "Choose the correct figurative meaning: 'It's raining cats and dogs' means...", "options": [ "It is raining heavily", "Animals are falling from the sky", "Cats and dogs are fighting" ], "answer": 0 },
+          { "q": "Which option represents the opposite of 'figurative'?", "options": [ "Idiomatic", "Literal", "Symbolic" ], "answer": 1 },
+          { "q": "What do we call a fixed phrase whose meaning cannot be guessed from its individual words?", "options": [ "Proverb", "Idiom", "Collocation" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C1-11",
@@ -383,7 +523,21 @@
         { "en": "address", "uz": "murojaat qilmoq", "ipa": "əˈdres" },
         { "en": "greeting", "uz": "salomlashish", "ipa": "ˈɡriːtɪŋ" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C1 darajasida muvaffaqiyatli muloqot qilish uchun nutq uslubini (register) suhbatdoshga qarab ongli ravishda o'zgartira olish muhim.\nO'zbek tilidan farqli o'laroq, ingliz tilida rasmiy va norasmiy uslub nafaqat so'z tanlash, balki gap tuzilishi, ohang (tone) va iboralar bilan keskin farqlanadi.\nFormula: Norasmiy (casual) = qisqa, sodda fe'llar va jargon. Rasmiy (formal) = uzunroq, passiv konstruksiyalar, murakkab fe'llar (masalan: 'tell' o'rniga 'inform').\nTact va discretion qoidalariga amal qilib, vaziyatga mos phrasing tanlash shart.",
+        "examples": [
+          { "en": "Can you send it over?", "uz": "Uni jo'natib yubora olasanmi?", "note": "Do'stlar uchun qulay informal uslub." },
+          { "en": "Would you be so kind as to forward the document?", "uz": "Hujjatni yuborishingizni so'rasak bo'ladimi?", "note": "Rasmiy va o'ta xushmuomala phrasing." },
+          { "en": "I need to talk to you about the register.", "uz": "Senga nutq uslubi haqida gapirishim kerak.", "note": "Oddiy tone, kundalik muloqot." },
+          { "en": "It is imperative that we maintain utmost discretion.", "uz": "Biz eng yuqori darajada sir saqlashni ta'minlashimiz shart.", "note": "Professional va authoritative register." }
+        ],
+        "practice": [
+          { "q": "Which sentence demonstrates the correct formal register for asking a favor?", "options": [ "Can you help me with this?", "Could you possibly assist me with this matter?", "Help me out here, mate." ], "answer": 1 },
+          { "q": "Choose the most appropriate phrasing for an authoritative business email.", "options": [ "I want you to do this now.", "It is requested that you proceed immediately.", "Hey, do this quick." ], "answer": 1 },
+          { "q": "What does the term 'tact' mean in professional etiquette?", "options": [ "Nozik muomala va odob qoidalarini buzmaslik", "Qo'pol va ochiqko'ngil bo'lish", "Faqat o'z fikrini dadil o'tkazish" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C1-12",
@@ -418,7 +572,21 @@
         { "en": "inference", "uz": "chiqarilgan xulosa", "ipa": "ˈɪnfərəns" },
         { "en": "scrutiny", "uz": "sinchkov tekshiruv", "ipa": "ˈskruːtəni" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ilmiy tahlilda ta'kidni kuchaytirish va urg'u berish uchun gapning odatiy tartibi o'zgartirilib, muhim bo'lak (ravish, sifat yoki to'ldiruvchi) gap boshiga chiqariladi (fronting).\n\nFormula: Oldinga chiqarilgan bo'lak + Yordamchi fe'l + Ega + Asosiy fe'l.\n\nO'zbek tilidan farqi: O'zbek tilida urg'u ohang yoki qo'shimchalar orqali berilsa, ingliz tilida so'z tartibi o'zgaradi va salbiy ma'noli so'zlar oldinga chiqqanda yordamchi fe'l egadan oldinga o'tadi (inversiya).",
+        "examples": [
+          { "en": "Particularly striking is the deviation in the second sample.", "uz": "Ayniqsa e'tiborli jihati — ikkinchi tanlanmadagi chetlanish.", "note": "Asosiy e'tiborni qaratish uchun sifatdosh oldinga chiqdi." },
+          { "en": "Never before had the correlation been so clear.", "uz": "Bog'liqlik hech qachon bunchalik aniq bo'lmagan edi.", "note": "Salbiy ravish boshga kelganda inversiya yuzaga keladi." },
+          { "en": "Only through rigorous scrutiny can we validate this hypothesis.", "uz": "Faqat sinchkov tekshiruv bilangina biz bu farazni tasdiqlay olamiz.", "note": "Kuchaytiruvchi 'Only' birikmasi oldinga chiqarildi." },
+          { "en": "Such is the magnitude of this anomaly.", "uz": "Bu g'ayrioddiy holatning kattalik darajasi shundan iborat.", "note": "Predikat boshga o'tib, ilmiy urg'u ta'minlandi." }
+        ],
+        "practice": [
+          { "q": "Never before ... such a strong correlation between the variables.", "options": [ "researchers found", "had researchers found", "researchers had found" ], "answer": 1 },
+          { "q": "Scarcely ... the empirical data when the anomaly appeared.", "options": [ "we had analysed", "did we analyse", "had we analysed" ], "answer": 2 },
+          { "q": "What do we call a data point that lies outside the overall trend in a quantitative sample?", "options": [ "outlier", "paradigm", "parameter" ], "answer": 0 }
+        ]
+      }
     }
   ]
 }

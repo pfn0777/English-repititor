@@ -33,7 +33,21 @@
         { "en": "simultaneity", "uz": "bir vaqtdalik", "ipa": "ˌsaɪmltəˈneɪəti" },
         { "en": "retrospection", "uz": "o'tmishni qayta ko'rib chiqish", "ipa": "ˌretrəˈspekʃn" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C2 darajasida zamonlar nozikligi ma'no qatlamlarini aniq farqlashni talab qiladi.\n1. 'Used to' o'tmishdagi holat (states) va odatlarga nisbatan ishlatiladi. O'zbek tilidagi '-rdik' qo'shimchasi bilan bir xil bo'lib tuyuladi, ammo statik fe'llar bilan faqat 'used to' keladi.\n2. 'Would' esa faqat takrorlanuvchi harakatlarni (actions) bildiradi, o'tmishdagi holatlarga ishlatib bo'lmaydi ('*He would live there' - xato).\n3. 'Past Perfect Continuous' ma'lum bir o'tmish nuqtasigacha to'xtovsiz davom etgan jarayonni ko'rsatib, e'tibor uning davomiyligiga qaratiladi.",
+        "examples": [
+          { "en": "We used to live in that epoch, and every Sunday my grandfather would recount the chronology.", "uz": "Biz o'sha davrda yashardik va har yakshanba bobomiz voqealar xronologiyasini so'zlab berardi.", "note": "Live - holat, shuning uchun used to ishlatildi." },
+          { "en": "By the onset of the new century, she had been working on this enduring project for a decade.", "uz": "Yangi asr boshlanishiga kelib, u bu uzoq saqlanadigan loyiha ustida o'n yildan beri ishlayotgan edi.", "note": "Jarayon boshlanish nuqtasigacha davom etgan." },
+          { "en": "His persistent cough was intermittent, marked by sporadic cessation and sudden resumption.", "uz": "Uning qaytalanuvchi yo'talishi vaqti-vaqti bilan uzilib, to'xtash va to'satdan qayta boshlanishlar bilan ajralib turardi.", "note": "Vaqt nozikligini ko'rsatuvchi sifatlar." },
+          { "en": "The fleeting joy was transient, unlike the lasting impact of that momentous era.", "uz": "O'sha muhim davrning barqaror ta'siridan farqli o'laroq, ko'z ochib yumguncha o'tadigan quvonch o'tkinchi edi.", "note": "Vaqt davomiyligi nuqtalari." }
+        ],
+        "practice": [
+          { "q": "When I was a child, I _____ own a bicycle, and we _____ ride it every afternoon.", "options": [ "would / used to", "used to / would", "had been owning / would" ], "answer": 1 },
+          { "q": "By the time the cessation occurred, the machinery _____ continuously for over a decade.", "options": [ "had been operating", "would operate", "used to operate" ], "answer": 0 },
+          { "q": "The intermittent and _____ nature of the signal made it difficult to establish chronology.", "options": [ "enduring", "sporadic", "lasting" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-02",
@@ -68,7 +82,21 @@
         { "en": "taxonomy", "uz": "tasnif tizimi", "ipa": "tækˈsɑːnəmi" },
         { "en": "category", "uz": "toifa", "ipa": "ˈkætəɡɔːri" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C2 darajasida murakkab ot birikmalarini tuzishda ot oldidan keluvchi aniqlovchilar zanjiridan (premodification) foydalanamiz.\nFormula: [Modifier/Descriptor/Qualifier] + [Head Noun] (asosiy ot oxirida keladi).\nO'zbek tilidan asosiy farqi: o'zbekchada aniqlovchilar chapdan o'ngga (teskari tartibda) tarjima qilinsa, ingliz tilida eng asosiy ot oxirida turadi va uning oldidan bir nechta sifat, ot yoki fe'l shakllari zanjir bo'lib keladi.\nO'quvchilar ko'pincha bu zanjirni noto'g'ri tarjima qiladi yoki ortiqcha bog'lovchi qo'shib yuboradi. Masalan, 'state-funded higher education institutions' deganda asosiy ot 'institutions', qolganlari esa uning qandayligini ko'rsatuvchi murakkab aniqlovchilar zanjiridir.",
+        "examples": [
+          { "en": "A long-term risk assessment framework is essential here.", "uz": "Bu yerda uzoq muddatli xavfni baholash tizimi muhim.", "note": "Oxirgi so'z 'framework' asosiy ot hisoblanadi." },
+          { "en": "We need state-funded higher education institutions.", "uz": "Bizga davlat tomonidan moliyalashtiriladigan oliy ta'lim muassasalari kerak.", "note": "Oldingi so'zlar 'institutions' otini aniqlab kelmoqda." },
+          { "en": "This taxonomy category defines a specific constituent component.", "uz": "Bu tasnif toifasi aniq bir tashkil etuvchi qismni belgilaydi.", "note": "Ikki qismli murakkab ot birikmasi." },
+          { "en": "A comprehensive spectrum analysis reveals a hidden pattern.", "uz": "Keng doiradagi tahlil yashirin naqshni ochib beradi.", "note": "O'zbek tiliga teskari tartibda tarjima qilinadi." }
+        ],
+        "practice": [
+          { "q": "Choose the correct complex noun phrase structure for 'davlat moliyalashtiradigan oliy ta'lim muassasalari':", "options": [ "state-funded higher education institutions", "institutions higher education state-funded", "higher institutions state-funded education" ], "answer": 0 },
+          { "q": "Identify the head noun (asosiy ot) in the phrase: 'a long-term risk assessment framework'.", "options": [ "long-term", "risk", "framework" ], "answer": 2 },
+          { "q": "Which unit word means 'tashkil etuvchi bo'lak' in English?", "options": [ "constituent", "modifier", "spectrum" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C2-03",
@@ -103,7 +131,21 @@
         { "en": "evasive", "uz": "javobdan qochadigan", "ipa": "ɪˈveɪsɪv" },
         { "en": "forthright", "uz": "ochiq va to'g'ri gapiradigan", "ipa": "ˈfɔːrθraɪt" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ingliz tilida, ayniqsa C2 darajasida, muhim fikrlar ko'pincha so'zma-so'z emas, balki bilvosita (indirectness) yetkaziladi.\n\nFormulalar:\n1. Yumshatilgan tanqid: \"That's an interesting approach\" = \"Bu xato / Menga yoqmadi\".\n2. Euphemism va vagueness: Nozik mavzularda to'g'ridan-to'g'ri (forthright) emas, balki evaziv va tactful so'zlar orqali subtext yaratiladi.\n\nO'zbek tilidan farqi: O'zbekchada ham shama va ishoralar bor, lekin ingliz tilida politeness va decorum qoidalari tufayli tanqidni to'g'ridan-to'g'ri aytish qo'pol hisoblanadi. Shuning uchun mitigator'lar orqali ma'no soften qilinadi. So'zma-so'z tarjima qilsangiz, haqiqiy ma'noni (implicature) tushunmaysiz.",
+        "examples": [
+          { "en": "That is certainly a brave suggestion, given our current budget.", "uz": "Hozirgi byudjetimizni hisobga olsak, bu juda 'jasoratli' taklif.", "note": "Brave bu yerda ahmoqona yoki o'ylamay qilingan degan yashirin ma'noni bildiradi." },
+          { "en": "I am not entirely sure your proposal fully addresses the core issue.", "uz": "Taklifingiz asosiy muammoni to'liq hal qiladi deb to'liq amin emasman.", "note": "Xushmuomalalik pardasi ostida taklif rad etilmoqda." },
+          { "en": "We might want to revisit this strategy at a later, more suitable date.", "uz": "Bu strategiyani keyinroq, mosroq sanada qayta ko'rib chiqsak bo'lar edi.", "note": "Strategiya yaroqsiz degan ma'noni yumshatib yetkazish." },
+          { "en": "Her tone carried a distinct innuendo regarding his qualifications.", "uz": "Uning ohangida uning malakasiga nisbatan aniq yopiq kesatiq bor edi.", "note": "Innuendo ochiq aytilmagan, lekin tushunarli shama." }
+        ],
+        "practice": [
+          { "q": "Choose the most indirect and tactful way to reject a bad idea in a professional setting.", "options": [ "This idea is completely wrong.", "That is an interesting approach, though we might need to explore other angles.", "You don't know what you are talking about." ], "answer": 1 },
+          { "q": "Which linguistic term describes the hidden meaning behind the literal words?", "options": [ "Subtext", "Directness", "Forthright" ], "answer": 0 },
+          { "q": "What does the word 'euphemism' mean in pragmatics?", "options": [ "A rude and direct insult", "A mild or indirect word substituted for one considered to be too harsh", "An unclear sentence with a grammar mistake" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-04",
@@ -138,7 +180,21 @@
         { "en": "manipulation", "uz": "boshqarib yo'ldan urish", "ipa": "məˌnɪpjuˈleɪʃn" },
         { "en": "appealing", "uz": "jozibali", "ipa": "əˈpiːlɪŋ" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C2 darajasida ishontirish san'ati (persuasion) tinglovchiga kuchli ta'sir qilish uchun maxsus notiqlik vositalarini talab qiladi.\n\n1. Takror va parallelizm (repetition & parallelism): Bir xil so'z yoki gap tuzilishini ketma-ket ishlatish orqali xabarni miyaga muhrlaymiz. O'zbek tilida bu urg'uni ohang va qo'shimchalar bilan bersak, ingliz tilida aynan so'zlar va tuzilish takrorlanadi (masalan: We asked for time; we asked for support).\n\n2. Qarshilantirish (antithesis): Ikki qarama-qarshi tushunchani bir gapda yonma-yon qo'yib, farqni yaqqol ko'rsatamiz (It is not a cost — it is an investment).\n\n3. Ritorik savol (rhetorical question): Javob talab qilinmaydigan, faqat o'ylantirish uchun beriladigan savol.",
+        "examples": [
+          { "en": "We must fight for justice, we must fight for truth, we must fight for our future.", "uz": "Biz adolat uchun kurashishimiz kerak, haqiqat uchun kurashishimiz kerak, kelajagimiz uchun kurashishimiz kerak.", "note": "Parallelizm va takror orqali nutqqa kuchli urg'u berildi." },
+          { "en": "It is not a defeat — it is a valuable lesson.", "uz": "Bu mag'lubiyat emas — bu qimmatli saboq.", "note": "Antithesis orqali salbiy holat ijobiy ma'noga o'zgartirildi." },
+          { "en": "How can we remain silent in the face of such obvious injustice?", "uz": "Bunchalik aniq adolatsizlik qarshisida qanday qilib jim tura olamiz?", "note": "Ritorik savol tinglovchini o'ylashga majbur qiladi." },
+          { "en": "His speech was characterized by rare eloquence and profound authenticity.", "uz": "Uning nutqi nodir so'zga chechanlik va chuqur haqiqiylik bilan ajralib turardi.", "note": "Unit so'zlari orqali notiqlik mahorati tasvirlandi." }
+        ],
+        "practice": [
+          { "q": "Choose the sentence that correctly uses parallelism and repetition for rhetorical effect.", "options": [ "We need power, and then we want to win, and money is also good.", "We demand action, we demand justice, we demand change.", "We demanded action, justice was what we wanted, and changing things." ], "answer": 1 },
+          { "q": "Identify the correct example of antithesis (qarshilantirish).", "options": [ "It is not a burden — it is a privilege.", "It is a heavy burden and a big privilege.", "It is not a burden, and also it is not a privilege." ], "answer": 0 },
+          { "q": "Choose the best translation for 'so'zga chechanlik' (unit so'zi).", "options": [ "rhetoric", "eloquence", "persuasion" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-05",
@@ -173,7 +229,21 @@
         { "en": "submission", "uz": "topshirish, taqdim etish", "ipa": "səbˈmɪʃn" },
         { "en": "approval", "uz": "tasdiq", "ipa": "əˈpruːvl" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Rasmiy hujjatlarda (hisobot va taklifnoma) o'zbek tilidan farqli ravishda shaxsiy emas, balki obyektiv va aniq til ishlatiladi.\nHisobot o'tgan ishlar haqida bo'lib, o'tgan zamon yoki holat fe'llarini talab qiladi (masalan, 'The report outlines...').\nTaklifnoma va loyiha takliflari (proposal) esa kelajakdagi harakatlar uchun maxsus 'subjunctive' (shart/istak) shakllarni talab qiladi (masalan, 'We propose that the plan be approved').\nO'quvchilar ko'pincha takliflarda 'is' yoki 'will' ishlatib xato qilishadi, lekin rasmiy tilda 'be' shakli ishlatilishi shart.",
+        "examples": [
+          { "en": "This report outlines the findings of the audit.", "uz": "Ushbu hisobot audit natijalarini bayon qiladi.", "note": "Hisobotda hozirgi zamon fe'li faktni ko'rsatish uchun ishlatiladi." },
+          { "en": "We propose that the pilot be extended by six months.", "uz": "Sinov bosqichini olti oyga uzaytirishni taklif qilamiz.", "note": "Taklifdan keyin 'be extended' kabi subjunctive shakl qo'llaniladi." },
+          { "en": "The feasibility study confirms the scope of the project.", "uz": "Amalga oshirish imkoniyati tadqiqi loyiha qamrovini tasdiqlaydi.", "note": "'feasibility' va 'scope' rasmiy hisobotlarning muhim so'zlaridir." },
+          { "en": "Please review the attached draft before submission.", "uz": "Iltimos, topshirishdan oldin ilova qilingan qoralamani ko'rib chiqing.", "note": "'draft' va 'submission' hujjat almashinuvida tez-tez ishlatiladi." }
+        ],
+        "practice": [
+          { "q": "We recommend that the new template ___ implemented immediately.", "options": [ "being", "be", "will be" ], "answer": 1 },
+          { "q": "The committee reviewed the minutes and suggested several ___ to the policy.", "options": [ "amendments", "proposals", "synopses" ], "answer": 0 },
+          { "q": "Which formal document is used to officially propose a new project plan?", "options": [ "Bulletin", "Proposal", "Minutes" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-06",
@@ -208,7 +278,21 @@
         { "en": "dissenting", "uz": "qarshi fikrdagi", "ipa": "dɪˈsentɪŋ" },
         { "en": "consensus", "uz": "umumiy kelishuv", "ipa": "kənˈsensəs" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ilmiy tanqid tilida (academic evaluation) fikrlar shaxsga emas, tadqiqot natijalari va uslubiga qaratiladi.\n\nFormulasi: [Ijobiy baho] + [however / although / though] + [yumshatilgan kamchilik / limitation].\n\nO'zbek tilidan farqi: bizda tanqid to'g'ridan-to'g'ri aytilishi mumkin, biroq ingliz akademik stilida keskinlikni pasaytirish uchun 'should be treated with caution' yoki 'might benefit from' kabi yumshatuvchi (hedging) iboralar majburiy ishlatiladi.",
+        "examples": [
+          { "en": "The study is methodologically sound, though the sample is limited.", "uz": "Tadqiqot uslubiy jihatdan puxta, biroq tanlanma cheklangan.", "note": "soundness va limitation muvozanati" },
+          { "en": "These findings should be treated with caution due to methodological constraints.", "uz": "Bu natijalarga uslubiy cheklovlar tufayli ehtiyotkorlik bilan yondashish kerak.", "note": "Keskin rad etish o'rniga caution ishlatilgan" },
+          { "en": "Despite its strengths, the paper lacks sufficient rigour in data analysis.", "uz": "Kuchli tomonlariga qaramay, maqolada tahlil uchun yetarli ilmiy qat'iylik yo'q.", "note": "Despite yordamida qarama-qarshilik ko'rsatilgan" },
+          { "en": "The prevailing consensus is frequently contested by dissenting scholars.", "uz": "Hozirda hukmron konsensus qarshi fikrdagi olimlar tomonidan tez-tez bahsli qilinadi.", "note": "contested va dissenting akademik so'zlari" }
+        ],
+        "practice": [
+          { "q": "Choose the most appropriate academic evaluation structure:", "options": [ "The author is wrong because his work has many shortcoming.", "The study is methodologically sound, though the sample is limited.", "Your research is very bad and has no validity." ], "answer": 1 },
+          { "q": "Select the correct hedging phrase for scientific critique:", "options": [ "These findings should be treated with caution.", "These results are definitely completely false.", "The researcher must be wrong about this." ], "answer": 0 },
+          { "q": "What is the meaning of 'limitation' in academic context?", "options": [ "A major commendation", "A scientific restriction or shortcoming", "An orthodox consensus" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-07",
@@ -243,7 +327,21 @@
         { "en": "binding", "uz": "majburiy kuchga ega", "ipa": "ˈbaɪndɪŋ" },
         { "en": "amicable", "uz": "do'stona", "ipa": "ˈæmɪkəbl" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Diplomatik muzokaralarda qat'iy rad etish munosabatlarni buzadi. Shu sababli 'may', 'might', 'would' kabi modellar va 'provided that', 'on condition that' kabi shartli bog'lovchilar ishlatiladi.\n\nFormulalar:\n1. Yumshatilgan rad: That may be difficult; would [muqobil] work?\n2. Shartli qabul: We could [harakat], provided [shart].\n\nO'zbek tilidan farqi: bizda ko'pincha 'mumkin emas' deb keskin aytiladi, ingliz diplomatiyasida esa noaniqlik va shart qo'yish orqali xushmuomalalik saqlanadi.",
+        "examples": [
+          { "en": "We could consider that, provided the timeline is extended.", "uz": "Muddat uzaytirilsa, buni ko'rib chiqishimiz mumkin.", "note": "'Provided' shart kiritish uchun ishlatiladi." },
+          { "en": "That may be difficult for us; would an alternative work?", "uz": "Bu biz uchun qiyin bo'lishi mumkin; muqobil variant to'g'ri kelarmidi?", "note": "'May' va 'would' ohangni yumshatadi." },
+          { "en": "We are willing to accommodate your request if you reciprocate.", "uz": "Agar javoban shunday qilsangiz, talabingizni hisobga olishga tayyormiz.", "note": "'Reciprocate' o'zaro harakatni bildiradi." },
+          { "en": "This deadlock might end if our counterpart breaks the stalemate.", "uz": "Agar qarshi tomonimiz boshi berk holatni buzsa, bu muzokara to'xtashi tugashi mumkin.", "note": "Diplomatik leksika qo'llanilgan." }
+        ],
+        "practice": [
+          { "q": "Choose the most diplomatic way to reject a strict demand:", "options": [ "We reject your proposal completely.", "That may be challenging; would a compromise work?", "You must change your conditions right now." ], "answer": 1 },
+          { "q": "Complete the conditional negotiation sentence: 'We will sign the treaty, ... mutual sovereignty is respected.'", "options": [ "provided that", "unless no", "despite of" ], "answer": 0 },
+          { "q": "Which word means a state where no progress can be made in negotiations?", "options": [ "alliance", "stalemate", "accord" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-08",
@@ -278,7 +376,21 @@
         { "en": "inoffensive", "uz": "hech kimni ranjitmaydigan", "ipa": "ˌɪnəˈfensɪv" },
         { "en": "lighthearted", "uz": "yengil, ko'ngilochar", "ipa": "ˌlaɪtˈhɑːrtɪd" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C2 darajasida hazil va kinoyani tushunish va ishlatish madaniy kontekstni talab qiladi.\nKinoyada (irony) aytilgan so'zning asl ma'nosi butunlay teskari bo'ladi: ohang (tone) va vaziyat hal qiluvchi rol o'ynaydi. Satira jamiyatdagi illatlarni tanqid qilish uchun ishlatiladi.\nO'zbek tilida ham o'xshash kinoya bor, ammo ingliz tilida deadpan (jiddiy qiyofada, mimikasiz) aytish yoki quip (qisqa hozirjavob hazil) qilish madaniy jihatdan o'ziga xosdir.\nFormula:\nIronik gap = So'zma-so'z ma'no + Teskari ohang / Vaziyat kontrast.\nDiqqat qiling: o'quvchilar ko'pincha deadpan uslubini tushunmay, uni chinakam jiddiy deb o'ylab xato qilishadi.",
+        "examples": [
+          { "en": "Well, that went brilliantly.", "uz": "Ha, judayam zo'r ketdi.", "note": "Aslida hamma narsa barbod bo'lgan vaziyatda aytiladi." },
+          { "en": "He delivered the quip with a totally deadpan expression.", "uz": "U hozirjavob hazilni butunlay jiddiy qiyofada aytdi.", "note": "Deadpan - yuzda hech qanday kulgi belgisi yo'qligini bildiradi." },
+          { "en": "His latest novel is a brilliant satire on modern politics.", "uz": "Uning so'nggi romani zamonaviy siyosatga ajoyib satiradir.", "note": "Satire jamiyatdagi nuqsonlarni fosh qiladi." },
+          { "en": "Making puns in a serious meeting is quite absurd.", "uz": "Jiddiy yig'ilishda so'z o'yinlarini qilish juda bema'ni.", "note": "Pun - bir xil eshitiladigan, lekin ma'nosi har xil so'zlar o'yini." }
+        ],
+        "practice": [
+          { "q": "Choose the correct ironical response when it starts pouring rain during a picnic: 'Oh, ... weather we're having!'", "options": [ "terrible", "brilliant", "stormy" ], "answer": 1 },
+          { "q": "Identify the sentence that uses a deadpan delivery style:", "options": [ "He laughed loudly while making a joke.", "She told a hilarious story with a straight, unsmiling face.", "They were smiling and dancing during the banter." ], "answer": 1 },
+          { "q": "What does a 'pun' rely on for its humorous effect?", "options": [ "Words with similar sounds but different meanings", "Aggressive mockery and insults", "Strict adherence to cultural taboos" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C2-09",
@@ -313,7 +425,21 @@
         { "en": "suspense", "uz": "taranglik, kutish hissi", "ipa": "səˈspens" },
         { "en": "evoke", "uz": "his uyg'otmoq", "ipa": "ɪˈvoʊk" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Badiiy uslubda (literary style) ma'no to'g'ridan-to'g'ri emas, balki jonlantirish, ramz va tasvir (imagery) orqali ochib beriladi.\n\nFormulasi: Metafora + Sensory details (sezgi detallari) + Subektiv hikoya qurilishi.\n\nO'zbek tilidan farqi: ingliz tilida badiiy matn quruq bayondan qochib, o'quvchida bevosita his uyg'otish uchun 'evoke' fe'li va aniq detallarni ishlatadi. O'quvchilar ko'pincha ilmiy tildagidek 'the situation was bad' deyishadi, lekin adabiyotda 'the shadows stretched wearily' deyilishi kerak.",
+        "examples": [
+          { "en": "The city held its breath as the protagonist faced the climax.", "uz": "Bosh qahramon eng yuqori nuqtaga duch kelganda shahar nafasini ichiga yutdi.", "note": "Jonlantirish va 'climax' so'zi ishlatildi." },
+          { "en": "Years later, that haunting motif still followed him through the prose.", "uz": "Yillar o'tib ham o'sha ta'qib qiluvchi motiv uni nasr bo'ylab ta'qib qilardi.", "note": "'motif' va 'prose' so'zlari qo'llandi." },
+          { "en": "The omniscient narrator dropped subtle foreshadowing in the prologue.", "uz": "Hamma narsani biluvchi hikoyachi kirish qismida nozik ishoralar qoldirdi.", "note": "'omniscient', 'narrator', 'prologue'." },
+          { "en": "This allegory manages to evoke deep suspense before the denouement.", "uz": "Bu majoziy asar yechimdan oldin chuqur taranglik hissini uyg'otishga erishadi.", "note": "'allegory', 'evoke', 'suspense', 'denouement'." }
+        ],
+        "practice": [
+          { "q": "Choose the correct literary framing for an omniscient narrator.", "options": [ "The narrator knew secrets the protagonist had not yet discovered.", "The narrator knows secrets the protagonist have not yet discovered.", "The narrator knowing secrets the protagonist not discovered." ], "answer": 0 },
+          { "q": "Select the correct sentence using foreshadowing.", "options": [ "This scene foreshadowing the tragedy that will happen later.", "This scene foreshadows the tragedy that will happen later.", "This scene is foreshadow the tragedy that will happen later." ], "answer": 1 },
+          { "q": "What is the English equivalent of 'bosh qahramon' in literary terms?", "options": [ "Antagonist", "Protagonist", "Narrator" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-10",
@@ -348,7 +474,21 @@
         { "en": "liable", "uz": "javobgar bo'lgan", "ipa": "ˈlaɪəbl" },
         { "en": "forfeit", "uz": "huquqdan mahrum bo'lmoq", "ipa": "ˈfɔːrfət" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Huquqiy matnlarda aniqlik va qat'iylik muhim.\n1. 'Shall' so'zi oddiy kelasi zamon emas, balki qat'iy MAJBURIYATni bildiradi (o'zbek tilidagi '-shi shart').\n2. 'May' esa huquq yoki ruxsatni bildiradi ('-shi mumkin').\n3. 'Unless' — istisno bildiradi ('agar ... bo'lmasa').\nO'zbek tilida biz ko'pincha shunchaki fe'l qo'shimchalarini ishlatsak, ingliz huquqiy tilida bu modallar aniq huquqiy oqibatni keltirib chiqaradi va ularni adashtirib bo'lmaydi.",
+        "examples": [
+          { "en": "The supplier shall deliver the goods within 30 days.", "uz": "Yetkazib beruvchi mollarni 30 kun ichida topshirishi shart.", "note": "'shall' bu yerda qat'iy qonuniy majburiyatni anglatadi." },
+          { "en": "The agreement may be terminated unless both parties agree otherwise.", "uz": "Tomonlar boshqacha kelishmasa, shartnoma bekor qilinishi mumkin.", "note": "'unless' - 'agar kelishmasa' degan qat'iy istisno." },
+          { "en": "The defendant shall not be held liable for indirect damages.", "uz": "Javobgar bilvosita zararlar uchun javobgar deb topilmasligi shart.", "note": "'shall not' - taqiqlovchi qat'iy majburiyat." },
+          { "en": "Either party may seek an injunction in case of a breach.", "uz": "Har qanday tomon shartnoma buzilgan taqdirda sud taqiqini talab qilishi mumkin.", "note": "'may' - huquq yoki imkoniyatni beradi." }
+        ],
+        "practice": [
+          { "q": "Choose the correct legal modal: The party ___ pay compensation if the contract is breached.", "options": [ "shall", "may not", "unless" ], "answer": 0 },
+          { "q": "Select the proper restriction: The agreement is void ___ signed by an authorized representative.", "options": [ "unless", "shall", "may" ], "answer": 0 },
+          { "q": "Which legal term means 'shartnomani buzish'?", "options": [ "breach", "liability", "indemnity" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "C2-11",
@@ -383,7 +523,21 @@
         { "en": "talk out of", "uz": "gapirib fikridan qaytarmoq", "ipa": "tɔːk aʊt əv" },
         { "en": "back out of", "uz": "va'dadan qaytmoq", "ipa": "bæk aʊt əv" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C2 darajasida uch bo'lakli (fe'l + ravish + predlog) frazal fe'llarni mukammal bilish muhim.\nFormula: Fe'l + Ravish + Predlog + Obyekt.\nBu fe'llar aslo bo'linmaydi, ya'ni obyekt doimo oxirida keladi.\nO'zbek tilida bu fe'llar ko'pincha bitta fe'l yoki qo'shma fe'l bilan tarjima qilinadi, lekin ingliz tilida ular qat'iy uch qismdan iborat bo'lishi shart. O'quvchilar ko'pincha predlogni tushirib qoldirishadi yoki obyektni o'rtaga qo'yib xato qilishadi.",
+        "examples": [
+          { "en": "I can't put up with the noise any longer.", "uz": "Bu shovqinga endi chiday olmayman.", "note": "Put up with toqatsizlikni bildiradi." },
+          { "en": "They came up with a better solution.", "uz": "Ular yaxshiroq yechim o'ylab topishdi.", "note": "Yangi g'oya yoki reja topish." },
+          { "en": "We need to cut down on sugar consumption.", "uz": "Shakar iste'molini kamaytirishimiz kerak.", "note": "Miqdorni kamaytirish ma'nosida." },
+          { "en": "She is looking forward to the conference.", "uz": "U konferensiyani intiqlik bilan kutmoqda.", "note": "Keyin gerund (ing) kelishi mumkin." }
+        ],
+        "practice": [
+          { "q": "She managed to get _____ cheating on the exam.", "options": [ "away", "away with", "with" ], "answer": 1 },
+          { "q": "We have run _____ coffee, so we need to buy more.", "options": [ "out", "out of", "off of" ], "answer": 1 },
+          { "q": "Which phrase means 'to invent or produce an idea'?", "options": [ "put up with", "come up with", "face up to" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "C2-12",
@@ -418,7 +572,21 @@
         { "en": "overarching", "uz": "hammasini qamrab oluvchi", "ipa": "ˌoʊvərˈɑːrtʃɪŋ" },
         { "en": "succinct", "uz": "qisqa va lo'nda", "ipa": "səkˈsɪŋkt" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "C2 darajasida manbalarni umumlashtirish (synthesis) - bu shunchaki ularni ketma-ket qayta aytish emas, balki ular orasidagi bog'liqlik, ziddiyat yoki uyg'unlikni ko'rsatib, yagona xulosa chiqarishdir.\nFormula: [Manba A kontrast/mos keladi] + [Manba B] + [Umumiy xulosa iborasi (masalan, Taken together / Ultimately)].\nO'zbek tilida biz ko'pincha dalillarni shunchaki sanab o'tamiz, lekin ingliz tilida akademik darajada manbalarni o'zaro taqqoslab, ularning mohiyatini \"distil\" (eng muhimini ajratib olish) va \"synthesise\" qilish talab etiladi. Nuanslarni sezish va o'xshashliklarni \"juxtapose\" qilish orqali kuchli xulosa yasaladi.",
+        "examples": [
+          { "en": "While Karimov emphasises cost, Aliyeva points to long-term risk; both, however, assume stable demand.", "uz": "Karimov xarajatga urg'u bersa, Aliyeva uzoq muddatli xavfni ko'rsatadi; biroq ikkalasi ham talab barqarorligini shart qilib oladi.", "note": "Zaruriy kontrastni ko'rsatish uchun \"while\" va \"however\" ishlatildi." },
+          { "en": "Taken together, the diverse findings synthesise into a comprehensive overview.", "uz": "Umuman olganda, turli xil topilmalar yaxlit umumiy ko'rinishga birlashadi.", "note": "\"Taken together\" bir nechta manbani birlashtirishda asqotadi." },
+          { "en": "When we juxtapose these reports, a glaring contradiction is discerned.", "uz": "Bu hisobotlarni yonma-yon qo'yib qiyoslasak, yaqqol ziddiyat seziladi.", "note": "\"Juxtapose\" manbalarni solishtirish uchun juda mos fe'l." },
+          { "en": "The final chapter attempts to distill the exhaustive data into succinct insights.", "uz": "Oxirgi bob to'liq ma'lumotlarni qisqa va lo'nda tushunchalarga ajratib olishga harakat qiladi.", "note": "\"Distil\" va \"exhaustive\" akademik sintezda muhim." }
+        ],
+        "practice": [
+          { "q": "Choose the correct sentence that properly synthesises two contrasting sources.", "options": [ "While Source A argues X, Source B claims Y; nevertheless, both agree on Z.", "Source A argues X and Source B claims Y and both agree Z.", "While Source A arguing X, Source B claimed Y, both agreed Z." ], "answer": 0 },
+          { "q": "Which phrase is best used to introduce a combined conclusion from multiple sources?", "options": [ "Taking them apart", "Taken together", "Take together" ], "answer": 1 },
+          { "q": "What does the academic word 'synthesise' mean in the context of research?", "options": [ "To copy data word for word without changing anything", "To combine different sources or ideas into a coherent whole", "To destroy unreliable sources completely" ], "answer": 1 }
+        ]
+      }
     }
   ]
 }

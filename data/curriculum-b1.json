@@ -33,7 +33,21 @@
         { "en": "brave", "uz": "jasur", "ipa": "breɪv" },
         { "en": "driver", "uz": "haydovchi", "ipa": "ˈdraɪvər" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tmishda bir ish uzoq davom etayotganda, boshqa bir qisqa ish sodir bo'lganini aytish uchun Past Continuous va Past Simple zamonlarini birga ishlatamiz.\n\nFormula:\nUzoq ish: was/were + fe'l + -ing (Past Continuous)\nQisqa ish: V2 / fe'lning o'tgan zamon shakli (Past Simple)\n\nBog'lovchilar:\n• WHEN — odatda qisqa ish (Past Simple) oldidan keladi.\n• WHILE — odatda uzoq ish (Past Continuous) oldidan keladi.\n\nO'zbek tilidan farqi: O'zbek tilida 'uxlayotganda' deb birgina so'z ishlatilsa, ingliz tilida 'while she was sleeping' deb to'liq zamon tuzilishi talab qilinadi.",
+        "examples": [
+          { "en": "I was walking home when the accident happened.", "uz": "Uyga ketayotgandim, shunda baxtsiz hodisa yuz berdi.", "note": "Uzoq harakat davom etdi, qisqa ish uni to'xtatdi." },
+          { "en": "While she was sleeping, the phone rang.", "uz": "U uxlayotganda telefon jiringladi.", "note": "While so'zidan keyin har doim -ing keladi." },
+          { "en": "The driver was shouting while the passengers were panicking.", "uz": "Yo'lovchilar vahima qilayotgan paytda haydovchi baqirayotgandi.", "note": "Ikki uzoq ish bir vaqtda davom etmoqda." },
+          { "en": "A brave witness called an ambulance when the crash occurred.", "uz": "To'qnashuv sodir bo'lganda, jasur guvoh tez yordam chaqirdi.", "note": "When so'zidan keyin Past Simple ishlatildi." }
+        ],
+        "practice": [
+          { "q": "While I ___ home, I saw a terrible accident.", "options": [ "was walking", "walked", "is walking" ], "answer": 0 },
+          { "q": "The passenger was sleeping when the bus ___.", "options": [ "crash", "crashing", "crashed" ], "answer": 2 },
+          { "q": "A doctor came quickly to ___ the injured people.", "options": [ "rescue", "whisper", "shout" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B1-02",
@@ -68,7 +82,21 @@
         { "en": "strict", "uz": "qattiqqo'l", "ipa": "strɪkt" },
         { "en": "spoil", "uz": "erkalatib buzmoq", "ipa": "spɔɪl" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tmishdagi takroriy odatlar va holatlar uchun 'used to' yoki 'would' ishlatamiz.\n\n1. Formula: used to + fe'l.\nBarcha shaxslar uchun bir xil. O'tmishda doim bajarilgan, lekin hozirda tugatilgan ish-harakatlar yoki holatlar uchun (masalan: yashash, yoqtirish) qo'llaniladi.\n\n2. Formula: would + fe'l.\nFaqat o'tmishdagi TAKRORLANUVCHI harakatlar uchun ishlatiladi. HOLAT FE'LLARIGA (masalan: live, like, have) 'would' ISHLATILMAYDI! O'zbek tilida bu asosan '-ardi' qo'shimchasi orqali ifodalanadi.\n\nO'zbek tilidan farqi: Biz o'tmishdagi odatni oddiy o'tgan zamon (Past Simple) bilan ham aytishimiz mumkin, lekin 'used to' uning odat bo'lganini aniq ko'rsatadi.",
+        "examples": [
+          { "en": "I used to live in the countryside when I was a teenager.", "uz": "Men o'smir paytimda qishloqda yashardim.", "note": "'live' holat fe'li bo'lgani uchun 'used to' shart." },
+          { "en": "Every summer my grandfather would take me to the playground.", "uz": "Har yoz bobom meni o'yin maydonchasiga olib borardi.", "note": "Takroriy harakat uchun 'would' ishlatildi." },
+          { "en": "She used to play with her doll in the yard.", "uz": "U hovlida qo'g'irchog'i bilan o'ynar edi.", "note": "O'tmishdagi odatni bildiradi." },
+          { "en": "We would eat many sweets after school.", "uz": "Biz maktabdan keyin ko'p shirinliklar yerdik.", "note": "Takroriy odat uchun 'would'." }
+        ],
+        "practice": [
+          { "q": "When I was a child, I _____ live in a small house.", "options": [ "use to", "used to", "would" ], "answer": 1 },
+          { "q": "My grandfather _____ have a red car, but now he has a modern scooter.", "options": [ "would", "used to", "use to" ], "answer": 1 },
+          { "q": "My younger _____ always shared his toys with me.", "options": [ "cousin", "cartoon", "sweet" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B1-03",
@@ -103,7 +131,21 @@
         { "en": "previously", "uz": "ilgari", "ipa": "ˈpriːviəsli" },
         { "en": "earlier", "uz": "oldinroq", "ipa": "ˈɜːrliər" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tgan zamonda ikkita ish bo'lganda, ulardan OLDIN sodir bo'lganini aytish uchun Past Perfect ishlatiladi.\nFormula: ega + had + fe'lning III shakli (past participle).\nO'zbek tilida bu '...gan edi' deb tarjima qilinadi.\nDiqqat qiling: o'zbek tilida bitta zamon bilan ham tushunilaveradi, lekin ingliz tilida qaysi ish oldin bo'lganini ko'rsatish uchun 'had' shart.\n'Before' va 'already' so'zlari ko'p qo'llanadi.",
+        "examples": [
+          { "en": "When I arrived, the train had already left.", "uz": "Men yetib borganimda, poyezd allaqachon ketgan edi.", "note": "Poyezd ketishi siz borishdan oldin sodir bo'lgan." },
+          { "en": "She realised she had forgotten her keys.", "uz": "U kalitlarini unutganini angladi.", "note": "Unutish harakati anglashdan oldin yuz bergan." },
+          { "en": "He returned home after the rain had stopped.", "uz": "U yomg'ir to'xtagandan keyin uyga qaytdi.", "note": "Yomg'ir to'xtashi birinchi sodir bo'lgan." },
+          { "en": "They had warned us previously about the traffic.", "uz": "Ular bizni oldinroq tirbandlik haqida ogohlantirishgan edi.", "note": "Ogohlantirish o'tmishdagi boshqa ishdan oldin bo'lgan." }
+        ],
+        "practice": [
+          { "q": "By the time we got to the cinema, the film ___ started.", "options": [ "had", "have", "has" ], "answer": 0 },
+          { "q": "She was sad because her favourite ring ___.", "options": [ "disappear", "had disappeared", "disappears" ], "answer": 1 },
+          { "q": "What does 'realise' mean in Uzbek?", "options": [ "tanimoq", "anglab yetmoq", "shikoyat qilmoq" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B1-04",
@@ -138,7 +180,21 @@
         { "en": "improvement", "uz": "yaxshilanish", "ipa": "ɪmˈpruːvmənt" },
         { "en": "determination", "uz": "qat'iyat", "ipa": "dɪˌtɜːrmɪˈneɪʃn" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tmishda boshlanib, hozir ham davom etayotgan va ayniqsa qancha vaqtdan beri davom etayotganini ko'rsatish uchun Present Perfect Continuous ishlatamiz.\n\nFormula: I/We/You/They + have been + fe'l(-ing)\nHe/She/It + has been + fe'l(-ing)\n\nZamon so'zlari:\n• for — davomiylik uchun (masalan: for two years — ikki yildan beri)\n• since — ish boshlangan aniq vaqt uchun (masalan: since morning — ertalabdan beri)\n\nO'zbek tilida bu '...dan beri ...yapman' deb tarjima qilinadi. E'tibor bering, o'zbek tilida oddiy hozirgi zamon ishlatilsa ham, ingliz tilida jarayon hali davom etayotgani uchun -ing qo'shimchasi shart.",
+        "examples": [
+          { "en": "I have been learning English for two years.", "uz": "Ikki yildan beri ingliz tilini o'rganyapman.", "note": "for + davomiylik (two years)" },
+          { "en": "She has been working since morning.", "uz": "U ertalabdan beri ishlayapti.", "note": "since + boshlangan nuqta (morning)" },
+          { "en": "We have been trying to manage our time better.", "uz": "Biz vaqtimizni yaxshiroq boshqarishga harakat qilyapmiz.", "note": "Hali ham davom etayotgan harakat" },
+          { "en": "He has been practising guitar constantly.", "uz": "U doimiy ravishda gitara mashq qilyapti.", "note": "Konstant jarayon uchun" }
+        ],
+        "practice": [
+          { "q": "She ___ studying for her exams since 8 o'clock.", "options": [ "has been", "have been", "is been" ], "answer": 0 },
+          { "q": "I have ___ working on this project for three hours.", "options": [ "be", "been", "being" ], "answer": 1 },
+          { "q": "We need more ___ to accomplish this difficult task.", "options": [ "exhausted", "patient", "patience" ], "answer": 2 }
+        ]
+      }
     },
     {
       "id": "B1-05",
@@ -173,7 +229,21 @@
         { "en": "library", "uz": "kutubxona", "ipa": "ˈlaɪbreri" },
         { "en": "university", "uz": "universitet", "ipa": "ˌjuːnɪˈvɜːrsəti" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Odam yoki narsani aniqlab tasvirlash uchun relative clauses (aniqlovchi ergash gaplar) ishlatiladi.\n\nFormulalar:\n• Odam uchun: who / that (The person who/that helps me...)\n• Narsa/joy uchun: which / that (The book which/that I read...)\n• Joy uchun: where (The city where I live...)\n• Egalik uchun: whose (The man whose car was stolen...)\n\nO'zbek tilidan farqi: O'zbek tilida aniqlovchi fe'l-sifat shaklida (-gan) egadan oldin keladi ('kitob o'qigan bola'). Ingliz tilida esa bu so'zlar gapning oxiriga, asosiy so'zdan keyin qo'shiladi ('the boy who read a book'). Buni adashtirmaslik muhim!",
+        "examples": [
+          { "en": "The man who lives next door is a doctor.", "uz": "Yonimizda yashaydigan kishi shifokor.", "note": "Odam uchun 'who' ishlatildi." },
+          { "en": "This is the school where I studied.", "uz": "Bu men o'qigan maktab.", "note": "Joyni bildirish uchun 'where'." },
+          { "en": "I met an engineer whose work is amazing.", "uz": "Men ishi ajoyib bo'lgan muhandis bilan uchrashdim.", "note": "Egalik ma'nosi uchun 'whose'." },
+          { "en": "She works in a building which is very old.", "uz": "U juda qadimiy bo'lgan binoda ishlaydi.", "note": "Narsa/joy uchun 'which'." }
+        ],
+        "practice": [
+          { "q": "The scientist ___ discovered the new medicine won a prize.", "options": [ "which", "who", "where" ], "answer": 1 },
+          { "q": "This is the library ___ I read books every weekend.", "options": [ "who", "whose", "where" ], "answer": 2 },
+          { "q": "A person who is new in your neighbourhood and you do not know is a ___.", "options": [ "stranger", "colleague", "scientist" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B1-06",
@@ -208,7 +278,21 @@
         { "en": "instead", "uz": "o'rniga", "ipa": "ɪnˈsted" },
         { "en": "realistic", "uz": "real, hayotiy", "ipa": "ˌriːəˈlɪstɪk" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Xayoliy vaziyat va orzular haqida gapirish uchun Second Conditional ishlatiladi.\nFormula: If + Past Simple, would + fe'l (asosiy shakli).\nO'zbek tilida '...gan bo'lardim' yoki '...r edim' deb tarjima qilinadi. \nDiqqat qiling: o'zbek tilidan farqli ravishda, ingliz tilida 'if' qismida ham o'tgan zamon (Past Simple) ishlatiladi, garchi gap hozirgi yoki kelasi zamon haqida bo'lsa ham. Shuningdek, barcha shaxslar (I, he, she) uchun 'was' emas, ko'pincha 'were' ishlatiladi (masalan: If I were you...).",
+        "examples": [
+          { "en": "If I had more time, I would learn two languages.", "uz": "Vaqtim ko'proq bo'lganda, ikkita til o'rganardim.", "note": "Had - o'tgan zamon fe'li." },
+          { "en": "If I were you, I would accept the opportunity.", "uz": "Sizning o'rningizda bo'lsam, imkoniyatni qabul qilardim.", "note": "If dan keyin was emas, were ishlatiladi." },
+          { "en": "If I had great wealth, I would travel everywhere.", "uz": "Katta boyligim bo'lganda, hamma yoqqa sayohat qilgan bo'lardim.", "note": "Would dan keyin fe'l o'zgarishsiz keladi." },
+          { "en": "If I had enough courage, I would not hesitate.", "uz": "Yetarli jasoratim bo'lganda, ikkilanmagan bo'lardim.", "note": "Inkor uchun would not (wouldn't) ishlatiladi." }
+        ],
+        "practice": [
+          { "q": "If I _____ rich, I would buy a big house.", "options": [ "am", "were", "will be" ], "answer": 1 },
+          { "q": "What would you do if you _____ this opportunity?", "options": [ "get", "got", "will get" ], "answer": 1 },
+          { "q": "Choose the correct translation for: 'Agar imkoniyatim bo'lsa, buni ko'rib chiqardim.'", "options": [ "If I have a chance, I will consider this.", "If I had a chance, I would consider this.", "If I had a chance, I consider this." ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B1-07",
@@ -243,7 +327,21 @@
         { "en": "public", "uz": "ommaviy", "ipa": "ˈpʌblɪk" },
         { "en": "apparently", "uz": "ko'rinishidan", "ipa": "əˈpærəntli" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Boshqaning gapini yetkazishda (Reported Speech) zamonlar bir qadam o'tmishga suriladi.\n\nFormulasi: Subject + said/told (that) + orqaga surilgan zamon.\nMisollar: Present Simple (I work) -> Past Simple (He worked) bo'ladi. Present Continuous (is working) esa Past Continuous (was working) ga o'zgaradi. Modal fe'llardan will -> would, can -> could bo'ladi.\n\nDiqqat qiling: 'Say' dan keyin to'g'ridan-to'g'ri shaxs kelmaydi (He said me - xato), 'tell' dan keyin esa shaxs kelishi shart (He told me - to'g'ri). O'zbek tilida biz zamonni o'zgartirmaymiz, ingliz tilida esa bu qoida shart.",
+        "examples": [
+          { "en": "He announced that he was ready for the speech.", "uz": "U nutqqa tayyor ekanligini e'lon qildi.", "note": "is -> was bo'lib bir qadam orqaga surildi." },
+          { "en": "She told me that she would suggest a new plan.", "uz": "U menga yangi reja taklif qilishini aytdi.", "note": "will -> would bo'ldi va tell dan keyin me keldi." },
+          { "en": "They claimed that it was a secret truth.", "uz": "Ular bu sirli haqiqat ekanligini da'vo qilishdi.", "note": "is -> was ga o'zgardi." },
+          { "en": "He said he could not share private information.", "uz": "U shaxsiy ma'lumotni ulasha olmasligini aytdi.", "note": "can -> could bo'lib o'zgardi." }
+        ],
+        "practice": [
+          { "q": "She ... me that she was honest.", "options": [ "said", "told", "say" ], "answer": 1 },
+          { "q": "He said, \"I will call.\" -> He said he ... call.", "options": [ "will", "would", "can" ], "answer": 1 },
+          { "q": "We need to ... a new idea during the conversation.", "options": [ "suggest", "lie", "rumour" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B1-08",
@@ -278,7 +376,21 @@
         { "en": "equipment", "uz": "jihoz", "ipa": "ɪˈkwɪpmənt" },
         { "en": "technology", "uz": "texnologiya", "ipa": "tekˈnɑːlədʒi" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ishni kim bajargani muhim bo'lmaganda yoki noma'lum bo'lganda majhul nisbat (passive) ishlatiladi.\nO'tgan zamon uchun: was/were + fe'lning 3-shakli (Past Participle).\nKelasi zamon uchun: will be + fe'lning 3-shakli.\nO'zbek tilida bu '-il', '-in' qo'shimchalari orqali yasaladi (masalan: qurildi).\nDiqqat: Ingliz tilida egadan keyin to'g'ridan-to'g'ri fe'l kelmaydi, albatta yordamchi fe'l (was/were yoki will be) va asosiy fe'lning 3-shakli shart. O'quvchilar ko'pincha was dan keyin oddiy fe'l ishlatib adashishadi.",
+        "examples": [
+          { "en": "The bridge was built in 1990.", "uz": "Ko'prik 1990-yilda qurilgan.", "note": "O'tgan zamon uchun was + built ishlatildi." },
+          { "en": "The results will be published tomorrow.", "uz": "Natijalar ertaga e'lon qilinadi.", "note": "Kelasi zamon uchun will be + published." },
+          { "en": "Old equipment was replaced last week.", "uz": "Eski jihozlar o'tgan hafta almashtirildi.", "note": "equipment sanalmaydigan ot — shuning uchun was." },
+          { "en": "New technology will be installed soon.", "uz": "Yangi texnologiya tez orada o'rnatiladi.", "note": "Kelasi zamon majhul nisbati." }
+        ],
+        "practice": [
+          { "q": "The old factory _____ destroyed by the storm last year.", "options": [ "is", "was", "will be" ], "answer": 1 },
+          { "q": "New houses _____ constructed in our town next year.", "options": [ "will be", "were", "was" ], "answer": 0 },
+          { "q": "Solar energy is used to protect the _____.", "options": [ "pollution", "environment", "rubbish" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B1-09",
@@ -313,7 +425,21 @@
         { "en": "definitely", "uz": "aniq-tiniq", "ipa": "ˈdefɪnətli" },
         { "en": "unclear", "uz": "noaniq", "ipa": "ʌnˈklɪr" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Biz dalillarga tayanib xulosa chiqarish uchun modal fe'llardan foydalanamiz.\nFormula: Egachi + must be / might be / can't be + sifat/ot/fe'l.\n1. Must be — dalilga asoslanib, biror narsa 100% rost bo'lishi kerakligiga amin bo'lganimizda ishlatiladi.\n2. Might be — ehtimol bor, lekin aniq bilmaymiz.\n3. Can't be — dalillarga ko'ra, bu imkonsiz yoki mantiqsiz ekanini bildiradi (mumkin emas).\nDiqqat! O'zbek tilida 'bo'lishi kerak' deganda biz ko'pincha shartni tushunamiz, lekin bu yerda gap isbotga tayanib taxmin qilish haqida ketmoqda. 'Must not' taqiqni bildiradi, shuning uchun salbiy taxmin uchun faqat 'can't be' ishlatiladi.",
+        "examples": [
+          { "en": "He must be at home, his car is here.", "uz": "U uyda bo'lsa kerak, mashinasi shu yerda.", "note": "Mashina turgani uchun aniq ishonch bor." },
+          { "en": "This can't be the right answer, it is completely illogical.", "uz": "Bu to'g'ri javob bo'lishi mumkin emas, u butunlay mantiqsiz.", "note": "Mantiqsizligi uchun uning to'g'riligi rad etilyapti." },
+          { "en": "She might be tired after such a long journey.", "uz": "U shuncha uzun yo'ldan keyin charchagan bo'lishi ehtimol.", "note": "Aniq bilmaymiz, shunchaki ehtimol." },
+          { "en": "This mysterious clue indicates a hidden reason.", "uz": "Bu sirli ishora yashirin sababdan dalolat qiladi.", "note": "Dalilga tayanib chiqarilgan xulosa." }
+        ],
+        "practice": [
+          { "q": "The lights are on and I can hear music. They ___ at home.", "options": [ "must be", "can't be", "might be" ], "answer": 0 },
+          { "q": "His story ___ true. He has no proof at all.", "options": [ "must be", "can't be", "might be" ], "answer": 1 },
+          { "q": "Based on the evidence, what do we call a final decision we make?", "options": [ "conclusion", "assumption", "suspicion" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B1-10",
@@ -348,7 +474,21 @@
         { "en": "poetry", "uz": "she'riyat", "ipa": "ˈpoʊətri" },
         { "en": "exhibition", "uz": "ko'rgazma", "ipa": "ˌeksɪˈbɪʃn" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Ingliz tilida bir fe'ldan keyin ikkinchi fe'l kelganda, ikkinchisi ikki xil shaklda kelishi mumkin: gerundiy (-ing) yoki infinitiv (to + fe'l).\n\n1. enjoy, mind, quit, delay kabi so'zlardan keyin doim -ing qo'shimchasi qo'shiladi. Masalan: I enjoy painting. (Men rassomchilikni yoqtiraman)\n2. decide, want, hope, intend, afford kabi so'zlardan keyin esa to + fe'l ishlatiladi. Masalan: She decided to buy a guitar. (U gitara sotib olishga qaror qildi)\n\nO'zbek tilida '...shni' yoki '...vchi' deb tarjima qilinsada, ingliz tilida qaysi fe'ldan keyin nima kelishini yodlab qolish kerak.",
+        "examples": [
+          { "en": "I really enjoy painting in my free time.", "uz": "Bo'sh vaqtimda rassomchilik qilishdan rohatlanaman.", "note": "enjoy fe'lidan keyin doim -ing keladi." },
+          { "en": "She decided to study photography next month.", "uz": "U kelasi oydan fotografiya o'qishga qaror qildi.", "note": "decide fe'lidan keyin to + fe'l ishlatiladi." },
+          { "en": "He wants to learn how to play the piano.", "uz": "U pianino chalishni o'rganishni xohlaydi.", "note": "want fe'lidan keyin to + fe'l keladi." },
+          { "en": "They finally quit smoking and saved money.", "uz": "Ular oxiri chekishni tashlashdi va pul tejashdi.", "note": "quit fe'lidan keyin -ing shakli ishlatiladi." }
+        ],
+        "practice": [
+          { "q": "Do you enjoy _______ chess with your friends?", "options": [ "play", "playing", "to play" ], "answer": 1 },
+          { "q": "We intend _______ an exhibition of modern art this weekend.", "options": [ "visit", "visiting", "to visit" ], "answer": 2 },
+          { "q": "My new hobby is _______, especially taking pictures of nature.", "options": [ "photography", "concert", "novel" ], "answer": 0 }
+        ]
+      }
     },
     {
       "id": "B1-11",
@@ -383,7 +523,21 @@
         { "en": "miserable", "uz": "baxtsiz, ma'yus", "ipa": "ˈmɪzrəbl" },
         { "en": "content", "uz": "ko'ngli to'q", "ipa": "kənˈtent" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "O'tmishdagi afsus va bo'lmagan voqealar haqida gapirish uchun Third Conditional (Uchinchi shart gap) ishlatiladi.\nFormula: If + had + fe'lning 3-shakli (V3), would have + fe'lning 3-shakli (V3).\nBu qolip o'tmishda sodir bo'lgan voqeani o'zgartirib bo'lmasligini va uning natijasi boshqacha bo'lmaganini bildiradi.\nShuningdek, 'I wish + had + V3' o'tmishdagi afsuslar uchun ishlatiladi.\nO'zbek tilida bu '...ganimda, ...gan bo'lar edim' deb tarjima qilinadi. O'zbek tilidan farqli ravishda, ingliz tilida 'if' qismida 'would' ishlatilmaydi, faqat 'had' keladi. O'quvchilar ko'pincha 'If I would have' deb xato qilishadi.",
+        "examples": [
+          { "en": "If I had studied harder, I would have passed the exam.", "uz": "Agar qattiroq o'qiganimda, imtihondan o'tgan bo'lar edim.", "note": "O'tmishdagi imtihondan o'ta olmaganlikka afsus." },
+          { "en": "I wish I had made a better decision.", "uz": "Qaniydi yaxshiroq qaror qabul qilganimda.", "note": "O'tmishdagi ish uchun afsus bildirish." },
+          { "en": "If it had not been for the bad circumstance, we would have won.", "uz": "Agar yomon sharoit bo'lmaganida, biz yutgan bo'lar edik.", "note": "Salbiy shartni bildiradi." },
+          { "en": "She would have been happy if she had taken that option.", "uz": "Agar u o'sha variantni tanlaganida, baxtli bo'lar edi.", "note": "Natija oldinda, shart ortda kelishi mumkin." }
+        ],
+        "practice": [
+          { "q": "If she _____ earlier, she would have caught the train.", "options": [ "had left", "left", "would leave" ], "answer": 0 },
+          { "q": "I wish I _____ the responsibility for that mistake.", "options": [ "take", "had taken", "would take" ], "answer": 1 },
+          { "q": "What is the best translation for 'afsuski'?", "options": [ "luckily", "unfortunately", "grateful" ], "answer": 1 }
+        ]
+      }
     },
     {
       "id": "B1-12",
@@ -418,7 +572,21 @@
         { "en": "disadvantage", "uz": "kamchilik", "ipa": "ˌdɪsədˈvæntɪdʒ" },
         { "en": "trend", "uz": "yo'nalish, tendensiya", "ipa": "trend" }
       ],
-      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"],
+      "lesson": {
+        "rule": "Kelajakni ifodalashda 3 xil asosiy shakl bor va ularni aralashtirmaslik muhim.\n\n1. PRESENT CONTINUOUS (am/is/are + V-ing): Aniq vaqt va joyi kelishilgan rejadagi ishlar uchun ishlatiladi (kalendar yoki shartnoma qilingan).\n2. BE GOING TO: Oldindan o'ylangan niyat, reja yoki yaqin kelajakdagi aniq alomatli bashoratlar uchun ishlatiladi.\n3. WILL: Shu soniyada qabul qilingan qarorlar, shaxsiy fikr va ilmiy bo'lmagan bashoratlar (I think, I hope) uchun ishlatiladi.\n\nO'zbek tilida hammasi ko'pincha '-aman/-ar' deb tarjima qilingani uchun o'quvchilar ko'p adashadi. Farqi: agar kalendarga yozib qo'ygan bo'lsang -ing, oldindan o'ylagan bo'lsang going to, hozirgina o'ylab gapirgan bo'lsang will ishlat.",
+        "examples": [
+          { "en": "I am meeting the client at five.", "uz": "Soat beshda mijoz bilan uchrashaman.", "note": "Kelishilgan reja, shuning uchun Present Continuous." },
+          { "en": "We are going to sign the contract tomorrow.", "uz": "Ertaga shartnoma imzolaymiz.", "note": "Oldindan rejalashtirilgan niyat." },
+          { "en": "I think our profit will increase this year.", "uz": "Menimcha, bu yil foydamiz oshadi.", "note": "Shaxsiy taxmin va bashorat, 'will' ishlatiladi." },
+          { "en": "Look at the budget, we are losing money!", "uz": "Byudjetga qarang, biz pul yo'qotyapmiz!", "note": "Budget va profit/loss so'zlari moliya uchun muhim." }
+        ],
+        "practice": [
+          { "q": "I ... help you with the presentation if you are busy.", "options": [ "am going to", "will", "meeting" ], "answer": 1 },
+          { "q": "Look at those dark clouds! It ... rain soon.", "options": [ "is going to", "will", "is raining" ], "answer": 0 },
+          { "q": "What is the final date by which work must be done called?", "options": [ "deadline", "agenda", "profit" ], "answer": 0 }
+        ]
+      }
     }
   ]
 }
