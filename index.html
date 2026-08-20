@@ -2937,6 +2937,26 @@ function applyResult(score) {
     return { ok:true, passed:false, ratio, type, remedial:REMEDIAL_TASKS };
   }
 
+  // Unit imtihonidan yiqilish — imtihon HECH QACHON o'tkazib yuborilmaydi.
+  // Aks holda oddiy vazifa yo'lidan ketib, 5 urinishdan keyin canSkip ochilardi va
+  // skipTask() → advance() unitni passedUnits ga yozib qo'yardi: 0/8 olgan o'quvchi
+  // ham "unitni o'zlashtirdim" holatiga tushardi. Buning o'rniga unit ichiga qaytaramiz.
+  if (type === 'unit_exam') {
+    p.current.status = 'failed';
+    p.current.attempts++;
+    if (p.current.attempts >= MAX_ATTEMPTS_BEFORE_RELIEF) p.current.relief = true;
+    if (p.current.attempts >= MAX_ATTEMPTS_BEFORE_SKIP) {
+      markWeakUnit();
+      p.current = null;
+      p.taskIndex = Math.max(0, TASKS_PER_UNIT - REMEDIAL_TASKS);
+      saveUser();
+      return { ok:true, passed:false, ratio, type, sentBack:REMEDIAL_TASKS };
+    }
+    saveUser();
+    return { ok:true, passed:false, ratio, type, attempts:p.current.attempts,
+             relief:p.current.relief, canSkip:false };
+  }
+
   p.current.status = 'failed';
   p.current.attempts++;
   if (p.current.attempts >= MAX_ATTEMPTS_BEFORE_RELIEF) p.current.relief = true;
@@ -2947,16 +2967,30 @@ function applyResult(score) {
            relief:p.current.relief, canSkip:!!p.current.canSkip };
 }
 
+// Joriy unitni "o'zlashtirilmagan" deb belgilaydi — imtihonda albatta qaytariladi
+// (programContext() uni promptga qo'shadi). Unit imtihoni o'tgach advance() tozalaydi.
+function markWeakUnit() {
+  const p = user.program;
+  const u = getUnit();
+  if (!p || !u) return null;
+  if (!Array.isArray(p.weakUnits)) p.weakUnits = [];
+  if (!p.weakUnits.includes(u.id)) p.weakUnits.push(u.id);
+  return u.id;
+}
+
 // Chiqish yo'li: vazifa o'tkazib yuboriladi, lekin XP berilmaydi va unit
 // "o'zlashtirilmagan" deb belgilanadi — unit imtihonida qaytadan so'raladi.
 function skipTask() {
   const p = user.program;
   if (!p || !p.current) return { ok:false, reason:'no_task' };
+  // Imtihonlar o'tkazib yuborilmaydi — ular darajaning yagona o'lchovi.
+  // canSkip ular uchun qo'yilmaydi, lekin eski saqlangan holatda qolgan bo'lishi mumkin.
+  if (p.current.type === 'unit_exam' || p.current.type === 'level_exam')
+    return { ok:false, reason:'exam_not_skippable' };
   if (!p.current.canSkip) return { ok:false, reason:'not_allowed' };
 
   const u = getUnit();
-  if (u && !Array.isArray(p.weakUnits)) p.weakUnits = [];
-  if (u && !p.weakUnits.includes(u.id)) p.weakUnits.push(u.id);
+  markWeakUnit();
 
   const type = p.current.type;
   p.current = null;
@@ -2984,6 +3018,9 @@ function advance() {
   // Unit imtihoni o'tdi
   const u = units[p.unitIndex];
   if (u && !p.passedUnits.includes(u.id)) p.passedUnits.push(u.id);
+  // Imtihondan o'tgan unit endi zaif emas — aks holda id ro'yxatda abadiy qolib,
+  // keyingi imtihonlar promptiga allaqachon o'zlashtirilgan mavzu tiqilardi.
+  if (u && Array.isArray(p.weakUnits)) p.weakUnits = p.weakUnits.filter(id => id !== u.id);
   p.taskIndex = 0;
   p.unitIndex++;
   if (p.unitIndex >= units.length) {
@@ -3268,6 +3305,19 @@ function parseResult(text) {
   const correct = parseInt(m[1], 10), total = parseInt(m[2], 10);
   if (!total || correct > total) return null;
   return { correct, total };
+}
+
+// AI ba'zan yakuniy ballni o'z kartalari bilan ZID yozadi: "📊 NATIJA: 5/5" deb,
+// pastda 2 ta "❌ Xato" kartasi beradi. Bunday holatda QAT'IYROQ variantni olamiz —
+// baho inflyatsiyasi butun dastur kalibratsiyasini (calibrate, PASS_THRESHOLD,
+// daraja imtihoni) buzadi, teskarisi esa faqat bitta vazifani qayta yozdiradi.
+// Kartalar formatini model buzsa hisob 0 chiqadi va ball tegilmay qoladi.
+function reconcileScore(score, text) {
+  if (!score) return score;
+  const cards = (String(text || '').match(/❌\s*\**\s*Xato/gi) || []).length;
+  if (!cards || cards > score.total) return score;
+  const implied = score.total - cards;
+  return implied < score.correct ? { correct: implied, total: score.total } : score;
 }
 
 function parseBand(text) {
@@ -3715,7 +3765,7 @@ async function submitTask(answer, audio) {
     return { ok:false, reason:'no_audio', text };
   }
 
-  const score = parseResult(text);
+  const score = reconcileScore(parseResult(text), text);
   if (!score) {
     // Marker yo'q (javob kesilgan yoki AI formatni buzgan) — urinish sanalmaydi, XP berilmaydi.
     return { ok:false, reason:'no_marker', text };
@@ -4539,6 +4589,12 @@ async function finishSubmit(r) {
     toast(`✅ ${r.score.correct}/${r.score.total} — vazifa qabul qilindi! +${XP_PER_TASK} XP`, 'success');
     const moved = calibrate();
     if (moved) showCalibrationModal(moved);
+  } else if (r.sentBack) {
+    // Unit imtihoni o'tkazib yuborilmaydi — o'quvchi unit ichiga qaytariladi.
+    programFeedback = r.text;
+    programFeedbackKind = 'fail';
+    toast(`${r.score.correct}/${r.score.total} — imtihon topshirilmadi. Oxirgi ${r.sentBack} vazifa qayta beriladi.`, 'error');
+    calibrate();
   } else {
     toast(`${r.score.correct}/${r.score.total} — hali yetarli emas`, 'error');
     calibrate();
@@ -5190,6 +5246,54 @@ function renderProgress() {
 // ─── 13. VIEW: VOCABULARY ────────────────────────────────────────
 // Spaced repetition: mastery darajasiga qarab keyingi takrorlash oralig'i (kun)
 const SRS_DAYS = [1, 1, 2, 4, 7, 14];
+
+// ── Takrorlashda javobni solishtirish ────────────────────────────
+// Sof funksiyalar — test-program.mjs to'g'ridan-to'g'ri sinaydi.
+// Eski qoida (`cor.includes(ans)` ikki harfdan boshlab) yolg'on "to'g'ri" berardi:
+// "aka, uka" tarjimasiga "ka" deb yozilsa ham mastery ko'tarilib, so'z 14 kunga
+// ketardi. Ya'ni SRS jimgina buzilardi.
+function normAnswer(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/[‘’ʻʼ`´]/g, "'")   // o'/g' apostroflarining barcha shakllari
+    .replace(/[^\p{L}\p{N}'\- ]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Tarjima ko'p variantli bo'lishi mumkin ("aka, uka"), qavs ichi esa izoh —
+// majburiy emas ("-man (I bilan ishlatiladi)" → "-man" ham to'g'ri).
+function answerAlternatives(translation) {
+  const raw = String(translation || '');
+  const alts = raw.replace(/\([^)]*\)/g, ' ').split(/[,;/]|\byoki\b/);
+  alts.push(raw.replace(/[()]/g, ' '));   // to'liq matnni ham qabul qilamiz
+  return [...new Set(alts.map(normAnswer).filter(Boolean))];
+}
+
+function levDist(a, b) {
+  if (a === b) return 0;
+  const m = a.length, n = b.length;
+  if (!m || !n) return m || n;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let j = 1; j <= n; j++) {
+      cur[j] = Math.min(prev[j] + 1, cur[j-1] + 1, prev[j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[n];
+}
+
+// Bitta harflik imlo xatosi faqat UZUN so'zlarda kechiriladi: qisqa so'zlarda
+// bitta harf butunlay boshqa ma'no beradi ("ona" / "opa", "kul" / "gul").
+function checkReviewAnswer(input, translation) {
+  const a = normAnswer(input);
+  if (!a) return false;
+  return answerAlternatives(translation)
+    .some(t => a === t || (t.length >= 5 && a.length >= 4 && levDist(a, t) <= 1));
+}
+
 function dueWords(list) {
   const now = Date.now();
   return list.filter(v => !v.nextReview || new Date(v.nextReview).getTime() <= now);
@@ -5304,16 +5408,13 @@ function startReview(vocab) {
     inp.focus();
 
     const check = () => {
-      const ans = inp.value.trim().toLowerCase();
-      const cor = item.translation.toLowerCase();
-      const firstToken = cor.split(' ')[0];
-      const ok = ans === cor
-        || (ans.length >= 2 && cor.includes(ans))
-        || (firstToken.length >= 3 && ans.includes(firstToken));
+      const ok = checkReviewAnswer(inp.value, item.translation);
 
       const vItem = user.vocabulary.find(v=>v.word===item.word);
       if (vItem) {
-        vItem.mastery = ok ? Math.min(5,vItem.mastery+1) : Math.max(0,vItem.mastery-1);
+        // Xato bo'lsa mastery NOLGA tushadi (SRS'dagi "lapse"): bitta pog'ona
+        // tushirish unutilgan so'zni 2-4 kunga uzoqlashtirardi, ertaga emas.
+        vItem.mastery = ok ? Math.min(5,vItem.mastery+1) : 0;
         // Spaced repetition: keyingi takrorlash sanasi mastery'ga bog'liq
         vItem.nextReview = new Date(Date.now() + SRS_DAYS[vItem.mastery]*86400000).toISOString();
         saveUser();

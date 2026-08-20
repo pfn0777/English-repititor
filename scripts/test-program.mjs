@@ -60,7 +60,8 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'unitWords','needsLesson','markLessonSeen','seedUnitWords','skipTask',
                   'updateStreakOnTask','TASK_TYPES','dateStr','isNoAudio','teardownRec',
                   'CURRICULUM','LEVELS','PASS_THRESHOLD','MAX_DAILY_TASKS','TASKS_PER_UNIT','TASK_GUIDE',
-                  'MAX_ATTEMPTS_BEFORE_SKIP',
+                  'MAX_ATTEMPTS_BEFORE_SKIP','REMEDIAL_TASKS','markWeakUnit','reconcileScore',
+                  'normAnswer','answerAlternatives','checkReviewAnswer','levDist','SRS_DAYS',
                   'entitlementOf','limitFor','tasksFor','trialDaysLeft','dailyTasks','myEntitlement',
                   'adoptSub','freeModeGate',
                   'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
@@ -395,6 +396,79 @@ t('vazifa yopildi', u8.program.current === null);
 t('vazifasiz skipTask() ishlamaydi', api.skipTask().reason === 'no_task');
 t('weakUnits promptga tushdi', api.programContext().includes('A1-01'));
 
+// --- Imtihonni o'tkazib yuborib bo'lmaydi (dastur ishonchliligi shunga tayanadi)
+console.log("17b. Unit imtihoni o'tkazib yuborilmaydi:");
+const uE = { name:'Exam', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+uE.program = api.initProgram('A1');
+api.setUser(uE);
+uE.program.taskIndex = api.TASKS_PER_UNIT;
+t("getTaskType() = 'unit_exam'", api.getTaskType() === 'unit_exam');
+api.issueTask('unit_exam', 'exam');
+for (let i = 1; i < api.MAX_ATTEMPTS_BEFORE_SKIP; i++) {
+  r = api.applyResult({ correct:1, total:8 });
+  t(`${i}-urinishdan keyin imtihonda canSkip yo'q`, r.canSkip !== true);
+}
+const xpE = uE.xp, doneE = uE.program.doneToday.count;
+r = api.applyResult({ correct:1, total:8 });
+t(`${api.MAX_ATTEMPTS_BEFORE_SKIP}-urinishda ham canSkip yo'q`, r.canSkip !== true);
+t(`unit ichiga qaytarildi (sentBack=${api.REMEDIAL_TASKS})`, r.sentBack === api.REMEDIAL_TASKS);
+t('taskIndex takror vazifalarga tushdi', uE.program.taskIndex === api.TASKS_PER_UNIT - api.REMEDIAL_TASKS);
+t('unit passedUnits ga TUSHMADI', !uE.program.passedUnits.includes('A1-01'));
+t('unitIndex o\'zgarmadi (0)', uE.program.unitIndex === 0);
+t('XP berilmadi', uE.xp === xpE);
+t('kunlik hisobga kirmadi', uE.program.doneToday.count === doneE);
+t('unit weakUnits ga yozildi', uE.program.weakUnits.includes('A1-01'));
+t('vazifa yopildi', uE.program.current === null);
+
+// canSkip eski saqlangan holatda qolgan bo'lsa ham imtihon o'tkazilmaydi
+uE.program.taskIndex = api.TASKS_PER_UNIT;
+api.issueTask('unit_exam', 'exam2');
+uE.program.current.canSkip = true;
+t('skipTask() imtihonni rad etadi', api.skipTask().reason === 'exam_not_skippable');
+uE.program.current.type = 'level_exam';
+t('skipTask() daraja imtihonini ham rad etadi', api.skipTask().reason === 'exam_not_skippable');
+
+// Imtihondan o'tilgach unit zaiflar ro'yxatidan chiqadi
+uE.program.current.type = 'unit_exam';
+uE.program.doneToday.count = 0;
+api.applyResult({ correct:8, total:8 });
+t('imtihon PASS → passedUnits', uE.program.passedUnits.includes('A1-01'));
+t('weakUnits dan chiqarildi', !uE.program.weakUnits.includes('A1-01'));
+
+// --- Baho va kartalar zid bo'lsa (baho inflyatsiyasi)
+console.log('17c. reconcileScore() — AI bahosi kartalari bilan solishtiriladi:');
+const rc = (txt, sc) => JSON.stringify(api.reconcileScore(sc, txt));
+t('5/5 lekin 2 ta ❌ karta → 3/5',
+  rc('📊 NATIJA: 5/5\n❌ Xato: a\n❌ Xato: b', { correct:5, total:5 }) === '{"correct":3,"total":5}');
+t('baho kartalar bilan mos → tegilmaydi',
+  rc('📊 NATIJA: 3/5\n❌ Xato: a\n❌ Xato: b', { correct:3, total:5 }) === '{"correct":3,"total":5}');
+t('baho kartalardan PAST → tegilmaydi (qat\'iyroq qoladi)',
+  rc('📊 NATIJA: 2/5\n❌ Xato: a', { correct:2, total:5 }) === '{"correct":2,"total":5}');
+t('karta yo\'q → tegilmaydi', rc('📊 NATIJA: 5/5\nAjoyib!', { correct:5, total:5 }) === '{"correct":5,"total":5}');
+t('kartalar totaldan ko\'p → ishonmaymiz',
+  rc('❌ Xato:\n'.repeat(9), { correct:8, total:8 }) === '{"correct":8,"total":8}');
+t('qalin shrift bilan yozilgan karta ham sanaladi',
+  rc('📊 NATIJA: 5/5\n❌ **Xato**: a', { correct:5, total:5 }) === '{"correct":4,"total":5}');
+t('null score da yiqilmaydi', api.reconcileScore(null, 'x') === null);
+
+// --- Takrorlash javobini solishtirish
+console.log('17d. checkReviewAnswer() — SRS javob tekshiruvi:');
+const ca = api.checkReviewAnswer;
+t('aniq mos', ca('salom', 'salom') === true);
+t('katta-kichik harf va bo\'shliq', ca('  Salom ', 'salom') === true);
+t('ko\'p variantdan biri', ca('uka', 'aka, uka') === true);
+t("bo'lak so'z QABUL QILINMAYDI (eski bug)", ca('ka', 'aka, uka') === false);
+t("bitta harf QABUL QILINMAYDI", ca('a', 'aka, uka') === false);
+t('qavs ichidagi izohsiz javob', ca('-man', '-man (I bilan ishlatiladi)') === true);
+t('qavs bilan to\'liq javob ham', ca('salom norasmiy', 'salom (norasmiy)') === true);
+t('uzun so\'zda 1 harflik imlo xatosi kechiriladi', ca("o'qituvci", "o'qituvchi") === true);
+t('qisqa so\'zda 1 harflik xato KECHIRILMAYDI', ca('opa', 'ona') === false);
+t('bo\'sh javob', ca('', 'salom') === false && ca('   ', 'salom') === false);
+t('mutlaqo boshqa javob', ca('kitob', 'salom') === false);
+t('apostrof shakllari birxillashtiriladi', ca('o‘qituvchi', "o'qituvchi") === true);
+t('levDist sanaydi', api.levDist('kitob','kitab') === 1 && api.levDist('a','a') === 0);
+t('SRS_DAYS[0] = 1 kun (lapse ertaga qaytadi)', api.SRS_DAYS[0] === 1);
+
 // --- Yangi kontekst formati va payload chegarasi
 console.log('18. Kontekst formati va payload:');
 const u9 = { name:'Sardor', level:'A1', goal:'general', xp:0, achievements:[],
@@ -504,7 +578,11 @@ t('ro\'yxatdan o\'tib ertasi kuni birinchi vazifa → streak 1',
 
 // --- Obuna va trial (docs/specs/subscription-stars.md)
 console.log('21. Obuna huquqi (entitlement):');
-const NOW = Date.parse('2026-08-08T12:00:00Z');
+// DIQQAT: NOW qo'lda yozilgan sana BO'LMASIN. entitlementOf() ga NOW uzatiladigan
+// testlar nisbiy ishlaydi, lekin myEntitlement()/freeModeGate() haqiqiy Date.now() dan
+// o'qiydi — sana qotirilsa, ular ago(2) ni "12 kun oldin" deb ko'radi va suite
+// yozilganidan bir necha hafta o'tib O'ZIDAN qizaradi. Bir marta shunday bo'lgan.
+const NOW = Date.now();
 const ago = d => new Date(NOW - d * api.DAY_MS).toISOString();
 const ahead = d => new Date(NOW + d * api.DAY_MS).toISOString();
 
