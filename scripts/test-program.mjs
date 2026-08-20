@@ -11,6 +11,7 @@ catch (e) { console.log('1. Sintaksis XATO:', e.message); process.exit(1); }
 
 // 2. Logika testi — brauzer API'larini soxtalashtirib script'ni ishga tushiramiz
 const store = {};
+let fetchImpl = async () => ({ ok:false, status:0, json: async () => ({}) });
 const stubs = {
   localStorage: {
     getItem: k => (k in store ? store[k] : null),
@@ -20,7 +21,9 @@ const stubs = {
   document: null,   // quyida to'ldiriladi
   window: { addEventListener(){}, removeEventListener(){} },
   crypto: { randomUUID: () => '00000000-1111-2222-3333-444444444444' },
-  fetch: async () => ({ ok:false, status:0, json: async () => ({}) }),
+  // Delegat: runner stub qiymatini bir marta oladi, shuning uchun keyinchalik
+  // almashtirish uchun oraliq funksiya kerak (pushProgress testlari uni almashtiradi).
+  fetch: (...a) => fetchImpl(...a),
   speechSynthesis: undefined,
   console,
   setTimeout: () => 0,
@@ -69,6 +72,7 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'hasStagedLesson','lessonSteps','lessonStep','openLesson','nextLessonStep',
                   'checkLessonQuiz','finishLesson','unitProgressFraction','levelProgressPct',
                   'LESSON_QUIZ_TOTAL','LESSON_QUIZ_PASS','WORDS_PER_LESSON_PAGE','STEPS_PER_UNIT',
+                  'normalizeProgram','seenLessonVersion','LESSON_VERSION','pushProgress',
                   'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
                   'TASKS_ACTIVE','TASKS_TRIAL','TASKS_FREE','DAY_MS'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user,
@@ -879,6 +883,118 @@ t('daraja imtihonida → 100%', api.levelProgressPct() === 100);
 
 // Eski foydalanuvchi: initProgram yangi maydonni beradi
 t('initProgram() lessonProgress = null', api.initProgram('A1').lessonProgress === null);
+
+// --- Dars versiyalash (docs/specs/staged-lesson.md)
+console.log('25. Dars versiyalash va migratsiya:');
+const V = api.LESSON_VERSION;
+
+// Eski foydalanuvchi: lessonsSeen bor, lessonVersions yo'q, unit o'rtasida, ochiq vazifa bilan.
+// Bu 2026-08-20 dagi jonli sessiyaning aynan nusxasi.
+const mkLegacy = (over = {}) => {
+  const x = { name:'Eski', level:'A1', goal:'general', xp:120, vocabulary:[], achievements:[],
+              sub:{ trial_started_at:new Date().toISOString(), subscription_until:null } };
+  x.program = Object.assign(api.initProgram('A1'), {
+    taskIndex: 2,
+    current: { type:'translate', prompt:'p', attempts:0, status:'issued' },
+    lessonsSeen: ['A1-01'],
+    lessonProgress: null,
+  }, over);
+  delete x.program.lessonVersions;          // eski blob'da bu maydon umuman yo'q
+  api.setUser(x);
+  return x;
+};
+
+const lg = mkLegacy();
+t("eski massiv → versiya 1", api.seenLessonVersion('A1-01') === 1);
+t("noma'lum unit → versiya 0", api.seenLessonVersion('A1-09') === 0);
+t('eski foydalanuvchi darsni QAYTA ko\'radi (unit o\'rtasi + ochiq vazifa)',
+  api.needsLesson() === true);
+t('qulf sababi lesson_pending', api.freeModeGate().reason === 'lesson_pending');
+t("ochiq vazifa yo'qolmaydi — canStartTask hamon open_task",
+  api.canStartTask().reason === 'open_task' && lg.program.current !== null);
+
+// Daraja imtihoni paytida qayta ko'rsatish bo'lmaydi — imtihon tiqilib qolmasin.
+const lgx = mkLegacy();
+lgx.program.levelExam.pending = true;
+t('daraja imtihonida qayta ko\'rsatilmaydi', api.needsLesson() === false);
+
+// lesson bloki bo'lmagan unitda eski tekis ekran qayta ko'rsatilmaydi.
+const lgm = mkLegacy();
+const savedLesson = api.CURRICULUM.A1[0].lesson;
+delete api.CURRICULUM.A1[0].lesson;
+t("lesson bloki yo'q unit qayta ko'rsatilmaydi", api.needsLesson() === false);
+api.CURRICULUM.A1[0].lesson = savedLesson;
+
+// Hech ko'rilmagan unit — eski qoidalar o'zgarmadi.
+const fresh = mkLegacy({ lessonsSeen: [] });
+t("yangi unit, taskIndex=2 → dars yo'q (eski qoida saqlandi)", api.needsLesson() === false);
+fresh.program.taskIndex = 0;
+t("yangi unit, taskIndex=0 + ochiq vazifa → dars yo'q", api.needsLesson() === false);
+fresh.program.current = null;
+t('yangi unit, toza holat → dars bor', api.needsLesson() === true);
+
+// Testdan o'tish versiyani yozadi; yiqilish yozmaydi.
+const lg2 = mkLegacy();
+const rights = api.CURRICULUM.A1[0].lesson.practice.map(q => q.answer);
+api.checkLessonQuiz(rights.map((a, i) => i === 0 ? a : (a + 1) % 3));   // 1/3
+t("yiqilganda versiya o'zgarmaydi", api.seenLessonVersion('A1-01') === 1);
+const rq = api.checkLessonQuiz(rights);
+t('o\'tgach versiya yoziladi', lg2.program.lessonVersions['A1-01'] === V && rq.ok === true);
+t('o\'tgach qayta ko\'rsatish tugaydi', api.needsLesson() === false);
+t("o'tgach ochiq vazifa joyida", lg2.program.current !== null);
+
+// Qayta ko'rsatishda lug'at ikkilanmaydi.
+const lg3 = mkLegacy();
+lg3.vocabulary = api.unitWords(api.CURRICULUM.A1[0]).map(w => ({ word:w.en, translation:w.uz, mastery:0 }));
+const before = lg3.vocabulary.length;
+const reAdded = api.finishLesson(api.CURRICULUM.A1[0]);
+t("qayta ko'rsatishda so'z qo'shilmaydi", reAdded === 0 && lg3.vocabulary.length === before);
+
+// Versiya ko'tarilishi — kelajakda dars yangilansa ishlashi kerak.
+const lg4 = mkLegacy();
+lg4.program.lessonVersions = { 'A1-01': V - 1 };
+t('eskirgan versiya → qayta ko\'rsatiladi', api.needsLesson() === true);
+lg4.program.lessonVersions = { 'A1-01': V };
+t('joriy versiya → qayta ko\'rsatilmaydi', api.needsLesson() === false);
+
+// normalizeProgram
+const np = api.normalizeProgram({ level:'A1' });
+t('normalizeProgram barcha maydonni to\'ldiradi',
+  Array.isArray(np.lessonsSeen) && Array.isArray(np.weakUnits)
+  && np.lessonProgress === null && np.lessonVersions && !Array.isArray(np.lessonVersions));
+t('normalizeProgram ikki marta — no-op',
+  JSON.stringify(api.normalizeProgram(np)) === JSON.stringify(np));
+const stale = api.normalizeProgram({ level:'A1', lessonVersions:{ 'A1-01':V },
+  lessonProgress:{ unitId:'A1-01', step:4, quizFails:0 } });
+t('tugatilgan darsning yarim holati tozalanadi', stale.lessonProgress === null);
+const live = api.normalizeProgram({ level:'A1', lessonVersions:{},
+  lessonProgress:{ unitId:'A1-01', step:4, quizFails:0 } });
+t('tugatilmagan darsning holati saqlanadi', live.lessonProgress !== null);
+
+// pushProgress — serverning updatedAt qiymatini qabul qiladi
+console.log('26. pushProgress updatedAt:');
+const pu = mkLegacy();
+pu.program.updatedAt = '2020-01-01T00:00:00.000Z';
+let calls = 0;
+const okFetch = async () => { calls++; return { ok:true, status:200,
+  json: async () => ({ progress:{ updatedAt:'2030-01-01T00:00:00.000Z' } }) }; };
+fetchImpl = okFetch;
+await api.pushProgress();
+t('server updatedAt qabul qilinadi', pu.program.updatedAt === '2030-01-01T00:00:00.000Z');
+t('bitta so\'rov yuboriladi (qayta push halqasi yo\'q)', calls === 1);
+t('localStorage ga yoziladi',
+  JSON.parse(store.eb_user).program.updatedAt === '2030-01-01T00:00:00.000Z');
+
+fetchImpl = async () => ({ ok:true, status:200,
+  json: async () => ({ progress:{ updatedAt:'2025-01-01T00:00:00.000Z' } }) });
+await api.pushProgress();
+t("eskirgan updatedAt e'tiborsiz qoldiriladi",
+  pu.program.updatedAt === '2030-01-01T00:00:00.000Z');
+
+fetchImpl = async () => ({ ok:false, status:500, json: async () => ({}) });
+await api.pushProgress();
+t('server xatosi updatedAt ni buzmaydi',
+  pu.program.updatedAt === '2030-01-01T00:00:00.000Z');
 
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);
 process.exit(fails === 0 ? 0 : 1);

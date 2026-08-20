@@ -76,6 +76,7 @@ const XP_PER_TASK               = 25;
 const VOCAB_IN_PROMPT           = 30;   // system promptga ketadigan so'zlar chegarasi (payload 20KB)
 const SYNC_DEBOUNCE_MS          = 500;
 // Bosqichli dars (docs/specs/staged-lesson.md) — AI'siz, lokal.
+const LESSON_VERSION            = 2;    // 1 = eski tekis dars, 2 = bosqichli dars
 const LESSON_QUIZ_TOTAL         = 3;    // dars oxiridagi mini-tekshiruv savollari
 const LESSON_QUIZ_PASS          = 2;    // shundan nechtasi to'g'ri bo'lsa vazifa ochiladi
 const WORDS_PER_LESSON_PAGE     = 5;    // 25 so'z bir ekranda devor — 5 tadan beriladi
@@ -3372,12 +3373,22 @@ function syncProgress() {
 
 async function pushProgress() {
   if (!user || !user.program) return;
+  const sent = user.program;
   try {
     const res = await fetch(progressUrl(), {
       method:'POST', headers: progressHeaders(),
-      body: JSON.stringify({ userId:getUserId(), initData:getInitData(), action:'save', progress:user.program }),
+      body: JSON.stringify({ userId:getUserId(), initData:getInitData(), action:'save', progress:sent }),
     });
-    if (!res.ok) console.warn('progress save failed:', res.status);
+    if (!res.ok) { console.warn('progress save failed:', res.status); return; }
+    // updatedAt egasi — server. Javobni tashlab yuborsak lokal qiymat hisob ochilgan
+    // kunda qotib qoladi va syncFromServer HAR ochilishda server nusxasini qabul qilib,
+    // lokal o'zgarishlarni (jumladan migratsiyani) bekor qiladi.
+    const data = await res.json().catch(() => null);
+    const at = data && data.progress && data.progress.updatedAt;
+    if (at && user.program === sent && at > (user.program.updatedAt || '')) {
+      user.program.updatedAt = at;
+      LS.set('eb_user', user);   // saveUser EMAS — qayta push halqasi bo'lmasin
+    }
   } catch (err) {
     console.warn('progress save error:', err.message);
   }
@@ -3611,9 +3622,30 @@ function initProgram(level) {
     levelExam: { pending: false, attempts: 0, remedial: 0 },
     lessonsSeen: [],       // darsi ko'rilgan unit id'lari
     lessonProgress: null,  // { unitId, step, quizFails } — dars yarmida qolsa tiklanadi
+    lessonVersions: {},    // unitId -> ko'rilgan dars versiyasi (LESSON_VERSION)
     weakUnits: [],         // vazifasi o'tkazib yuborilgan unitlar — imtihonda qaytariladi
     updatedAt: new Date().toISOString(),
   };
+}
+
+// Eski progressda keyinroq qo'shilgan maydonlar yo'q. Bu guardlar IKKI joydan
+// chaqiriladi: init() da lokal nusxa uchun, syncFromServer() da serverdan kelgan
+// nusxa uchun — ilgari ikkinchisi normalizatsiyadan umuman o'tmasdi.
+function normalizeProgram(p) {
+  if (!p) return p;
+  if (!Array.isArray(p.lessonsSeen)) p.lessonsSeen = [];
+  if (!Array.isArray(p.weakUnits))   p.weakUnits = [];
+  if (p.lessonProgress === undefined) p.lessonProgress = null;
+  if (!p.lessonVersions || typeof p.lessonVersions !== 'object' || Array.isArray(p.lessonVersions)) {
+    p.lessonVersions = {};
+  }
+  // Tugatilgan darsning yarim holati qolib ketmasin — aks holda qayta ochilganda
+  // dars o'rtasidan boshlanadi.
+  const lp = p.lessonProgress;
+  if (lp && lp.unitId && seenLessonVersion(lp.unitId, p) >= LESSON_VERSION) {
+    p.lessonProgress = null;
+  }
+  return p;
 }
 
 function getUnit() {
@@ -3633,24 +3665,51 @@ function unitWords(u) {
 // ── Mavzu darsi ──────────────────────────────────────────────────
 // Unit boshida so'zlar va grammatika ko'rsatiladi. Bu AI chaqiruvi EMAS —
 // lokal data, shuning uchun token ham, kutish ham yo'q.
+// Unit darsining ko'rilgan versiyasi. Versiya HISOBLANADI, boot'da ko'chirilmaydi —
+// shuning uchun migratsiya idempotent va server nusxasi ustidan yozilsa ham buzilmaydi.
+//   0 — umuman ko'rilmagan
+//   1 — eski tekis dars ekranida ko'rilgan (lessonsSeen massivi)
+//   LESSON_VERSION — hozirgi bosqichli dars tugatilgan
+function seenLessonVersion(unitId, prog) {
+  const p = prog || user.program;
+  if (!p || !unitId) return 0;
+  const v = p.lessonVersions && p.lessonVersions[unitId];
+  if (Number.isInteger(v) && v > 0) return v;
+  return (p.lessonsSeen || []).includes(unitId) ? 1 : 0;
+}
+
 function needsLesson() {
   const p = user.program;
   if (!p) return false;
-  if (p.current) return false;
   if (p.levelExam.pending) return false;
-  if (p.taskIndex !== 0) return false;
   const u = getUnit();
   if (!u) return false;
-  return !(p.lessonsSeen || []).includes(u.id);
+
+  const seen = seenLessonVersion(u.id);
+  if (seen >= LESSON_VERSION) return false;
+
+  // Qayta ko'rsatish: eski darsni ko'rgan foydalanuvchi unit o'rtasida turgan bo'lsa
+  // ham yangi darsni BIR MARTA ko'radi. Ochiq vazifa yo'qolmaydi — renderProgram'da
+  // dars shoxi cur shoxlaridan oldin turadi, finishLesson esa p.current ga tegmaydi.
+  if (seen > 0) return hasStagedLesson(u);
+
+  // Normal yo'l — o'zgarmadi.
+  if (p.current) return false;
+  return p.taskIndex === 0;
 }
 
+// Ikkala strukturaga yozadi: lessonsSeen har bir mavjud server blob'ida bor va
+// unitProgressFraction/unitLessonFlat uni o'qiydi. Qaytish qiymati avvalgidek
+// "birinchi marta" ni bildiradi.
 function markLessonSeen(unitId) {
   const p = user.program;
   if (!p || !unitId) return false;
   if (!Array.isArray(p.lessonsSeen)) p.lessonsSeen = [];
-  if (p.lessonsSeen.includes(unitId)) return false;
-  p.lessonsSeen.push(unitId);
-  return true;
+  if (!p.lessonVersions || typeof p.lessonVersions !== 'object') p.lessonVersions = {};
+  const first = !p.lessonsSeen.includes(unitId);
+  if (first) p.lessonsSeen.push(unitId);
+  p.lessonVersions[unitId] = LESSON_VERSION;
+  return first;
 }
 
 // ── Bosqichli dars (docs/specs/staged-lesson.md) ─────────────────
@@ -3726,7 +3785,10 @@ function nextLessonStep() {
 function finishLesson(u) {
   const p = user.program;
   if (!p || !u) return 0;
-  const added = markLessonSeen(u.id) ? seedUnitWords(u) : 0;
+  markLessonSeen(u.id);
+  // Shartsiz: seedUnitWords dublikatni o'zi filtrlaydi, qayta ko'rsatishda 0 qaytaradi
+  // va yo'l-yo'lakay lug'ati urug'lanmagan eski foydalanuvchini tuzatadi.
+  const added = seedUnitWords(u);
   p.lessonProgress = null;
   return added;
 }
@@ -6784,9 +6846,7 @@ function init() {
     saveUser();
   }
   // Keyinroq qo'shilgan maydonlar — eski progressda yo'q, crash bo'lmasin.
-  if (!Array.isArray(user.program.lessonsSeen)) user.program.lessonsSeen = [];
-  if (!Array.isArray(user.program.weakUnits))   user.program.weakUnits = [];
-  if (user.program.lessonProgress === undefined) user.program.lessonProgress = null;
+  normalizeProgram(user.program);
   rollDaily();
   // Onboardingni tugatib, tushuntirish ekranini ko'rmasdan chiqib ketgan yangi foydalanuvchi.
   // Eski foydalanuvchida `introSeen` umuman yo'q (undefined) — ular bu shoxga tushmaydi.
@@ -6804,10 +6864,15 @@ async function syncFromServer() {
   const localAt  = user.program?.updatedAt || '';
   const remoteAt = remote.updatedAt || '';
   if (remoteAt <= localAt) return;
-  user.program = { ...initProgram(remote.level), ...remote };
+  // Ochiq vazifa yoki ochiq darsni sug'urib olmaymiz. Bu funksiya faqat boot'da
+  // ishlaydi, shuning uchun kechiktirish eng ko'pi bilan bitta ochilishga tushadi.
+  if (user.program?.current || lessonOpen) return;
+  // normalizeProgram SHART: serverdan kelgan nusxa init() dagi guardlardan KEYIN
+  // keladi va ilgari ular unga umuman qo'llanilmasdi.
+  user.program = normalizeProgram({ ...initProgram(remote.level), ...remote });
   LS.set('eb_user', user);   // saveUser emas — serverga qayta yozib yubormaslik uchun
   toast('Progress boshqa qurilmadan tiklandi', 'info');
-  renderDashboard();
+  if (currentView === 'program') renderProgram(); else renderDashboard();
 }
 
 function showProgramIntro() {

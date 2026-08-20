@@ -155,29 +155,93 @@ o'rniga `${p.level} darajasi · ${pct}%`, yonida kichik `${done}/${units.length}
 
 ## Holat (state) va migratsiya
 
-`user.program` ga bitta yangi maydon:
+`user.program` ga ikkita yangi maydon:
 
 ```js
 lessonProgress: null    // yoki { unitId: 'A1-01', step: 3, quizFails: 0 }
+lessonVersions: {}      // { 'A1-01': 2 } — qaysi unitning darsi qaysi versiyada ko'rilgan
 ```
+
+**`lessonProgress`** — yarim qolgan darsni tiklaydi:
 
 - `null` — dars ochilmagan yoki tugagan
 - Bosqich almashganda yangilanadi va `saveUser()` chaqiriladi → ilova yopilib
   ochilsa ham o'sha bosqichdan davom etadi
-- Mini-tekshiruvdan o'tganda `markLessonSeen()` + `seedUnitWords()` ishlaydi va
-  `lessonProgress = null`
 - `unitId` joriy unitdan farq qilsa (daraja sakragan, kalibrovka siljitgan) — **e'tiborsiz
   qoldiriladi va nolga tushadi**. Boshqa unitning yarmida qolib ketish yo'q.
+- Darsi allaqachon joriy versiyada tugatilgan unitniki bo'lsa — `normalizeProgram()` uni tozalaydi
 
-**Migratsiya** (`init()` da, mavjud naqsh bo'yicha):
+### Dars versiyalash
 
 ```js
-if (user.program.lessonProgress === undefined) user.program.lessonProgress = null;
+const LESSON_VERSION = 2;   // 1 = eski tekis dars, 2 = bosqichli dars
 ```
 
-`lessonsSeen` o'zgarmaydi. Eski foydalanuvchining ko'rilgan unitlari **ko'rilgan
-bo'lib qoladi** — ularni majburan bosqichli darsga qaytarish jazo bo'lardi.
-Bosqichli dars faqat **keyingi yangi unitdan** boshlanadi.
+Bosqichli darsdan **oldin** `lessonsSeen` massivi allaqachon mavjud edi — eski tekis dars
+ekranidagi "Tushundim" tugmasi unit id'sini o'sha yerga yozardi. Ya'ni bosqichli dars
+chiqqan kuni **har bir mavjud foydalanuvchining joriy uniti "ko'rilgan"** deb belgilangan
+edi va ular yangi darsni hech qachon ko'rmasdi. Bu production'da aynan shunday bo'ldi.
+
+`seenLessonVersion(unitId, prog?)` versiyani **hisoblaydi**, boot'da ko'chirmaydi:
+
+| Holat | Qaytadi |
+|---|---|
+| Ikkala strukturada ham yo'q | `0` |
+| Faqat eski `lessonsSeen` massivida bor | `1` |
+| `lessonVersions[unitId]` yozilgan | o'sha son |
+
+Hisoblab chiqarish shart: agar boot'da `lessonVersions` ga ko'chirsak, server nusxasi
+qabul qilinganda (pastdagi `updatedAt` kontraktiga qarang) migratsiya bekor bo'lardi.
+
+**Qayta ko'rsatish qoidasi** — `needsLesson()`:
+
+```
+seen >= LESSON_VERSION           → dars yo'q
+seen >  0                        → QAYTA KO'RSATISH: hasStagedLesson(u)
+                                   taskIndex va ochiq vazifa TO'SMAYDI
+seen == 0                        → normal yo'l: current yo'q VA taskIndex === 0
+levelExam.pending                → har doim dars yo'q
+```
+
+Qayta ko'rsatishda `p.current` chetlab o'tiladi, chunki `renderProgram()` da dars shoxi
+barcha `cur` shoxlaridan oldin turadi va `finishLesson()` `p.current` ga tegmaydi —
+ochiq vazifa dars tugagach qaytadi. `canStartTask()` hamon birinchi `open_task` qaytaradi.
+
+`markLessonSeen()` **ikkala** strukturaga yozadi: `lessonsSeen` har bir mavjud server
+blob'ida bor va `unitProgressFraction()`/`unitLessonFlat()` uni o'qiydi.
+
+Kelajakda dars mazmuni o'zgarsa — `LESSON_VERSION` ni ko'tarish kifoya, hamma qayta ko'radi.
+
+### `normalizeProgram(p)`
+
+Backward-compat guardlar bitta funksiyada va **ikki joydan** chaqiriladi:
+
+- `init()` — lokal nusxa uchun
+- `syncFromServer()` — serverdan kelgan nusxa uchun
+
+Ikkinchisi muhim: qabul qilingan remote obyekt `init()` guardlaridan **keyin** keladi,
+shuning uchun ilgari ular unga umuman qo'llanilmasdi.
+
+### `updatedAt` kontrakti
+
+`updatedAt` egasi — **server** (`progress/index.ts` har saqlashda uni qayta yozadi va
+`{progress: saved}` qaytaradi). Klient javobni **qabul qilishi shart**:
+
+```js
+if (at && user.program === sent && at > (user.program.updatedAt || '')) {
+  user.program.updatedAt = at;
+  LS.set('eb_user', user);   // saveUser EMAS — qayta push halqasi bo'lmasin
+}
+```
+
+Aks holda lokal `updatedAt` `initProgram()` dagi qiymatda qotib qoladi, remote esa har
+saqlashda oldinga ketadi → `remoteAt > localAt` **har ochilishda** rost bo'ladi →
+`syncFromServer()` har safar server nusxasini qabul qiladi, bekorga "Progress boshqa
+qurilmadan tiklandi" xabarini chiqaradi va lokal o'zgarishlarni bekor qiladi.
+
+`syncFromServer()` ochiq vazifa yoki ochiq dars bo'lsa umuman qabul qilmaydi, va
+`renderDashboard()` o'rniga joriy ko'rinishni qayta chizadi — ilgari u foydalanuvchini
+dars ekranidan sug'urib olardi.
 
 ## Kod o'zgarishlari
 
