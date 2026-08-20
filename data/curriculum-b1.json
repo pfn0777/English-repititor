@@ -33,7 +33,7 @@
         { "en": "brave", "uz": "jasur", "ipa": "breɪv" },
         { "en": "driver", "uz": "haydovchi", "ipa": "ˈdraɪvər" }
       ],
-      "tasks": ["translate", "build", "listen", "speak", "write", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-02",
@@ -68,7 +68,7 @@
         { "en": "strict", "uz": "qattiqqo'l", "ipa": "strɪkt" },
         { "en": "spoil", "uz": "erkalatib buzmoq", "ipa": "spɔɪl" }
       ],
-      "tasks": ["listen", "translate", "build", "speak", "write", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-03",
@@ -103,7 +103,7 @@
         { "en": "previously", "uz": "ilgari", "ipa": "ˈpriːviəsli" },
         { "en": "earlier", "uz": "oldinroq", "ipa": "ˈɜːrliər" }
       ],
-      "tasks": ["write", "translate", "build", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-04",
@@ -138,7 +138,7 @@
         { "en": "improvement", "uz": "yaxshilanish", "ipa": "ɪmˈpruːvmənt" },
         { "en": "determination", "uz": "qat'iyat", "ipa": "dɪˌtɜːrmɪˈneɪʃn" }
       ],
-      "tasks": ["build", "write", "translate", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-05",
@@ -173,7 +173,7 @@
         { "en": "library", "uz": "kutubxona", "ipa": "ˈlaɪbreri" },
         { "en": "university", "uz": "universitet", "ipa": "ˌjuːnɪˈvɜːrsəti" }
       ],
-      "tasks": ["translate", "listen", "build", "write", "speak", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-06",
@@ -208,7 +208,7 @@
         { "en": "instead", "uz": "o'rniga", "ipa": "ɪnˈsted" },
         { "en": "realistic", "uz": "real, hayotiy", "ipa": "ˌriːəˈlɪstɪk" }
       ],
-      "tasks": ["build", "translate", "write", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-07",
@@ -243,7 +243,7 @@
         { "en": "public", "uz": "ommaviy", "ipa": "ˈpʌblɪk" },
         { "en": "apparently", "uz": "ko'rinishidan", "ipa": "əˈpærəntli" }
       ],
-      "tasks": ["write", "build", "translate", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-08",
@@ -278,7 +278,7 @@
         { "en": "equipment", "uz": "jihoz", "ipa": "ɪˈkwɪpmənt" },
         { "en": "technology", "uz": "texnologiya", "ipa": "tekˈnɑːlədʒi" }
       ],
-      "tasks": ["translate", "build", "write", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-09",
@@ -313,7 +313,7 @@
         { "en": "definitely", "uz": "aniq-tiniq", "ipa": "ˈdefɪnətli" },
         { "en": "unclear", "uz": "noaniq", "ipa": "ʌnˈklɪr" }
       ],
-      "tasks": ["listen", "write", "translate", "build", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-10",
@@ -348,7 +348,7 @@
         { "en": "poetry", "uz": "she'riyat", "ipa": "ˈpoʊətri" },
         { "en": "exhibition", "uz": "ko'rgazma", "ipa": "ˌeksɪˈbɪʃn" }
       ],
-      "tasks": ["build", "translate", "listen", "write", "speak", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-11",
@@ -383,7 +383,7 @@
         { "en": "miserable", "uz": "baxtsiz, ma'yus", "ipa": "ˈmɪzrəbl" },
         { "en": "content", "uz": "ko'ngli to'q", "ipa": "kənˈtent" }
       ],
-      "tasks": ["write", "translate", "build", "listen", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B1-12",
@@ -418,7 +418,7 @@
         { "en": "disadvantage", "uz": "kamchilik", "ipa": "ˌdɪsədˈvæntɪdʒ" },
         { "en": "trend", "uz": "yo'nalish, tendensiya", "ipa": "trend" }
       ],
-      "tasks": ["translate", "write", "build", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     }
   ]
 }

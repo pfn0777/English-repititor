@@ -33,7 +33,7 @@
         { "en": "recount", "uz": "batafsil so'zlab bermoq", "ipa": "rɪˈkaʊnt" },
         { "en": "backdrop", "uz": "fon, orqa manzara", "ipa": "ˈbækdrɑːp" }
       ],
-      "tasks": ["translate", "build", "listen", "speak", "write", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-02",
@@ -68,7 +68,7 @@
         { "en": "exceed", "uz": "oshib ketmoq", "ipa": "ɪkˈsiːd" },
         { "en": "surpass", "uz": "o'zib ketmoq", "ipa": "sərˈpæs" }
       ],
-      "tasks": ["listen", "translate", "build", "speak", "write", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-03",
@@ -103,7 +103,7 @@
         { "en": "arguably", "uz": "aytish mumkinki, ehtimol", "ipa": "ˈɑːrɡjuəbli" },
         { "en": "conceivably", "uz": "tasavvur qilish mumkinki", "ipa": "kənˈsiːvəbli" }
       ],
-      "tasks": ["write", "translate", "build", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-04",
@@ -138,7 +138,7 @@
         { "en": "statistic", "uz": "statistik ko'rsatkich", "ipa": "stəˈtɪstɪk" },
         { "en": "majority", "uz": "ko'pchilik", "ipa": "məˈdʒɔːrəti" }
       ],
-      "tasks": ["build", "write", "translate", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-05",
@@ -173,7 +173,7 @@
         { "en": "hesitation", "uz": "ikkilanish", "ipa": "ˌhezɪˈteɪʃn" },
         { "en": "reluctance", "uz": "istamaslik", "ipa": "rɪˈlʌktəns" }
       ],
-      "tasks": ["translate", "listen", "build", "write", "speak", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-06",
@@ -208,7 +208,7 @@
         { "en": "architecture", "uz": "me'morchilik", "ipa": "ˈɑːrkɪtektʃər" },
         { "en": "ruins", "uz": "vayronalar", "ipa": "ˈruːɪnz" }
       ],
-      "tasks": ["build", "translate", "write", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-07",
@@ -243,7 +243,7 @@
         { "en": "torment", "uz": "qiynoq", "ipa": "ˈtɔːrment" },
         { "en": "mournful", "uz": "qayg'uli", "ipa": "ˈmɔːrnfl" }
       ],
-      "tasks": ["listen", "build", "translate", "write", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-08",
@@ -278,7 +278,7 @@
         { "en": "pipe", "uz": "quvur", "ipa": "paɪp" },
         { "en": "tile", "uz": "kafel, plitka", "ipa": "taɪl" }
       ],
-      "tasks": ["translate", "build", "write", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-09",
@@ -313,7 +313,7 @@
         { "en": "profound", "uz": "chuqur, teran", "ipa": "prəˈfaʊnd" },
         { "en": "vivid", "uz": "yorqin, jonli", "ipa": "ˈvɪvɪd" }
       ],
-      "tasks": ["write", "translate", "build", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-10",
@@ -348,7 +348,7 @@
         { "en": "viewpoint", "uz": "nuqtai nazar", "ipa": "ˈvjuːpɔɪnt" },
         { "en": "standpoint", "uz": "mavqe, pozitsiya", "ipa": "ˈstændpɔɪnt" }
       ],
-      "tasks": ["build", "listen", "translate", "write", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-11",
@@ -383,7 +383,7 @@
         { "en": "refrain", "uz": "o'zini tiymoq", "ipa": "rɪˈfreɪn" },
         { "en": "yield", "uz": "yon bermoq; hosil bermoq", "ipa": "jiːld" }
       ],
-      "tasks": ["translate", "write", "build", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "B2-12",
@@ -418,7 +418,7 @@
         { "en": "appeal", "uz": "shikoyat, apellyatsiya", "ipa": "əˈpiːl" },
         { "en": "settle", "uz": "kelishib hal qilmoq", "ipa": "ˈsetl" }
       ],
-      "tasks": ["listen", "translate", "build", "write", "speak", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     }
   ]
 }

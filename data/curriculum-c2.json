@@ -33,7 +33,7 @@
         { "en": "simultaneity", "uz": "bir vaqtdalik", "ipa": "ˌsaɪmltəˈneɪəti" },
         { "en": "retrospection", "uz": "o'tmishni qayta ko'rib chiqish", "ipa": "ˌretrəˈspekʃn" }
       ],
-      "tasks": ["translate", "build", "write", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-02",
@@ -68,7 +68,7 @@
         { "en": "taxonomy", "uz": "tasnif tizimi", "ipa": "tækˈsɑːnəmi" },
         { "en": "category", "uz": "toifa", "ipa": "ˈkætəɡɔːri" }
       ],
-      "tasks": ["listen", "translate", "build", "speak", "write", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-03",
@@ -103,7 +103,7 @@
         { "en": "evasive", "uz": "javobdan qochadigan", "ipa": "ɪˈveɪsɪv" },
         { "en": "forthright", "uz": "ochiq va to'g'ri gapiradigan", "ipa": "ˈfɔːrθraɪt" }
       ],
-      "tasks": ["write", "translate", "build", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-04",
@@ -138,7 +138,7 @@
         { "en": "manipulation", "uz": "boshqarib yo'ldan urish", "ipa": "məˌnɪpjuˈleɪʃn" },
         { "en": "appealing", "uz": "jozibali", "ipa": "əˈpiːlɪŋ" }
       ],
-      "tasks": ["build", "write", "translate", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-05",
@@ -173,7 +173,7 @@
         { "en": "submission", "uz": "topshirish, taqdim etish", "ipa": "səbˈmɪʃn" },
         { "en": "approval", "uz": "tasdiq", "ipa": "əˈpruːvl" }
       ],
-      "tasks": ["translate", "listen", "build", "write", "speak", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-06",
@@ -208,7 +208,7 @@
         { "en": "dissenting", "uz": "qarshi fikrdagi", "ipa": "dɪˈsentɪŋ" },
         { "en": "consensus", "uz": "umumiy kelishuv", "ipa": "kənˈsensəs" }
       ],
-      "tasks": ["build", "translate", "write", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-07",
@@ -243,7 +243,7 @@
         { "en": "binding", "uz": "majburiy kuchga ega", "ipa": "ˈbaɪndɪŋ" },
         { "en": "amicable", "uz": "do'stona", "ipa": "ˈæmɪkəbl" }
       ],
-      "tasks": ["listen", "build", "translate", "write", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-08",
@@ -278,7 +278,7 @@
         { "en": "inoffensive", "uz": "hech kimni ranjitmaydigan", "ipa": "ˌɪnəˈfensɪv" },
         { "en": "lighthearted", "uz": "yengil, ko'ngilochar", "ipa": "ˌlaɪtˈhɑːrtɪd" }
       ],
-      "tasks": ["translate", "write", "build", "speak", "listen", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-09",
@@ -313,7 +313,7 @@
         { "en": "suspense", "uz": "taranglik, kutish hissi", "ipa": "səˈspens" },
         { "en": "evoke", "uz": "his uyg'otmoq", "ipa": "ɪˈvoʊk" }
       ],
-      "tasks": ["write", "listen", "translate", "build", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-10",
@@ -348,7 +348,7 @@
         { "en": "liable", "uz": "javobgar bo'lgan", "ipa": "ˈlaɪəbl" },
         { "en": "forfeit", "uz": "huquqdan mahrum bo'lmoq", "ipa": "ˈfɔːrfət" }
       ],
-      "tasks": ["build", "translate", "listen", "write", "speak", "build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-11",
@@ -383,7 +383,7 @@
         { "en": "talk out of", "uz": "gapirib fikridan qaytarmoq", "ipa": "tɔːk aʊt əv" },
         { "en": "back out of", "uz": "va'dadan qaytmoq", "ipa": "bæk aʊt əv" }
       ],
-      "tasks": ["translate", "build", "write", "speak", "listen", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "C2-12",
@@ -418,7 +418,7 @@
         { "en": "overarching", "uz": "hammasini qamrab oluvchi", "ipa": "ˌoʊvərˈɑːrtʃɪŋ" },
         { "en": "succinct", "uz": "qisqa va lo'nda", "ipa": "səkˈsɪŋkt" }
       ],
-      "tasks": ["listen", "write", "translate", "build", "speak", "translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     }
   ]
 }

@@ -8,7 +8,13 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-const TASK_TYPES = ['translate', 'build', 'write', 'listen', 'speak'];
+const TASK_TYPES = ['translate', 'build', 'write', 'listen', 'speak', 'read'];
+// Retseptiv = kirish (matn/audio), erkin produktiv = chiqish (ochiq javob).
+// Har unitda ikkalasidan kamida bittadan bo'lishi shart: translate+build ning
+// o'zi diskret mashq, u bilan o'quvchi ma'noga yo'naltirilgan kirish ham,
+// erkin chiqish ham olmaydi.
+const RECEPTIVE  = ['read', 'listen'];
+const PRODUCTIVE = ['write', 'speak'];
 const WORDS_PER_UNIT = 25;
 const TASKS_PER_UNIT = 6;
 const UNITS_PER_LEVEL = 12;
@@ -91,6 +97,14 @@ for (const lv of LEVELS) {
       }
       if (!NO_SPEAK_YET.includes(u.id) && !u.tasks.includes('speak')) {
         errors.push(`${u.id}: gapirish (speak) vazifasi yo'q`);
+      }
+      if (!u.tasks.some(t => RECEPTIVE.includes(t))) {
+        errors.push(`${u.id}: retseptiv vazifa yo'q (${RECEPTIVE.join('/')})`);
+      }
+      // A1-01 da speak ham, write ham taqiqlangan — undan erkin chiqish talab qilinmaydi.
+      const noProductiveAllowed = NO_SPEAK_YET.includes(u.id) && NO_WRITE_YET.includes(u.id);
+      if (!noProductiveAllowed && !u.tasks.some(t => PRODUCTIVE.includes(t))) {
+        errors.push(`${u.id}: erkin produktiv vazifa yo'q (${PRODUCTIVE.join('/')})`);
       }
       for (let k = 1; k < u.tasks.length; k++) {
         if (u.tasks[k] === u.tasks[k - 1]) warnings.push(`${u.id}: ketma-ket bir xil tur "${u.tasks[k]}"`);

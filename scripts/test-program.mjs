@@ -89,7 +89,7 @@ u.program = api.initProgram('A1');
 api.setUser(u);
 
 t('getUnit() = A1-01', api.getUnit()?.id === 'A1-01');
-t("getTaskType() = 'translate'", api.getTaskType() === 'translate');
+t("getTaskType() = 'read' (yangi shablonda unit o'qishdan boshlanadi)", api.getTaskType() === 'read');
 t('canStartTask() ok', api.canStartTask().ok === true);
 
 api.issueTask('translate', 'test prompt');
@@ -540,9 +540,9 @@ api.setUser(u9);
 const ctx2 = api.programContext();
 t("lug'at 'en — uz' formatida", ctx2.includes('hello — salom'));
 t('etalon tarjima talabi bor', ctx2.includes('AYNAN'));
-// issue fazasi getTaskType() ga qaraydi — A1-01 da 'build' 2-qadamda turadi
-u9.program.taskIndex = 1;
-t("A1-01 2-qadam = 'build'", api.getTaskType() === 'build');
+// issue fazasi getTaskType() ga qaraydi — A1-01 da 'build' 3-qadamda turadi
+u9.program.taskIndex = 2;
+t("A1-01 3-qadam = 'build'", api.getTaskType() === 'build');
 const buildSys = api.buildProgramSystem('issue');
 u9.program.taskIndex = 0;
 api.issueTask('build', 'p');
@@ -571,11 +571,51 @@ t('A1-01 da speak yo\'q (avval so\'zlar tanilsin)', !api.CURRICULUM.A1[0].tasks.
 t('qolgan barcha unitlarda speak bor',
   allUnits.filter(x => x.id !== 'A1-01').every(x => x.tasks.includes('speak')));
 
+// --- O'qish (read) vazifasi va unit shabloni
+console.log("19b. O'qish vazifasi va unit tarkibi:");
+t("TASK_TYPES da read bor", !!api.TASK_TYPES.read);
+t("TASK_GUIDE da read bor, total=5", api.TASK_GUIDE.read?.total === 5);
+t("read audio EMAS (matn ko'rinadi)", !api.TASK_GUIDE.read?.audio);
+t("read issue kontekstdagi ma'noni so'raydi",
+  /KONTEKSTDAGI/.test(api.TASK_GUIDE.read.issue));
+t("read issue javoblarni bermaydi", /Javoblarni BERMA/.test(api.TASK_GUIDE.read.issue));
+t("read issue matnni yashirmaydi (listen kabi teg yo'q)",
+  !/\[AUDIO\]/.test(api.TASK_GUIDE.read.issue));
+t("read check lug'aviy ta'rifni rad etadi", /lug'aviy ta'rif emas/.test(api.TASK_GUIDE.read.check));
+
+// Har unitda kamida bitta retseptiv (kirish) va bitta erkin produktiv (chiqish)
+// vazifa bo'lishi shart — aks holda unit sof tarjima mashqiga aylanadi.
+// A1-01 istisno: unda speak ham, write ham hali erta.
+const RECEPTIVE = ['read', 'listen'];
+const PRODUCTIVE = ['write', 'speak'];
+const everyUnit = api.LEVELS.flatMap(l => api.CURRICULUM[l] || []);
+t(`barcha ${everyUnit.length} unit tekshiriladi`, everyUnit.length === 72);
+t("har unitda retseptiv vazifa bor",
+  everyUnit.every(u => u.tasks.some(x => RECEPTIVE.includes(x))));
+t("har unitda erkin produktiv vazifa bor (A1-01 dan tashqari)",
+  everyUnit.filter(u => u.id !== 'A1-01').every(u => u.tasks.some(x => PRODUCTIVE.includes(x))));
+t("har unit o'qishdan boshlanadi", everyUnit.every(u => u.tasks[0] === 'read'));
+t("translate va build hamma unitda saqlanib qoldi",
+  everyUnit.every(u => u.tasks.includes('translate') && u.tasks.includes('build')));
+t("ketma-ket bir xil tur yo'q",
+  everyUnit.every(u => u.tasks.every((x, i) => i === 0 || x !== u.tasks[i - 1])));
+
+// read promptining o'zi yasaladimi
+const uR = { name:'R', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+uR.program = api.initProgram('A1');
+api.setUser(uR);
+t("A1-01 1-qadam = 'read'", api.getTaskType() === 'read');
+const readSys = api.buildProgramSystem('issue');
+t("read issue prompti tur nomini ko'rsatadi", /O'qish/.test(readSys));
+api.issueTask('read', 'matn + 5 savol');
+t("read check prompti 5 banddan baholaydi",
+  api.buildProgramSystem('check').includes('NATIJA: N/5'));
+
 const u10 = { name:'T10', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
 u10.program = api.initProgram('A1');
-u10.program.unitIndex = 1; u10.program.taskIndex = 3;   // A1-02 4-qadam = speak
+u10.program.unitIndex = 1; u10.program.taskIndex = 4;   // A1-02 5-qadam = speak
 api.setUser(u10);
-t("A1-02 4-qadam = 'speak'", api.getTaskType() === 'speak');
+t("A1-02 5-qadam = 'speak'", api.getTaskType() === 'speak');
 api.issueTask('speak', '1) Menda ikkita akam bor.');
 t('speak check promptida 📊 NATIJA: N/5 bor', api.buildProgramSystem('check').includes('📊 NATIJA: N/5'));
 t('speak check promptida aksent uchun jarima yo\'q talabi bor',

@@ -33,7 +33,7 @@
         { "en": "suddenly", "uz": "to'satdan", "ipa": "ˈsʌdənli" },
         { "en": "finally", "uz": "nihoyat", "ipa": "ˈfaɪnəli" }
       ],
-      "tasks": ["translate","build","listen","write","speak","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-02",
@@ -68,7 +68,7 @@
         { "en": "quite", "uz": "ancha, ancha-muncha", "ipa": "kwaɪt" },
         { "en": "similar", "uz": "o'xshash", "ipa": "ˈsɪmələr" }
       ],
-      "tasks": ["build","translate","write","speak","build","listen"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-03",
@@ -103,7 +103,7 @@
         { "en": "among", "uz": "orasida (ko'plik)", "ipa": "əˈmʌŋ" },
         { "en": "mountain", "uz": "tog'", "ipa": "ˈmaʊntn" }
       ],
-      "tasks": ["translate","write","build","speak","listen","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-04",
@@ -138,7 +138,7 @@
         { "en": "schedule", "uz": "jadval", "ipa": "ˈskedʒuːl" },
         { "en": "abroad", "uz": "chet elda", "ipa": "əˈbrɔːd" }
       ],
-      "tasks": ["build","listen","translate","write","speak","translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-05",
@@ -173,7 +173,7 @@
         { "en": "reply", "uz": "javob bermoq", "ipa": "rɪˈplaɪ" },
         { "en": "idea", "uz": "fikr, g'oya", "ipa": "aɪˈdiːə" }
       ],
-      "tasks": ["translate","build","write","speak","listen","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-06",
@@ -208,7 +208,7 @@
         { "en": "since", "uz": "-dan beri", "ipa": "sɪns" },
         { "en": "island", "uz": "orol", "ipa": "ˈaɪlənd" }
       ],
-      "tasks": ["write","translate","build","speak","listen","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-07",
@@ -243,7 +243,7 @@
         { "en": "honey", "uz": "asal", "ipa": "ˈhʌni" },
         { "en": "flour", "uz": "un", "ipa": "ˈflaʊər" }
       ],
-      "tasks": ["translate","build","listen","write","speak","translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-08",
@@ -278,7 +278,7 @@
         { "en": "necessary", "uz": "zarur", "ipa": "ˈnesəseri" },
         { "en": "smoke", "uz": "chekmoq", "ipa": "smoʊk" }
       ],
-      "tasks": ["build","translate","write","speak","listen","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-09",
@@ -313,7 +313,7 @@
         { "en": "voice", "uz": "ovoz", "ipa": "vɔɪs" },
         { "en": "movement", "uz": "harakat", "ipa": "ˈmuːvmənt" }
       ],
-      "tasks": ["translate","listen","build","write","speak","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-10",
@@ -348,7 +348,7 @@
         { "en": "situation", "uz": "vaziyat", "ipa": "ˌsɪtʃuˈeɪʃn" },
         { "en": "depend", "uz": "bog'liq bo'lmoq", "ipa": "dɪˈpend" }
       ],
-      "tasks": ["build","write","translate","speak","listen","translate"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-11",
@@ -383,7 +383,7 @@
         { "en": "team", "uz": "jamoa", "ipa": "tiːm" },
         { "en": "goal", "uz": "maqsad", "ipa": "ɡoʊl" }
       ],
-      "tasks": ["translate","build","write","speak","listen","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     },
     {
       "id": "A2-12",
@@ -418,7 +418,7 @@
         { "en": "government", "uz": "hukumat", "ipa": "ˈɡʌvərnmənt" },
         { "en": "language", "uz": "til", "ipa": "ˈlæŋɡwɪdʒ" }
       ],
-      "tasks": ["write","translate","build","speak","listen","build"]
+      "tasks": ["read", "translate", "build", "listen", "speak", "write"]
     }
   ]
 }
