@@ -85,6 +85,17 @@ const STEPS_PER_UNIT            = TASKS_PER_UNIT + 2;  // dars + vazifalar + uni
 // ─── 1c. OBUNA (docs/specs/subscription-stars.md) ────────────────
 // Bu qiymatlar chat/index.ts dagi nusxasi bilan bir xil bo'lishi SHART —
 // klient boshqacha hisoblasa, foydalanuvchi ochilgan tugmani bosib 429 oladi.
+//
+// UZILGAN HOLAT (docs/specs/subscription-off.md): quyidagi ikki bayroq false —
+// to'lov, paywall va trial bosqichlari ko'rinmaydi, hamma 'active' huquqida.
+// Mantiq kodda turibdi va o'chirilmagan: qaytarish = ikkalasini true qilish
+// (klientda shu yerda, serverda chat/index.ts va billing/index.ts da).
+// `let`, `const` emas — testlar bayroqni ikki holatda ham tekshira olsin.
+//
+// Uzilganda kunlik AI chaqiruvi LIMIT_ACTIVE (60) emas, chat/index.ts dagi
+// LIMIT_OPEN (40) bo'ladi — global shift 2000/kun ni ~50 faol odamga bo'ladi.
+let SUBSCRIPTION_ENABLED = false;  // to'lov, paywall, trial bosqichlari
+let FREE_MODES_GATED     = false;  // erkin rejimlar vazifa/dars ortida turadimi
 const TRIAL_DAYS   = 7;     // birinchi vazifadan boshlab
 const SUB_STARS    = 150;   // oylik obuna narxi (Telegram Stars)
 const SUB_DAYS     = 30;
@@ -3898,6 +3909,9 @@ function canStartTask() {
 // Escape hatch'lar shart: dastursiz yoki vazifasiz holatda qulf abadiy bo'lib qoladi.
 function freeModeGate() {
   const p = user.program;
+  // Qulf butunlay olib tashlangan (docs/specs/subscription-off.md): erkin
+  // rejimlar hech narsa ortida turmaydi. Qaytarish = FREE_MODES_GATED = true.
+  if (!FREE_MODES_GATED) return { ok:true, reason:'ungated', done:0, need:0 };
   if (!p) return { ok:true, reason:'no_program', done:0, need:0 };
   rollDaily();
   if (!getTaskType()) return { ok:true, reason:'level_not_ready', done:0, need:0 };
@@ -4258,11 +4272,19 @@ function trialDaysLeft(row, now) {
 // har doim sanadan qayta hisoblanadi, aks holda eskirgan nusxa obunani uzaytirib
 // yuboradi.
 function myEntitlement() {
+  // Obuna uzilgan — hamma to'liq huquqda. entitlementOf() o'zgarmaydi: u sof
+  // funksiya va obuna qaytarilganda o'sha holicha ishlashi kerak.
+  if (!SUBSCRIPTION_ENABLED) return 'active';
   if (user && user.sub && user.sub.entitlement === 'free') return 'free';
   return entitlementOf(user && user.sub, Date.now());
 }
 function dailyTasks()    { return tasksFor(myEntitlement()); }
-function myTrialDaysLeft(){ return trialDaysLeft(user && user.sub, Date.now()); }
+// Uzilganda null — trialStrip() bo'sh qaytaradi, ya'ni sanoq va sotib olish
+// tugmasi hech qayerda chizilmaydi.
+function myTrialDaysLeft(){
+  if (!SUBSCRIPTION_ENABLED) return null;
+  return trialDaysLeft(user && user.sub, Date.now());
+}
 
 // Serverdan kelgan huquq holatini o'zlashtirish. Server javobida `sub` bo'lmasa
 // (eski deploy, xato) mavjud nusxa saqlanadi — huquq sababsiz yo'qolmasin.

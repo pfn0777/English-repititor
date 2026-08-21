@@ -68,6 +68,7 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'placementPool','buildPlacement','scorePlacement','playableLevel','pickN',
                   'PLACEMENT_LEVELS','PLACEMENT_PER_LEVEL','PLACEMENT_PASS',
                   'entitlementOf','limitFor','tasksFor','trialDaysLeft','dailyTasks','myEntitlement',
+                  'myTrialDaysLeft',
                   'adoptSub','freeModeGate',
                   'hasStagedLesson','lessonSteps','lessonStep','openLesson','nextLessonStep',
                   'checkLessonQuiz','finishLesson','unitProgressFraction','levelProgressPct',
@@ -76,8 +77,18 @@ const exported = ['initProgram','getUnit','getTaskType','canStartTask','issueTas
                   'TRIAL_DAYS','SUB_STARS','SUB_DAYS','LIMIT_ACTIVE','LIMIT_TRIAL','LIMIT_FREE',
                   'TASKS_ACTIVE','TASKS_TRIAL','TASKS_FREE','DAY_MS'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user,
-  setBusy:(p,c)=>{ programBusy=p; chatBusy=c; }, getBusy:()=>({ programBusy, chatBusy }) };`);
+  setBusy:(p,c)=>{ programBusy=p; chatBusy=c; }, getBusy:()=>({ programBusy, chatBusy }),
+  setFlags:(s,g)=>{ SUBSCRIPTION_ENABLED=s; FREE_MODES_GATED=g; },
+  getFlags:()=>({ sub:SUBSCRIPTION_ENABLED, gated:FREE_MODES_GATED }) };`);
 const api = runner(...names.map(n => stubs[n]));
+
+// Ilova obuna UZILGAN holatda yetkaziladi (docs/specs/subscription-off.md).
+// Quyidagi bo'limlar esa obuna mantiqining o'zini tekshiradi — u o'chirilmagan,
+// faqat uzilgan, va qaytarilganda ishlashi kafolatlanishi kerak. Shuning uchun
+// suite bayroqlar YOQILGAN holatda yuradi; uzilgan holat 24-bo'limda alohida
+// tekshiriladi (o'sha yerda bayroqlar qaytadan o'chiriladi).
+const SHIPPED_FLAGS = api.getFlags();
+api.setFlags(true, true);
 
 let fails = 0;
 const t = (label, cond) => { console.log(`   ${cond ? 'OK  ' : 'FAIL'} ${label}`); if (!cond) fails++; };
@@ -995,6 +1006,50 @@ fetchImpl = async () => ({ ok:false, status:500, json: async () => ({}) });
 await api.pushProgress();
 t('server xatosi updatedAt ni buzmaydi',
   pu.program.updatedAt === '2030-01-01T00:00:00.000Z');
+
+// --- Yetkazilayotgan holat: obuna uzilgan (docs/specs/subscription-off.md)
+// Yuqoridagi bo'limlar bayroqlar yoqilgan holatda yurdi — bu yerda ular
+// haqiqiy qiymatiga qaytariladi va ilova AYNAN qanday yetkazilsa, shu
+// tekshiriladi. Bayroq qaytarilsa (true), bu bo'lim ataylab yiqiladi.
+console.log('27. Obuna uzilgan holat:');
+api.setFlags(SHIPPED_FLAGS.sub, SHIPPED_FLAGS.gated);
+t('yetkazilayotgan holat: SUBSCRIPTION_ENABLED = false', SHIPPED_FLAGS.sub === false);
+t('yetkazilayotgan holat: FREE_MODES_GATED = false', SHIPPED_FLAGS.gated === false);
+
+const uOff = { name:'Off', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+uOff.program = api.initProgram('A1');
+api.setUser(uOff);
+
+// Trial tugagan eng yomon holat: obuna yoqilganda bu odam 'free' bo'lardi.
+uOff.sub = { trial_started_at: ago(30), subscription_until: null, entitlement: 'free' };
+t("trial tugagan bo'lsa ham → 'active'", api.myEntitlement() === 'active');
+t("server 'free' desa ham → 'active' (bayroq ustun)", api.myEntitlement() === 'active');
+t("to'liq norma: kuniga 5 vazifa", api.dailyTasks() === 5);
+t('trial sanog\'i chizilmaydi', api.myTrialDaysLeft() === null);
+
+// Dars ko'rilmagan va norma bajarilmagan — obuna yoqilganda ikkalasi ham qulf edi.
+t('erkin rejimlar darsdan oldin ham ochiq',
+  api.freeModeGate().ok === true && api.freeModeGate().reason === 'ungated');
+uOff.program.doneToday = { date: api.todayStr(), count: 0 };
+t('erkin rejimlar norma bajarilmasdan ham ochiq', api.freeModeGate().ok === true);
+t('paywall sababi umuman qaytmaydi', api.freeModeGate().reason !== 'needs_sub');
+
+// Kunlik norma o'z kuchida qoladi — bu xarajat chegarasi, obuna emas.
+api.markLessonSeen(api.getUnit().id);   // dars qulfi normadan OLDIN turadi
+uOff.program.doneToday = { date: api.todayStr(), count: 5 };
+t('5 vazifadan keyin kunlik norma baribir to\'xtatadi',
+  api.canStartTask().reason === 'daily_limit');
+t('4 vazifada hali ochiq',
+  (uOff.program.doneToday = { date: api.todayStr(), count: 4 },
+   api.canStartTask().ok === true));
+
+// entitlementOf() — sof funksiya, bayroqdan qat'i nazar o'zgarmaydi.
+// Obuna qaytarilganda u o'sha holicha ishlashi kerak.
+t('entitlementOf() bayroqdan mustaqil ishlayveradi',
+  api.entitlementOf({ trial_started_at: ago(30) }, NOW) === 'free'
+  && api.entitlementOf({ subscription_until: ahead(5) }, NOW) === 'active');
+t('limitFor/tasksFor bosqichlari saqlanib qolgan',
+  api.limitFor('free') === 5 && api.tasksFor('free') === 1);
 
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);
 process.exit(fails === 0 ? 0 : 1);

@@ -13,6 +13,10 @@ const ALLOWED_ORIGINS = [
   'http://127.0.0.1:5500',
 ];
 
+// docs/specs/subscription-off.md — chat/index.ts va index.html §1c dagi
+// bayroq bilan birga o'zgaradi. false = invoice berilmaydi.
+const SUBSCRIPTION_ENABLED = false;
+
 const DAY_MS = 86_400_000;
 const TRIAL_DAYS = 7;
 const SUB_STARS = 150;
@@ -95,6 +99,14 @@ Deno.serve(async (req: Request) => {
     const { userId, initData, action } = await req.json();
     if (!userId || typeof userId !== 'string') return json({ error: 'no_user' }, 400, cors);
     if (action !== 'status' && action !== 'invoice') return json({ error: 'bad_action' }, 400, cors);
+
+    // Obuna uzilgan (docs/specs/subscription-off.md) — hamma allaqachon to'liq
+    // huquqda. Klientda sotib olish tugmasi chizilmaydi, lekin bu tekshiruv
+    // baribir kerak: eski keshdagi sahifa yoki qo'lda so'rov pulni yechib,
+    // evaziga hech narsa bermasligi mumkin edi.
+    if (!SUBSCRIPTION_ENABLED && action === 'invoice') {
+      return json({ error: 'sub_off', message: 'Hozir hamma imkoniyat bepul — obuna kerak emas.' }, 409, cors);
+    }
 
     const { data: s } = await db.from('app_secrets').select('bot_token').eq('id', 1).single();
     const botToken = String(s?.bot_token || '');

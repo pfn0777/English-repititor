@@ -27,6 +27,14 @@ const ALLOWED_AUDIO_MIME = ['audio/webm', 'audio/ogg', 'audio/mp4', 'audio/mpeg'
 // modul ulashmaydi (ALLOWED_ORIGINS bilan bir xil holat), shuning uchun birini
 // o'zgartirsang ikkinchisini ham o'zgartir — aks holda klient ochiq ko'rsatgan
 // tugma serverda 429 beradi.
+//
+// UZILGAN HOLAT (docs/specs/subscription-off.md): SUBSCRIPTION_ENABLED = false —
+// entitlementOf() chaqirilmaydi, hamma 'active' va kunlik chegara LIMIT_OPEN.
+// Funksiyaning o'zi o'chirilmagan: qaytarish = bayroqni true qilish shu yerda,
+// billing/index.ts da va index.html §1c da (uchalasi birga o'zgaradi).
+const SUBSCRIPTION_ENABLED = false;
+const LIMIT_OPEN = 40; // uzilgan holatda hammaga: 40 × ~50 odam = GLOBAL_DAILY_LIMIT
+
 const DAY_MS = 86_400_000;
 const TRIAL_DAYS = 7;
 const LIMIT_ACTIVE = 60;
@@ -203,11 +211,14 @@ Deno.serve(async (req: Request) => {
     }
 
     const uid = (row?.id as string) ?? userId;
-    const ent = entitlementOf(row as { trial_started_at?: string | null; subscription_until?: string | null }, nowMs);
+    const ent: Ent = SUBSCRIPTION_ENABLED
+      ? entitlementOf(row as { trial_started_at?: string | null; subscription_until?: string | null }, nowMs)
+      : 'active';
 
     // Admin qo'lda qo'ygan limit hamma narsadan ustun turadi.
     const override = (row?.daily_limit ?? null) as number | null;
-    const effectiveLimit = override !== null ? Number(override) : limitFor(ent);
+    const effectiveLimit = override !== null ? Number(override)
+      : SUBSCRIPTION_ENABLED ? limitFor(ent) : LIMIT_OPEN;
 
     const subState = {
       trial_started_at: (row?.trial_started_at as string | null) ?? null,
