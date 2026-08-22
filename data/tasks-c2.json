@@ -1,0 +1,306 @@
+{
+  "level": "C2",
+  "units": [
+    {
+      "id": "C2-01",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Arthur stood by the large oak window, looking out over the misty valley as the quiet epoch slowly came to a close. For over a decade, the persistent rain had been falling upon the ancient stones of the castle, creating a perpetual sense of melancholy across the entire region. Arthur used to believe that this gloomy era would last forever, bringing endless sorrow to every inhabitant within the valley walls. Every evening during his youth, his grandfather would sit by the fireplace and recount stories of a brighter era when the weather was sunny and warm. Those fleeting moments of happiness felt so distant now, like a transient dream that had vanished at the sudden onset of dawn. By the time the official cessation of the storm was announced, Arthur had spent forty years contemplating the passage of time and its enduring marks on his soul. The chronology of his life seemed like a seamless continuum of rainy days and silent nights, broken only by intermittent bursts of hope. Now, witnessing the resumption of clear skies, he realized that every epoch has its own unique span of sorrow and joy.",
+          "items": [
+            { "q": "What is the main theme of the text?", "options": [ "Arthur reflecting on the passage of time, enduring rainy years, and the eventual change in weather.", "A young boy learning how to build a large stone castle during a historical century.", "The complete destruction of a valley due to an abrupt and violent earthquake.", "A grandfather teaching his grandson the chronology of ancient European history." ], "answer": 0 },
+            { "q": "How long had the rain been falling upon the castle stones?", "options": [ "For exactly twenty years.", "For over a decade.", "For a single momentary epoch.", "For a fleeting millennium." ], "answer": 1 },
+            { "q": "What would Arthur's grandfather do every evening during Arthur's youth?", "options": [ "He would leave the castle to work in the rain.", "He would sleep by the window all night.", "He would sit by the fireplace and recount stories.", "He would announce the cessation of the storms." ], "answer": 2 },
+            { "q": "In the text, what does the word 'transient' mean in the sentence 'like a transient dream that had vanished'?", "options": [ "lasting forever and enduring", "extremely loud and abrupt", "heavy and persistent", "passing quickly or o'tkinchi" ], "answer": 3 },
+            { "q": "What can be logically concluded about Arthur's state of mind at the end of the text?", "options": [ "He understands that periods of sorrow are eventually followed by moments of clarity and change.", "He remains entirely unaware that the weather has finally cleared up.", "He decides to leave the valley forever because he hates sunny days.", "He believes that the rain will never stop falling on the castle." ], "answer": 0 }
+          ]
+        },
+        null,
+        null,
+        {
+          "type": "listen",
+          "text": "Last decade, our small town experienced a significant epoch of change. My grandfather used to tell stories about the old century when life was much slower. Before the new factory arrived, we would walk together by the river every Sunday morning. By the time the municipal authorities announced the major transit resumption, the local community had been discussing the economic shift for nearly three years. That enduring memory remains vivid in my mind, contrasting sharply with the fleeting moments of our modern fast-paced era.",
+          "items": [
+            { "q": "What did the narrator's grandfather use to do according to the text?", "options": [ "He is telling stories about the old century.", "He used to tell stories about the old century.", "He tells stories about the old century.", "He will tell stories about the old century." ], "answer": 1 },
+            { "q": "What action would they repeat every Sunday morning before the new factory arrived?", "options": [ "They are walking together by the river.", "They walk together by the river.", "They would walk together by the river.", "They walked together by the river yesterday." ], "answer": 2 },
+            { "q": "How long had the local community been discussing the economic shift by the time of the transit resumption announcement?", "options": [ "They will have been discussing it for nearly three years.", "They have been discussing it for nearly three years.", "They are discussing it for nearly three years.", "They had been discussing it for nearly three years." ], "answer": 3 },
+            { "q": "Which time span is mentioned as having experienced a significant epoch of change?", "options": [ "Last decade.", "Next decade.", "Last century.", "Next millennium." ], "answer": 0 },
+            { "q": "What kind of memory remains vivid in the narrator's mind?", "options": [ "That transient memory.", "That enduring memory.", "That fleeting memory.", "That momentary memory." ], "answer": 1 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Past Time Nuances and Aspect",
+          "topicUz": "O'tmish zamoni nozikliklari va aspekt",
+          "sentences": ["First, we used to live in a small house by the lake during our childhood decades.", "Then, every summer afternoon my grandfather would take us fishing in the quiet water.", "After that, those habitual fishing trips created enduring memories that never faded away.", "Next, by the time we finally moved to the city, I had been living in that peaceful place for ten years.", "Finally, that epoch came to an abrupt cessation when the century finally changed."]
+        }
+      ],
+      "exam": [
+        { "q": "Biz ilgari o'sha kichik qishloqda yashar edik, lekin hozir shaharda yashaymiz.", "options": [ "We used to live in that small village, but now we live in the city.", "We would live in that small village, but now we live in the city.", "We had lived in that small village, but now we live in the city.", "We were living in that small village, but now we live in the city." ], "answer": 0 },
+        { "q": "Bolaligimizda har shanba kuni buvimiz bizga qiziqarli ertaklar aytib berar edi.", "options": [ "When we were children, our grandmother used to tell us interesting stories every Saturday.", "When we were children, our grandmother would tell us interesting stories every Saturday.", "When we were children, our grandmother had told us interesting stories every Saturday.", "When we were children, our grandmother told us interesting stories every Saturday." ], "answer": 1 },
+        { "q": "Mehmonlar yetib kelganida, u besh soatdan beri uzluksiz ishlayotgan edi.", "options": [ "When the guests arrived, he worked continuously for five hours.", "When the guests arrived, he used to work for five hours.", "When the guests arrived, he had been working continuously for five hours.", "When the guests arrived, he would work for five hours." ], "answer": 2 },
+        { "q": "U o'tmishda har kuni ertalab soat oltita da uyg'onishga odatlangan edi.", "options": [ "He had been waking up at six every morning in the past.", "He would wake up at six every morning in the past.", "He is used to waking up at six every morning in the past.", "He used to wake up at six every morning in the past." ], "answer": 3 },
+        { "q": "Chiroq o'chib qolgunga qadar biz bu loyiha ustida uch soatdan beri ishlayotgan edik.", "options": [ "By the time the lights went out, we had been working on this project for three hours.", "By the time the lights went out, we worked on this project for three hours.", "By the time the lights went out, we would work on this project for three hours.", "By the time the lights went out, we used to work on this project for three hours." ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: perpetual?", "options": [ "vaqti-vaqti bilan bo'ladigan", "to'xtovsiz davom etadigan", "bir lahzalik", "o'tkinchi" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: intermittent?", "options": [ "qayta-qayta takrorlanadigan", "odat tusiga kirgan", "uzilib-uzilib turadigan", "to'satdan" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: transient?", "options": [ "uzoq saqlanadigan", "qat'iy davom etadigan", "ko'z ochib yumguncha o'tadigan", "o'tkinchi" ], "answer": 3 }
+      ]
+    },
+    {
+      "id": "C2-02",
+      "tasks": [
+        null,
+        null,
+        null,
+        {
+          "type": "listen",
+          "text": "Last Monday, our research team introduced a comprehensive state-funded higher education policy framework during the annual conference in London. This new long-term risk assessment system aims to evaluate various university-level governance structures across the country. According to the senior coordinator, the initiative includes a detailed quality assurance evaluation component to monitor institutional performance. Several international experts praised the innovative multi-layered curriculum design process as a remarkable achievement in modern academic reform.",
+          "items": [
+            { "q": "What kind of framework did the research team introduce during the annual conference?", "options": [ "A temporary private school curriculum plan", "A basic regional secondary education framework", "An old government-funded financial planning structure", "A comprehensive state-funded higher education policy framework" ], "answer": 3 },
+            { "q": "Where did the annual conference take place according to the text?", "options": [ "In London", "In Manchester", "In Oxford", "In Edinburgh" ], "answer": 0 },
+            { "q": "What does the new long-term risk assessment system aim to evaluate?", "options": [ "Local business market strategies", "Various university-level governance structures", "International trade agreements", "Public health administration policies" ], "answer": 1 },
+            { "q": "Who praised the innovative multi-layered curriculum design process?", "options": [ "Several local journalists", "The university students", "Several international experts", "A group of unhappy parents" ], "answer": 2 },
+            { "q": "What does the initiative include to monitor institutional performance?", "options": [ "An automated library management tool", "A strict financial punishment system", "A simple student attendance tracker", "A detailed quality assurance evaluation component" ], "answer": 3 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "A long-term risk assessment framework", "uz": "Uzoq muddatli xavfni baholash tizimi", "tiles": [ "A", "long-term", "risk", "assessment", "framework" ], "distractors": [ "the", "system", "short-term" ], "alt": [] },
+            { "en": "State-funded higher education institutions", "uz": "Davlat tomonidan moliyalashtiriladigan oliy ta'lim muassasalari", "tiles": [ "State-funded", "higher", "education", "institutions" ], "distractors": [ "private", "school", "the" ], "alt": [] },
+            { "en": "An international market research report", "uz": "Xalqaro bozor tadqiqoti hisoboti", "tiles": [ "An", "international", "market", "research", "report" ], "distractors": [ "a", "local", "study" ], "alt": [] },
+            { "en": "Complex project management software tools", "uz": "Murakkab loyihalarni boshqarish dasturiy ta'minoti vositalari", "tiles": [ "Complex", "project", "management", "software", "tools" ], "distractors": [ "simple", "hardware", "an" ], "alt": [] },
+            { "en": "Advanced language learning strategies session", "uz": "Ilg'or tillarni o'rganish strategiyalari sessiyasi", "tiles": [ "Advanced", "language", "learning", "strategies", "session" ], "distractors": [ "basic", "teaching", "the" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Complex noun phrases",
+          "topicUz": "Murakkab ot birikmalari",
+          "sentences": ["First, we developed a state-funded higher education institutions reform strategy.", "Then, experts analyzed the long-term risk assessment framework thoroughly.", "After that, a multi-layered quality control assurance mechanism was successfully implemented.", "Next, the internationally recognized academic achievement evaluation system brought valuable insights.", "Finally, a cutting-edge technological infrastructure development plan was officially approved."]
+        }
+      ],
+      "exam": [
+        { "q": "Bu xalqaro ilmiy tadqiqot markazi yuqori texnologiyali loyihalarni moliyalashtiradi.", "options": [ "This scientific research international center finances high-tech projects.", "This scientific international research center finances high-tech projects.", "This international research scientific center finances high-tech projects.", "This international scientific research center finances high-tech projects." ], "answer": 3 },
+        { "q": "Iqtisodiy islohotlarni amalga oshirish mexanizmi darhol qayta ko'rib chiqilishi kerak.", "options": [ "The economic reform implementation mechanism must be reviewed immediately.", "The reform economic implementation mechanism must be reviewed immediately.", "The implementation economic reform mechanism must be reviewed immediately.", "The economic implementation reform mechanism must be reviewed immediately." ], "answer": 0 },
+        { "q": "Katta shaharlarda uy-joy narxlarining oshishi muammosi hukumat e'tiborini tortmoqda.", "options": [ "The price housing increase problem in big cities is attracting government attention.", "The housing price increase problem in big cities is attracting government attention.", "The housing increase price problem in big cities is attracting government attention.", "The increase housing price problem in big cities is attracting government attention." ], "answer": 1 },
+        { "q": "Zamonaviy raqamli ma'lumotlarni xavfsiz saqlash tizimi barcha xodimlar uchun majburiydir.", "options": [ "A modern digital data secure storage system is mandatory for all employees.", "A modern digital secure data storage system is mandatory for all employees.", "A modern secure digital data storage system is mandatory for all employees.", "A secure modern digital data storage system is mandatory for all employees." ], "answer": 2 },
+        { "q": "Ular oxirgi uch oy ichida murakkab moliyaviy xatarlarni boshqarish strategiyasini ishlab chiqdilar.", "options": [ "They developed a management complex financial risk strategy over the last three months.", "They developed a financial complex risk management strategy over the last three months.", "They developed a risk complex financial management strategy over the last three months.", "They developed a complex financial risk management strategy over the last three months." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: modifier?", "options": [ "aniqlovchi so'z", "cheklovchi aniqlovchi", "tavsiflovchi belgi", "aniq talab, tavsif" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: component?", "options": [ "ichki to'plam", "tarkibiy qism", "tarkibiy modda", "bosqichli tartib" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: taxonomy?", "options": [ "keng doira, oraliq", "keng qator", "tasnif tizimi", "tashkil etuvchi bo'lak" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "C2-03",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "In professional communication, mastery of pragmatics and indirectness is essential for maintaining politeness without sacrificing clarity. When a senior manager looks at a comprehensive project proposal and remarks that it is an interesting approach, experienced team members immediately recognize the subtext. Rather than expressing genuine admiration, this carefully chosen euphemism typically functions as a tactful hint that the strategy requires a complete overhaul. To mitigate potential conflict and respect decorum, corporate culture often relies on such subtle cues instead of forthright criticism. A literal misreading of these linguistic signals can lead to catastrophic professional errors, because failing to catch the hidden implication prevents necessary adjustments. Consequently, effective collaboration demands not only linguistic competence but also a profound sensitivity to nuance. By understanding how speakers convey doubts through polite indirection, colleagues can navigate sensitive discussions smoothly, ensuring that organizational goals are met while interpersonal harmony remains preserved.",
+          "items": [
+            {
+              "q": "What is the primary message conveyed in the text regarding professional communication?",
+              "options": ["Literal interpretations of managerial feedback prevent misreading corporate rules.", "Employees should always use forthright criticism when evaluating poor project proposals.", "Professional communication requires understanding indirectness and subtext to navigate workplace interactions successfully.", "Corporate culture strictly prohibits the use of polite euphemisms during meetings."],
+              "answer": 2
+            },
+            { "q": "How do experienced team members typically interpret the remark that a proposal is an interesting approach?", "options": [ "As an evasive tactic used to avoid discussing the budget.", "As genuine admiration for a brilliant new business strategy.", "As an instruction to implement the plan immediately without changes.", "As a tactful hint that the strategy needs a complete overhaul." ], "answer": 3 },
+            { "q": "Why does corporate culture frequently rely on subtle cues and polite indirection?", "options": [ "To mitigate potential conflict and respect organizational decorum.", "To ensure that every employee speaks in a forthright manner.", "To eliminate any possibility of ambiguity in project planning.", "To increase the imposition of heavy workloads on junior staff." ], "answer": 0 },
+            { "q": "In the context of the text, what does the word 'mitigate' mean?", "options": [ "To increase the intensity of a conflict deliberately.", "To make something less severe, painful, or damaging.", "To completely ignore an ongoing professional problem.", "To analyze linguistic signals using strict rules of grammar." ], "answer": 1 },
+            { "q": "What can be logically deduced about failing to understand hidden implications in the workplace?", "options": [ "It forces managers to adopt a completely forthright communication style.", "It guarantees that interpersonal harmony will be permanently destroyed.", "It can result in professional errors because necessary project adjustments are missed.", "It improves overall organizational productivity by eliminating vagueness." ], "answer": 2 }
+          ]
+        },
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "pragmatics", "uz": "nutq qo'llanishi ilmi", "en": "Pragmatics helps us understand hidden meanings in conversations", "tiles": [ "Pragmatics", "helps", "us", "understand", "hidden", "meanings", "in", "conversations" ], "distractors": [ "help", "meaning" ], "alt": [] },
+            { "word": "euphemism", "uz": "yumshatib aytish", "en": "She used a euphemism to soften bad news", "tiles": [ "She", "used", "a", "euphemism", "to", "soften", "bad", "news" ], "distractors": [ "use", "softens" ], "alt": [] },
+            { "word": "signal", "uz": "signal bermoq", "en": "They gave a subtle signal to change topics", "tiles": [ "They", "gave", "a", "subtle", "signal", "to", "change", "topics" ], "distractors": [ "gives", "topic" ], "alt": [] },
+            { "word": "deference", "uz": "izzat-ikrom bilan yon berish", "en": "He spoke with great deference to the elderly", "tiles": [ "He", "spoke", "with", "great", "deference", "to", "the", "elderly" ], "distractors": [ "speak", "elder" ], "alt": [] },
+            { "word": "misreading", "uz": "noto'g'ri anglash", "en": "Her misreading of the letter caused confusion", "tiles": [ "Her", "misreading", "of", "the", "letter", "caused", "confusion" ], "distractors": [ "read", "cause" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "During a tense marketing meeting in London yesterday, Sarah presented her new project proposal to the board of directors. After a long silence, the senior manager smiled and remarked that it was certainly a very brave idea. Later in the hallway, her colleague whispered that brave actually meant they completely hated it. Sarah immediately understood the polite warning. In professional circles, indirectness is often used to avoid open conflict while still conveying strict criticism. Therefore, paying close attention to subtext and polite cues is essential for career survival in corporate environments.",
+          "items": [
+            { "q": "Where did the tense marketing meeting take place yesterday?", "options": [ "In Oxford", "In London", "In Manchester", "In Edinburgh" ], "answer": 1 },
+            { "q": "Who presented the new project proposal to the board of directors?", "options": [ "Her colleague", "The senior manager", "Sarah", "The director" ], "answer": 2 },
+            { "q": "What did the senior manager call Sarah's idea?", "options": [ "An unfinished draft", "A brilliant plan", "A terrible mistake", "A very brave idea" ], "answer": 3 },
+            { "q": "What did the word brave actually mean according to her colleague?", "options": [ "They completely hated it", "They loved the proposal", "It was too expensive", "It needed minor edits" ], "answer": 0 },
+            { "q": "Why is indirectness often used in professional circles?", "options": [ "To confuse new employees", "To avoid open conflict", "To save meeting time", "To impress clients" ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "That is an interesting approach.", "uz": "Bu qiziqarli yondashuv.", "tiles": [ "That", "is", "an", "interesting", "approach" ], "distractors": [ "are", "the", "was" ], "alt": [] },
+            { "en": "I might need some time.", "uz": "Menga biroz vaqt kerak bo'lishi mumkin.", "tiles": [ "I", "might", "need", "some", "time" ], "distractors": [ "needs", "a", "must" ], "alt": [] },
+            { "en": "We can discuss this later.", "uz": "Buni keyinroq muhokama qilishimiz mumkin.", "tiles": [ "We", "can", "discuss", "this", "later" ], "distractors": [ "could", "these", "now" ], "alt": [] },
+            { "en": "It is somewhat complicated.", "uz": "Bu biroz murakkab.", "tiles": [ "It", "is", "somewhat", "complicated" ], "distractors": [ "are", "simple", "very" ], "alt": [] },
+            { "en": "That would be difficult.", "uz": "Bu qiyin bo'lar edi.", "tiles": [ "That", "would", "be", "difficult" ], "distractors": [ "will", "easy", "is" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Indirectness and Pragmatics in Communication",
+          "topicUz": "Muloqotda bilvosita ifoda va nutq pragmatikasi",
+          "sentences": ["First, we must understand that politeness often requires indirectness in serious professional discussions.", "Then, instead of direct criticism, a tactful speaker will use a subtle hint to mitigate tension.", "After that, listeners need to recognize the subtext to avoid a costly misreading of the situation.", "Next, this careful use of euphemism helps to convey difficult news without causing unnecessary offense.", "Finally, mastering such decorum ensures that your evasive remarks are still interpreted correctly by colleagues."]
+        }
+      ],
+      "exam": [
+        { "q": "Bu juda qiziqarli yondashuv ekan (lekin men qo'shilmayman).", "options": [ "That is an interesting approach.", "That approach is interesting for me.", "It is interesting approach.", "That's interesting approaches." ], "answer": 0 },
+        { "q": "Buni yana bir bor ko'rib chiqishimiz kerak bo'lishi mumkin (ya'ni: bu yaramaydi).", "options": [ "We must to revisit this.", "I'm afraid we may need to revisit this.", "I afraid we need to revisit this.", "Maybe we revisit this again." ], "answer": 1 },
+        { "q": "Aytmoqchi bo'lganingiz bu unchalik yaxshi ishlamaydi deganimi?", "options": [ "Do you mean this not works well?", "Did you mean this works bad?", "Are you saying this isn't quite working?", "You say this is not work?" ], "answer": 2 },
+        { "q": "Agar biroz o'ylab ko'rsak, bu ish berishi ham mumkin.", "options": [ "If we think a bit, this works.", "Thinking a bit, it is working.", "It might work if we will think.", "With some thought, it might just work." ], "answer": 3 },
+        { "q": "Buni ochiqchasiga aytishni xohlamagandim, lekin holat shuni taqozo etyapti.", "options": [ "I didn't mean to be so forthright, but here we are.", "I not wanted to say this forthright.", "I didn't want to speak forthright.", "I no say this directly." ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: vagueness?", "options": [ "ikki xil tushunilish", "noaniqlik", "ochiq va to'g'ri gapiradigan", "yumshatib aytish" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: innuendo?", "options": [ "mantiqan kelib chiqish", "oldindan qabul qilingan shart", "yopiq kesatiq", "ishora signali" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: tactful?", "options": [ "javobdan qochadigan", "odob me'yori", "xushmuomalalik", "nozik muomalali" ], "answer": 3 }
+      ]
+    },
+    {
+      "id": "C2-04",
+      "tasks": [
+        null,
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "rhetoric", "uz": "notiqlik san'ati", "en": "His political rhetoric is remarkably compelling and persuasive.", "tiles": [ "His", "political", "rhetoric", "is", "remarkably", "compelling", "and", "persuasive" ], "distractors": [ "are", "an", "rhetorics" ], "alt": [] },
+            { "word": "repetition", "uz": "takror", "en": "Effective repetition makes the core message much stronger.", "tiles": [ "Effective", "repetition", "makes", "the", "core", "message", "much", "stronger" ], "distractors": [ "make", "a", "repetitions" ], "alt": [] },
+            { "word": "compelling", "uz": "e'tiborni tortadigan, kuchli", "en": "She presented a compelling argument during the fierce debate.", "tiles": [ "She", "presented", "a", "compelling", "argument", "during", "the", "fierce", "debate" ], "distractors": [ "compells", "an", "arguments" ], "alt": [] },
+            { "word": "assert", "uz": "qat'iy da'vo qilmoq", "en": "Expert speakers boldly assert their main ideas on stage.", "tiles": [ "Expert", "speakers", "boldly", "assert", "their", "main", "ideas", "on", "stage" ], "distractors": [ "asserts", "a", "asserting" ], "alt": [] },
+            { "word": "audience", "uz": "tinglovchilar", "en": "The attentive audience listened carefully to the powerful speech.", "tiles": [ "The", "attentive", "audience", "listened", "carefully", "to", "the", "powerful", "speech" ], "distractors": [ "audiences", "listen", "an" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "True rhetoric is not about manipulation; true rhetoric is about authentic persuasion. We must strive for excellence, we must strive for integrity, we must strive for justice. Is there any person among us who wants failure? It is not a burden; it is an extraordinary opportunity. We face a challenge that demands our absolute dedication, our unwavering courage, and our profound wisdom. Let us stand firm together today, because eloquence without conviction remains merely empty noise in the vast wind of time.",
+          "items": [
+            { "q": "What is true rhetoric contrasted with in the text?", "options": [ "True rhetoric is about manipulation.", "True rhetoric is about mere empty noise.", "True rhetoric is about authentic persuasion.", "True rhetoric is about extraordinary opportunity." ], "answer": 2 },
+            { "q": "Which three things must we strive for according to the speech?", "options": [ "Burden, challenge, and opportunity.", "Courage, wisdom, and dedication.", "Persuasion, eloquence, and conviction.", "Excellence, integrity, and justice." ], "answer": 3 },
+            { "q": "What rhetorical question is asked by the speaker?", "options": [ "Is there any person among us who wants failure?", "Do we face a challenge that demands dedication?", "Why does eloquence remain empty noise?", "Are we going to stand firm together today?" ], "answer": 0 },
+            { "q": "How is the challenge described in the text?", "options": [ "It is a vast wind of time.", "It is not a burden; it is an extraordinary opportunity.", "It is manipulation without conviction.", "It is an emphatic and forceful assertion." ], "answer": 1 },
+            { "q": "What does eloquence without conviction remain?", "options": [ "A profound wisdom with absolute dedication.", "An authentic persuasion for justice.", "Mere empty noise in the vast wind of time.", "An extraordinary opportunity for excellence." ], "answer": 2 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "The Art of Rhetoric",
+          "topicUz": "Notiqlik san'ati",
+          "sentences": ["First, the speaker must assert a compelling vision with absolute eloquence.", "Then, she uses deliberate repetition to make the argument truly unforgettable.", "After that, she builds an antithesis: it is not a cost, it is an investment.", "Next, she challenges the audience with a sharp rhetorical question.", "Finally, this convincing oratory achieves total persuasion and wins the room."]
+        }
+      ],
+      "exam": [
+        { "q": "Biz vaqt so'radik, biz imkoniyat so'radik, biz ishonch so'radik.", "options": [ "We asked for time, we asked for an opportunity, we asked for trust, didn't we?", "We asked for time, we asked for an opportunity, we asked for trust.", "We asked for time and we asked for an opportunity and we asked for trust.", "We asked for time, we asked for an opportunity, but we asked for trust." ], "answer": 1 },
+        { "q": "Bu shunchaki vazifa emas, bu bizning kelajagimizdir.", "options": [ "It is just a task, and it is our future.", "It is not a task, it is our future.", "It is not just a task — it is our future.", "It is not only a task, but also our future." ], "answer": 2 },
+        { "q": "Agar biz bugun harakat qilmasak, unda qachon qilamiz?", "options": [ "If we do not act today, who else will?", "We do not act today, so when will we?", "If we act today, when do we do it?", "If we do not act today, when will we do it?" ], "answer": 3 },
+        { "q": "Biz jim o'tirmaymiz, biz chetda turmaymiz, biz taslim bo'lmaymiz.", "options": [ "We will not remain silent, we will not stand aside, we will not surrender.", "We will not remain silent, nor will we stand aside, and we will surrender.", "We will not remain silent, we will not stand aside, or we will surrender.", "We will remain silent, we will stand aside, and we will surrender." ], "answer": 0 },
+        { "q": "Bu qo'rquv emas — bu ehtiyotkorlik.", "options": [ "This is not fear, this is caution.", "This is not fear — this is caution.", "This is fear, not caution.", "This is neither fear nor caution." ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: eloquence?", "options": [ "ishontirish", "notiqlik san'ati", "so'zga chechanlik", "kuchli bo'rttirish" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: antithesis?", "options": [ "rad etish", "bir xil tuzilishli qator", "takror", "qarshilantirish" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: credibility?", "options": [ "ishonchga sazovorlik", "haqiqiylik", "boshqarib yo'ldan urish", "tinglovchilar" ], "answer": 0 }
+      ]
+    },
+    {
+      "id": "C2-05",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "This formal report outlines the comprehensive findings of the annual municipal audit conducted by our expert committee across the entire urban scope. The investigation evaluated financial records, operational efficiency, and public resource allocation. According to the executive synopsis, while several departments demonstrated commendable compliance, critical inefficiencies were identified within the transport sector. Specifically, budgetary allocations require stringent revision to prevent recurring deficits. To address these systemic challenges, the committee put forward a strategic proposal during the recent stakeholders meeting. We propose that the transport modernization project be extended by twelve months and that a supplementary annex be attached to the final dossier. Furthermore, the memorandum clearly states that all deliverables must be submitted strictly prior to the upcoming official approval. A detailed financial breakdown is provided in the appendix for immediate review by municipal authorities. Stakeholders must carefully examine the draft template before signing any binding agreements. By implementing these mandatory amendments, the municipality will ensure absolute transparency and significantly improve infrastructural development across all administrative districts.",
+          "items": [
+            { "q": "What is the primary focus of the report?", "options": [ "It discusses residential housing construction in rural districts.", "It evaluates annual municipal audit findings and transport sector inefficiencies.", "It outlines educational curriculum reforms for local universities.", "It details international trade agreements between neighboring countries." ], "answer": 1 },
+            { "q": "What action does the committee propose regarding the transport project?", "options": [ "That the project budget be reduced by half.", "That the project be terminated immediately.", "That the project be extended by twelve months.", "That the project management team be replaced." ], "answer": 2 },
+            { "q": "Where can municipal authorities find the detailed financial breakdown?", "options": [ "In the circular", "In the foreword", "In the abstract", "In the appendix" ], "answer": 3 },
+            { "q": "What does the word 'draft' mean in the context of the text?", "options": [ "An preliminary, unfinalized version of a document template", "A cold current of air flowing through an open window", "A written order instructing a bank to pay money", "A mandatory military service requirement for citizens" ], "answer": 0 },
+            { "q": "What will happen if the municipality implements the mandatory amendments?", "options": [ "It will cause an immediate increase in annual municipal tax rates.", "It will ensure absolute transparency and improve infrastructural development.", "It will lead to the complete dissolution of the committee.", "It will result in significant delays in report submission." ], "answer": 1 }
+          ]
+        },
+        null,
+        null,
+        {
+          "type": "listen",
+          "text": "The annual meeting of the company took place in London last Monday. Mr. Smith presented the proposal for the new marketing strategy to all stakeholders. The feasibility study was discussed during the morning briefing. Mrs. Davis prepared the minutes of the session and shared them with the team. An important amendment was added to the final draft before the official submission.",
+          "items": [
+            { "q": "Where did the annual meeting of the company take place last Monday?", "options": [ "In London", "In Paris", "In Berlin", "In Madrid" ], "answer": 0 },
+            { "q": "Who presented the proposal for the new marketing strategy?", "options": [ "Mrs. Davis", "Mr. Smith", "Mr. Brown", "Mrs. Taylor" ], "answer": 1 },
+            { "q": "What type of study was discussed during the morning briefing?", "options": [ "The market research study", "The financial audit study", "The feasibility study", "The environmental study" ], "answer": 2 },
+            { "q": "Who prepared the minutes of the session and shared them with the team?", "options": [ "Mr. Smith", "The director", "An external consultant", "Mrs. Davis" ], "answer": 3 },
+            { "q": "What was added to the final draft before the official submission?", "options": [ "An important amendment", "A detailed appendix", "A financial annex", "A new foreword" ], "answer": 0 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Formal Written Genres",
+          "topicUz": "Rasmiy yozma janrlar tuzilmasi",
+          "sentences": ["First, the draft proposal outlines the scope and deliverables of the project.", "Then, the executive summary provides a brief synopsis for key stakeholders.", "After that, the detailed feasibility report is reviewed by the committee.", "Next, any necessary amendments are added as an addendum to the document.", "Finally, the final revision receives formal approval from the board."]
+        }
+      ],
+      "exam": [
+        { "q": "Ushbu hisobot oxirgi audit natijalarini bayon qiladi.", "options": [ "This report outlines the findings of the latest audit.", "This proposal outlines the findings of the latest audit.", "This report outlines the feasibility of the latest audit.", "This briefing outlines the findings of the latest audit." ], "answer": 0 },
+        { "q": "Majlis bayonida barcha muhim qarorlar qayd etildi.", "options": [ "All important decisions were outlined in the proposal.", "All important decisions were recorded in the minutes.", "All important decisions were attached in the appendix.", "All important decisions were submitted in the draft." ], "answer": 1 },
+        { "q": "Sinov bosqichini yana olti oyga uzaytirishni taklif qilamiz.", "options": [ "We propose that the pilot will be extended by six months.", "We propose that the pilot to be extended by six months.", "We propose that the pilot be extended by six months.", "We propose the pilot is extended by six months." ], "answer": 2 },
+        { "q": "Manfaatdor tomonlar yangi loyiha bo'yicha o'z fikrlarini bildirishlari talab etiladi.", "options": [ "Stakeholder are required to express their views on the new project.", "A stakeholder is required to express their views on the new project.", "Stakeholders is required to express their views on the new project.", "Stakeholders are required to express their views on the new project." ], "answer": 3 },
+        { "q": "Agar ushbu taklif ma'qullansa, keyingi bosqichga o'tamiz.", "options": [ "Should this proposal be approved, we will proceed to the next phase.", "If this proposal is approved, we proceed to the next phase.", "Were this proposal approved, we proceed to the next phase.", "Should this proposal approved, we will proceed to the next phase." ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: feasibility?", "options": [ "qamrov", "amalga oshirish imkoni", "taklif, loyiha taklifi", "topshiriladigan natija" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: memorandum?", "options": [ "ko'pchilikka yuborilgan xat", "majlis bayoni", "xizmat xati", "qisqa ma'lumot berish" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: amendment?", "options": [ "qayta ko'rib chiqilgan variant", "topshirish, taqdim etish", "tasdiq", "o'zgartirish kiritish" ], "answer": 3 }
+      ]
+    },
+    {
+      "id": "C2-06",
+      "tasks": [
+        null,
+        null,
+        null,
+        {
+          "type": "listen",
+          "text": "Academic evaluation requires careful critique of research to ensure scholarly validity and reliability. The study presented by Professor Miller is methodologically sound, demonstrating remarkable robustness in data collection. However, there is a notable limitation regarding its generalisability across diverse populations. While the appraisal of prevailing orthodox theories deserves commendation, some contested claims should be treated with cautious replication. Furthermore, the identified shortcomings do not undermine the overall strength of the paper, which remains an influential contribution to the academic consensus.",
+          "items": [
+            { "q": "What aspect of Professor Miller's study demonstrates remarkable robustness?", "options": [ "Sample size", "Data collection", "Financial support", "Historical background" ], "answer": 1 },
+            { "q": "What is noted as a notable limitation of the research?", "options": [ "Its poor academic writing style", "Its outdated theoretical framework", "Its generalisability across diverse populations", "Its lack of peer review" ], "answer": 2 },
+            { "q": "How should contested claims within the study be treated?", "options": [ "With public disagreement", "With immediate dismissal", "With absolute acceptance", "With cautious replication" ], "answer": 3 },
+            { "q": "What does the appraisal of prevailing orthodox theories deserve?", "options": [ "Commendation", "Severe criticism", "Total rejection", "Strict censorship" ], "answer": 0 },
+            { "q": "Do the identified shortcomings undermine the overall strength of the paper?", "options": [ "Yes, completely", "No, they do not", "Only in minor sections", "Uncertain based on text" ], "answer": 1 }
+          ]
+        }
+      ],
+      "exam": []
+    },
+    {
+      "id": "C2-07",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "C2-08",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "C2-09",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "C2-10",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "C2-11",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "C2-12",
+      "tasks": [],
+      "exam": []
+    }
+  ],
+  "levelExam": []
+}

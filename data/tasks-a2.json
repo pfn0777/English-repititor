@@ -1,0 +1,618 @@
+{
+  "level": "A2",
+  "units": [
+    {
+      "id": "A2-01",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Yesterday was a special day for Anna. She woke up early in the morning and felt very happy. She went to the kitchen and began to prepare breakfast for her family. Suddenly, she heard a strange sound outside the window. She looked out and saw a little brown dog. The dog brought a small red ball in its mouth and dropped it on the grass. Anna chose to keep the ball and found the owner later that day. It was a wonderful adventure.",
+          "items": [
+            { "q": "What is the main idea of this text?", "options": [ "Anna lost her keys and felt very sad.", "Anna had an interesting experience with a dog yesterday.", "Anna went to school and taught English.", "Anna sold her old house to a friend." ], "answer": 1 },
+            { "q": "What did Anna do early in the morning?", "options": [ "She brought a book to her teacher.", "She went to bed very late.", "She woke up early and felt happy.", "She forgot to make breakfast." ], "answer": 2 },
+            { "q": "What did the little brown dog bring in its mouth?", "options": [ "A fresh green apple", "A big yellow box", "An old blue pen", "A small red ball" ], "answer": 3 },
+            { "q": "In the text, what does the word 'heard' mean?", "options": [ "To perceive a sound with the ears", "To send a message to a friend", "To throw a ball across the street", "To spend money in a big shop" ], "answer": 0 },
+            { "q": "What can we conclude about Anna from the story?", "options": [ "She does not like dogs at all.", "She is a kind person who cares about animals.", "She always wakes up very late.", "She wanted to sell the red ball." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "U kecha kitob olib keldi.", "en": "She brought a book yesterday", "tiles": [ "She", "brought", "a", "book", "yesterday" ], "distractors": [ "bring", "broughts", "the" ], "alt": [] },
+            { "uz": "Men kalitlarimni kecha yo'qotdim.", "en": "I lost my keys yesterday", "tiles": [ "I", "lost", "my", "keys", "yesterday" ], "distractors": [ "lose", "loss", "the" ], "alt": [] },
+            { "uz": "Ular yangi uy topishdi.", "en": "They found a new house", "tiles": [ "They", "found", "a", "new", "house" ], "distractors": [ "find", "founds", "the" ], "alt": [] },
+            { "uz": "Biz kecha ko'p pul sarfladik.", "en": "We spent a lot of money yesterday", "tiles": [ "We", "spent", "a", "lot", "of", "money", "yesterday" ], "distractors": [ "spend", "spends", "the" ], "alt": [] },
+            { "uz": "U o'tgan yili ingliz tilini o'rgatdi.", "en": "He taught English last year", "tiles": [ "He", "taught", "English", "last", "year" ], "distractors": [ "teach", "teaches", "the" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "become", "uz": "bo'lmoq, aylanmoq", "en": "He became a great doctor last year", "tiles": [ "He", "became", "a", "great", "doctor", "last", "year" ], "distractors": [ "become", "is", "the" ], "alt": [] },
+            { "word": "choose", "uz": "tanlamoq", "en": "She chose a nice dress yesterday", "tiles": [ "She", "chose", "a", "nice", "dress", "yesterday" ], "distractors": [ "choose", "is", "the" ], "alt": [] },
+            { "word": "keep", "uz": "saqlamoq", "en": "They kept the secret for a long time", "tiles": [ "They", "kept", "the", "secret", "for", "a", "long", "time" ], "distractors": [ "keep", "are", "an" ], "alt": [] },
+            { "word": "spend", "uz": "sarflamoq", "en": "We spent all our money last week", "tiles": [ "We", "spent", "all", "our", "money", "last", "week" ], "distractors": [ "spend", "was", "the" ], "alt": [] },
+            { "word": "wake", "uz": "uyg'onmoq", "en": "I woke up early this morning", "tiles": [ "I", "woke", "up", "early", "this", "morning" ], "distractors": [ "wake", "am", "the" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Last week, Anna decided to visit her grandmother in a small village. She packed a small bag and took a train early in the morning. When she arrived at the station, a strange thing happened. She lost her red leather wallet near the ticket office. Suddenly, a kind old man brought her wallet back and smiled. Anna felt very happy because her money and train tickets were safe inside. Then she walked to the old wooden house and began her wonderful holiday with her family.",
+          "items": [
+            { "q": "Where did Anna decide to visit last week?", "options": [ "Her grandmother in a small village", "Her grandmother in a big city", "Her friend in a small village", "Her parents in a small village" ], "answer": 0 },
+            { "q": "What did Anna lose near the ticket office?", "options": [ "Her blue leather wallet", "Her red leather wallet", "Her train ticket", "Her small bag" ], "answer": 1 },
+            { "q": "Who brought her wallet back?", "options": [ "Her grandmother", "A young ticket seller", "A kind old man", "A train driver" ], "answer": 2 },
+            { "q": "How did Anna feel when she got her wallet back?", "options": [ "She felt very sad", "She felt very angry", "She felt very tired", "She felt very happy" ], "answer": 3 },
+            { "q": "What did she begin after she walked to the house?", "options": [ "Her wonderful holiday", "Her working day", "Her long journey", "Her cooking class" ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "She brought a book yesterday", "uz": "U kecha kitob olib keldi", "tiles": [ "She", "brought", "a", "book", "yesterday" ], "distractors": [ "bring", "broughts", "the" ], "alt": [] },
+            { "en": "I lost my keys", "uz": "Men kalitlarimni yo'qotdim", "tiles": [ "I", "lost", "my", "keys" ], "distractors": [ "lose", "loss", "a" ], "alt": [] },
+            { "en": "He found a new phone", "uz": "U yangi telefon topdi", "tiles": [ "He", "found", "a", "new", "phone" ], "distractors": [ "find", "finds", "the" ], "alt": [] },
+            { "en": "We chose this car", "uz": "Biz bu mashinani tanladik", "tiles": [ "We", "chose", "this", "car" ], "distractors": [ "choose", "choosed", "that" ], "alt": [] },
+            { "en": "They sold their house", "uz": "Ular o'z uylarini sotishdi", "tiles": [ "They", "sold", "their", "house" ], "distractors": [ "sell", "sells", "the" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "A busy morning",
+          "topicUz": "Band tong",
+          "sentences": ["First, I woke up early in the morning.", "Then, I brought a fresh cup of coffee.", "After that, I found my lost keys.", "Next, I left the house very quickly.", "Finally, I arrived at work on time."]
+        }
+      ],
+      "exam": [
+        { "q": "Men kecha hamyonimni yo'qotdim.", "options": [ "I was lose my wallet yesterday.", "I lose my wallet yesterday.", "I losed my wallet yesterday.", "I lost my wallet yesterday." ], "answer": 3 },
+        { "q": "Ular darsni soat sakkizda boshladilar.", "options": [ "They began the lesson at eight o'clock.", "They begin the lesson at eight o'clock.", "They begun the lesson at eight o'clock.", "They broked the lesson at eight o'clock." ], "answer": 0 },
+        { "q": "Biz uyga sovg'a olib keldik.", "options": [ "We bringed a gift home.", "We brought a gift home.", "We bring a gift home.", "We brings a gift home." ], "answer": 1 },
+        { "q": "U o'tgan yili ingliz tilini o'rgatdi.", "options": [ "He teaches English last year.", "He teach English last year.", "He taught English last year.", "He teached English last year." ], "answer": 2 },
+        { "q": "Sen o'sha tanlovda g'olib bo'ldingmi?", "options": [ "Did you winned that competition?", "Did you won that competition?", "You won that competition?", "Did you win that competition?" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: bring?", "options": [ "olib kelmoq", "topmoq", "unutmoq", "sarflamoq" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: lose?", "options": [ "sotmoq", "yo'qotmoq", "ushlamoq", "sindirmoq" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: suddenly?", "options": [ "nihoyat", "sodir bo'lmoq", "to'satdan", "his qilmoq" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A2-02",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last week, I visited two different places in my country: a famous city and a small village. The city is more modern and more popular than the village. Tall buildings are everywhere, and the main streets are much wider than country roads. However, the village is safer and quieter. Life there is less dangerous. The air in the village is lighter, and the houses are smaller. I think city life is more interesting, but country life is more comfortable for old people.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "An explanation of how to build tall houses in cities", "A story about a dangerous journey to the mountains", "A comparison between a modern city and a quiet village", "A description of old people living in big towns" ], "answer": 2 },
+            { "q": "Which place is more popular according to the text?", "options": [ "The small village", "The mountain area", "The country roads", "The famous city" ], "answer": 3 },
+            { "q": "How are the main streets described in comparison to country roads?", "options": [ "They are much wider", "They are much narrower", "They are less safe", "They are more boring" ], "answer": 0 },
+            { "q": "What does the word 'safer' mean in the context of the text?", "options": [ "More dangerous and full of traffic", "Protected from danger and secure", "More comfortable and popular", "Larger and more modern" ], "answer": 1 },
+            { "q": "What can we conclude about life in the village for elderly people?", "options": [ "It is too noisy and dangerous for them", "It is more modern than the city", "It is more comfortable than city life", "It is less healthy than city life" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Bu shkaf unikidan kengroq.", "en": "This wardrobe is wider than that one.", "tiles": [ "This", "wardrobe", "is", "wider", "than", "that", "one" ], "distractors": [ "wide", "more", "are" ], "alt": [] },
+            { "uz": "Uning sumkasi menikidan og'irroq.", "en": "Her bag is heavier than mine.", "tiles": [ "Her", "bag", "is", "heavier", "than", "mine" ], "distractors": [ "heavy", "more", "are", "his" ], "alt": [] },
+            { "uz": "Bu daryo u yerdagidan chuqurroq.", "en": "This river is deeper than that one.", "tiles": [ "This", "river", "is", "deeper", "than", "that", "one" ], "distractors": [ "deep", "more", "are" ], "alt": [] },
+            { "uz": "Toshkent mening qishlog'imdan zamonaviyroq.", "en": "Tashkent is more modern than my village.", "tiles": [ "Tashkent", "is", "more", "modern", "than", "my", "village" ], "distractors": [ "modernter", "are", "less" ], "alt": [] },
+            { "uz": "Bu divan u stuldan qulayroq.", "en": "This sofa is more comfortable than that chair.", "tiles": [ "This", "sofa", "is", "more", "comfortable", "than", "that", "chair" ], "distractors": [ "comfortabler", "less", "are" ], "alt": [] }
+          ]
+        },
+        null,
+        {
+          "type": "listen",
+          "text": "Yesterday I visited two cities in my country. Bukhara is older than Samarkand in many ways. Samarkand is bigger than Bukhara and has wider streets. My hotel in Bukhara was cheaper than the hotel in Samarkand. However, the hotel in Samarkand was more comfortable than my room in Bukhara. The weather in Samarkand was colder than yesterday. Both cities are very famous for ancient history.",
+          "items": [
+            { "q": "Which city is older according to the text?", "options": [ "Samarkand is older than Bukhara.", "Bukhara is older than Samarkand.", "Both cities are old same.", "Bukhara is more old than Samarkand." ], "answer": 1 },
+            { "q": "What can we say about the streets of Samarkand?", "options": [ "They are narrower than Bukhara streets.", "They are more narrow than Bukhara.", "They are wider than Bukhara streets.", "They have wider than street." ], "answer": 2 },
+            { "q": "How was the hotel in Bukhara compared to Samarkand?", "options": [ "It was cheaper that Samarkand hotel.", "It was more cheap than Samarkand.", "It is expensive than Samarkand hotel.", "It was cheaper than the hotel in Samarkand." ], "answer": 3 },
+            { "q": "Which hotel was more comfortable?", "options": [ "The hotel in Samarkand was more comfortable.", "The hotel in Samarkand was comfortable.", "The hotel in Bukhara was more comfortable.", "The hotel in Samarkand is comfort." ], "answer": 0 },
+            { "q": "How was the weather in Samarkand?", "options": [ "It was cold than yesterday.", "It was colder than yesterday.", "It is more cold than yesterday.", "It was colder that yesterday." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "This street is wider than that street", "uz": "Bu ko'cha anavi ko'chadan kengroq", "tiles": [ "This", "street", "is", "wider", "than", "that", "street" ], "distractors": [ "narrow", "more", "tall" ], "alt": [] },
+            { "en": "My bag is heavier than your bag", "uz": "Mening sumkam sening sumkangdan og'irroq", "tiles": [ "My", "bag", "is", "heavier", "than", "your", "bag" ], "distractors": [ "light", "more", "safe" ], "alt": [] },
+            { "en": "Tashkent is more modern than my village", "uz": "Toshkent qishlog'imdan zamonaviyroq", "tiles": [ "Tashkent", "is", "more", "modern", "than", "my", "village" ], "distractors": [ "wider", "heavier", "old" ], "alt": [] },
+            { "en": "English is more popular than French", "uz": "Ingliz tili fransuz tilidan ommaboproq", "tiles": [ "English", "is", "more", "popular", "than", "French" ], "distractors": [ "boring", "less", "short" ], "alt": [] },
+            { "en": "This book is more interesting than that book", "uz": "Bu kitob anavi kitobdan qiziqarliroq", "tiles": [ "This", "book", "is", "more", "interesting", "than", "that", "book" ], "distractors": [ "thick", "thin", "heavy" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Comparing Two Cities",
+          "topicUz": "Ikki shaharni taqqoslash",
+          "sentences": ["First, Tashkent is more modern than my old village.", "Then, this capital city is also bigger than that town.", "After that, the main street here is wider than the village road.", "Next, living in this big city is more comfortable than living there.", "Finally, my new life here is more interesting than before."]
+        }
+      ],
+      "exam": [
+        { "q": "Bu kitob u kitobdan qalinroq.", "options": [ "This book is more thick than that one.", "This book is thickier than that one.", "This book is thick than that one.", "This book is thicker than that one." ], "answer": 3 },
+        { "q": "Mening sumkam sening sumkangdan og'irroq.", "options": [ "My bag is heavier than your bag.", "My bag is heavyer than your bag.", "My bag is more heavy than your bag.", "My bag is heavy than your bag." ], "answer": 0 },
+        { "q": "Ushbu ko'cha anavi ko'chadan kengroq.", "options": [ "This street is more wide than that street.", "This street is wider than that street.", "This street is widder than that street.", "This street is wide than that street." ], "answer": 1 },
+        { "q": "Toshkent qishlog'imdan zamonaviyroq.", "options": [ "Toshkent is modern than my village.", "Toshkent is moderner than my village.", "Toshkent is more modern than my village.", "Toshkent is most modern than my village." ], "answer": 2 },
+        { "q": "Bu mehmonxona anavi mehmonxonadan qulayroq.", "options": [ "This hotel is most comfortable than that hotel.", "This hotel is comfortabler than that hotel.", "This hotel is comfortable than that hotel.", "This hotel is more comfortable than that hotel." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: dangerous?", "options": [ "xavfli", "xavfsiz", "zamonaviy", "qulay" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: narrow?", "options": [ "keng", "tor", "chuqur", "qalin" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: popular?", "options": [ "mashhur", "qiziqarli", "ommabop", "zerikarli" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A2-03",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last year, my family and I visited a wonderful place in the mountains. We wanted to find the best place for our holiday. Among all the mountains, we chose the highest mountain because the view from the top was amazing. The weather was very good, and we had a funny time together. My little brother told a terrible joke, but we laughed a lot. It was the most important trip of my life, and I will never forget it.",
+          "items": [
+            { "q": "What is the general idea of the text?", "options": [ "A serious conversation about poor people in a city", "A family holiday in the mountains and their best trip", "A terrible day with ugly weather and bad choices", "A strange story about a rich mountain climber" ], "answer": 1 },
+            { "q": "Which mountain did the family choose to visit?", "options": [ "The lowest mountain among all hills", "A strange mountain near a poor village", "The highest mountain with an amazing view", "The most ugly mountain in the country" ], "answer": 2 },
+            { "q": "What did the little brother do during the trip?", "options": [ "He climbed to the top of the mountain alone", "He found the best choice among strange foods", "He bought the most useful place for holiday", "He made a terrible joke that made them laugh" ], "answer": 3 },
+            { "q": "What does the word 'wonderful' mean in this context?", "options": [ "Extremely good and amazing", "Very terrible and ugly", "Poor and serious", "Low and strange" ], "answer": 0 },
+            { "q": "Why was this trip so special for the author?", "options": [ "It was the worst choice they ever made", "It was the most important trip of the author's life", "It was a boring journey among rich people", "It was a serious holiday without any funny moments" ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Bu eng baland tog'.", "en": "This is the highest mountain.", "tiles": [ "This", "is", "the", "highest", "mountain" ], "distractors": [ "higher", "most", "high" ], "alt": [] },
+            { "uz": "U eng go'zal qo'shiqchi.", "en": "She is the most beautiful singer.", "tiles": [ "She", "is", "the", "most", "beautiful", "singer" ], "distractors": [ "more", "highest", "beautifully" ], "alt": [] },
+            { "uz": "Bu eng muhim tanlov.", "en": "This is the most important choice.", "tiles": [ "This", "is", "the", "most", "important", "choice" ], "distractors": [ "more", "importantest", "places" ], "alt": [] },
+            { "uz": "Ular guruhdagi eng boy odamlar.", "en": "They are the richest people among them.", "tiles": [ "They", "are", "the", "richest", "people", "among", "them" ], "distractors": [ "richer", "most", "rich" ], "alt": [] },
+            { "uz": "Bu dunyodagi eng ajoyib joy.", "en": "This is the most wonderful place in the world.", "tiles": [ "This", "is", "the", "most", "wonderful", "place", "in", "the", "world" ], "distractors": [ "more", "wonderfulest", "places" ], "alt": [] }
+          ]
+        },
+        null,
+        {
+          "type": "listen",
+          "text": "Yesterday was the worst day of the year for me. I went to the highest mountain in our region with my friends. The weather was terrible because it started to rain heavily. My friend John made the funniest joke to cheer us up, but we were still very wet and cold. Among all our choices, going there was the most stupid decision we ever made. However, we reached the top safely and saw the most amazing view of the city below us. It was a very strange and unforgettable adventure for everyone.",
+          "items": [
+            { "q": "What kind of day was yesterday for the speaker?", "options": [ "A normal day", "The best day of the year", "A very lucky day", "The worst day of the year" ], "answer": 3 },
+            { "q": "Where did the speaker go with friends?", "options": [ "The highest mountain", "The lowest place", "A beautiful city", "A rich village" ], "answer": 0 },
+            { "q": "What was the weather like during the trip?", "options": [ "Wonderful", "Terrible", "Perfect", "Amazing" ], "answer": 1 },
+            { "q": "Who made a joke to cheer everyone up?", "options": [ "A stranger", "The speaker", "John", "Nobody" ], "answer": 2 },
+            { "q": "What did they see from the top?", "options": [ "A poor village", "An ugly building", "A strange animal", "The most amazing view" ], "answer": 3 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "This is the best place", "uz": "Bu eng yaxshi joy", "tiles": [ "This", "is", "the", "best", "place" ], "distractors": [ "are", "worst", "mountain" ], "alt": [] },
+            { "en": "She is the most beautiful singer", "uz": "U eng go'zal qo'shiqchi", "tiles": [ "She", "is", "the", "most", "beautiful", "singer" ], "distractors": [ "are", "ugly", "worst" ], "alt": [] },
+            { "en": "That was the worst choice", "uz": "U eng yomon tanlov edi", "tiles": [ "That", "was", "the", "worst", "choice" ], "distractors": [ "is", "best", "place" ], "alt": [] },
+            { "en": "This is the highest mountain", "uz": "Bu eng baland tog'", "tiles": [ "This", "is", "the", "highest", "mountain" ], "distractors": [ "are", "lowest", "place" ], "alt": [] },
+            { "en": "It is the most important choice", "uz": "Bu eng muhim tanlov", "tiles": [ "It", "is", "the", "most", "important", "choice" ], "distractors": [ "are", "useful", "worst" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Superlative adjectives",
+          "topicUz": "Sifatlarning orttirma darajasi",
+          "sentences": ["First, we climbed the highest mountain among all these places.", "Then, we reached the top of the hill where the view was wonderful.", "After that, I took a photo because it was the most beautiful place in our country.", "Next, my friend said that this trip was the most amazing choice of our summer.", "Finally, we agreed that it was the best day of our lives."]
+        }
+      ],
+      "exam": [
+        { "q": "Bu dunyodagi eng baland tog'.", "options": [ "This is the high mountain in the world.", "This is the higher mountain in the world.", "This is the most high mountain in the world.", "This is the highest mountain in the world." ], "answer": 3 },
+        { "q": "U sinfdagi eng boy o'quvchi.", "options": [ "He is the richest student in the class.", "He is the rich student in the class.", "He is the most rich student in the class.", "He is the richer student in the class." ], "answer": 0 },
+        { "q": "Bu shahardagi eng go'zal bino.", "options": [ "This is the beautifulest building in the city.", "This is the most beautiful building in the city.", "This is the more beautiful building in the city.", "This is the beautiful building in the city." ], "answer": 1 },
+        { "q": "Bu biz qilgan eng muhim tanlov.", "options": [ "This is the important choice we made.", "This is the more important choice we made.", "This is the most important choice we made.", "This is the importantest choice we made." ], "answer": 2 },
+        { "q": "Ular oiladagi eng omadli insonlar.", "options": [ "They are the luckyest people in the family.", "They are the most lucky people in the family.", "They are the more lucky people in the family.", "They are the luckiest people in the family." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: amazing?", "options": [ "hayratlanarli", "g'alati", "dahshatli", "ajoyib" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: choice?", "options": [ "joy", "tanlov", "cho'qqi", "eng yuqori" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: among?", "options": [ "eng (ko'p)", "eng kam", "orasida (ko'plik)", "past" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A2-04",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Tom has a big plan for his holiday. He is going to travel abroad next month. Today, he is going to prepare his passport and pack his luggage carefully. His flight is early in the morning, so he is going to go to the airport by taxi. When he arrives at the new country, he is going to visit an old museum and walk along a sunny beach. He hopes to take many wonderful photos during this amazing trip.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Tom is going to travel abroad and visit interesting places.", "Tom is going to stay at home for his holiday.", "Tom is going to work at the airport next month.", "Tom is going to sell his old luggage soon." ], "answer": 0 },
+            { "q": "What is Tom going to do today?", "options": [ "He is going to buy a new car.", "He is going to prepare his passport and pack his luggage.", "He is going to invite many guests to a party.", "He is going to write a schedule for his meeting." ], "answer": 1 },
+            { "q": "How is Tom going to go to the airport?", "options": [ "He is going to walk there.", "He is going to take a bus.", "He is going to go by taxi.", "He is going to ride a bicycle." ], "answer": 2 },
+            { "q": "In the text, what does the word 'trip' mean?", "options": [ "A long meeting at work", "A small ticket for a flight", "A heavy piece of luggage", "A journey or travel to another place" ], "answer": 3 },
+            { "q": "What can we conclude about Tom from the text?", "options": [ "He is very organized and likes to plan his holiday.", "He hates traveling and taking photos.", "He forgets his passport every time he travels.", "He is going to stay at the beach all night." ], "answer": 0 }
+          ]
+        },
+        null,
+        null,
+        {
+          "type": "listen",
+          "text": "Tom and Sarah are going to take a long trip next month. They are going to visit a museum on Monday and walk near the beach on Tuesday. Tom is going to pack his luggage tonight, and Sarah is going to buy a new ticket tomorrow. They are going to meet an old guide at the airport before their flight. Their friends are going to join them for a big party soon. Everything is ready, and they are very happy.",
+          "items": [
+            { "q": "What are Tom and Sarah going to do next month?", "options": [ "They going to take a long trip.", "They is going to take a long trip.", "They are going to taking a long trip.", "They are going to take a long trip." ], "answer": 3 },
+            { "q": "When are they going to visit a museum?", "options": [ "On Monday", "On Tuesday", "Next month", "Tonight" ], "answer": 0 },
+            { "q": "What is Tom going to pack tonight?", "options": [ "A ticket", "His luggage", "A guide", "A passport" ], "answer": 1 },
+            { "q": "Who are they going to meet at the airport?", "options": [ "A new guest", "Their friends", "An old guide", "Sarah's brother" ], "answer": 2 },
+            { "q": "What are their friends going to join soon?", "options": [ "A museum tour", "A small meeting", "An airport flight", "A big party" ], "answer": 3 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Future Plans with Going To",
+          "topicUz": "Kelasi zamon rejalari",
+          "sentences": ["First, I am going to prepare my passport and luggage tonight.", "Then, my friend is going to buy a ticket for our trip.", "After that, we are going to go to the airport by taxi.", "Next, we are going to board the flight to travel abroad.", "Finally, we are going to visit a famous museum on our first day."]
+        }
+      ],
+      "exam": [
+        { "q": "Men kelasi hafta sayohat qilmoqchiman.", "options": [ "I am going to travel next week.", "I is going to travel next week.", "I am go to travel next week.", "I going to travel next week." ], "answer": 0 },
+        { "q": "Ular bugun kechqurun chipta sotib olmoqchilar.", "options": [ "They is going to buy tickets tonight.", "They are going to buy tickets tonight.", "They are go to buy tickets tonight.", "They going to buy tickets tonight." ], "answer": 1 },
+        { "q": "U aeroportga borishni rejalashtirmoqda.", "options": [ "He are going to go to the airport.", "He am going to go to the airport.", "He is going to go to the airport.", "He going to go to the airport." ], "answer": 2 },
+        { "q": "Biz chet elga dam olishga bormoqchimiz.", "options": [ "We going to travel abroad.", "We is going to travel abroad.", "We are go to travel abroad.", "We are going to travel abroad." ], "answer": 3 },
+        { "q": "Siz muzeyga borasizmi?", "options": [ "Are you going to visit the museum?", "Is you going to visit the museum?", "You are going to visit the museum?", "Do you going to visit the museum?" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: ticket?", "options": [ "pasport", "chipta", "safar", "reja" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: luggage?", "options": [ "parvoz", "aeroport", "yuk, chamadon", "plyaj, qirg'oq" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: guest?", "options": [ "jadval", "uchrashuv", "ziyofat", "mehmon" ], "answer": 3 }
+      ]
+    },
+    {
+      "id": "A2-05",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Tomorrow is Saturday, and Anna has many plans. She thinks the weather will be sunny, so she will visit the park in the afternoon. She needs some food, so she will order a pizza online. Her friend Tom calls her and asks about the weekend. Anna says she will probably stay at home on Sunday. Tom offers to help her with homework, and Anna gladly agrees. She believes Tom will explain everything clearly. She promises she won't forget his kindness. They will meet at two o'clock.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Anna makes plans and decisions for the weekend using will.", "Tom wants to order a pizza for Anna.", "The weather will be rainy on Saturday.", "Anna refuses Tom's offer to help." ], "answer": 0 },
+            { "q": "What will Anna do in the afternoon on Saturday?", "options": [ "She will go to school.", "She will visit the park.", "She will clean her room.", "She will meet Tom at two o'clock." ], "answer": 1 },
+            { "q": "What does Tom offer to help Anna with?", "options": [ "Her weekend trip", "Her pizza order", "Her homework", "Her online message" ], "answer": 2 },
+            { "q": "In the text, what does the word \"believe\" mean in the sentence \"She believes Tom will explain everything clearly\"?", "options": [ "To worry about something", "To ask a question", "To refuse an offer", "To think that something is true" ], "answer": 3 },
+            { "q": "What can we conclude about Anna and Tom's relationship from the text?", "options": [ "They are good friends who help each other.", "They do not like talking on the phone.", "They always argue about homework.", "They live in different cities." ], "answer": 0 }
+          ]
+        },
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "will", "uz": "-adi (kelasi zamon)", "en": "I think it will rain tomorrow", "tiles": [ "I", "think", "it", "will", "rain", "tomorrow" ], "distractors": [ "is", "rains", "going" ], "alt": [] },
+            { "word": "maybe", "uz": "balki", "en": "Maybe she will help us later", "tiles": [ "Maybe", "she", "will", "help", "us", "later" ], "distractors": [ "helps", "to", "are" ], "alt": [] },
+            { "word": "agree", "uz": "rozi bo'lmoq", "en": "I am sure they will agree soon", "tiles": [ "I", "am", "sure", "they", "will", "agree", "soon" ], "distractors": [ "agrees", "to", "be" ], "alt": [] },
+            { "word": "predict", "uz": "bashorat qilmoq", "en": "Experts predict the price will rise", "tiles": [ "Experts", "predict", "the", "price", "will", "rise" ], "distractors": [ "predicts", "rising", "is" ], "alt": [] },
+            { "word": "expect", "uz": "kutmoq (natijani)", "en": "We expect they will win today", "tiles": [ "We", "expect", "they", "will", "win", "today" ], "distractors": [ "expects", "winning", "are" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Tomorrow is Saturday, and Anna has a busy day. She thinks it will rain in the afternoon, so she will stay at home. She believes her friend Tom will visit her around three o'clock. Anna wants to make some tea, but she sees there is no milk left in the fridge. She decides she will go to the small shop near her house to buy milk. She hopes the shop will be open on Saturday. When she returns, she will read a new book and listen to some quiet music. She is sure she will have a very peaceful and relaxing weekend.",
+          "items": [
+            { "q": "What day is tomorrow according to the text?", "options": [ "Tomorrow is Saturday", "Tomorrow is Sunday", "Tomorrow is Friday", "Tomorrow is Monday" ], "answer": 0 },
+            { "q": "What does Anna think the weather will be like in the afternoon?", "options": [ "It will be sunny", "It will rain", "It will snow", "It will be windy" ], "answer": 1 },
+            { "q": "Who does Anna believe will visit her?", "options": [ "Her sister", "Her mother", "Her friend Tom", "Her teacher" ], "answer": 2 },
+            { "q": "Why does Anna need to go to the shop?", "options": [ "To buy bread", "To buy a book", "To buy tea", "To buy some milk" ], "answer": 3 },
+            { "q": "What will Anna do when she returns home?", "options": [ "She will read a new book and listen to music", "She will clean her room", "She will cook dinner", "She will watch a film on TV" ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I think it will rain tomorrow", "uz": "Menimcha, ertaga yomg'ir yog'adi", "tiles": [ "I", "think", "it", "will", "rain", "tomorrow" ], "distractors": [ "is", "rainy", "rains" ], "alt": [] },
+            { "en": "I won't forget your name", "uz": "Ismingizni unutmayman", "tiles": [ "I", "won't", "forget", "your", "name" ], "distractors": [ "will", "not", "forgot", "my" ], "alt": [] },
+            { "en": "Maybe she will call you later", "uz": "Balki u senga keyinroq qo'ng'iroq qilar", "tiles": [ "Maybe", "she", "will", "call", "you", "later" ], "distractors": [ "calls", "would", "tomorrow" ], "alt": [] },
+            { "en": "We will order pizza tonight", "uz": "Biz bu oqshom pitsa buyurtma beramiz", "tiles": [ "We", "will", "order", "pizza", "tonight" ], "distractors": [ "ordered", "orders", "shall" ], "alt": [] },
+            { "en": "He will probably help us", "uz": "U ehtimol bizga yordam beradi", "tiles": [ "He", "will", "probably", "help", "us" ], "distractors": [ "helps", "helped", "may" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Making Plans for Tomorrow",
+          "topicUz": "Ertangi kun uchun rejalar tuzish",
+          "sentences": ["First, I think it will rain tomorrow morning.", "Then, I will probably stay at home all day.", "After that, I will order some food online.", "Next, I will watch my favorite movie later.", "Finally, I am sure I will have a great time."]
+        }
+      ],
+      "exam": [
+        { "q": "Menimcha, ertaga ob-havo yaxshi bo'ladi.", "options": [ "I think the weather going to good tomorrow.", "I think the weather is good tomorrow.", "I think the weather to be good tomorrow.", "I think the weather will be good tomorrow." ], "answer": 3 },
+        { "q": "Ishonchim komilki, u bu imtihondan o'tadi.", "options": [ "I am sure he will pass this exam.", "I am sure he passes this exam.", "I am sure he passing this exam.", "I am sure he passed this exam." ], "answer": 0 },
+        { "q": "Xavotir olma, men senga pul beraman.", "options": [ "Don't worry, I giving you money.", "Don't worry, I will give you money.", "Don't worry, I gave you money.", "Don't worry, I am give you money." ], "answer": 1 },
+        { "q": "Ehtimol, u ertaga bizga xabar yuboradi.", "options": [ "Maybe he sends us a message tomorrow.", "Maybe he sent us a message tomorrow.", "Maybe he will send us a message tomorrow.", "Maybe he is sending us a message tomorrow." ], "answer": 2 },
+        { "q": "Men bu og'ir sumkani ko'tarishga yordam beraman.", "options": [ "I am help you carry this heavy bag.", "I help you carry this heavy bag.", "I helping you carry this heavy bag.", "I will help you carry this heavy bag." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: promise?", "options": [ "va'da bermoq", "ishonmoq", "taklif qilmoq", "xavotirlanmoq" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: probably?", "options": [ "balki", "ehtimol", "albatta", "aniq" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: order?", "options": [ "o'ylab qolmoq", "javob bermoq", "buyurtma bermoq", "bashorat qilmoq" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A2-06",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "My life has been full of adventure. I have just returned from a long trip to a beautiful island. I have never seen such clear water before. My friend Tom has already explored several countries with me. We have climbed a high mountain once and we enjoyed the great view. I have tasted local food there, and I liked it very much. I have always wanted to discover new places, and this journey was very special for my memory. I have changed my daily routine recently, and now I feel much happier.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "The writer shares stories about past adventures and life experiences.", "The writer talks about a dangerous job in a big city.", "The writer explains how to cook local food on an island.", "The writer describes a boring week at school." ], "answer": 0 },
+            { "q": "Where has the writer just returned from?", "options": [ "From a short walk in the park.", "From a long trip to a beautiful island.", "From a cold mountain in winter.", "From a busy city market." ], "answer": 1 },
+            { "q": "How many times have they climbed a high mountain?", "options": [ "Twice last year.", "Several times every month.", "Once during the trip.", "Never in their life." ], "answer": 2 },
+            { "q": "In the context of the text, what does the word 'discover' mean?", "options": [ "To paint an old wall.", "To lose an important bag.", "To cook dinner for friends.", "To find or learn something new." ], "answer": 3 },
+            { "q": "What can we conclude about the writer's feelings after the journey?", "options": [ "The writer feels much happier after changing the routine.", "The writer is very sad about spending too much money.", "The writer wants to stay at home forever.", "The writer hates traveling to islands." ], "answer": 0 }
+          ]
+        },
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "ever", "uz": "qachondir, biror marta (savolda)", "en": "Have you ever seen a big mountain?", "tiles": [ "Have", "you", "ever", "seen", "a", "big", "mountain" ], "distractors": [ "has", "saw", "an" ], "alt": [] },
+            { "word": "experience", "uz": "tajriba", "en": "She has good experience in this work", "tiles": [ "She", "has", "good", "experience", "in", "this", "work" ], "distractors": [ "have", "experiences", "at" ], "alt": [] },
+            { "word": "achieve", "uz": "erishmoq", "en": "We have achieved great success this year", "tiles": [ "We", "have", "achieved", "great", "success", "this", "year" ], "distractors": [ "has", "achieve", "the" ], "alt": [] },
+            { "word": "recently", "uz": "yaqinda", "en": "They have bought a new house recently", "tiles": [ "They", "have", "bought", "a", "new", "house", "recently" ], "distractors": [ "has", "buy", "an" ], "alt": [] },
+            { "word": "story", "uz": "hikoya", "en": "He has told an interesting story today", "tiles": [ "He", "has", "told", "an", "interesting", "story", "today" ], "distractors": [ "have", "tell", "a" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "My name is Tom and I have lived in this city for five years. I have just finished my work today and I feel very tired. My friend Alex has never been to London before, but he wants to go there next year. I have visited many interesting places in my life, and I have tried traditional food in different countries. Last week, I climbed a high mountain with my brother and we saw a wonderful view from the top.",
+          "items": [
+            { "q": "How long has Tom lived in this city?", "options": [ "For two years", "For five months", "For five years", "For ten years" ], "answer": 2 },
+            { "q": "What has Tom just finished today?", "options": [ "His homework", "His book", "His dinner", "His work" ], "answer": 3 },
+            { "q": "Where has Alex never been before?", "options": [ "To London", "To Tashkent", "To Paris", "To Tokyo" ], "answer": 0 },
+            { "q": "What has Tom tried in different countries?", "options": [ "New clothes", "Traditional food", "Fast cars", "Local music" ], "answer": 1 },
+            { "q": "Who did Tom climb a high mountain with last week?", "options": [ "His friend Alex", "His father", "His brother", "His teacher" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I have never been to London", "uz": "Men hech qachon Londonda bo'lmaganman", "tiles": [ "I", "have", "never", "been", "to", "London" ], "distractors": [ "has", "ever", "was" ], "alt": [] },
+            { "en": "She has just finished her work", "uz": "U hozirgina ishini tugatdi", "tiles": [ "She", "has", "just", "finished", "her", "work" ], "distractors": [ "have", "finish", "ever" ], "alt": [] },
+            { "en": "We have seen that movie before", "uz": "Biz bu kinoni oldin ko'rganmiz", "tiles": [ "We", "have", "seen", "that", "movie", "before" ], "distractors": [ "has", "saw", "never" ], "alt": [] },
+            { "en": "Have you ever climbed a mountain", "uz": "Siz qachondir tog'ga chiqqanmisiz", "tiles": [ "Have", "you", "ever", "climbed", "a", "mountain" ], "distractors": [ "Has", "never", "climb" ], "alt": [] },
+            { "en": "He has lost his keys recently", "uz": "U yaqinda kalitlarini yo'qotib qo'ydi", "tiles": [ "He", "has", "lost", "his", "keys", "recently" ], "distractors": [ "have", "lose", "just" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Life Experience",
+          "topicUz": "Hayotiy tajriba",
+          "sentences": ["First, I have just finished reading a fascinating book about life.", "Then, I have already explored several interesting places in my city.", "After that, I have tasted traditional food from different islands.", "Next, I have climbed a high mountain once before.", "Finally, I have achieved a great goal in my life recently."]
+        }
+      ],
+      "exam": [
+        { "q": "Men hech qachon Londonda bo'lmaganman.", "options": [ "I never have been to London.", "I was never in London.", "I have never been to London.", "I has never been to London." ], "answer": 2 },
+        { "q": "U hozirgina o'z ishini tugatdi.", "options": [ "She is just finish her work.", "She have just finished her work.", "She just finished her work.", "She has just finished her work." ], "answer": 3 },
+        { "q": "Sen hech qachon yapon taomini tatib ko'rganmisan?", "options": [ "Have you ever tasted Japanese food?", "Did you ever taste Japanese food?", "Have you ever taste Japanese food?", "Has you ever tasted Japanese food?" ], "answer": 0 },
+        { "q": "Biz allaqachon bu ajoyib orolni kashf qildik.", "options": [ "We already discovered this beautiful island.", "We have already discovered this beautiful island.", "We has already discovered this beautiful island.", "We have discovered already this beautiful island." ], "answer": 1 },
+        { "q": "Ular hali tog'ga chiqishmadi.", "options": [ "They haven't climb the mountain yet.", "They didn't climbed the mountain yet.", "They haven't climbed the mountain yet.", "They hasn't climbed the mountain yet." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: experience?", "options": [ "sarguzasht", "hikoya", "xotira", "tajriba" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: adventure?", "options": [ "sarguzasht", "hayot", "tajriba", "xotira" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: discover?", "options": [ "o'rganib chiqmoq", "kashf qilmoq", "erishmoq", "payqamoq" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "A2-07",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Yesterday, Sarah went to the local supermarket to buy some food for dinner. She needed to make a sweet cake and a healthy soup for her family. First, she checked her kitchen and found that there was not much sugar left in the jar. She also saw only a few eggs on the shelf. At the market, she bought a packet of flour, a bottle of milk, and a little butter. She spent a lot of time choosing fresh fruit. Finally, she paid for everything and returned home happy.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Sarah went to the supermarket to buy food ingredients for dinner", "Sarah cooked a big dinner for her friends at the restaurant", "Sarah sold many bottles of milk and packets of flour at her shop", "Sarah forgot to buy sugar and eggs for her sweet cake" ], "answer": 0 },
+            { "q": "How much sugar was left in the jar before Sarah went shopping?", "options": [ "There was a lot of sugar in the jar", "There was not much sugar in the jar", "There was a little honey in the jar", "There were many packets of sugar" ], "answer": 1 },
+            { "q": "What did Sarah buy at the market along with flour and milk?", "options": [ "A few eggs and fresh fruit", "A bowl of soup and some cheese", "A little butter and fresh fruit", "A bottle of juice and some rice" ], "answer": 2 },
+            { "q": "In the text, what does the word 'packet' mean in the sentence 'she bought a packet of flour'?", "options": [ "A small glass of cold milk", "A big bowl of hot soup", "A sharp knife for cutting cheese", "A paper or plastic bag containing goods" ], "answer": 3 },
+            { "q": "Why did Sarah need to buy a packet of flour and some milk?", "options": [ "Because she wanted to make a sweet cake and a soup", "Because she wanted to give them to her neighbours", "Because she had too much food in her kitchen", "Because she forgot her shopping list at home" ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Menga bir nechta tuxum kerak.", "en": "I need a few eggs.", "tiles": [ "I", "need", "a", "few", "eggs" ], "distractors": [ "much", "little", "any" ], "alt": [] },
+            { "uz": "Sut ko'p emas.", "en": "There isn't much milk.", "tiles": [ "There", "isn't", "much", "milk" ], "distractors": [ "many", "few", "some" ], "alt": [] },
+            { "uz": "Bizda ozgina shakar bor.", "en": "We have a little sugar.", "tiles": [ "We", "have", "a", "little", "sugar" ], "distractors": [ "few", "many", "any" ], "alt": [] },
+            { "uz": "Stolda ko'p kitoblar bormi?", "en": "Are there many books on the table?", "tiles": [ "Are", "there", "many", "books", "on", "the", "table" ], "distractors": [ "much", "little", "some" ], "alt": [] },
+            { "uz": "Menda muzlatgichda ozgina suv bor.", "en": "I have some water in the fridge.", "tiles": [ "I", "have", "some", "water", "in", "the", "fridge" ], "distractors": [ "any", "much", "many" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "much", "uz": "ko'p (sanalmaydigan)", "en": "There isn't much milk in the fridge.", "tiles": [ "There", "isn't", "much", "milk", "in", "the", "fridge" ], "distractors": [ "many", "are", "some" ], "alt": [] },
+            { "word": "bottle", "uz": "shisha", "en": "I need a bottle of water.", "tiles": [ "I", "need", "a", "bottle", "of", "water" ], "distractors": [ "bowl", "some", "glass" ], "alt": [] },
+            { "word": "bowl", "uz": "kosa", "en": "She wants a bowl of hot soup.", "tiles": [ "She", "wants", "a", "bowl", "of", "hot", "soup" ], "distractors": [ "plate", "bottle", "many" ], "alt": [] },
+            { "word": "sugar", "uz": "shakar", "en": "Do you have any sugar for tea?", "tiles": [ "Do", "you", "have", "any", "sugar", "for", "tea" ], "distractors": [ "salt", "much", "rice" ], "alt": [] },
+            { "word": "juice", "uz": "sharbat", "en": "He drinks a glass of juice every morning.", "tiles": [ "He", "drinks", "a", "glass", "of", "juice", "every", "morning" ], "distractors": [ "milk", "soup", "many" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Yesterday, Sarah went to the supermarket to buy food for her family. She needed a lot of things for dinner. First, she bought a bottle of milk and a glass of juice. Then, she looked at the shelf for some sugar and a little flour. She did not want to buy many apples because she had some at home. However, she needed a few eggs for her cake. She put everything into a big basket and paid for it quickly. After shopping, she walked back home with her heavy bags.",
+          "items": [
+            { "q": "What did Sarah buy for the juice?", "options": [ "A cup of juice", "A bottle of juice", "A glass of juice", "A bowl of juice" ], "answer": 2 },
+            { "q": "How much flour did she want to buy?", "options": [ "A lot of flour", "Any flour", "Much flour", "A little flour" ], "answer": 3 },
+            { "q": "Why didn't she want to buy many apples?", "options": [ "She had some at home", "She did not like apples", "She had too many apples", "Apples were too expensive" ], "answer": 0 },
+            { "q": "What did she need a few of for her cake?", "options": [ "Bananas", "Eggs", "Oranges", "Lemons" ], "answer": 1 },
+            { "q": "Where did she put everything she bought?", "options": [ "Into a big bag", "Into a big box", "Into a big basket", "Into a big car" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I need some milk for tea", "uz": "Menga choy uchun biroz sut kerak", "tiles": [ "I", "need", "some", "milk", "for", "tea" ], "distractors": [ "any", "much", "many" ], "alt": [] },
+            { "en": "There is not much sugar here", "uz": "Bu yerda shakar ko'p emas", "tiles": [ "There", "is", "not", "much", "sugar", "here" ], "distractors": [ "many", "some", "few" ], "alt": [] },
+            { "en": "Do you have any apples", "uz": "Sizda biror olma bormi", "tiles": [ "Do", "you", "have", "any", "apples" ], "distractors": [ "some", "much", "little" ], "alt": [] },
+            { "en": "We have a few eggs", "uz": "Bizda bir nechta tuxum bor", "tiles": [ "We", "have", "a", "few", "eggs" ], "distractors": [ "little", "much", "any" ], "alt": [] },
+            { "en": "She wants a little salt", "uz": "U ozgina tuz xohlaydi", "tiles": [ "She", "wants", "a", "little", "salt" ], "distractors": [ "few", "many", "any" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Cooking dinner",
+          "topicUz": "Kechki ovqatni pishirish",
+          "sentences": ["First, I need to put some rice on the kitchen table.", "Then, I pour a little milk into a clean glass.", "After that, I cut a few pieces of cheese with a sharp knife.", "Next, I check the fridge because there isn't much butter left.", "Finally, I ask my brother if we have any juice in the pantry."]
+        }
+      ],
+      "exam": [
+        { "q": "Menda bir nechta yangi kitoblar va biroz vaqt bor.", "options": [ "I have a few new books and a little time.", "I have a little new books and a few time.", "I have many new books and much time.", "I have any new books and some time." ], "answer": 0 },
+        { "q": "Stolda un ko'p emas, lekin ozgina shakar bor.", "options": [ "There aren't many flour on the table, but there is a few sugar.", "There isn't much flour on the table, but there is a little sugar.", "There isn't a little flour on the table, but there is much sugar.", "There is much flour on the table, but there isn't any sugar." ], "answer": 1 },
+        { "q": "Sizda muzlatgichda biror sut bormi?", "options": [ "Do you have some milk in the fridge?", "Do you have much milk in the fridge?", "Do you have any milk in the fridge?", "Do you have a few milk in the fridge?" ], "answer": 2 },
+        { "q": "Bizga salat uchun bitta pichoq, ikkita vilka va bir nechta qoshiq kerak.", "options": [ "We need a knife, two fork, and a few spoon for the salad.", "We need one knife, two forks, and a little spoons for the salad.", "We need any knife, two forks, and much spoons for the salad.", "We need one knife, two forks, and a few spoons for the salad." ], "answer": 3 },
+        { "q": "Ushbu idishda sho'rva ko'p, lekin guruch kam.", "options": [ "There is much soup in this bowl, but a little rice.", "There are much soup in this bowl, but few rice.", "There is many soup in this bowl, but little rice.", "There is a lot soup in this bowl, but any rice." ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: bottle?", "options": [ "stakan", "shisha", "kosa", "qoshiq" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: slice?", "options": [ "bo'lak", "paket", "tilim", "likopcha" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: honey?", "options": [ "sariyog'", "shakar", "un", "asal" ], "answer": 3 }
+      ]
+    },
+    {
+      "id": "A2-08",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Every citizen must obey the rules of health and safety in our town. If you feel sick, you should go to see a doctor immediately. You have to take the medicine every morning to stay healthy. Also, you must not smoke in public places because it causes danger to others. People are responsible for their own health. We should always exercise and get enough rest every night. Being polite and respectful is our duty everywhere.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "People must follow health, safety, and polite rules", "Everyone should smoke in public areas", "Doctors never give medicine to sick people", "Town citizens have no duties or responsibilities" ], "answer": 0 },
+            { "q": "What should you do if you feel sick?", "options": [ "You have to stay at home and run", "You must go to a doctor immediately", "You should ignore the health warning", "You must smoke outside the town" ], "answer": 1 },
+            { "q": "Why is smoking forbidden in public places according to the text?", "options": [ "Because the doctor likes medicine", "Because it is a polite habit", "Because it causes danger to others", "Because everyone must exercise" ], "answer": 2 },
+            { "q": "In the text, what does the word 'duty' mean in this context?", "options": [ "A public smoking area", "A small box for medicine", "A dangerous road sign", "A moral or legal obligation" ], "answer": 3 },
+            { "q": "What can we conclude about staying healthy from the text?", "options": [ "Good habits like exercise and rest are important", "People do not need to take medicine", "Following town laws is completely optional", "Doctors tell us never to rest" ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Siz ko'proq dam olishingiz kerak.", "en": "You should rest more", "tiles": [ "You", "should", "rest", "more" ], "distractors": [ "must", "have", "to" ], "alt": [] },
+            { "uz": "Biz qoidalarga bo'ysunishimiz shart.", "en": "We must obey the rules", "tiles": [ "We", "must", "obey", "the", "rules" ], "distractors": [ "should", "has", "to" ], "alt": [] },
+            { "uz": "Ular har kuni erta turishga majbur.", "en": "They have to get up early every day", "tiles": [ "They", "have", "to", "get", "up", "early", "every", "day" ], "distractors": [ "must", "should", "gets" ], "alt": [] },
+            { "uz": "Siz bu yerda chekmasligingiz kerak.", "en": "You must not smoke here", "tiles": [ "You", "must", "not", "smoke", "here" ], "distractors": [ "should", "don't", "have" ], "alt": [] },
+            { "uz": "Shifokorga borishingiz kerak.", "en": "You should see a doctor", "tiles": [ "You", "should", "see", "a", "doctor" ], "distractors": [ "must", "have", "to", "an" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "should", "uz": "kerak (maslahat)", "en": "You should rest more to improve your health", "tiles": [ "You", "should", "rest", "more", "to", "improve", "your", "health" ], "distractors": [ "must", "allow" ], "alt": [] },
+            { "word": "allow", "uz": "ruxsat bermoq", "en": "They do not allow people to smoke here", "tiles": [ "They", "do", "not", "allow", "people", "to", "smoke", "here" ], "distractors": [ "should", "must" ], "alt": [] },
+            { "word": "health", "uz": "sog'liq", "en": "Good food is very important for your health", "tiles": [ "Good", "food", "is", "very", "important", "for", "your", "health" ], "distractors": [ "should", "allow" ], "alt": [] },
+            { "word": "danger", "uz": "xavf", "en": "You must be careful because of the danger", "tiles": [ "You", "must", "be", "careful", "because", "of", "the", "danger" ], "distractors": [ "should", "allow" ], "alt": [] },
+            { "word": "polite", "uz": "odobli", "en": "Children should always be polite to older people", "tiles": [ "Children", "should", "always", "be", "polite", "to", "older", "people" ], "distractors": [ "must", "allow" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Yesterday morning, John felt very sick because he had a bad cold. His mother told him that he should stay at home and rest. She said he must drink hot tea and take medicine on time. John had to finish his important report for work by the afternoon. However, his doctor called and said he must not leave his bedroom until tomorrow. John understood that health is more important than work. He turned off his computer, drank his medicine, and went to sleep.",
+          "items": [
+            { "q": "Why did John feel sick yesterday morning?", "options": [ "Because he had a bad cold.", "Because he has a bad cold.", "Because he had a good cold.", "Because he should stay at home." ], "answer": 0 },
+            { "q": "What did his mother tell him that he should do?", "options": [ "She said he must go to work.", "She told him that he should stay at home and rest.", "She told him that he must play outside.", "She said he should drink cold water." ], "answer": 1 },
+            { "q": "What did his mother say he must drink?", "options": [ "He must drink cold juice.", "He must drink hot milk.", "He must drink hot tea and take medicine on time.", "He should drink water only." ], "answer": 2 },
+            { "q": "What did John have to finish by the afternoon?", "options": [ "His shopping list.", "His medical book.", "His home cleaning.", "His important report for work." ], "answer": 3 },
+            { "q": "What did his doctor say he must not do until tomorrow?", "options": [ "He must not leave his bedroom until tomorrow.", "He must not drink tea.", "He must not take medicine.", "He must not sleep." ], "answer": 0 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Giving advice and duties",
+          "topicUz": "Maslahat va majburiyatlar",
+          "sentences": ["First, you should visit the doctor when you feel sick.", "Then, you must take this medicine three times a day.", "After that, you have to rest at home for two days.", "Next, you must be very careful with your health.", "Finally, you should follow all rules to get better quickly."]
+        }
+      ],
+      "exam": [
+        { "q": "Sen ko'proq dam olishing kerak.", "options": [ "You must rest more.", "You allow rest more.", "You have to rest more.", "You should rest more." ], "answer": 3 },
+        { "q": "Biz qoidalarga bo'ysunishimiz shart.", "options": [ "We must obey the rules.", "We allow obey the rules.", "We should obey the rules.", "We advise obey the rules." ], "answer": 0 },
+        { "q": "U bu dori ichishi majbur.", "options": [ "He have to take this medicine.", "He has to take this medicine.", "He must take this medicine.", "He should take this medicine." ], "answer": 1 },
+        { "q": "Talabalar darsda jim turishi kerak.", "options": [ "Students have to be quiet in class.", "Students must be quiet in class.", "Students should be quiet in class.", "Students allow be quiet in class." ], "answer": 2 },
+        { "q": "Biz bu xavfli joyga bormasligimiz kerak.", "options": [ "We must not go to this dangerous place.", "We don't have to go to this dangerous place.", "We are not allow to go this place.", "We should not go to this dangerous place." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: advice?", "options": [ "maslahat", "qoida", "qonun", "ruxsat" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: obey?", "options": [ "chekmoq", "bo'ysunmoq", "taqiqlamoq", "hurmat qilmoq" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: danger?", "options": [ "ogohlantirish", "belgi", "xavf", "sog'liq" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A2-09",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Yesterday was a busy day for Anna. She woke up early and started her morning tasks quickly. She prepared breakfast for her family and spoke quietly because her baby brother was sleeping. At work, Anna had an important project to finish. She worked carefully and checked every document correctly. Her boss was happy with her behaviour and praised her hard work. In the evening, Anna walked home slowly while listening to music. She felt tired but proud of her productive day.",
+          "items": [
+            { "q": "What is the general topic of the text?", "options": [ "Anna cooking breakfast", "Anna's busy working day", "Anna's baby brother sleeping", "Anna walking home" ], "answer": 1 },
+            { "q": "How did Anna speak in the morning?", "options": [ "loudly", "angrily", "quietly", "badly" ], "answer": 2 },
+            { "q": "How did Anna check the documents at work?", "options": [ "quickly", "badly", "slowly", "correctly" ], "answer": 3 },
+            { "q": "What does the word \"quietly\" mean in the context of the text?", "options": [ "without making much noise", "with a lot of noise", "very quickly and angrily", "in a polite manner" ], "answer": 0 },
+            { "q": "Why did Anna feel proud at the end of the day?", "options": [ "Because she slept all day long", "Because she finished her productive work successfully", "Because she bought a new house", "Because she woke up late" ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "U xatni diqqat bilan o'qidi", "en": "He read the letter carefully", "tiles": [ "He", "read", "the", "letter", "carefully" ], "distractors": [ "careful", "reads", "quick" ], "alt": [] },
+            { "uz": "Biz uchrashuvga sekin yurib bordik", "en": "We walked slowly to the meeting", "tiles": [ "We", "walked", "slowly", "to", "the", "meeting" ], "distractors": [ "slow", "walk", "quickly" ], "alt": [] },
+            { "uz": "O'qituvchi savolga aniq javob berdi", "en": "The teacher answered the question clearly", "tiles": [ "The", "teacher", "answered", "the", "question", "clearly" ], "distractors": [ "clear", "answer", "loudly" ], "alt": [] },
+            { "uz": "Ular kutubxonada juda ohista gaplashishdi", "en": "They talked very quietly in the library", "tiles": [ "They", "talked", "very", "quietly", "in", "the", "library" ], "distractors": [ "quiet", "talk", "loudly" ], "alt": [] },
+            { "uz": "Mening do'stim ingliz tilida erkin va to'g'ri gapiradi", "en": "My friend speaks English fluently and correctly", "tiles": [ "My", "friend", "speaks", "English", "fluently", "and", "correctly" ], "distractors": [ "correct", "speak", "badly" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "quickly", "uz": "tez", "en": "She ran quickly to catch the bus", "tiles": [ "She", "ran", "quickly", "to", "catch", "the", "bus" ], "distractors": [ "quick", "runs", "a" ], "alt": [] },
+            { "word": "badly", "uz": "yomon", "en": "He played the guitar very badly", "tiles": [ "He", "played", "the", "guitar", "very", "badly" ], "distractors": [ "bad", "plays", "an" ], "alt": [] },
+            { "word": "clearly", "uz": "aniq, ravshan", "en": "The teacher spoke clearly to the class", "tiles": [ "The", "teacher", "spoke", "clearly", "to", "the", "class" ], "distractors": [ "clear", "speak", "a" ], "alt": [] },
+            { "word": "exactly", "uz": "aynan", "en": "You answered the question exactly as required", "tiles": [ "You", "answered", "the", "question", "exactly", "as", "required" ], "distractors": [ "exact", "answer", "an" ], "alt": [] },
+            { "word": "behaviour", "uz": "xulq, yurish-turish", "en": "His polite behaviour impressed all guests", "tiles": [ "His", "polite", "behaviour", "impressed", "all", "guests" ], "distractors": [ "behave", "politely", "the" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Yesterday, Tom walked slowly in the quiet park. He looked around carefully because he had a new camera. A little boy played happily with a red ball near the big tree. Suddenly, a dog barked loudly behind the green bushes. Tom did not run away, but he moved silently away from the dog. He wanted to take a nice photo of the cute animal, so he waited patiently. Finally, the dog stopped barking and walked away.",
+          "items": [
+            { "q": "How did Tom walk in the park yesterday?", "options": [ "He walked loud.", "He walk quickly.", "He walked slowly.", "He is walking quiet." ], "answer": 2 },
+            { "q": "Why did Tom look around carefully?", "options": [ "Because he heard a dog bark.", "Because he lost his red ball.", "Because he wanted to run away.", "Because he had a new camera." ], "answer": 3 },
+            { "q": "How did the little boy play near the big tree?", "options": [ "He played happily with a red ball.", "He played sadly with a small cat.", "He played angrily with a green car.", "He played quietly without any toy." ], "answer": 0 },
+            { "q": "What did the dog do behind the green bushes?", "options": [ "It spoke quietly.", "It barked loudly.", "It smiled politely.", "It played silently." ], "answer": 1 },
+            { "q": "How did Tom wait to take a nice photo of the cute animal?", "options": [ "He wait badly.", "He waited angrily.", "He waited patiently.", "He is waiting quick." ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "He speaks English clearly", "uz": "U inglizcha aniq gapiradi", "tiles": [ "He", "speaks", "English", "clearly" ], "distractors": [ "clear", "quick", "badly" ], "alt": [] },
+            { "en": "She works very quietly", "uz": "U juda ohista ishlaydi", "tiles": [ "She", "works", "very", "quietly" ], "distractors": [ "quiet", "loudly", "slow" ], "alt": [] },
+            { "en": "They opened the door slowly", "uz": "Ular eshikni sekin ochishdi", "tiles": [ "They", "opened", "the", "door", "slowly" ], "distractors": [ "slow", "quick", "easily" ], "alt": [] },
+            { "en": "He drives carefully today", "uz": "U bugun ehtiyotkorlik bilan haydaydi", "tiles": [ "He", "drives", "carefully", "today" ], "distractors": [ "careful", "badly", "quickly" ], "alt": [] },
+            { "en": "She answered the question correctly", "uz": "U savolga to'g'ri javob berdi", "tiles": [ "She", "answered", "the", "question", "correctly" ], "distractors": [ "correct", "clearly", "politely" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Describing how someone works",
+          "topicUz": "Ishni qanday bajarishni tasvirlash",
+          "sentences": ["First, the teacher enters the classroom very quietly.", "Then, she speaks clearly so every student can hear her.", "After that, the clever pupils answer all the questions correctly.", "Next, one boy works slowly because he wants no mistakes.", "Finally, the happy children finish the lesson with a smile."]
+        }
+      ],
+      "exam": [
+        { "q": "U bu vazifani osonlik bilan bajaradi.", "options": [ "He does this task easyly.", "He does this task easy.", "He does this task easily.", "He does this task ease." ], "answer": 2 },
+        { "q": "Biz uning gaplarini aniq, ravshan eshitdik.", "options": [ "We heard his words clear.", "We heard his words quick.", "We heard his words clever.", "We heard his words clearly." ], "answer": 3 },
+        { "q": "Mening do'stim ingliz tilida juda yaxshi gaplashadi.", "options": [ "My friend speaks English very badly.", "My friend speaks English very bad.", "My friend speaks English very quick.", "My friend speaks English very slow." ], "answer": 0 },
+        { "q": "Ular kutubxonada juda ohista gaplashishmoqda.", "options": [ "They are talking very loud in the library.", "They are talking very quietly in the library.", "They are talking very quiet in the library.", "They are talking very slowly in the library." ], "answer": 1 },
+        { "q": "O'qituvchi yangi qoidani sabr bilan tushuntirdi.", "options": [ "The teacher explained the new rule patience.", "The teacher explained the new rule patient.", "The teacher explained the new rule patiently.", "The teacher explained the new rule patientlyly." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: quickly?", "options": [ "sekin", "ohista", "ehtiyotkorlik bilan", "tez" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: carefully?", "options": [ "ehtiyotkorlik bilan", "yomon", "baland ovozda", "odob bilan" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: behaviour?", "options": [ "uslub, tarz", "xulq, yurish-turish", "ovoz", "tezlik" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "A2-10",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Every student wants to succeed in life. If you study hard every single day, you will earn good marks and find a great job in the future. Sometimes a difficult problem appears in class, but you can always find a good solution if you think carefully. You must also save your money and never waste it on useless things. If you borrow money from your friend, you will need to return it on time. Otherwise, you will create a bad situation and lose a good friend.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Good habits and smart choices bring success and prevent problems.", "Students should never study hard.", "Money is the only important thing in life.", "Friends always borrow money from each other." ], "answer": 0 },
+            { "q": "What will happen if you study hard every day?", "options": [ "You will lose all your good friends.", "You will earn good marks and find a great job.", "You will waste too much money.", "You will face impossible problems." ], "answer": 1 },
+            { "q": "What must you never do with your money according to the text?", "options": [ "Save it for the future", "Borrow it from a friend", "Waste it on useless things", "Earn it by working hard" ], "answer": 2 },
+            { "q": "In the text, what does the word 'solution' mean?", "options": [ "A difficult problem in class", "A bad situation with a friend", "A high price for something", "A way to solve a problem" ], "answer": 3 },
+            { "q": "What logical conclusion can we make about borrowing money from a friend?", "options": [ "If you do not return it on time, you will create a bad situation.", "If you borrow money, you will never need to work.", "If you save money, you will always waste it.", "If you study hard, you will not need any money." ], "answer": 0 }
+          ]
+        }
+      ],
+      "exam": []
+    },
+    {
+      "id": "A2-11",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "A2-12",
+      "tasks": [],
+      "exam": []
+    }
+  ],
+  "levelExam": []
+}

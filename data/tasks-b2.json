@@ -1,0 +1,552 @@
+{
+  "level": "B2",
+  "units": [
+    {
+      "id": "B2-01",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last Monday, a strange incident occurred in our quiet neighborhood. It was the backdrop of a gloomy evening when the situation began to unfold rapidly. The tension had been building up for hours before the police finally arrived at the scene. Earlier that day, residents had noticed a prolonged argument near the old community center. Two men were shouting loudly, and the disagreement started to escalate quickly. Many neighbors were watching the ongoing chaos from their windows, feeling very anxious about the outcome. Fortunately, the aggressive behavior began to subside as soon as the officers stepped out of their patrol cars. Afterwards, everyone discussed the aftermath of this brief but frightening event. According to the chronological report, nobody was seriously injured during the disturbance. Investigators later explained that a minor misunderstanding had triggered the whole argument beforehand. Eventually, calm was restored, and the neighborhood returned to its peaceful routine.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "A peaceful morning routine in a quiet village", "A lengthy police investigation about stolen cars", "A strange neighborhood incident and its chronological development", "An ongoing construction project near the community center" ], "answer": 2 },
+            { "q": "What had residents noticed earlier that day?", "options": [ "An ongoing construction work in the street", "A brief meeting about community taxes", "A new patrol car parked near the shop", "A prolonged argument near the old community center" ], "answer": 3 },
+            { "q": "What triggered the whole argument beforehand?", "options": [ "A minor misunderstanding between two men", "A loud music party at night", "A serious accident on the main road", "A prolonged rainstorm in the evening" ], "answer": 0 },
+            { "q": "In the text, what does the word \"backdrop\" mean in this context?", "options": [ "A bright sunny morning in summer", "A background or setting of an event", "A painted wall inside a theater", "A sudden loud noise in the street" ], "answer": 1 },
+            { "q": "What can we logically conclude from the aftermath of the event?", "options": [ "The police arrested every single resident in the street", "Nobody in the neighborhood ever spoke to each other again", "The neighborhood returned to its peaceful routine after calm was restored", "The old community center was completely destroyed by fire" ], "answer": 2 }
+          ]
+        },
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "narrative", "uz": "hikoya, bayon", "en": "The author had been preparing the narrative for weeks", "tiles": [ "The", "author", "had", "been", "preparing", "the", "narrative", "for", "weeks" ], "distractors": [ "were", "prepare", "in" ], "alt": [] },
+            { "word": "beforehand", "uz": "oldindan", "en": "They had booked the tickets beforehand to save time", "tiles": [ "They", "had", "booked", "the", "tickets", "beforehand", "to", "save", "time" ], "distractors": [ "has", "booking", "for" ], "alt": [] },
+            { "word": "occur", "uz": "yuz bermoq", "en": "The serious problem had occurred while we were talking", "tiles": [ "The", "serious", "problem", "had", "occurred", "while", "we", "were", "talking" ], "distractors": [ "has", "occurs", "was" ], "alt": [] },
+            { "word": "subside", "uz": "pasaymoq, tinchimoq", "en": "The storm had subsided when the rescue team arrived", "tiles": [ "The", "storm", "had", "subsided", "when", "the", "rescue", "team", "arrived" ], "distractors": [ "has", "subside", "is" ], "alt": [] },
+            { "word": "stage", "uz": "davr, pog'ona", "en": "They had reached a critical stage in their project", "tiles": [ "They", "had", "reached", "a", "critical", "stage", "in", "their", "project" ], "distractors": [ "has", "reach", "on" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Last Monday, a strange incident occurred in the center of the city. A prolonged argument started near the old station. Beforehand, the two groups had been arguing about local business for several weeks. The situation quickly escalated when someone shouted loudly. People were running away because the tension had been growing since morning. Police officers arrived after the conflict had already subsided. The outcome was peaceful, but everyone was shocked. Journalists tried to recount the details accurately.",
+          "items": [
+            { "q": "What happened in the center of the city last Monday?", "options": [ "A brief celebration started.", "A strange incident occurred.", "A heavy rain began to fall.", "A new market opened early." ], "answer": 1 },
+            { "q": "What had the two groups been doing for several weeks beforehand?", "options": [ "They had been painting houses.", "They had been cleaning the station.", "They had been arguing about local business.", "They had been traveling abroad." ], "answer": 2 },
+            { "q": "Why were people running away from the scene?", "options": [ "Because the weather had changed suddenly.", "Because the police told them to leave.", "Because a fire had started nearby.", "Because the tension had been growing since morning." ], "answer": 3 },
+            { "q": "When did the police officers arrive at the station?", "options": [ "After the conflict had already subsided.", "While the argument was escalating.", "Before the argument started.", "Before anyone shouted loudly." ], "answer": 0 },
+            { "q": "What was the final outcome of the situation?", "options": [ "It was violent.", "It was peaceful.", "It was tragic.", "It was mysterious." ], "answer": 1 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Narrative sequence of an incident",
+          "topicUz": "Voqeaning ketma-ket bayon qilinishi",
+          "sentences": ["First, a strange incident occurred when the ongoing meeting began to escalate.", "Then, the participants realized that tension had been building up beforehand for a lengthy period.", "After that, the brief discussion unfolded into a prolonged argument with no clear outcome.", "Next, the situation started to subside slowly as the participants reached an interval of silence.", "Finally, everyone left the room, and the aftermath of the event was discussed in a different context."]
+        }
+      ],
+      "exam": [
+        { "q": "Men u yerga borganimda, ular allaqachon ikki soatdan beri voqeani muhokama qilishayotgan edi.", "options": [ "When I got there, they discussed the incident for two hours.", "When I got there, they had been discussing the incident for two hours.", "When I got there, they have been discussing the incident for two hours.", "When I got there, they were discussing the incident since two hours." ], "answer": 1 },
+        { "q": "Telefon jiringlaganda, u bir soatdan beri hisobotni yozayotgan edi.", "options": [ "She wrote the report for an hour when the phone rang.", "She has been writing the report for an hour when the phone rang.", "She had been writing the report for an hour when the phone rang.", "She was writing the report since an hour when the phone rang." ], "answer": 2 },
+        { "q": "Biz yetib kelganimizda, nizo allaqachon avj ola boshlagan edi.", "options": [ "When we arrived, the conflict was already unfold.", "When we arrived, the conflict already unfolded.", "When we arrived, the conflict has already unfolded.", "When we arrived, the conflict had already been unfolding." ], "answer": 3 },
+        { "q": "Ular oxir-oqibat tinchib qolgunga qadar uzoq vaqt davomida qichqirishayotgan edi.", "options": [ "They had been shouting for a long time until they eventually subsided.", "They were shouting for a long time until they eventually subsided.", "They shouted for a long time until they eventually subside.", "They have been shouting for a long time until they eventually subsided." ], "answer": 0 },
+        { "q": "U barcha tafsilotlarni tushuntirib berayotganida, men uni diqqat bilan tinglayotgan edim.", "options": [ "While he was recounting all the details, I listened to him carefully.", "While he was recounting all the details, I was listening to him carefully.", "While he had been recounting all the details, I listened to him carefully.", "While he recounted all the details, I had listened to him carefully." ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: aftermath?", "options": [ "yakuniy natija", "vaqt tartibidagi", "oqibat, keyingi holat", "orqa manzara" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: trigger?", "options": [ "avj olmoq, ochilmoq", "kuchayib ketmoq", "qo'zg'atmoq", "sabab bo'lmoq" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: chronological?", "options": [ "vaqt tartibidagi", "davom etayotgan", "uzoq davom etadigan", "qisqa" ], "answer": 0 }
+      ]
+    },
+    {
+      "id": "B2-02",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Next year will be a major milestone for our company. Our team has a clear vision and a strong ambition to grow in the international market. By the end of next month, we will have finalised our strategic roadmap for the forthcoming period. Everyone anticipates great results because our primary objective is to surpass last year's financial projection. While our competitors are still dealing with pending issues, we will be launching our upcoming products across Europe. Our target is very high, but our management team can foresee a bright prospect ahead. We plan to commence our major marketing campaign in spring, and we are confident that our total sales will exceed all previous records.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "The company has a clear vision and ambitious future plans for growth.", "The company is planning to close its offices soon.", "The competitors are leading the European market successfully.", "The marketing campaign has already failed completely." ], "answer": 0 },
+            { "q": "When will the company have finalised its strategic roadmap?", "options": [ "In the spring of next year", "By the end of next month", "By the end of last year", "In two weeks" ], "answer": 1 },
+            { "q": "What will the team be doing while competitors deal with pending issues?", "options": [ "Closing down branches", "Waiting for new investors", "Launching upcoming products across Europe", "Stopping all marketing activities" ], "answer": 2 },
+            { "q": "What does the word 'vision' mean in this context?", "options": [ "A physical eye examination", "A sudden dream at night", "A historical documentary film", "A clear mental image of the future" ], "answer": 3 },
+            { "q": "What can be logically concluded about the company's future based on the text?", "options": [ "The company expects to achieve high sales and surpass previous records.", "The company is afraid of its competitors.", "The company will abandon its strategic roadmap.", "The company has no clear goals for next year." ], "answer": 0 }
+          ]
+        },
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "forthcoming", "uz": "yaqinlashib kelayotgan", "en": "We will be preparing for the forthcoming conference", "tiles": [ "We", "will", "be", "preparing", "for", "the", "forthcoming", "conference" ], "distractors": [ "is", "prepare", "were" ], "alt": [] },
+            { "word": "estimate", "uz": "taxminiy hisob", "en": "By next week we will have finalized the estimate", "tiles": [ "By", "next", "week", "we", "will", "have", "finalized", "the", "estimate" ], "distractors": [ "has", "finalize", "are" ], "alt": [] },
+            { "word": "ambition", "uz": "intilish, ambitsiya", "en": "She will be pursuing her ambition with great passion", "tiles": [ "She", "will", "be", "pursuing", "her", "ambition", "with", "great", "passion" ], "distractors": [ "is", "pursue", "has" ], "alt": [] },
+            { "word": "priority", "uz": "ustuvorlik", "en": "By tomorrow morning they will have set this priority", "tiles": [ "By", "tomorrow", "morning", "they", "will", "have", "set", "this", "priority" ], "distractors": [ "has", "sets", "are" ], "alt": [] },
+            { "word": "subsequent", "uz": "keyingi", "en": "We will be reviewing the subsequent report tonight", "tiles": [ "We", "will", "be", "reviewing", "the", "subsequent", "report", "tonight" ], "distractors": [ "is", "review", "were" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Next month, our company will commence a new project in Tashkent. According to the timeline, by December we will have finalised all major tasks. Our objective is to surpass last year's financial results. During the winter season, our team will be working hard to achieve every target on the roadmap. The director anticipates that our total profits will exceed twenty percent by the end of next year. We believe this upcoming milestone will bring great prospects for our business and strengthen our position in the market.",
+          "items": [
+            { "q": "What will the company be doing by December according to the timeline?", "options": [ "By December we will finalised all major tasks.", "By December we will have finalised all major tasks.", "By December we will has finalised all major tasks.", "By December we will having finalised all major tasks." ], "answer": 1 },
+            { "q": "What is the main objective of the company regarding financial results?", "options": [ "Our objective was to surpass last year's financial results.", "Our objective will be surpassing last year's financial results.", "Our objective is to surpass last year's financial results.", "Our objective has to surpass last year's financial results." ], "answer": 2 },
+            { "q": "What will the team be doing during the winter season?", "options": [ "Our team will working hard to achieve every target.", "Our team will work hard to achieve every target.", "Our team will be work hard to achieve every target.", "Our team will be working hard to achieve every target." ], "answer": 3 },
+            { "q": "What does the director anticipate about the total profits by the end of next year?", "options": [ "Our total profits will exceed twenty percent by the end of next year.", "Our total profits will be exceed twenty percent by the end of next year.", "Our total profits will exceeded twenty percent by the end of next year.", "Our total profits will have exceeding twenty percent by the end of next year." ], "answer": 0 },
+            { "q": "When will the company commence a new project in Tashkent?", "options": [ "Next month, our company will be commence a new project.", "Next month, our company will commence a new project.", "Next month, our company will have commenced a new project.", "Next month, our company will commences a new project." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "By next week we will have finalised the roadmap", "uz": "Kelasi haftaga qadar biz yo'l xaritasini yakunlagan bo'lamiz", "tiles": [ "By", "next", "week", "we", "will", "have", "finalised", "the", "roadmap" ], "distractors": [ "has", "finished", "are" ], "alt": [] },
+            { "en": "This time tomorrow I will be anticipating the project", "uz": "Ertaga shu payt men loyihani oldindan kutayotgan bo'laman", "tiles": [ "This", "time", "tomorrow", "I", "will", "be", "anticipating", "the", "project" ], "distractors": [ "am", "have", "anticipate" ], "alt": [] },
+            { "en": "By Monday they will have achieved the objective", "uz": "Dushanbaga qadar ular aniq maqsadga erishgan bo'lishadi", "tiles": [ "By", "Monday", "they", "will", "have", "achieved", "the", "objective" ], "distractors": [ "has", "achieve", "are" ], "alt": [] },
+            { "en": "Next month she will be commencing the new job", "uz": "Kelasi oy u yangi ishni rasman boshlayotgan bo'ladi", "tiles": [ "Next", "month", "she", "will", "be", "commencing", "the", "new", "job" ], "distractors": [ "is", "has", "commence" ], "alt": [] },
+            { "en": "By December we will have reached a milestone", "uz": "Dekabrgacha biz muhim bosqichga erishgan bo'lamiz", "tiles": [ "By", "December", "we", "will", "have", "reached", "a", "milestone" ], "distractors": [ "has", "reach", "are" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Future Plans and Milestones",
+          "topicUz": "Kelajakdagi rejalar va muhim bosqichlar",
+          "sentences": ["First, the team will commence the forthcoming project according to the new timeline.", "Then, by next month, they will have established a clear roadmap for the primary objective.", "After that, everyone will be working hard to achieve the ultimate target ahead.", "Next, the managers will have finalized the main estimate before the upcoming inspection.", "Finally, this time next year we will be celebrating our great milestone."]
+        }
+      ],
+      "exam": [
+        { "q": "Ertaga soat o'nda biz yangi loyihani muhokama qilayotgan bo'lamiz.", "options": [ "At ten o'clock tomorrow we are discussing the new project.", "At ten o'clock tomorrow we will discuss the new project.", "At ten o'clock tomorrow we will be discussing the new project.", "At ten o'clock tomorrow we will have discussed the new project." ], "answer": 2 },
+        { "q": "Kelgusi yilning oxiriga kelib biz barcha maqsadlarga erishgan bo'lamiz.", "options": [ "By the end of next year we achieve all objectives.", "By the end of next year we will be achieving all objectives.", "By the end of next year we achieved all objectives.", "By the end of next year we will have achieved all objectives." ], "answer": 3 },
+        { "q": "Kelgusi dushanba kuni soat ikkida men hisobot yozyotgan bo'laman.", "options": [ "Next Monday at two o'clock I will be writing the report.", "Next Monday at two o'clock I will have written the report.", "Next Monday at two o'clock I am writing the report.", "Next Monday at two o'clock I will write the report." ], "answer": 0 },
+        { "q": "Keyingi oyga qadar ular shartnomani imzolagan bo'lishadi.", "options": [ "By next month they will be signing the contract.", "By next month they will have signed the contract.", "By next month they sign the contract.", "By next month they signed the contract." ], "answer": 1 },
+        { "q": "O'sha paytda ular yangi ofisga ko'chib o'tayotgan bo'lishadi.", "options": [ "At that time they will have moved to a new office.", "At that time they move to a new office.", "At that time they will be moving to a new office.", "At that time they are moving to a new office." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: anticipate?", "options": [ "oldindan ko'rmoq", "yakunlamoq", "rasman boshlamoq", "oldindan kutmoq" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: milestone?", "options": [ "muhim bosqich", "aniq maqsad", "vaqt jadvali", "ustuvorlik" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: surpass?", "options": [ "oshib ketmoq", "o'zib ketmoq", "ortda qoldirmoq", "yaqinlashib kelayotgan" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "B2-03",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Yesterday, our team discussed a complex business scenario during the meeting. We talked about how past decisions alter our current professional situation. If our director had listened to the advice last year, our company would be much more stable today. However, he ignored the warning signs because of his pride. Another colleague mentioned that if we had invested in new software months ago, we would work faster now. Every choice we make has a repercussion later, and some mistakes are irreversible. Looking back with hindsight, we realize that many problems were completely avoidable. If we had planned our budget more carefully, we would not struggle with finances currently. The director admitted that foresight is better than regret, but we cannot undo past actions. We must adapt to the market and compensate for previous losses. Nevertheless, our team remains hopeful about the future likelihood of success.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "The team discussed how past decisions affect the present situation", "The company decided to fire the director immediately", "The software investments solved all financial problems", "The business has no future likelihood of success" ], "answer": 0 },
+            { "q": "What did the director do last year according to the text?", "options": [ "He invested in new software months ago", "He ignored the warning signs because of his pride", "He planned the company budget very carefully", "He listened to all the advice from colleagues" ], "answer": 1 },
+            { "q": "What would happen now if they had invested in new software months ago?", "options": [ "They would be much more stable", "They would struggle with finances", "They would work faster now", "They would regret past actions" ], "answer": 2 },
+            { "q": "In the text, what does the word 'avoidable' mean in this context?", "options": [ "Something that is very profitable", "Something that is completely irreversible", "Something that happens inevitably", "Something that could have been prevented" ], "answer": 3 },
+            { "q": "What can be logically concluded about foresight and regret based on the text?", "options": [ "Foresight is better than regret, but past actions cannot be undone", "Regret helps companies make better budgets in the present", "Past mistakes are always reversible with new software", "Directors never ignore warning signs in business scenarios" ], "answer": 0 }
+          ]
+        },
+        null,
+        null,
+        {
+          "type": "listen",
+          "text": "Yesterday was a very stressful day for David. He had to alter his travel plans because of a major flight delay. If he had checked the weather forecast in the morning, he would not be stuck at the airport right now. Furthermore, if he had booked a direct flight, he would feel much less tired this evening. David always ignores useful advice about travel, which is completely avoidable. Now he must compensate for lost time and wait patiently.",
+          "items": [
+            { "q": "Why did David have to change his travel plans yesterday?", "options": [ "Because the weather was too warm", "Because he missed his morning train", "Because of a major flight delay", "Because he lost his passport today" ], "answer": 2 },
+            { "q": "What does David wish he had checked in the morning according to the text?", "options": [ "The ticket prices", "The airport map", "The flight schedule", "The weather forecast" ], "answer": 3 },
+            { "q": "How would David feel this evening if he had booked a direct flight?", "options": [ "He would feel much less tired", "He would feel slightly angry", "He would feel much more tired", "He would feel completely exhausted" ], "answer": 0 },
+            { "q": "What does David usually do regarding useful advice about travel?", "options": [ "He always follows them carefully", "He always ignores them", "He always writes them down", "He always shares them with friends" ], "answer": 1 },
+            { "q": "What must David do now while waiting at the airport?", "options": [ "He must book another hotel room", "He must cancel all his meetings", "He must compensate for lost time and wait patiently", "He must call the airline manager immediately" ], "answer": 2 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Mixed Conditionals",
+          "topicUz": "Aralash shart gaplar",
+          "sentences": ["First, we must analyze the past scenario because every action has a repercussion.", "If we had studied the premise carefully yesterday, we would understand the hidden implication now.", "Then, we could adapt our plan to offset any irreversible damage.", "After that, we would not need to undo past mistakes in hindsight.", "Finally, if we were more experienced, we could easily alter this inevitable outcome."]
+        }
+      ],
+      "exam": [
+        { "q": "Agar kecha yaxshiroq uxlaganimda, hozir bunday charchamagan bo'lardim.", "options": [ "If I slept better yesterday, I wouldn't be so tired now.", "If I had slept better yesterday, I wouldn't be so tired now.", "If I had slept better yesterday, I won't be so tired now.", "If I would sleep better yesterday, I wouldn't be so tired now." ], "answer": 1 },
+        { "q": "U o'sha taklifni qabul qilganida, hozir chet elda ishlayotgan bo'lardi.", "options": [ "If he accepted that offer, he would be working abroad now.", "If he had accepted that offer, he will be working abroad now.", "If he had accepted that offer, he would be working abroad now.", "If he has accepted that offer, he would work abroad now." ], "answer": 2 },
+        { "q": "Agar ingliz tilini jiddiy o'rgansam, hozir yaxshi ish topgan bo'lardim.", "options": [ "If I learned English seriously, I would have found a good job now.", "If I had learned English seriously, I would have found a good job now.", "If I learn English seriously, I would find a good job now.", "If I had learned English seriously, I would find a good job now." ], "answer": 3 },
+        { "q": "Agar mashinani vaqtida tuzatkazganimda, hozir muammoga duch kelmagan bo'lardim.", "options": [ "If I had fixed the car on time, I wouldn't have trouble now.", "If I had fixed the car on time, I wouldn't have had trouble now.", "If I had fixed the car on time, I won't have trouble now.", "If I fixed the car on time, I wouldn't have trouble now." ], "answer": 0 },
+        { "q": "Agar u pasportini yo'qotmaganida, hozir samolyotga chiqqan bo'lardi.", "options": [ "If she didn't lose her passport, she would be boarding the plane now.", "If she hadn't lost her passport, she would be boarding the plane now.", "If she hadn't lost her passport, she will be boarding the plane now.", "If she wouldn't lose her passport, she is boarding the plane now." ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: hypothetical?", "options": [ "oldini olsa bo'ladigan", "muqarrar", "faraziy", "ehtimol darajasi" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: inevitable?", "options": [ "qaytarib bo'lmaydigan", "salbiy oqibat", "vaziyat", "muqarrar" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: repercussion?", "options": [ "salbiy oqibat", "keyin bilingan aql", "asos", "yashirin ma'no" ], "answer": 0 }
+      ]
+    },
+    {
+      "id": "B2-04",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "It is widely acknowledged that modern education faces serious challenges across the globe. According to a recent survey conducted by a major international agency, traditional teaching methods are often no longer sufficient for students. It is commonly reported that young learners need more practical skills to succeed in their future careers. Furthermore, experts are believed to understand the importance of critical thinking in every classroom. Teachers are said to adapt their lessons to match the demands of the digital age. Although some institutions still prefer old textbooks, it is generally considered that digital tools improve overall academic performance. Research findings suggest that schools should invest in better technology immediately. Finally, it is presumed that future educational policies will focus heavily on student engagement and interactive learning environments everywhere.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Education is facing challenges and shifting toward practical, digital tools.", "Traditional textbooks are the only way to achieve academic success.", "International agencies believe that schools should stop using technology.", "Young learners do not need any practical skills for their future careers." ], "answer": 0 },
+            { "q": "What do experts believe according to the text?", "options": [ "They believe that traditional methods are completely sufficient for students.", "They are believed to understand the importance of critical thinking in every classroom.", "They are said to reject all forms of modern digital tools.", "They think that old textbooks should be used in every school." ], "answer": 1 },
+            { "q": "What do research findings suggest?", "options": [ "Teachers should stop adapting their lessons to the digital age.", "Institutions must ban all interactive learning environments.", "Schools should invest in better technology immediately.", "Educational policies will ignore student engagement completely." ], "answer": 2 },
+            { "q": "In the context of the text, what does the word \"agency\" mean?", "options": [ "A digital tool for academic performance.", "A small group of students learning in a classroom.", "A traditional textbook used for teaching.", "A major international organization or institution." ], "answer": 3 },
+            { "q": "What can be logically concluded from the text?", "options": [ "Educational systems are evolving to include modern technology and practical skills.", "Schools are completely abandoning all forms of traditional education forever.", "Digital tools have proven to be entirely useless for academic performance.", "Teachers no longer need to care about student engagement." ], "answer": 0 }
+          ]
+        },
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "allegedly", "uz": "aytilishicha", "en": "It is allegedly known as a secure system", "tiles": [ "It", "is", "allegedly", "known", "as", "a", "secure", "system" ], "distractors": [ "are", "the", "know" ], "alt": [] },
+            { "word": "universally", "uz": "hamma joyda bir xil", "en": "It is universally accepted that health is wealth", "tiles": [ "It", "is", "universally", "accepted", "that", "health", "is", "wealth" ], "distractors": [ "are", "accept", "an" ], "alt": [] },
+            { "word": "reckon", "uz": "hisoblamoq, o'ylamoq", "en": "He is reckoned to be a reliable partner", "tiles": [ "He", "is", "reckoned", "to", "be", "a", "reliable", "partner" ], "distractors": [ "are", "reckon", "the" ], "alt": [] },
+            { "word": "source", "uz": "manba", "en": "It is said that the source is reliable", "tiles": [ "It", "is", "said", "that", "the", "source", "is", "reliable" ], "distractors": [ "are", "sources", "a" ], "alt": [] },
+            { "word": "survey", "uz": "so'rovnoma", "en": "It is reported that the survey is accurate", "tiles": [ "It", "is", "reported", "that", "the", "survey", "is", "accurate" ], "distractors": [ "are", "surveys", "an" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "It is widely reported that modern research brings new findings every single day. The agency published a new statistic yesterday morning. It is believed that the majority of citizens read official reports online. Scientists are generally acknowledged to work hard in every institution. Finally, it is deemed that sources must be checked before publishing any news.",
+          "items": [
+            { "q": "What is widely reported about modern research?", "options": [ "It brings new findings every single day.", "It is brought new findings every single day.", "It bring new findings every single day.", "It are bringing new findings every single day." ], "answer": 0 },
+            { "q": "When did the agency publish a new statistic?", "options": [ "Yesterday afternoon.", "Yesterday morning.", "Last week.", "This morning." ], "answer": 1 },
+            { "q": "What is believed about the majority of citizens?", "options": [ "They read official reports offline.", "They write official reports online.", "They read official reports online.", "They are read official reports online." ], "answer": 2 },
+            { "q": "Who are generally acknowledged to work hard in every institution?", "options": [ "Officials", "The agency", "The majority", "Scientists" ], "answer": 3 },
+            { "q": "What is deemed that must be checked before publishing any news?", "options": [ "Sources", "Institutions", "Agencies", "Statistics" ], "answer": 0 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Impersonal passive structures",
+          "topicUz": "Shaxssiz majhul nisbat qurilmalari",
+          "sentences": ["It is commonly believed that the new research finding is accurate.", "The statistic is widely cited by the official institution in the report.", "He is said to be the best expert in the agency.", "The method is acknowledged to be effective by the authority.", "It is reported that the survey shows a clear majority."]
+        }
+      ],
+      "exam": [
+        { "q": "Bu kompaniya yangi texnologiyadan foydalanmoqda deyiladi.", "options": [ "They say that this company uses new technology.", "It is said this company uses new technology.", "It is said that this company is using new technology.", "It is said to use new technology by this company." ], "answer": 2 },
+        { "q": "Ushbu bino o'n to'qqizinchi asrda qurilgan deb hisoblanadi.", "options": [ "It is believed that this building built in the nineteenth century.", "It believes that this building was built in the nineteenth century.", "This building is believed built in the nineteenth century.", "It is believed that this building was built in the nineteenth century." ], "answer": 3 },
+        { "q": "Direktor bu lavozimga tayinlanishi kutilmoqda.", "options": [ "The director is expected to be appointed to this position.", "It is expected that the director appoints to this position.", "The director is expected to appoint to this position.", "The director expects to be appointed to this position." ], "answer": 0 },
+        { "q": "Ushbu qaror barcha fuqarolarga ta'sir qilishi taxmin qilinmoqda.", "options": [ "It presumes that this decision will affect all citizens.", "It is presumed that this decision affects all citizens.", "This decision is presumed affecting all citizens.", "It is presumed to affecting all citizens." ], "answer": 1 },
+        { "q": "Iqtisodiyot kelgusi yilda o'sishi aytilmoqda.", "options": [ "The economy is said growing next year.", "It says that the economy will grow next year.", "The economy is said to grow next year.", "The economy is said that it grows next year." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: allegedly?", "options": [ "umumiy holda", "keng doirada", "xabarlarga ko'ra", "aytilishicha" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: research?", "options": [ "tadqiqot", "so'rovnoma", "statistik ko'rsatkich", "tadqiqot xulosasi" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: acknowledge?", "options": [ "deb hisoblamoq", "e'tirof etmoq", "idrok qilmoq", "deb topmoq" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "B2-05",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last Monday, our company experienced a major financial oversight during the annual audit. The manager was extremely careless because he did not check the final report twice. He must have forgotten to include the main tax documents, which caused a huge problem for everyone in the office. According to the strict rules, he should have been much more thorough before signing the papers. However, some colleagues believe this mistake was completely accidental and not a deliberate action by the director. Still, we can't have ignored such a serious error without examining all the financial records carefully. Everyone was totally unaware of this issue until the bank contacted us directly. We learned that caution is essential in business, and we must never underestimate the importance of taking proper precautions before every major project begins.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "The daily routine of a careful manager", "How to plan a new marketing campaign successfully", "A financial oversight and mistakes during an audit", "A successful business partnership with a bank" ], "answer": 2 },
+            { "q": "What did the manager forget to include according to the text?", "options": [ "The list of new employees", "The weekly meeting schedule", "The office building keys", "The main tax documents" ], "answer": 3 },
+            { "q": "When did everyone find out about the financial issue?", "options": [ "When the bank contacted them directly", "When the manager resigned", "During the weekly team lunch", "After reading the newspaper" ], "answer": 0 },
+            { "q": "In the text, what does the word 'oversight' mean in this context?", "options": [ "A careful supervision of a project", "An accidental mistake caused by not noticing something", "A deliberate plan to change the office", "A successful business achievement" ], "answer": 1 },
+            { "q": "What conclusion can be drawn about business practices from the text?", "options": [ "Managers never need to check financial reports twice", "Banks always make mistakes during annual audits", "Proper precautions and thoroughness are essential to avoid serious mistakes", "Financial errors are always deliberate actions" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "U uchrashuvni unutgan bo'lsa kerak.", "en": "He must have forgotten the meeting.", "tiles": [ "He", "must", "have", "forgotten", "the", "meeting" ], "distractors": [ "should", "can't", "forgot" ], "alt": [] },
+            { "uz": "Sen menga buni oldinroq aytishing kerak edi.", "en": "You should have told me this earlier.", "tiles": [ "You", "should", "have", "told", "me", "this", "earlier" ], "distractors": [ "must", "can't", "tell" ], "alt": [] },
+            { "uz": "Ular bu xatoni ataylab qilgan bo'lishi mumkin emas.", "en": "They can't have made this mistake intentionally.", "tiles": [ "They", "can't", "have", "made", "this", "mistake", "intentionally" ], "distractors": [ "must", "should", "make" ], "alt": [] },
+            { "uz": "Biz hujjatlarni ancha puxtaroq tekshirishimiz kerak edi.", "en": "We should have checked the documents more thoroughly.", "tiles": [ "We", "should", "have", "checked", "the", "documents", "more", "thoroughly" ], "distractors": [ "must", "can't", "check" ], "alt": [] },
+            { "uz": "U raqobatchining imkoniyatlarini past baholagan bo'lishi kerak.", "en": "He must have underestimated the competitor's capabilities.", "tiles": [ "He", "must", "have", "underestimated", "the", "competitor's", "capabilities" ], "distractors": [ "should", "can't", "underestimate" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "speculation", "uz": "taxmin, mulohaza", "en": "That must have been pure speculation", "tiles": [ "That", "must", "have", "been", "pure", "speculation" ], "distractors": [ "is", "should", "be" ], "alt": [] },
+            { "word": "deliberate", "uz": "ataylab qilingan", "en": "It can't have been a deliberate mistake", "tiles": [ "It", "can't", "have", "been", "a", "deliberate", "mistake" ], "distractors": [ "must", "was", "an" ], "alt": [] },
+            { "word": "reckless", "uz": "o'ylamasdan ish qiladigan", "en": "He shouldn't have been so reckless", "tiles": [ "He", "shouldn't", "have", "been", "so", "reckless" ], "distractors": [ "must", "is", "was" ], "alt": [] },
+            { "word": "unaware", "uz": "bexabar", "en": "She must have been completely unaware", "tiles": [ "She", "must", "have", "been", "completely", "unaware" ], "distractors": [ "can't", "is", "was" ], "alt": [] },
+            { "word": "underestimate", "uz": "kam baholamoq", "en": "You shouldn't have underestimated the risk", "tiles": [ "You", "shouldn't", "have", "underestimated", "the", "risk" ], "distractors": [ "must", "an", "has" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Last Monday, John faced a serious problem at his office. He realized that an important document was missing from his desk. At first, he thought it was an accidental loss due to his own carelessness. However, a thorough check showed that the door was locked all night. John knew that his colleague Mark had the second key. Mark must have entered the room very quietly while John was away. John should have locked the drawer with a key before leaving. He can't have taken the file without a specific reason because it contains secret financial data.",
+          "items": [
+            { "q": "What did John realize when he arrived at his office last Monday?", "options": [ "His office window was broken by someone.", "An important document was missing from his desk.", "The computer was stolen during the night.", "His colleague Mark left the door open." ], "answer": 1 },
+            { "q": "What was John's first thought about the missing document?", "options": [ "Someone deliberately stole it from him.", "He threw it away by mistake yesterday.", "It was an accidental loss due to his own carelessness.", "Mark took it to read at home." ], "answer": 2 },
+            { "q": "Who had the second key to the office room?", "options": [ "The company director", "The cleaning lady", "An unknown visitor", "John's colleague Mark" ], "answer": 3 },
+            { "q": "What does the text say John should have done before leaving?", "options": [ "He should have locked the drawer with a key.", "He should have left a note on the table.", "He should have turned off all the lights.", "He should have called Mark to check the room." ], "answer": 0 },
+            { "q": "Why can't Mark have taken the file without a specific reason?", "options": [ "Because he was on vacation all week.", "Because it contains secret financial data.", "Because he does not know about finance.", "Because the drawer was empty." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "You should have told me earlier", "uz": "Menga oldinroq aytishing kerak edi", "tiles": [ "You", "should", "have", "told", "me", "earlier" ], "distractors": [ "must", "can't", "tell" ], "alt": [] },
+            { "en": "He must have forgotten the meeting", "uz": "U uchrashuvni unutgan bo'lsa kerak", "tiles": [ "He", "must", "have", "forgotten", "the", "meeting" ], "distractors": [ "should", "forget", "has" ], "alt": [] },
+            { "en": "They can't have known the truth", "uz": "Ular haqiqatni bilgan bo'lishi mumkin emas", "tiles": [ "They", "can't", "have", "known", "the", "truth" ], "distractors": [ "must", "should", "know" ], "alt": [] },
+            { "en": "She should have checked everything thoroughly", "uz": "U hamma narsani puxta tekshirishi kerak edi", "tiles": [ "She", "should", "have", "checked", "everything", "thoroughly" ], "distractors": [ "must", "can't", "check" ], "alt": [] },
+            { "en": "You must have made a careless mistake", "uz": "Siz e'tiborsiz xato qilgan bo'lishingiz kerak", "tiles": [ "You", "must", "have", "made", "a", "careless", "mistake" ], "distractors": [ "should", "can't", "make" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Past Modals of Speculation and Criticism",
+          "topicUz": "O'tmishdagi taxmin va tanqid modallari",
+          "sentences": ["First, Mark was completely careless with his crucial document.", "He must have left the important paper on the busy desk.", "Colleagues checked the room, but he can't have placed it safely there.", "His careless action caused a major oversight at work.", "Looking back, he should have been far more cautious and thorough."]
+        }
+      ],
+      "exam": [
+        { "q": "U bu xatoni qilgan bo'lishi mumkin emas, u juda puxta ishlaydi.", "options": [ "He must have made this mistake, he works very thoroughly.", "He should have made this mistake, he works very thoroughly.", "He can't have made this mistake, he works very thoroughly.", "He can have made this mistake, he works very thoroughly." ], "answer": 2 },
+        { "q": "Menga safar oldidan barcha ehtiyot choralarini ko'rishing kerak edi.", "options": [ "You must have taken all precautions before the trip.", "You can't have taken all precautions before the trip.", "You should take all precautions before the trip.", "You should have taken all precautions before the trip." ], "answer": 3 },
+        { "q": "Ular bu muhim tafsilotni e'tibordan chetda qoldirgan bo'lishi kerak.", "options": [ "They must have overlooked this important detail.", "They should have overlooked this important detail.", "They can't have overlooked this important detail.", "They must overlook this important detail." ], "answer": 0 },
+        { "q": "Ishni shunchalik e'tiborsiz bajarishing kerak emas edi.", "options": [ "You must have done the work so carelessly.", "You shouldn't have done the work so carelessly.", "You should have done the work so carelessly.", "You can't have done the work so carelessly." ], "answer": 1 },
+        { "q": "U xavfni noto'g'ri baholagan bo'lishi mumkin emas.", "options": [ "She should have misjudged the risk.", "She must have misjudged the risk.", "She can't have misjudged the risk.", "She can have misjudged the risk." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: speculation?", "options": [ "beparvolik", "ehtiyot chorasi", "e'tibordan chetda qolish", "taxmin, mulohaza" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: negligence?", "options": [ "beparvolik", "ehtiyotkorlik", "ikkilanish", "istamaslik" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: underestimate?", "options": [ "ortiqcha baholamoq", "kam baholamoq", "noto'g'ri baho bermoq", "e'tibordan qochirmoq" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "B2-06",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "The old establishment where my brother works is located near the central department that handles foreign affairs. This establishment, which was founded in nineteen ninety five, serves as the main headquarters for the region. People often visit the monument that stands in front of the building to take pictures. The city, whose architecture attracts thousands of tourists every year, has a very pleasant climate. Inside this establishment, every individual must follow strict safety rules. The word \"establishment\" in this context means a public organization or institution. Employees who arrive late usually receive a written warning from their managers. The local government plans to open a new branch in the neighboring province next month.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "Instructions on how to design a modern building in the capital", "A story about a tourist visiting historical ruins in the desert", "A description of a specific public establishment and its features", "A detailed guide about farming and agriculture in the local valley" ], "answer": 2 },
+            { "q": "When was the establishment founded?", "options": [ "In nineteen ninety six", "In nineteen eighty five", "In two thousand and five", "In nineteen ninety five" ], "answer": 3 },
+            { "q": "What do people often do in front of the building?", "options": [ "Take pictures of the monument", "Plant trees in the green garden", "Sell tickets for the museum tour", "Wait for the foreign diplomats" ], "answer": 0 },
+            { "q": "What does the word \"establishment\" mean in this context?", "options": [ "A large forest near the coast", "A public organization or institution", "A broken piece of ancient ruins", "A cold climate in the mountains" ], "answer": 1 },
+            { "q": "What can be logically concluded about the city based on the text?", "options": [ "It lacks any modern buildings or organizations", "It has a very cold and snowy winter climate", "It is appealing to people who travel for sightseeing", "It only has one department for all business sectors" ], "answer": 2 }
+          ]
+        },
+        null,
+        {
+          "type": "build",
+          "items": [
+            { "word": "entity", "uz": "obyekt, tuzilma", "en": "The building that stands there is a modern entity", "tiles": [ "The", "building", "that", "stands", "there", "is", "a", "modern", "entity" ], "distractors": [ "which", "are", "an" ], "alt": [] },
+            { "word": "department", "uz": "bo'lim", "en": "He works in the department which deals with sales", "tiles": [ "He", "works", "in", "the", "department", "which", "deals", "with", "sales" ], "distractors": [ "who", "deal", "an" ], "alt": [] },
+            { "word": "province", "uz": "viloyat", "en": "They visited a province where people grow grapes", "tiles": [ "They", "visited", "a", "province", "where", "people", "grow", "grapes" ], "distractors": [ "which", "grows", "the" ], "alt": [] },
+            { "word": "valley", "uz": "vodiy", "en": "We explored the valley which lies between two mountains", "tiles": [ "We", "explored", "the", "valley", "which", "lies", "between", "two", "mountains" ], "distractors": [ "where", "lie", "an" ], "alt": [] },
+            { "word": "monument", "uz": "yodgorlik", "en": "They admired the monument that honors local heroes", "tiles": [ "They", "admired", "the", "monument", "that", "honors", "local", "heroes" ], "distractors": [ "which", "honor", "an" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "The new establishment which opened yesterday is located in the capital. The director who manages this branch visited our office on Monday. Our headquarters, which is situated near the coast, employs two hundred people. The department that deals with finance has a separate division. The historic monument which attracts many tourists every year was restored last summer. Visitors who come from another region must show their identity cards at the entrance. The central sector, which covers a large territory, requires strict security rules.",
+          "items": [
+            { "q": "Where is the new establishment located?", "options": [ "It are located in the capital.", "It is located in the capital.", "It located in the capital.", "It is locate in the capital." ], "answer": 1 },
+            { "q": "When did the director visit our office?", "options": [ "He visited our office on Sunday.", "He visit our office on Monday.", "He visited our office on Monday.", "He is visiting our office on Monday." ], "answer": 2 },
+            { "q": "Where is our headquarters situated?", "options": [ "It is situated near the river.", "It is situated in the mountain.", "It is situated in the desert.", "It is situated near the coast." ], "answer": 3 },
+            { "q": "What was restored last summer?", "options": [ "The historic monument which attracts many tourists every year.", "The old establishment which opened yesterday.", "The central sector which covers a large territory.", "The separate division that deals with finance." ], "answer": 0 },
+            { "q": "What must visitors from another region show at the entrance?", "options": [ "They must show their tickets.", "They must show their identity cards.", "They must show their passports.", "They must show their driving licenses." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "The branch which opened yesterday is busy", "uz": "Kecha ochilgan filial band", "tiles": [ "The", "branch", "which", "opened", "yesterday", "is", "busy" ], "distractors": [ "who", "are", "were" ], "alt": [] },
+            { "en": "Tashkent, which is the capital, is large", "uz": "Toshkent, u poytaxt, katta", "tiles": [ "Tashkent,", "which", "is", "the", "capital,", "is", "large" ], "distractors": [ "who", "that", "are" ], "alt": [] },
+            { "en": "The department that handles sales is growing", "uz": "Savdo bilan shug'ullanadigan bo'lim o'sib bormoqda", "tiles": [ "The", "department", "that", "handles", "sales", "is", "growing" ], "distractors": [ "which,", "who", "are" ], "alt": [] },
+            { "en": "Paris, which has great architecture, attracts visitors", "uz": "Parij, u ajoyib me'morchilikka ega, tashrif buyuruvchilarni jalb qiladi", "tiles": [ "Paris,", "which", "has", "great", "architecture,", "attracts", "visitors" ], "distractors": [ "that", "who", "attract" ], "alt": [] },
+            { "en": "The monument that stands here is old", "uz": "Bu yerda turgan yodgorlik eski", "tiles": [ "The", "monument", "that", "stands", "here", "is", "old" ], "distractors": [ "which,", "who", "are" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Non-defining relative clauses",
+          "topicUz": "Qo'shimcha ma'lumot beruvchi ergash gaplar",
+          "sentences": ["First, Tashkent, which is the capital of our country, has a modern headquarters.", "Then, this department, which controls every branch, employs many specialists.", "After that, the establishment, which stands near the border, was visited by tourists.", "Next, Samarkand, which possesses rich heritage, attracts visitors from all over the world.", "Finally, the old region, which is famous for its unique architecture, borders a vast desert."]
+        }
+      ],
+      "exam": [
+        { "q": "Men kecha tanishgan injener shu yerda ishlaydi.", "options": [ "The engineer that, I met yesterday, works here.", "The engineer, who I met yesterday, works here.", "The engineer which I met yesterday works here.", "The engineer who I met yesterday works here." ], "answer": 3 },
+        { "q": "Mening Toshkentda yashovchi singlim o'qituvchi.", "options": [ "My sister who lives in Tashkent is a teacher.", "My sister, who lives in Tashkent, is a teacher.", "My sister, that lives in Tashkent, is a teacher.", "My sister which lives in Tashkent is a teacher." ], "answer": 0 },
+        { "q": "Yevropada joylashgan Parij shahriga ko'pchilik sayohat qiladi.", "options": [ "Paris which is located in Europe is visited by many people.", "Paris, which is located in Europe, is visited by many people.", "Paris, that is located in Europe, is visited by many people.", "Paris, where is located in Europe, is visited by many people." ], "answer": 1 },
+        { "q": "Kitobni yozgan muallif bugun anjumanda qatnashmoqda.", "options": [ "The author, who wrote the book, is attending the conference today.", "The author which wrote the book is attending the conference today.", "The author who wrote the book is attending the conference today.", "The author, that wrote the book, is attending the conference today." ], "answer": 2 },
+        { "q": "Mening eng yaxshi ko'rgan taomim bo'lgan oshni dadam pishirdi.", "options": [ "My father cooked plov, that is my favorite dish.", "My father cooked plov which is my favorite dish.", "My father, who cooked plov, is my favorite dish.", "My father cooked plov, which is my favorite dish." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: headquarters?", "options": [ "bosh qarorgoh", "filial", "muassasa", "bo'lim" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: heritage?", "options": [ "yodgorlik", "meros", "me'morchilik", "vayronalar" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: landmark?", "options": [ "dengiz qirg'og'i", "bosh qarorgoh", "mashhur diqqatga sazovor joy", "hudud" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "B2-07",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Yesterday was a difficult day for my close friend Mark, and I felt deep remorse about how I spoke to him. We had an argument about a trivial matter, and my bitter words caused him serious distress. Right now, I wish I had chosen my words more carefully during our conversation. Mark is a good person who always shows great empathy and compassion toward everyone around him. Whenever I feel sad, he tries to console me and cheer me up with genuine kindness. Looking back at my mistake, I yearn to repair our friendship as soon as possible. I would rather we forgave each other and forgot the argument completely instead of holding a grudge for weeks. True friends should always encourage and comfort one another during hard times, not cause torment. Today, I am going to write a sincere apology letter to Mark and hope he will reconcile with me.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "A happy holiday trip with old friends", "A busy working day at a local office", "A deep regret over an argument and a wish to reconcile", "A long journey to a foreign country" ], "answer": 2 },
+            { "q": "What did the author's bitter words cause Mark?", "options": [ "Total indifference", "Extreme physical pain", "Financial problems", "Serious distress" ], "answer": 3 },
+            { "q": "What does Mark usually do when the author feels sad?", "options": [ "He tries to console and cheer the author up", "He ignores the author completely", "He becomes angry and holds a grudge", "He leaves the room without speaking" ], "answer": 0 },
+            { "q": "In the text, what does the word 'yearn' mean in this context?", "options": [ "To run very fast", "To have a strong desire or intizor bo'lmoq", "To forget something forever", "To speak loudly in public" ], "answer": 1 },
+            { "q": "What can we logically conclude from the text about the author's future plan?", "options": [ "The author will start a new argument tomorrow", "The author will never speak to Mark again", "The author will send a sincere apology letter to Mark", "The author will move to another city" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Qaniydi hozir o'sha o'tmishdagi xatoni kechirsam.", "en": "I wish I could forgive that past mistake.", "tiles": [ "I", "wish", "I", "could", "forgive", "that", "past", "mistake" ], "distractors": [ "can", "forgives" ], "alt": [] },
+            { "uz": "Qaniydi hozir bu og'ir vicdon azobini his qilmasam.", "en": "I wish I didn't feel this heavy remorse.", "tiles": [ "I", "wish", "I", "didn't", "feel", "this", "heavy", "remorse" ], "distractors": [ "don't", "feels" ], "alt": [] },
+            { "uz": "Qaniydi kecha unga o'sha achchiq sozni aytmagan bo'lsam.", "en": "I wish I hadn't said that bitter word yesterday.", "tiles": [ "I", "wish", "I", "hadn't", "said", "that", "bitter", "word", "yesterday" ], "distractors": [ "haven't", "say" ], "alt": [] },
+            { "uz": "Unga bu haqiqatni aytmaganingizni afzal ko'raman.", "en": "I'd rather you didn't tell him this truth.", "tiles": [ "I'd", "rather", "you", "didn't", "tell", "him", "this", "truth" ], "distractors": [ "would", "don't" ], "alt": [] },
+            { "uz": "Qaniydi ular hozir eski adovatni unutib yarashtirsa.", "en": "I wish they would reconcile and forget the grudge.", "tiles": [ "I", "wish", "they", "would", "reconcile", "and", "forget", "the", "grudge" ], "distractors": [ "will", "reconciles" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "longing", "uz": "qattiq sog'inch", "en": "I wish I did not have this longing", "tiles": [ "I", "wish", "I", "did", "not", "have", "this", "longing" ], "distractors": [ "does", "has", "are" ], "alt": [] },
+            { "word": "remorse", "uz": "vijdon azobi", "en": "I wish I had never felt such remorse", "tiles": [ "I", "wish", "I", "had", "never", "felt", "such", "remorse" ], "distractors": [ "have", "feel", "was" ], "alt": [] },
+            { "word": "sympathy", "uz": "hamdardlik", "en": "I would rather you showed some sympathy", "tiles": [ "I", "would", "rather", "you", "showed", "some", "sympathy" ], "distractors": [ "show", "will", "much" ], "alt": [] },
+            { "word": "console", "uz": "yupatmoq", "en": "I wish I knew how to console her", "tiles": [ "I", "wish", "I", "knew", "how", "to", "console", "her" ], "distractors": [ "know", "can", "him" ], "alt": [] },
+            { "word": "uplift", "uz": "ruhini ko'tarmoq", "en": "I would rather music could uplift my soul", "tiles": [ "I", "would", "rather", "music", "could", "uplift", "my", "soul" ], "distractors": [ "can", "uplifts", "me" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Yesterday, Mark felt deep remorse after a bitter argument with his close friend Anna. He realized his harsh words caused her great distress. Now, Mark sits alone in his quiet room and thinks about the past. He really wishes he had not said those hurtful things to her. If only he could take back his apology and reconcile with Anna immediately. He knows Anna feels resentful and holds a grudge against him. Mark would rather Anna forgave him than stayed angry forever. He hopes she will find empathy in her heart and listen to him soon.",
+          "items": [
+            { "q": "How did Mark feel after the argument?", "options": [ "strong inspiration", "great comfort", "deep remorse", "pure happiness" ], "answer": 2 },
+            { "q": "What does Mark wish he had not done?", "options": [ "bought a new car", "stayed in his room", "gone to work early", "said hurtful things" ], "answer": 3 },
+            { "q": "What does Mark want to do with Anna?", "options": [ "reconcile immediately", "argue again tomorrow", "forget her completely", "send her a bitter letter" ], "answer": 0 },
+            { "q": "How does Anna feel toward Mark now?", "options": [ "very joyful", "resentful", "completely relaxed", "fully inspired" ], "answer": 1 },
+            { "q": "What would Mark rather Anna did?", "options": [ "avoided him", "stayed angry", "forgave him", "forgotten his name" ], "answer": 2 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Expressing Regrets and Preferences",
+          "topicUz": "Afsus va afzal ko'rishni ifodalash",
+          "sentences": ["I deeply resent the bitter grudge you still hold against me.", "I wish I could sincerely apologize for my past mistakes.", "I would rather you forgave me and we finally reconciled.", "I wish we had not suffered this terrible distress together.", "I hope our friendship will inspire compassion and empathy again."]
+        }
+      ],
+      "exam": [
+        { "q": "Qaniydi hozir shu yerda bo'lsangiz.", "options": [ "I wish you are here now.", "I wish you had been here now.", "I wish you would be here now.", "I wish you were here now." ], "answer": 3 },
+        { "q": "Qaniydi o'tgan hafta unga haqiqatni aytmagan bo'lsam.", "options": [ "I wish I hadn't told him the truth last week.", "I wish I wouldn't tell him the truth last week.", "I wish I didn't tell him the truth last week.", "I wish I haven't told him the truth last week." ], "answer": 0 },
+        { "q": "Ular bu ishni boshqa vaqtda qilishlarini afzal ko'rardim.", "options": [ "I'd rather they do this work at another time.", "I'd rather they did this work at another time.", "I'd rather they will do this work at another time.", "I'd rather they had done this work at another time." ], "answer": 1 },
+        { "q": "Qaniydi ertangi imtihondan qo'rqmasam.", "options": [ "I wish I am not afraid of tomorrow's exam.", "I wish I hadn't been afraid of tomorrow's exam.", "I wish I weren't afraid of tomorrow's exam.", "I wish I wouldn't be afraid of tomorrow's exam." ], "answer": 2 },
+        { "q": "Ular o'tgan yili menga yordam berishganini afzal ko'rardim.", "options": [ "I'd rather they help me last year.", "I'd rather they helped me last year.", "I'd rather they would help me last year.", "I'd rather they had helped me last year." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: yearn?", "options": [ "intizor bo'lmoq", "qattiq sog'inch", "juda tusamoq", "achchiq; ranjigan" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: forgive?", "options": [ "uzr", "kechirmoq", "yarashtirmoq", "vijdon azobi" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: comfort?", "options": [ "tinchlantirmoq", "yupatmoq", "taskin bermoq", "achinish" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "B2-08",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last week, David decided to renovate his old house because the furniture looked tired and worn out. First, he contacted a carpenter and had all the wooden furniture polished to bring back its original shine. Next, he called an electrician to have the broken ceiling lights repaired before the weekend party. David also had his roof inspected by a professional service because it leaked during heavy rain last month. In the kitchen, a plumber was hired to have the leaking pipes replaced with new ones. Finally, David went to a local tailor and got a new suit fitted for the upcoming family wedding. By getting everything done by skilled experts, he saved a lot of time and effort.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "David had various home improvements and tasks done by professionals.", "David repaired everything in his house by himself without any help.", "David decided to sell his old house and buy a new apartment.", "David worked as a carpenter and electrician all week long." ], "answer": 0 },
+            { "q": "What did David have done to the wooden furniture?", "options": [ "He had it painted bright red.", "He had it polished by a carpenter.", "He threw all of it away.", "He had it replaced with new furniture." ], "answer": 1 },
+            { "q": "Why did David have his roof inspected?", "options": [ "Because he wanted to paint it blue.", "Because the warranty had just expired.", "Because it leaked during heavy rain last month.", "Because the carpenter recommended it." ], "answer": 2 },
+            { "q": "What does the word 'inspected' mean in the context of the text?", "options": [ "Painted in a different bright color.", "Cleaned thoroughly with soap and water.", "Replaced completely with new materials.", "Examined carefully to check its condition." ], "answer": 3 },
+            { "q": "What can we conclude about David's approach to home renovation?", "options": [ "He chose to rely on professionals to save time and ensure quality results.", "He believed that hiring experts was a waste of valuable time.", "He preferred spending extra money to do all physical labor personally.", "He only trusted family members to work on his house." ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Sochimni kesqizdim.", "en": "I had my hair trimmed", "tiles": [ "I", "had", "my", "hair", "trimmed" ], "distractors": [ "have", "did", "cut" ], "alt": [] },
+            { "uz": "Mashinamni ta'mirlatdim.", "en": "I had my car repaired", "tiles": [ "I", "had", "my", "car", "repaired" ], "distractors": [ "have", "repair", "made" ], "alt": [] },
+            { "uz": "Biz ofisimizni ta'mirdan chiqardik.", "en": "We had our office renovated", "tiles": [ "We", "had", "our", "office", "renovated" ], "distractors": [ "have", "renovate", "did" ], "alt": [] },
+            { "uz": "U sochlarini bo'yattirmoqda.", "en": "She is getting her hair dyed", "tiles": [ "She", "is", "getting", "her", "hair", "dyed" ], "distractors": [ "gets", "has", "dye" ], "alt": [] },
+            { "uz": "Biz tomni almashtirtiryapmiz.", "en": "We are getting the roof replaced", "tiles": [ "We", "are", "getting", "the", "roof", "replaced" ], "distractors": [ "get", "have", "replace" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "renovate", "uz": "ta'mirdan chiqarmoq", "en": "I want to have my apartment renovated", "tiles": [ "I", "want", "to", "have", "my", "apartment", "renovated" ], "distractors": [ "has", "renovate", "is" ], "alt": [] },
+            { "word": "trim", "uz": "qirqib tekislamoq", "en": "She had her hair trimmed yesterday", "tiles": [ "She", "had", "her", "hair", "trimmed", "yesterday" ], "distractors": [ "has", "trim", "did" ], "alt": [] },
+            { "word": "mechanic", "uz": "mexanik", "en": "He got his car fixed by a mechanic", "tiles": [ "He", "got", "his", "car", "fixed", "by", "a", "mechanic" ], "distractors": [ "get", "mechanics", "is" ], "alt": [] },
+            { "word": "warranty", "uz": "kafolat", "en": "We had our phone repaired under warranty", "tiles": [ "We", "had", "our", "phone", "repaired", "under", "warranty" ], "distractors": [ "have", "warranties", "is" ], "alt": [] },
+            { "word": "furniture", "uz": "mebel", "en": "They are getting new furniture delivered tomorrow", "tiles": [ "They", "are", "getting", "new", "furniture", "delivered", "tomorrow" ], "distractors": [ "get", "furnitures", "is" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Last week, Sarah decided to renovate her old house because the rooms looked tired. She wanted to have her kitchen walls painted by a professional painter. At the same time, she needed to get the leaking pipe in the bathroom repaired by a local plumber. After that, she arranged to have her worn furniture polished by an expert carpenter. Finally, she had her roof inspected before the rainy season started. Everything was done perfectly, and she received a detailed invoice.",
+          "items": [
+            { "q": "What did Sarah decide to renovate last week?", "options": [ "She decided to renovate her new office.", "She decided to renovate her old house.", "She decided to renovate her garden.", "She decided to renovate her small shop." ], "answer": 1 },
+            { "q": "Who did Sarah want to paint her kitchen walls?", "options": [ "A local electrician", "An expert carpenter", "A professional painter", "A skilled mechanic" ], "answer": 2 },
+            { "q": "What problem did she have in the bathroom?", "options": [ "A broken tile", "A leaking roof", "A damaged ceiling", "A leaking pipe" ], "answer": 3 },
+            { "q": "Who polished her worn furniture?", "options": [ "An expert carpenter", "A professional painter", "A local plumber", "A skilled tailor" ], "answer": 0 },
+            { "q": "What did she have inspected before the rainy season?", "options": [ "She had her kitchen inspected.", "She had her roof inspected.", "She had her bathroom inspected.", "She had her appliance inspected." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I had my car repaired yesterday", "uz": "Kecha mashinamni ta'mirlatdim", "tiles": [ "I", "had", "my", "car", "repaired", "yesterday" ], "distractors": [ "have", "repair", "did" ], "alt": [] },
+            { "en": "She wants to have her hair dyed", "uz": "U sochlarini bo'yattirmoqchi", "tiles": [ "She", "wants", "to", "have", "her", "hair", "dyed" ], "distractors": [ "has", "dye", "want" ], "alt": [] },
+            { "en": "We are getting the roof replaced", "uz": "Biz tomni almashtirtiryapmiz", "tiles": [ "We", "are", "getting", "the", "roof", "replaced" ], "distractors": [ "get", "is", "replace" ], "alt": [] },
+            { "en": "He had his apartment renovated last month", "uz": "U o'tgan oyi kvartirasini ta'mirdan chiqartirdi", "tiles": [ "He", "had", "his", "apartment", "renovated", "last", "month" ], "distractors": [ "has", "renovate", "did" ], "alt": [] },
+            { "en": "They got their pipes fixed by a plumber", "uz": "Ular quvurlarini suv ustasiga tuzattirishdi", "tiles": [ "They", "got", "their", "pipes", "fixed", "by", "a", "plumber" ], "distractors": [ "get", "fix", "an" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Causative Form",
+          "topicUz": "Kauzativ qurilma: ishlarni boshqalarga qildirish",
+          "sentences": ["First, I noticed that my kitchen pipe was leaking badly.", "Then, I called a professional plumber to fix the broken pipe.", "After that, I had the old pipe replaced with a new one.", "Next, the plumber checked every appliance to ensure everything worked.", "Finally, I received the invoice and paid for the service."]
+        }
+      ],
+      "exam": [
+        { "q": "Men kecha mashinamni ta'mirlatdim.", "options": [ "I have my car repairing yesterday.", "I repaired my car yesterday.", "I got my car repair yesterday.", "I had my car repaired yesterday." ], "answer": 3 },
+        { "q": "Biz har yili tomimizni yangilab tiklatamiz.", "options": [ "We get our roof refurbished every year.", "We are getting our roof refurbish every year.", "We refurbish our roof every year.", "We have our roof refurbishing every year." ], "answer": 0 },
+        { "q": "Ular xonani bezattiryaptilar.", "options": [ "They are decorating the room.", "They are getting the room decorated.", "They are getting decorated the room.", "They have decorated the room." ], "answer": 1 },
+        { "q": "Sen bu kiyimni tikuvchiga tikdirtirishing kerak.", "options": [ "You should tailor this clothes.", "You must get this dress tailor.", "You need to have this dress tailored.", "You have this dress tailoring." ], "answer": 2 },
+        { "q": "Ular o'tgan hafta kvartirasini ta'mirdan o'tkazishgan edi.", "options": [ "They renovated their apartment last week.", "They were having renovated their apartment.", "They got their apartment renovate last week.", "They had their apartment renovated last week." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: plumber?", "options": [ "suv ustasi", "sartarosh", "mexanik", "duradgor" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: receipt?", "options": [ "hisob-faktura", "chek, kvitansiya", "narx taklifi", "kafolat" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: appliance?", "options": [ "mebel", "quvur", "maishiy texnika", "shift" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "B2-09",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last week, our local art gallery opened a truly remarkable exhibition that left visitors in profound amazement. Not only did the talented artists display their vivid paintings, but they also shared their personal stories with the public. Seldom have I experienced such an inspiring atmosphere in our quiet town. The gallery director, who worked solely to support young creators, delivered an extraordinary speech about modern culture. Scarcely had she finished speaking when the audience began to applaud loudly. Indeed, the event proved that art has the power to unite people in unexpected ways. Visitors spent hours discussing the striking details of each canvas, utterly captivated by the creative energy in the room. Furthermore, many guests bought souvenirs to remember this special evening. It was an unforgettable night for everyone involved.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "A local art gallery hosted a remarkably inspiring and successful exhibition.", "The gallery director delivered a speech about historical buildings.", "Visitors were disappointed by the lack of paintings in the gallery.", "Artists sold many souvenirs but refused to share their personal stories." ], "answer": 0 },
+            { "q": "What did the talented artists do besides displaying their vivid paintings?", "options": [ "They played musical instruments for the guests.", "They shared their personal stories with the public.", "They prepared a traditional dinner for everyone.", "They painted new portraits on the walls." ], "answer": 1 },
+            { "q": "What happened right after the gallery director finished speaking?", "options": [ "All the visitors left the building immediately.", "The lights in the gallery turned off.", "The audience began to applaud loudly.", "The artists started to pack their canvases." ], "answer": 2 },
+            { "q": "In the text, what does the word 'solely' mean in the context of the gallery director's work?", "options": [ "Reluctantly and with sadness", "Quickly and without paying attention", "Casually on weekends", "Only or exclusively to support young creators" ], "answer": 3 },
+            { "q": "What can we logically conclude about the event from the text?", "options": [ "It created a strong positive impression and united the people through art.", "It caused a lot of arguments among the confused visitors.", "It was ignored by the residents of the quiet town.", "It failed to attract any guests who liked modern culture." ], "answer": 0 }
+          ]
+        },
+        null,
+        null,
+        {
+          "type": "listen",
+          "text": "Last winter, Anna faced a remarkably difficult situation at her workplace. Not only did she finish her important project on time, but she also helped her colleagues with their tasks. Seldom have I seen such dedication in a young professional. Scarcely had she stepped into her office when the manager called her for a special meeting. There, she was praised for being utterly reliable and entirely focused. Indeed, her hard work brought great success to the company, and henceforth she will lead the new department.",
+          "items": [
+            { "q": "What did Anna finish on time?", "options": [ "Her unimportant project", "His important project", "Her important project", "Their important project" ], "answer": 2 },
+            { "q": "What did Anna do besides finishing her project?", "options": [ "She went home early", "She ignored everyone", "She argued with her manager", "She helped her colleagues with their tasks" ], "answer": 3 },
+            { "q": "How often has the speaker seen such dedication?", "options": [ "Seldom have I seen such dedication", "Very frequently", "Every single day", "Always" ], "answer": 0 },
+            { "q": "What happened scarcely after she stepped into her office?", "options": [ "She left the building", "The manager called her for a special meeting", "The lights went out", "She started to sleep" ], "answer": 1 },
+            { "q": "What will Anna lead henceforth?", "options": [ "The old department", "A small shop", "The new department", "The local library" ], "answer": 2 }
+          ]
+        },
+        null,
+        {
+          "type": "order",
+          "topic": "Inversion for Emphasis",
+          "topicUz": "Ta'kid uchun inversiya",
+          "sentences": ["First, seldom have I seen such a striking performance on stage.", "Then, scarcely had the music started when the profound silence filled the hall.", "After that, not only did the singer perform remarkably well, but she also spoke to the vivid crowd.", "Next, barely had she finished her song when the entire audience stood up to applaud.", "Finally, never will I forget that extraordinarily special evening."]
+        }
+      ],
+      "exam": []
+    },
+    {
+      "id": "B2-10",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "B2-11",
+      "tasks": [],
+      "exam": []
+    },
+    {
+      "id": "B2-12",
+      "tasks": [],
+      "exam": []
+    }
+  ],
+  "levelExam": []
+}

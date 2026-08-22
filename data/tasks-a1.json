@@ -1,0 +1,905 @@
+{
+  "level": "A1",
+  "units": [
+    {
+      "id": "A1-01",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Hello! My name is Anna. I am a student. I am from Tashkent, and I am nineteen years old. This is my friend, Tom. He is a teacher. He is from London. We are very good friends. Nice to meet you! Where are you from? Are you a student or a teacher?",
+          "items": [
+            { "q": "What is the main idea of this text?", "options": [ "Tom is a student from Tashkent.", "Anna is introducing herself and her friend Tom.", "Anna and Tom are teachers from London.", "Anna is saying goodbye to her teacher." ], "answer": 1 },
+            { "q": "Where is Anna from?", "options": [ "She is from Bukhara.", "She is from London.", "She is from Tashkent.", "She is a student." ], "answer": 2 },
+            { "q": "What is Tom's job?", "options": [ "He is a friend.", "He is a student.", "He is from Tashkent.", "He is a teacher." ], "answer": 3 },
+            { "q": "In the text, what does the word 'good' mean in 'good friends'?", "options": [ "Yaxshi", "Yomon", "Katta", "Chiroyli" ], "answer": 0 },
+            { "q": "What can we conclude about Anna and Tom from the text?", "options": [ "They are both students at school.", "They are friends and live in different cities originally.", "They are teachers in Tashkent.", "They do not know each other." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men talabaman.", "en": "I am a student", "tiles": [ "I", "am", "a", "student" ], "distractors": [ "is", "are" ], "alt": [] },
+            { "uz": "U Buxorodan.", "en": "She is from Bukhara", "tiles": [ "She", "is", "from", "Bukhara" ], "distractors": [ "am", "are", "teacher" ], "alt": [] },
+            { "uz": "Siz yaxshi o'qituvchisiz.", "en": "You are a good teacher", "tiles": [ "You", "are", "a", "good", "teacher" ], "distractors": [ "is", "am" ], "alt": [] },
+            { "uz": "Biz yaxshi talabalarmiz.", "en": "We are good students", "tiles": [ "We", "are", "good", "students" ], "distractors": [ "is", "am", "a" ], "alt": [] },
+            { "uz": "Ular yaxshi o'quvchilar.", "en": "They are good students", "tiles": [ "They", "are", "good", "students" ], "distractors": [ "is", "am", "teacher" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "hello", "uz": "salom", "en": "Hello my name is Jamshid", "tiles": [ "Hello", "my", "name", "is", "Jamshid" ], "distractors": [ "are", "am" ], "alt": [] },
+            { "word": "student", "uz": "talaba, o'quvchi", "en": "I am a student", "tiles": [ "I", "am", "a", "student" ], "distractors": [ "is", "are", "the" ], "alt": [] },
+            { "word": "teacher", "uz": "o'qituvchi", "en": "She is a good teacher", "tiles": [ "She", "is", "a", "good", "teacher" ], "distractors": [ "am", "are", "an" ], "alt": [] },
+            { "word": "from", "uz": "-dan", "en": "They are from Tashkent", "tiles": [ "They", "are", "from", "Tashkent" ], "distractors": [ "is", "am", "in" ], "alt": [] },
+            { "word": "name", "uz": "ism", "en": "Your name is nice", "tiles": [ "Your", "name", "is", "nice" ], "distractors": [ "am", "are", "my" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Hello, my name is Anna. I am a student. I am from Tashkent. Good morning, nice to meet you. He is a teacher. His name is Bobur. He is from Samarkand. We are happy today. You are a good friend. They are students too. What is your name? Where are you from? I am happy to meet you.",
+          "items": [
+            { "q": "What is the name of the student?", "options": [ "Anna is student.", "Anna are a student.", "Anna am a student.", "Anna is a student." ], "answer": 3 },
+            { "q": "Where is Anna from?", "options": [ "She is from Tashkent.", "She are from Tashkent.", "She am from Tashkent.", "She from Tashkent." ], "answer": 0 },
+            { "q": "What is the teacher's profession and origin?", "options": [ "He am a teacher from Samarkand.", "He is a teacher from Samarkand.", "He are a teacher from Samarkand.", "He is teacher from Samarkand." ], "answer": 1 },
+            { "q": "How are they described in the text?", "options": [ "They am students too.", "They is students too.", "They are students too.", "They students are too." ], "answer": 2 },
+            { "q": "What are Bobur and Anna together?", "options": [ "We is happy today.", "We am happy today.", "We happy are today.", "We are happy today." ], "answer": 3 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men talabaman", "en": "I am a student", "tiles": [ "I", "am", "a", "student" ], "distractors": [ "is", "are" ], "alt": [] },
+            { "uz": "U Buxorodan", "en": "She is from Bukhara", "tiles": [ "She", "is", "from", "Bukhara" ], "distractors": [ "am", "are", "an" ], "alt": [] },
+            { "uz": "Siz o'qituvchisiz", "en": "You are a teacher", "tiles": [ "You", "are", "a", "teacher" ], "distractors": [ "am", "is" ], "alt": [] },
+            { "uz": "Biz yaxshi o'quvchimiz", "en": "We are good students", "tiles": [ "We", "are", "good", "students" ], "distractors": [ "is", "am", "a" ], "alt": [] },
+            { "uz": "Ular yaxshi do'stlar", "en": "They are good friends", "tiles": [ "They", "are", "good", "friends" ], "distractors": [ "is", "am" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "student", "uz": "talaba, o'quvchi", "en": "I am a student", "tiles": [ "I", "am", "a", "student" ], "distractors": [ "is", "are", "the" ], "alt": [] },
+            { "word": "teacher", "uz": "o'qituvchi", "en": "You are a teacher", "tiles": [ "You", "are", "a", "teacher" ], "distractors": [ "am", "is", "an" ], "alt": [] },
+            { "word": "from", "uz": "-dan", "en": "She is from Bukhara", "tiles": [ "She", "is", "from", "Bukhara" ], "distractors": [ "am", "are", "in" ], "alt": [] },
+            { "word": "good", "uz": "yaxshi", "en": "We are good friends", "tiles": [ "We", "are", "good", "friends" ], "distractors": [ "is", "am", "well" ], "alt": [] },
+            { "word": "name", "uz": "ism", "en": "My name is Aziz", "tiles": [ "My", "name", "is", "Aziz" ], "distractors": [ "are", "am", "name's" ], "alt": [] }
+          ]
+        }
+      ],
+      "exam": [
+        { "q": "Men talabaman.", "options": [ "I is a student.", "I are a student.", "I am a student.", "I student am." ], "answer": 2 },
+        { "q": "U Buxorodan.", "options": [ "She from Bukhara is.", "She am from Bukhara.", "She are from Bukhara.", "She is from Bukhara." ], "answer": 3 },
+        { "q": "Biz o'quvchilarmiz.", "options": [ "We are students.", "We am students.", "We is students.", "We students are." ], "answer": 0 },
+        { "q": "Ular yaxshi o'qituvchilar.", "options": [ "They is good teachers.", "They are good teachers.", "They am good teachers.", "They good are teachers." ], "answer": 1 },
+        { "q": "Sen o'qituvchisan.", "options": [ "You is a teacher.", "You am a teacher.", "You are a teacher.", "You teacher are." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: teacher?", "options": [ "talaba, o'quvchi", "yaxshi", "ism", "o'qituvchi" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: nice?", "options": [ "yoqimli, chiroyli", "ertalab", "salom", "qayerda" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: student?", "options": [ "o'qituvchi", "talaba, o'quvchi", "men", "ism" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "A1-02",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Hello! My name is Anna. I have got a very nice family. My father is tall and he has got a blue car. My mother is young and kind. I have got two brothers and one sister. My brother Jack is ten years old, and he has got a red ball. My sister is small. Our house is big, but old. We are very happy together.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Anna is describing her family and her house.", "Anna is talking about her school and friends.", "Anna is talking about her car and pets.", "Anna is speaking about her town." ], "answer": 0 },
+            { "q": "What has Anna's father got?", "options": [ "He has got a red ball.", "He has got a blue car.", "He has got a big house.", "He has got three brothers." ], "answer": 1 },
+            { "q": "How old is Anna's brother Jack?", "options": [ "Jack is three years old.", "Jack is two years old.", "Jack is ten years old.", "Jack is very young." ], "answer": 2 },
+            { "q": "What does the word 'old' mean in the sentence 'Our house is big, but old'?", "options": [ "very young", "very big", "not happy", "not new" ], "answer": 3 },
+            { "q": "What can we conclude about Anna's family from the text?", "options": [ "They are happy with each other.", "They have a small house.", "They have got no brothers.", "They have an old car." ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Mening ikkita akam bor.", "en": "I have got two brothers", "tiles": [ "I", "have", "got", "two", "brothers" ], "distractors": [ "has", "brother", "is" ], "alt": [] },
+            { "uz": "Uning katta oilasi bor.", "en": "She has got a big family", "tiles": [ "She", "has", "got", "a", "big", "family" ], "distractors": [ "have", "an", "family's" ], "alt": [] },
+            { "uz": "Bizning uchta do'stimiz bor.", "en": "We have got three friends", "tiles": [ "We", "have", "got", "three", "friends" ], "distractors": [ "has", "friend", "our" ], "alt": [] },
+            { "uz": "Uning opasi juda yosh.", "en": "His sister is very young", "tiles": [ "His", "sister", "is", "very", "young" ], "distractors": [ "her", "are", "old" ], "alt": [] },
+            { "uz": "Ularning otasi juda keksa.", "en": "Their father is very old", "tiles": [ "Their", "father", "is", "very", "old" ], "distractors": [ "his", "are", "young" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "family", "uz": "oila", "en": "She has got a big family", "tiles": [ "She", "has", "got", "a", "big", "family" ], "distractors": [ "have", "an", "old" ], "alt": [] },
+            { "word": "brother", "uz": "aka, uka", "en": "I have got two brothers", "tiles": [ "I", "have", "got", "two", "brothers" ], "distractors": [ "has", "a", "brother" ], "alt": [] },
+            { "word": "sister", "uz": "opa, singil", "en": "His sister has got a red car", "tiles": [ "His", "sister", "has", "got", "a", "red", "car" ], "distractors": [ "have", "her", "brother" ], "alt": [] },
+            { "word": "friend", "uz": "do'st", "en": "Her friend has got three young dogs", "tiles": [ "Her", "friend", "has", "got", "three", "young", "dogs" ], "distractors": [ "have", "his", "old" ], "alt": [] },
+            { "word": "our", "uz": "bizning", "en": "Our family has got a nice house", "tiles": [ "Our", "family", "has", "got", "a", "nice", "house" ], "distractors": [ "have", "their", "my" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Hello, my name is Anna. I have got a very nice family. My father is old, but he is kind. My mother has got a young sister. Her name is Sarah. I have got two brothers and one sister. My brother has got a red pen. We have got a big house in the city. Their family is very happy every day.",
+          "items": [
+            { "q": "What is the name of Anna's mother's sister?", "options": [ "Your name is Sarah.", "His name is Sarah.", "Her name is Sarah.", "My name is Sarah." ], "answer": 2 },
+            { "q": "What does Anna's brother have?", "options": [ "He has got a big house.", "He has got a young sister.", "He have got a red pen.", "He has got a red pen." ], "answer": 3 },
+            { "q": "How many brothers does Anna have?", "options": [ "She has got two brothers.", "She has got one brother.", "She have got two brothers.", "She has got three brothers." ], "answer": 0 },
+            { "q": "What is the father like according to the text?", "options": [ "He is young, but he is kind.", "He is old, but he is kind.", "He is old, but she is kind.", "He is old, but he are kind." ], "answer": 1 },
+            { "q": "What does Anna's mother have?", "options": [ "She has got a old sister.", "She have got a young sister.", "She has got a young sister.", "She has got two brothers." ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I have got a big family", "uz": "Mening katta oilam bor", "tiles": [ "I", "have", "got", "a", "big", "family" ], "distractors": [ "has", "an", "the" ], "alt": [] },
+            { "en": "She has got two brothers", "uz": "Uning ikkita akasi bor", "tiles": [ "She", "has", "got", "two", "brothers" ], "distractors": [ "have", "a", "three" ], "alt": [] },
+            { "en": "His sister is very young", "uz": "Uning opasi juda yosh", "tiles": [ "His", "sister", "is", "very", "young" ], "distractors": [ "Her", "are", "old" ], "alt": [] },
+            { "en": "Our father has got a son", "uz": "Bizning otamizning o'g'li bor", "tiles": [ "Our", "father", "has", "got", "a", "son" ], "distractors": [ "have", "mother", "daughter" ], "alt": [] },
+            { "en": "Her mother has got a friend", "uz": "Uning onasining do'sti bor", "tiles": [ "Her", "mother", "has", "got", "a", "friend" ], "distractors": [ "His", "have", "brother" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Mening ikkita akam bor.", "en": "I have got two brothers", "tiles": [ "I", "have", "got", "two", "brothers" ], "distractors": [ "has", "brother", "is" ], "alt": [] },
+            { "uz": "Uning katta oilasi bor.", "en": "She has got a big family", "tiles": [ "She", "has", "got", "a", "big", "family" ], "distractors": [ "have", "an", "family's" ], "alt": [] },
+            { "uz": "Bizning uchta do'stimiz bor.", "en": "We have got three friends", "tiles": [ "We", "have", "got", "three", "friends" ], "distractors": [ "has", "friend", "our" ], "alt": [] },
+            { "uz": "Uning ukasi juda yosh.", "en": "His brother is very young", "tiles": [ "His", "brother", "is", "very", "young" ], "distractors": [ "Her", "has", "got", "old" ], "alt": [] },
+            { "uz": "Ularning opasi juda keksa.", "en": "Their sister is very old", "tiles": [ "Their", "sister", "is", "very", "old" ], "distractors": [ "His", "have", "got", "young" ], "alt": [] }
+          ]
+        }
+      ],
+      "exam": [
+        { "q": "Mening ikkita akam bor.", "options": [ "He have got two brothers.", "I have got two brothers.", "I has got two brothers.", "I got two brother." ], "answer": 1 },
+        { "q": "Uning katta oilasi bor (ayol kishi).", "options": [ "She have got a big family.", "She is got a big family.", "She has got a big family.", "Her has got a big family." ], "answer": 2 },
+        { "q": "Bizning uchta singlimiz bor.", "options": [ "We has got three sisters.", "They have got three sister.", "Our have got three sisters.", "We have got three sisters." ], "answer": 3 },
+        { "q": "Uning do'sti bor (erkak kishi).", "options": [ "He has got a friend.", "He have got a friend.", "He is got a friend.", "His has got a friend." ], "answer": 0 },
+        { "q": "Ularning o'g'li va qizi bor.", "options": [ "They has got a son and daughter.", "They have got a son and a daughter.", "Their have got a son and a daughter.", "They are got a son and a daughter." ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: family?", "options": [ "ota", "ona", "oila", "do'st" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: mother?", "options": [ "opa, singil", "o'g'il (farzand)", "ota", "ona" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: young?", "options": [ "yosh", "keksa, eski", "juda", "ko'p (sanaladigan)" ], "answer": 0 }
+      ]
+    },
+    {
+      "id": "A1-03",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "This is a new room. There is a table and a chair in the room. A big book is on the table. The book is new. An apple and an orange are in a box on the table. The orange is small. That house is big and it has a white door.",
+          "items": [
+            { "q": "What is the text mainly about?", "options": [ "An old house with a green door", "A room and things in it", "A big school and students", "A small office with many desks" ], "answer": 1 },
+            { "q": "What is on the table?", "options": [ "A red pen", "A small orange", "A big book", "An umbrella" ], "answer": 2 },
+            { "q": "Where is the box?", "options": [ "Near the window", "Under the chair", "In the bag", "On the table" ], "answer": 3 },
+            { "q": "In the text, what does the word 'box' mean?", "options": [ "quti", "stol", "stul", "sumka" ], "answer": 0 },
+            { "q": "What can we conclude about the orange from the text?", "options": [ "It is big", "It is small", "It is new", "It is old" ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Bu kitob.", "en": "This is a book", "tiles": [ "This", "is", "a", "book" ], "distractors": [ "an", "the", "are" ], "alt": [] },
+            { "uz": "Menga olma kerak.", "en": "I want an apple", "tiles": [ "I", "want", "an", "apple" ], "distractors": [ "a", "the", "is" ], "alt": [] },
+            { "uz": "O'sha olma katta.", "en": "The apple is big", "tiles": [ "The", "apple", "is", "big" ], "distractors": [ "a", "an", "are" ], "alt": [] },
+            { "uz": "Bu yangi stul.", "en": "This is a new chair", "tiles": [ "This", "is", "a", "new", "chair" ], "distractors": [ "an", "the", "big" ], "alt": [] },
+            { "uz": "Sumka xonada.", "en": "The bag is in the room", "tiles": [ "The", "bag", "is", "in", "the", "room" ], "distractors": [ "a", "an", "this" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "book", "uz": "kitob", "en": "This is a book", "tiles": [ "This", "is", "a", "book" ], "distractors": [ "an", "the", "are" ], "alt": [] },
+            { "word": "apple", "uz": "olma", "en": "I want an apple", "tiles": [ "I", "want", "an", "apple" ], "distractors": [ "a", "the", "wants" ], "alt": [] },
+            { "word": "table", "uz": "stol", "en": "The table is big", "tiles": [ "The", "table", "is", "big" ], "distractors": [ "A", "an", "are" ], "alt": [] },
+            { "word": "egg", "uz": "tuxum", "en": "She has an egg", "tiles": [ "She", "has", "an", "egg" ], "distractors": [ "a", "the", "have" ], "alt": [] },
+            { "word": "pen", "uz": "ruchka", "en": "Give me a pen", "tiles": [ "Give", "me", "a", "pen" ], "distractors": [ "an", "the", "I" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "This is a big house. The house is new. I have a pen and an apple in the room. The pen is small. The apple is big. That is a chair and this is a table. A small box is on the table. An umbrella is near the door. The room has a window. This is a nice house for me.",
+          "items": [
+            { "q": "What is in the house?", "options": [ "A pen and an apple are in the room.", "A big house is new.", "An umbrella is on the table.", "A small chair is near the window." ], "answer": 0 },
+            { "q": "What size is the pen?", "options": [ "The pen is big.", "The pen is small.", "A pen is new.", "The pen is an apple." ], "answer": 1 },
+            { "q": "Where is the small box?", "options": [ "The box is in the room.", "A box is near the door.", "The box is on the table.", "Box is a small chair." ], "answer": 2 },
+            { "q": "What is near the door?", "options": [ "An apple is near the door.", "A table is near the door.", "The pen is near the door.", "An umbrella is near the door." ], "answer": 3 },
+            { "q": "What size is the apple?", "options": [ "The apple is big.", "The apple is new.", "The apple is small.", "An apple is a box." ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "This is a book", "uz": "Bu kitob", "tiles": [ "This", "is", "a", "book" ], "distractors": [ "an", "the" ], "alt": [] },
+            { "en": "I want an apple", "uz": "Menga olma kerak", "tiles": [ "I", "want", "an", "apple" ], "distractors": [ "a", "the" ], "alt": [] },
+            { "en": "The apple is big", "uz": "O'sha olma katta", "tiles": [ "The", "apple", "is", "big" ], "distractors": [ "a", "an" ], "alt": [] },
+            { "en": "She has a pen", "uz": "Unda ruchka bor", "tiles": [ "She", "has", "a", "pen" ], "distractors": [ "an", "the" ], "alt": [] },
+            { "en": "Look at the door", "uz": "Eshikka qara", "tiles": [ "Look", "at", "the", "door" ], "distractors": [ "a", "an" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Bu kitob.", "en": "This is a book", "tiles": [ "This", "is", "a", "book" ], "distractors": [ "an", "the" ], "alt": [] },
+            { "uz": "Menga olma kerak.", "en": "I want an apple", "tiles": [ "I", "want", "an", "apple" ], "distractors": [ "a", "the" ], "alt": [] },
+            { "uz": "O'sha olma katta.", "en": "The apple is big", "tiles": [ "The", "apple", "is", "big" ], "distractors": [ "A", "an" ], "alt": [] },
+            { "uz": "Bu yangi soyabon.", "en": "This is a new umbrella", "tiles": [ "This", "is", "a", "new", "umbrella" ], "distractors": [ "an", "the" ], "alt": [] },
+            { "uz": "Stolda bitta kichik quti bor.", "en": "There is a small box on the table", "tiles": [ "There", "is", "a", "small", "box", "on", "the", "table" ], "distractors": [ "an", "this" ], "alt": [] }
+          ]
+        }
+      ],
+      "exam": [
+        { "q": "Bu - kitob.", "options": [ "This is a book.", "This is an book.", "This is book.", "This is the book." ], "answer": 0 },
+        { "q": "Menga olma kerak.", "options": [ "I want a apple.", "I want an apple.", "I want apple.", "I want the apple." ], "answer": 1 },
+        { "q": "Olma - katta.", "options": [ "An apple is big.", "A apple is big.", "The apple is big.", "Apple is big." ], "answer": 2 },
+        { "q": "U yerda bir soat (vaqt oralig'i) bor.", "options": [ "There is a hour.", "There is the hour.", "There is hour.", "There is an hour." ], "answer": 3 },
+        { "q": "Menda yangi soyabon bor.", "options": [ "I have a new umbrella.", "I have an new umbrella.", "I have new umbrella.", "I have the new umbrella." ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: pen?", "options": [ "kitob", "ruchka", "olma", "apelsin" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: window?", "options": [ "eshik", "quti", "deraza", "xona" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: house?", "options": [ "stul", "sumka", "stol", "uy" ], "answer": 3 }
+      ]
+    },
+    {
+      "id": "A1-04",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Tom lives in a big city in one country. He has four friends in his street. Today, some children are playing outside. There are five boys and six girls near the green tree. Also, two men and three women are talking near the shop. Tom has twenty books on his desk and ten notebooks in his bag. He loves these people and those nice places very much.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Tom talks about his friends, people in his street, and his books.", "Tom works in a big office in the city center.", "Tom does not like the children in his street.", "Tom has twenty women and ten men in his room." ], "answer": 0 },
+            { "q": "How many books does Tom have on his desk?", "options": [ "He has four books.", "He has twenty books.", "He has ten books.", "He has five books." ], "answer": 1 },
+            { "q": "How many girls are playing near the green tree?", "options": [ "Three girls", "Five girls", "Six girls", "Two girls." ], "answer": 2 },
+            { "q": "What does the word 'children' mean in this context?", "options": [ "Adult people working in the shop.", "Only one small boy.", "Men and women talking together.", "Boys and girls playing outside." ], "answer": 3 },
+            { "q": "What can we conclude about Tom's room from the text?", "options": [ "Tom has ten notebooks in his bag.", "Tom has no books at all.", "Tom has twenty men in his room.", "Tom lives with four women." ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Menda beshta kitob bor.", "en": "I have five books", "tiles": [ "I", "have", "five", "books" ], "distractors": [ "book", "has", "six" ], "alt": [] },
+            { "uz": "U yerda yettita quti bor.", "en": "There are seven boxes", "tiles": [ "There", "are", "seven", "boxes" ], "distractors": [ "box", "is", "eight" ], "alt": [] },
+            { "uz": "Bu o'sha shaharlar.", "en": "These are those cities", "tiles": [ "These", "are", "those", "cities" ], "distractors": [ "This", "is", "city" ], "alt": [] },
+            { "uz": "O'sha yerda o'nta bola bor.", "en": "There are ten children", "tiles": [ "There", "are", "ten", "children" ], "distractors": [ "child", "is", "nine" ], "alt": [] },
+            { "uz": "Bizda yigirma ta ayol bor.", "en": "We have twenty women", "tiles": [ "We", "have", "twenty", "women" ], "distractors": [ "woman", "has", "men" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "children", "uz": "bolalar", "en": "I can see four children in the park", "tiles": [ "I", "can", "see", "four", "children", "in", "the", "park" ], "distractors": [ "child", "are" ], "alt": [] },
+            { "word": "men", "uz": "erkaklar", "en": "Those men work in this office", "tiles": [ "Those", "men", "work", "in", "this", "office" ], "distractors": [ "man", "works" ], "alt": [] },
+            { "word": "women", "uz": "ayollar", "en": "These women like reading books", "tiles": [ "These", "women", "like", "reading", "books" ], "distractors": [ "woman", "likes" ], "alt": [] },
+            { "word": "city", "uz": "shahar", "en": "There are ten cities in our country", "tiles": [ "There", "are", "ten", "cities", "in", "our", "country" ], "distractors": [ "city", "is" ], "alt": [] },
+            { "word": "hundred", "uz": "yuz (son)", "en": "She has one hundred books at home", "tiles": [ "She", "has", "one", "hundred", "books", "at", "home" ], "distractors": [ "have", "book" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Hello, my name is Anna. I live in a big city in our country. Today is a very busy day. I see one man and four women near the shop. Then I see six boys and seven girls in the street. Also, nine children play with some toys. Ten men walk to the park. In my bag, I have eight books and twenty apples. These things are heavy for me. Those people are very nice to me every day.",
+          "items": [
+            { "q": "How many men are near the shop?", "options": [ "four man", "one mens", "one man", "four men" ], "answer": 2 },
+            { "q": "How many women are near the shop?", "options": [ "four womans", "one woman", "one women", "four women" ], "answer": 3 },
+            { "q": "How many boys are in the street?", "options": [ "six boys", "seven boys", "six boy", "seven boy" ], "answer": 0 },
+            { "q": "How many children play with toys?", "options": [ "nine childs", "nine children", "ten childs", "ten children" ], "answer": 1 },
+            { "q": "How many books are in the bag?", "options": [ "twenty books", "eight book", "eight books", "twenty book" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I have five books", "uz": "Menda beshta kitob bor", "tiles": [ "I", "have", "five", "books" ], "distractors": [ "book", "has", "are" ], "alt": [] },
+            { "en": "Those men work in the city", "uz": "O'sha erkaklar shaharda ishlaydi", "tiles": [ "Those", "men", "work", "in", "the", "city" ], "distractors": [ "man", "works", "cities" ], "alt": [] },
+            { "en": "Ten children play in the country", "uz": "O'nta bola mamlakatda o'ynaydi", "tiles": [ "Ten", "children", "play", "in", "the", "country" ], "distractors": [ "child", "plays", "countries" ], "alt": [] },
+            { "en": "These women live in a big city", "uz": "Bular katta shaharda yashaydigan ayollar", "tiles": [ "These", "women", "live", "in", "a", "big", "city" ], "distractors": [ "woman", "lives", "cities" ], "alt": [] },
+            { "en": "Four boys and six girls read", "uz": "To'rtta o'g'il bola va oltita qiz bola o'qiydi", "tiles": [ "Four", "boys", "and", "six", "girls", "read" ], "distractors": [ "boy", "girl", "reads" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Counting people and things",
+          "topicUz": "Odamlar va narsalarni sanash",
+          "sentences": ["First, I see one man and one woman in the city.", "Then, twenty children arrive in this country.", "Next, some boys and girls join the people.", "After that, these four men help five women.", "Finally, those ten children smile at us."]
+        }
+      ],
+      "exam": [
+        { "q": "Menda beshta kitob bor.", "options": [ "I have five book.", "I have five bookes.", "I has five books.", "I have five books." ], "answer": 3 },
+        { "q": "Mening to'rtta uyim bor.", "options": [ "I have four houses.", "I have four house.", "I has four houses.", "I have four housies." ], "answer": 0 },
+        { "q": "Stolda oltita quti turibdi.", "options": [ "There are six box on the table.", "There are six boxes on the table.", "There is six boxs on the table.", "There are six boxies on the table." ], "answer": 1 },
+        { "q": "Parkda uchta bola o'ynayapti.", "options": [ "Three child are playing in the park.", "Three childs are playing in the park.", "Three children are playing in the park.", "Three childrens are playing in the park." ], "answer": 2 },
+        { "q": "Ko'chada ikkita ayol ketmoqda.", "options": [ "Two woman are walking on the street.", "Two womens are walking on the street.", "Two woman is walking on the street.", "Two women are walking on the street." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: child?", "options": [ "bola", "bolalar", "erkak", "ayol" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: women?", "options": [ "ayol", "ayollar", "qiz bola", "odamlar" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: twenty?", "options": [ "o'n", "yuz (son)", "yigirma", "sakkiz" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A1-05",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "My name is Anna. I live in a big city. Every day, I wake up early and I go to work. I work in an office with my friends. We speak English and we read many books. In the afternoon, I like to drink tea and eat tasty food. My friend Tom works with me too. He lives near the office. He likes to play football after work. In the evening, I want to study English at home. I need to write new words every day.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "How to cook tasty food at home", "Tom's weekend plans in the city", "Anna's daily routine and activities", "Working in a big school all day" ], "answer": 2 },
+            { "q": "Where does Anna work every day?", "options": [ "She is work in the city", "She work in a big school", "She lives in a big office", "She works in an office" ], "answer": 3 },
+            { "q": "What does Tom like to do after work?", "options": [ "He likes to play football", "He like to play football", "He likes to drink hot tea", "He want to read a book" ], "answer": 0 },
+            { "q": "In the sentence 'I need to write new words every day', what does the word 'write' mean?", "options": [ "To read a book in the evening", "To put words on paper with a pen", "To speak English with friends", "To drink water in the office" ], "answer": 1 },
+            { "q": "What can we conclude about Anna's evening habits?", "options": [ "She works in the office until late night", "She goes to play football with Tom", "She likes to learn and practice English", "She does not want to read any books" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men ofisda ishlayman.", "en": "I work in an office", "tiles": [ "I", "work", "in", "an", "office" ], "distractors": [ "works", "on", "a" ], "alt": [] },
+            { "uz": "U maktabda o'qiydi.", "en": "She studies in a school", "tiles": [ "She", "studies", "in", "a", "school" ], "distractors": [ "study", "on", "an", "work" ], "alt": [] },
+            { "uz": "Biz ingliz tili kitobini o'qiymiz.", "en": "We read English every day", "tiles": [ "We", "read", "English", "every", "day" ], "distractors": [ "reads", "in", "school" ], "alt": [] },
+            { "uz": "Ular har kuni futbol o'ynashadi.", "en": "They play football every day", "tiles": [ "They", "play", "football", "every", "day" ], "distractors": [ "plays", "in", "on" ], "alt": [] },
+            { "uz": "Mening do'stim har kuni choy ichadi.", "en": "He drinks tea every day", "tiles": [ "He", "drinks", "tea", "every", "day" ], "distractors": [ "drink", "water", "in" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "work", "uz": "ishlamoq", "en": "He works in an office every day", "tiles": [ "He", "works", "in", "an", "office", "every", "day" ], "distractors": [ "work", "are", "the" ], "alt": [] },
+            { "word": "live", "uz": "yashamoq", "en": "I live in a big city", "tiles": [ "I", "live", "in", "a", "big", "city" ], "distractors": [ "lives", "on", "the" ], "alt": [] },
+            { "word": "speak", "uz": "gapirmoq", "en": "She speaks English at school", "tiles": [ "She", "speaks", "English", "at", "school" ], "distractors": [ "speak", "in", "an" ], "alt": [] },
+            { "word": "read", "uz": "o'qimoq (matnni)", "en": "We read books every day", "tiles": [ "We", "read", "books", "every", "day" ], "distractors": [ "reads", "in", "on" ], "alt": [] },
+            { "word": "drink", "uz": "ichmoq", "en": "They drink water in the morning", "tiles": [ "They", "drink", "water", "in", "the", "morning" ], "distractors": [ "drinks", "on", "a" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "My name is Anna and I live in a big city. Every day I wake up early in the morning. I drink water and eat fresh bread for breakfast. Then I go to school with my best friend. We study English in the classroom every day. After school, I like to read books and write new words in my notebook. My brother plays football in the park on weekends. We need to speak English very well for our future. My parents work in a modern office near our house.",
+          "items": [
+            { "q": "What does Anna drink in the morning?", "options": [ "She drink water every day.", "She drinks water in the morning.", "She drink tea at school.", "She drinks milk in the office." ], "answer": 1 },
+            { "q": "Where do Anna and her friend study English?", "options": [ "They studies English in the classroom.", "They studies English at home.", "They study English in the classroom.", "They study English in the park." ], "answer": 2 },
+            { "q": "What does Anna like to do after school?", "options": [ "She like to read books.", "She likes to play football.", "She want to read books.", "She likes to read books." ], "answer": 3 },
+            { "q": "What does Anna's brother do on weekends?", "options": [ "He plays football in the park.", "He plays football in the office.", "He play football at school.", "He play football in the park." ], "answer": 0 },
+            { "q": "Where do Anna's parents work?", "options": [ "They works in a modern office.", "They work in a modern office.", "They works at school.", "They work in the classroom." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I work every day", "uz": "Men har kuni ishlayman", "tiles": [ "I", "work", "every", "day" ], "distractors": [ "works", "in" ], "alt": [] },
+            { "en": "He works in an office", "uz": "U ofisda ishlaydi", "tiles": [ "He", "works", "in", "an", "office" ], "distractors": [ "work", "on" ], "alt": [] },
+            { "en": "She speaks English well", "uz": "U ingliz tilida yaxshi gapiradi", "tiles": [ "She", "speaks", "English", "well" ], "distractors": [ "speak", "speakings" ], "alt": [] },
+            { "en": "We study at school", "uz": "Biz maktabda o'qiymiz", "tiles": [ "We", "study", "at", "school" ], "distractors": [ "studies", "in" ], "alt": [] },
+            { "en": "You like music", "uz": "Sizga musiqa yoqadi", "tiles": [ "You", "like", "music" ], "distractors": [ "likes", "water" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "My Daily Routine",
+          "topicUz": "Mening kundalik ishlarim",
+          "sentences": ["First, I wake up and drink a glass of water every morning.", "Then, I go to school and study English with my friends.", "After that, I work in an office in the afternoon.", "Next, I play football in the park with my brother.", "Finally, I eat dinner and read a book before bed."]
+        }
+      ],
+      "exam": [
+        { "q": "Men har kuni ishlayman.", "options": [ "I works every day.", "I to work every day.", "I working every day.", "I work every day." ], "answer": 3 },
+        { "q": "U ofisda ishlaydi.", "options": [ "He works in an office.", "He work in an office.", "He working in an office.", "He is works in an office." ], "answer": 0 },
+        { "q": "Biz ingliz tilida gapiramiz.", "options": [ "We speaks english.", "We speak english.", "We speaking english.", "We to speak english." ], "answer": 1 },
+        { "q": "U maktabda o'qiydi.", "options": [ "She study in school.", "She studying in school.", "She studies in school.", "She studyes in school." ], "answer": 2 },
+        { "q": "Ular futbol o'ynashadi.", "options": [ "They plays football.", "They playing football.", "They are play football.", "They play football." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: work?", "options": [ "ishlamoq", "o'qimoq, tahsil olmoq", "yashamoq", "gapirmoq" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: study?", "options": [ "xohlamoq", "o'qimoq, tahsil olmoq", "o'qimoq (matnni)", "yozmoq" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: water?", "options": [ "musiqa", "choy", "suv", "ingliz tili" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A1-06",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Anna is a good student. She always studies English at school. She does not know all answers, but she tries to understand every question. When does Anna ask a teacher? She asks when she does not know a word. Does her friend help her? Yes, her friend helps her every day. Why do they study together? Because they want to speak good English.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "Anna and her friend study English and help each other.", "Anna does not like school and never asks questions.", "Anna knows all answers and does not need help.", "Why does Anna speak English at home?" ], "answer": 0 },
+            { "q": "What does Anna not know according to the text?", "options": [ "She does not know her teacher.", "She does not know all answers.", "She does not know English.", "She does not know her friend." ], "answer": 1 },
+            { "q": "When does Anna ask a teacher?", "options": [ "She asks when she has no friend.", "She asks when she is at home.", "She asks when she does not know a word.", "She asks when she always speaks." ], "answer": 2 },
+            { "q": "What does the word 'understand' mean in the text?", "options": [ "To not know a question.", "To speak English very fast.", "To ask a teacher for help.", "To grasp the meaning of something." ], "answer": 3 },
+            { "q": "Why do Anna and her friend study together?", "options": [ "Because they want to speak good English.", "Because they do not like to study alone.", "Because the teacher says yes.", "Because they always have wrong answers." ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men tushunmayman.", "en": "I don't understand.", "tiles": [ "I", "don't", "understand" ], "distractors": [ "doesn't", "do" ], "alt": [] },
+            { "uz": "Sen bilmaysanmi?", "en": "Do you know?", "tiles": [ "Do", "you", "know" ], "distractors": [ "Does", "don't" ], "alt": [] },
+            { "uz": "U ingliz tilida gapirmaydi.", "en": "She doesn't speak English.", "tiles": [ "She", "doesn't", "speak", "English" ], "distractors": [ "don't", "does", "speaks" ], "alt": [] },
+            { "uz": "Ular qachon kelishadi?", "en": "When do they come?", "tiles": [ "When", "do", "they", "come" ], "distractors": [ "does", "don't" ], "alt": [] },
+            { "uz": "Nega u senga yordam bermaydi?", "en": "Why doesn't he help you?", "tiles": [ "Why", "doesn't", "he", "help", "you" ], "distractors": [ "don't", "do", "helps" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "know", "uz": "bilmoq", "en": "I don't know the answer", "tiles": [ "I", "don't", "know", "the", "answer" ], "distractors": [ "doesn't", "is", "not" ], "alt": [] },
+            { "word": "understand", "uz": "tushunmoq", "en": "Do you understand this question?", "tiles": [ "Do", "you", "understand", "this", "question" ], "distractors": [ "Does", "not", "know" ], "alt": [] },
+            { "word": "help", "uz": "yordam bermoq", "en": "She doesn't help me", "tiles": [ "She", "doesn't", "help", "me" ], "distractors": [ "don't", "does", "you" ], "alt": [] },
+            { "word": "think", "uz": "o'ylamoq", "en": "What do you think", "tiles": [ "What", "do", "you", "think" ], "distractors": [ "does", "she", "not" ], "alt": [] },
+            { "word": "ask", "uz": "so'ramoq", "en": "Why do you ask", "tiles": [ "Why", "do", "you", "ask" ], "distractors": [ "does", "they", "not" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Anna does not speak English very well every day. She lives in a small house with her cat. Does she know the answer to the difficult question? Yes, she always thinks about it. When does she ask her teacher for help? She asks when she does not understand the lesson. Why does she usually say sorry? She says sorry because she sometimes makes mistakes.",
+          "items": [
+            { "q": "What does Anna not speak very well?", "options": [ "Russian", "French", "English", "Spanish" ], "answer": 2 },
+            { "q": "Does she know the answer to the difficult question?", "options": [ "No, she doesn't.", "No, she know.", "Yes, she knows.", "Yes, she does." ], "answer": 3 },
+            { "q": "When does she ask her teacher for help?", "options": [ "When she doesn't understand", "When she always thinks", "When she speaks English", "When she makes mistakes" ], "answer": 0 },
+            { "q": "Why does she usually say sorry?", "options": [ "Because she helps", "Because she sometimes makes mistakes", "Because she lives", "Because she knows the answer" ], "answer": 1 },
+            { "q": "Who does she live with in a small house?", "options": [ "Her teacher", "Her friend", "Her cat", "Her dog" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I don't know", "uz": "Men bilmayman", "tiles": [ "I", "don't", "know" ], "distractors": [ "doesn't", "do" ], "alt": [] },
+            { "en": "Do you understand", "uz": "Siz tushunasizmi", "tiles": [ "Do", "you", "understand" ], "distractors": [ "Does", "don't" ], "alt": [] },
+            { "en": "She doesn't work", "uz": "U ishlamaydi", "tiles": [ "She", "doesn't", "work" ], "distractors": [ "don't", "does" ], "alt": [] },
+            { "en": "Does he speak English", "uz": "U ingliz tilida gapiradimi", "tiles": [ "Does", "he", "speak", "English" ], "distractors": [ "Do", "doesn't" ], "alt": [] },
+            { "en": "We don't live here", "uz": "Biz bu yerda yashamaymiz", "tiles": [ "We", "don't", "live", "here" ], "distractors": [ "doesn't", "does" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Answering a difficult question in class",
+          "topicUz": "Sinfda qiyin savolga javob berish",
+          "sentences": ["The teacher asks a difficult question in the English class.", "I do not know the answer because I never study at home.", "My friend sits next to me and helps me understand it.", "I always tell him thank you because he is very kind.", "Then I say the correct answer to the teacher with a smile."]
+        }
+      ],
+      "exam": [
+        { "q": "Men qahva ichmayman.", "options": [ "Don't I drink coffee.", "I doesn't drink coffee.", "I not drink coffee.", "I don't drink coffee." ], "answer": 3 },
+        { "q": "Sen ingliz tilida gapirasanmi?", "options": [ "Do you speak English?", "You speak English?", "Does you speak English?", "Are you speak English?" ], "answer": 0 },
+        { "q": "U ertalab ishga bormaydi.", "options": [ "He go not to work in the morning.", "He doesn't go to work in the morning.", "He doesn't goes to work in the morning.", "He don't go to work in the morning." ], "answer": 1 },
+        { "q": "Ular bu kitobni o'qiydimi?", "options": [ "Read they this book?", "Does they read this book?", "Do they read this book?", "They read this book?" ], "answer": 2 },
+        { "q": "Biz tushunmaymiz.", "options": [ "We doesn't understand.", "We not understand.", "We aren't understand.", "We don't understand." ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: understand?", "options": [ "tushunmoq", "o'ylamoq", "bilmoq", "so'ramoq" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: why?", "options": [ "qachon", "nega", "kim", "qaysi" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: always?", "options": [ "hech qachon", "odatda", "doim", "ba'zan" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A1-07",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "My new house is in a quiet street. There is a big kitchen and a clean bedroom in the house. There is a small bathroom next to the bedroom. There is a nice garden behind the house. In my street, there is a cheap shop and a big park. There are two banks near the market. There is a hospital between the shop and the bank. My house is very nice.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "A busy school and city", "An old hospital and market", "A new house and its street", "A big park and cheap shop" ], "answer": 2 },
+            { "q": "Where is the small bathroom?", "options": [ "In the garden", "Under the floor", "Behind the house", "Next to the bedroom" ], "answer": 3 },
+            { "q": "What is behind the house?", "options": [ "A nice garden", "A clean bedroom", "A big kitchen", "A cheap shop" ], "answer": 0 },
+            { "q": "What does the word 'quiet' mean in the text?", "options": [ "Arzon", "Tinch, jimjit", "Toza", "Yaqin" ], "answer": 1 },
+            { "q": "What can we say about the street from the text?", "options": [ "There is a bedroom in the street", "There are two hospitals in the street", "There is a shop and a park in the street", "There are no trees in the street" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Oshxonada bitta stol bor.", "en": "There is a table in the kitchen", "tiles": [ "There", "is", "a", "table", "in", "the", "kitchen" ], "distractors": [ "are", "an", "kitchens" ], "alt": [] },
+            { "uz": "Bog'da ikkita do'kon bor.", "en": "There are two shops", "tiles": [ "There", "are", "two", "shops" ], "distractors": [ "is", "shop", "a" ], "alt": [] },
+            { "uz": "Uyim yonida park bor.", "en": "There is a park near my house", "tiles": [ "There", "is", "a", "park", "near", "my", "house" ], "distractors": [ "are", "parks", "next" ], "alt": [] },
+            { "uz": "Ko'chada ikkita bank bor.", "en": "There are two banks in the street", "tiles": [ "There", "are", "two", "banks", "in", "the", "street" ], "distractors": [ "is", "bank", "on" ], "alt": [] },
+            { "uz": "Shifoxona orqasida tinch bog' bor.", "en": "There is a quiet garden behind the hospital", "tiles": [ "There", "is", "a", "quiet", "garden", "behind", "the", "hospital" ], "distractors": [ "are", "gardens", "under" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "there", "uz": "u yerda; bor (there is)", "en": "There is a clean kitchen", "tiles": [ "There", "is", "a", "clean", "kitchen" ], "distractors": [ "are", "an", "parks" ], "alt": [] },
+            { "word": "wall", "uz": "devor", "en": "There is a quiet bedroom near the wall", "tiles": [ "There", "is", "a", "quiet", "bedroom", "near", "the", "wall" ], "distractors": [ "are", "an", "street", "shop" ], "alt": [] },
+            { "word": "bank", "uz": "bank", "en": "There is a bank in the street", "tiles": [ "There", "is", "a", "bank", "in", "the", "street" ], "distractors": [ "are", "an", "market", "hospital" ], "alt": [] },
+            { "word": "under", "uz": "ostida", "en": "The cat is under the table", "tiles": [ "The", "cat", "is", "under", "the", "table" ], "distractors": [ "are", "on", "behind", "next" ], "alt": [] },
+            { "word": "right", "uz": "o'ng; to'g'ri", "en": "The bank is on the right", "tiles": [ "The", "bank", "is", "on", "the", "right" ], "distractors": [ "are", "left", "in", "under" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "My house is in a quiet street. There is a big kitchen on the first floor. There is a nice bedroom next to the kitchen. There is a clean bathroom behind my bedroom. There is a small garden near the house. There is a shop in the street. There is a big park near the shop. There is a quiet hospital between the park and the bank. There are two markets in this street.",
+          "items": [
+            { "q": "Where is the big kitchen?", "options": [ "There is a big kitchen in the first floor.", "There are a big kitchen on the first floor.", "There is a big kitchen on the first floor.", "There be a big kitchen on the first floor." ], "answer": 2 },
+            { "q": "What is next to the kitchen?", "options": [ "There are a nice bedroom next to the kitchen.", "There are nice bedroom next to the kitchen.", "There is a nice bedroom under the kitchen.", "There is a nice bedroom next to the kitchen." ], "answer": 3 },
+            { "q": "Where is the clean bathroom?", "options": [ "There is a clean bathroom behind my bedroom.", "There is a clean bathroom under my bedroom.", "There is a clean bathroom between my bedroom.", "There are a clean bathroom behind my bedroom." ], "answer": 0 },
+            { "q": "Where is the big park?", "options": [ "There is a big park behind the shop.", "There is a big park near the shop.", "There are a big park near the shop.", "There is a big park between the shop." ], "answer": 1 },
+            { "q": "How many markets are in this street?", "options": [ "There is two markets in this street.", "There are two market in this street.", "There are two markets in this street.", "There is a two markets in this street." ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "There is a kitchen in the house", "uz": "Uyda oshxona bor", "tiles": [ "There", "is", "a", "kitchen", "in", "the", "house" ], "distractors": [ "are", "an", "on" ], "alt": [] },
+            { "en": "There are two bedrooms in my flat", "uz": "Mening kvartiramda ikkita yotoqxona bor", "tiles": [ "There", "are", "two", "bedrooms", "in", "my", "flat" ], "distractors": [ "is", "bedroom", "on" ], "alt": [] },
+            { "en": "There is a clean park near my house", "uz": "Uyim yonida toza park bor", "tiles": [ "There", "is", "a", "clean", "park", "near", "my", "house" ], "distractors": [ "are", "an", "under" ], "alt": [] },
+            { "en": "There are shops in this street", "uz": "Bu ko'chada do'konlar bor", "tiles": [ "There", "are", "shops", "in", "this", "street" ], "distractors": [ "is", "shop", "on" ], "alt": [] },
+            { "en": "There is a quiet garden behind the bathroom", "uz": "Hammom orqasida tinch bog' bor", "tiles": [ "There", "is", "a", "quiet", "garden", "behind", "the", "bathroom" ], "distractors": [ "are", "an", "near" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "My Clean Town and House",
+          "topicUz": "Mening toza shahrim va uyim",
+          "sentences": ["First, there is a clean kitchen in my quiet house.", "Then, there is a big bedroom near the kitchen.", "After that, there is a nice garden behind the bedroom.", "Next, there is a cheap shop in the street near my house.", "Finally, there is a big park between the shop and the bank."]
+        }
+      ],
+      "exam": [
+        { "q": "Uyim yonida park bor.", "options": [ "There is park near my house.", "There are a park near my house.", "There is a park near my house.", "There are park near my house." ], "answer": 2 },
+        { "q": "Ko'chada ikkita do'kon bor.", "options": [ "There is two shop in the street.", "There are two shop in the street.", "There is two shops in the street.", "There are two shops in the street." ], "answer": 3 },
+        { "q": "Oshxonada stol bor.", "options": [ "There is a table in the kitchen.", "There table is in the kitchen.", "There are a table in the kitchen.", "There is table in kitchen." ], "answer": 0 },
+        { "q": "Bog'da uchta daraxt bor.", "options": [ "There is three trees in the garden.", "There are three trees in the garden.", "There are three tree in the garden.", "There is three tree in the garden." ], "answer": 1 },
+        { "q": "Devorda rasm bor.", "options": [ "There are a picture on the wall.", "There picture is on the wall.", "There is a picture on the wall.", "There is picture on wall." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: kitchen?", "options": [ "yotoqxona", "hammom", "bog'", "oshxona" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: hospital?", "options": [ "shifoxona", "do'kon", "bank", "bozor" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: clean?", "options": [ "arzon", "toza", "orqasida", "tinch, jimjit" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "A1-08",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "My name is Anna. I can swim well in the pool, but I cannot run fast. My friend Tom can drive a car and he can cook delicious food. We can also draw pictures together after school. I cannot sing a song very well, but I can dance with my friends. Drawing is easy for us, and we are happy.",
+          "items": [
+            { "q": "What is the main idea of this text?", "options": [ "Anna and Tom are working in a big office", "Anna and Tom talk about what they can and cannot do", "Anna can drive a car and Tom cannot swim", "They cannot draw pictures together after school" ], "answer": 1 },
+            { "q": "What activity can Anna do well?", "options": [ "She can run fast in the park", "She can drive a car with Tom", "She can swim well in the pool", "She can sing a song very well" ], "answer": 2 },
+            { "q": "What can Tom do according to the text?", "options": [ "He can ride a bike hard", "He can swim fast without a bike", "He can jump high and run slow", "He can drive a car and cook delicious food" ], "answer": 3 },
+            { "q": "In the sentence 'I can swim well in the pool', what does the word 'well' mean in this context?", "options": [ "Doing an action in a good or skillful way", "A deep hole of water in the ground", "Feeling very sick and tired", "A dark place under the house" ], "answer": 0 },
+            { "q": "What can we conclude about Anna and Tom from the text?", "options": [ "They can never do anything together", "They share some abilities and do activities together", "They only know how to drive cars", "They cannot draw pictures at all" ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men suza olaman.", "en": "I can swim", "tiles": [ "I", "can", "swim" ], "distractors": [ "cannot", "swims", "do" ], "alt": [] },
+            { "uz": "U mashina hayday olmaydi.", "en": "She cannot drive a car", "tiles": [ "She", "cannot", "drive", "a", "car" ], "distractors": [ "can", "drives", "the", "bike" ], "alt": [ "She can't drive a car" ] },
+            { "uz": "Biz tez yugura olamiz.", "en": "We can run fast", "tiles": [ "We", "can", "run", "fast" ], "distractors": [ "cannot", "runs", "slow", "well" ], "alt": [] },
+            { "uz": "Ular birgalikda ovqat pishira oladilar.", "en": "They can cook together", "tiles": [ "They", "can", "cook", "together" ], "distractors": [ "cannot", "cooks", "with", "well" ], "alt": [] },
+            { "uz": "Sen yaxshi rasm chiza olasanmi?", "en": "Can you draw well", "tiles": [ "Can", "you", "draw", "well" ], "distractors": [ "cannot", "draws", "fast", "is" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "can", "uz": "-a olmoq", "en": "I can swim very well", "tiles": [ "I", "can", "swim", "very", "well" ], "distractors": [ "cannot", "swims", "fast" ], "alt": [] },
+            { "word": "cannot", "uz": "-a olmaslik", "en": "She cannot drive a car", "tiles": [ "She", "cannot", "drive", "a", "car" ], "distractors": [ "can", "drives", "bike" ], "alt": [] },
+            { "word": "swim", "uz": "suzmoq", "en": "We can swim in the water", "tiles": [ "We", "can", "swim", "in", "the", "water" ], "distractors": [ "cannot", "swims", "run" ], "alt": [] },
+            { "word": "run", "uz": "yugurmoq", "en": "They can run very fast", "tiles": [ "They", "can", "run", "very", "fast" ], "distractors": [ "cannot", "runs", "slow" ], "alt": [] },
+            { "word": "cook", "uz": "ovqat pishirmoq", "en": "He can cook food well", "tiles": [ "He", "can", "cook", "food", "well" ], "distractors": [ "cannot", "cooks", "hard" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Every morning Anna wakes up early. She can cook breakfast for her family. After breakfast, she can drive a car to her office. At the office, she works hard every day. In the evening, Anna goes to the park. She can run very fast with her friends. Her brother Tom cannot run fast because he is tired. Tom can draw beautiful pictures with a pencil. Anna and Tom are very happy together because they can do many things.",
+          "items": [
+            { "q": "What can Anna cook for her family?", "options": [ "She can cooks breakfast", "She can cooking breakfast", "She can cook breakfast", "She cannot cook breakfast" ], "answer": 2 },
+            { "q": "How does Anna go to her office?", "options": [ "She cannot drive a car", "She can drives a car", "She can driving a car", "She can drive a car" ], "answer": 3 },
+            { "q": "How can Anna run in the park?", "options": [ "She can run very fast", "She can run slow", "She cannot run fast", "She can runs fast" ], "answer": 0 },
+            { "q": "Why cannot Tom run fast?", "options": [ "Because he is happy", "Because he is tired", "Because he can run", "Because he is early" ], "answer": 1 },
+            { "q": "What can Tom do with a pencil?", "options": [ "He can draws pictures", "He cannot draw pictures", "He can draw beautiful pictures", "He can drawing pictures" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I can swim", "uz": "Men suza olaman", "tiles": [ "I", "can", "swim" ], "distractors": [ "cannot", "swims", "are" ], "alt": [] },
+            { "en": "She can cook well", "uz": "U yaxshi ovqat pishira oladi", "tiles": [ "She", "can", "cook", "well" ], "distractors": [ "cannot", "cooks", "fast" ], "alt": [] },
+            { "en": "They cannot run fast", "uz": "Ular tez yugura olmaydi", "tiles": [ "They", "cannot", "run", "fast" ], "distractors": [ "can", "runs", "slow" ], "alt": [ "They can't run fast" ] },
+            { "en": "We can ride a bike", "uz": "Biz velosiped hayda olamiz", "tiles": [ "We", "can", "ride", "a", "bike" ], "distractors": [ "cannot", "car", "rides" ], "alt": [] },
+            { "en": "He can draw a car", "uz": "U mashina chiza oladi", "tiles": [ "He", "can", "draw", "a", "car" ], "distractors": [ "cannot", "bike", "draws" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "My abilities",
+          "topicUz": "Mening qobiliyatlarim",
+          "sentences": ["First, I can swim very well in the pool.", "Then, I can run fast with my friends.", "After that, I can ride a bike in the park.", "Next, I can draw a picture of a car.", "Finally, I can cook a good meal together with my family."]
+        }
+      ],
+      "exam": [
+        { "q": "Men tez yugura olaman.", "options": [ "I cannot run fast.", "I can runs fast.", "I can fast run.", "I can run fast." ], "answer": 3 },
+        { "q": "U mashina hayday olmaydi.", "options": [ "He can't drive a car.", "He can't drives a car.", "He can drive a car.", "He cannot drives a car." ], "answer": 0 },
+        { "q": "Biz yaxshi ovqat pishira olamizmi?", "options": [ "We can cook well?", "Can we cook well?", "Can we cooks well?", "We can cook good?" ], "answer": 1 },
+        { "q": "Ular chiroyli rasm chiza oladilar.", "options": [ "They can draws.", "They cannot draw.", "They can draw well.", "They can to draw." ], "answer": 2 },
+        { "q": "Sen velosiped hayda olasanmi?", "options": [ "Do you can ride a bike?", "You can ride a bike?", "Can you ride bike?", "Can you ride a bike?" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: swim?", "options": [ "suzmoq", "yugurmoq", "sakramoq", "haydamoq" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: sing?", "options": [ "ovqat pishirmoq", "qo'shiq aytmoq", "raqsga tushmoq", "rasm chizmoq" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: difficult?", "options": [ "oson", "tez", "qiyin", "sekin" ], "answer": 2 }
+      ]
+    },
+    {
+      "id": "A1-09",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Yesterday was a busy day for Anna. She was tired in the morning because she was awake late last night. The weather was cold yesterday, so she was at home all day. Her brother was hungry, and he was angry because there was no food in the kitchen. Last week, they were happy because the weather was hot and nice. But yesterday afternoon, Anna was sad and tired. She was in her warm room with a book.",
+          "items": [
+            { "q": "What is the general idea of the text?", "options": [ "Anna and her brother were at school yesterday morning.", "Anna was busy and tired at home yesterday because the weather was cold.", "The weather was hot and happy all day yesterday.", "Anna was cooking food in the kitchen yesterday afternoon." ], "answer": 1 },
+            { "q": "Where was Anna all day yesterday?", "options": [ "She was in the kitchen.", "She was at school.", "She was at home.", "She was outside." ], "answer": 2 },
+            { "q": "Why was Anna's brother angry yesterday?", "options": [ "Because Anna was reading a book.", "Because the weather was too hot.", "Because he was at school.", "Because there was no food in the kitchen." ], "answer": 3 },
+            { "q": "What does the word 'tired' mean in the text?", "options": [ "Needing rest because of work or lack of sleep.", "Feeling very happy and energetic.", "Having no food to eat.", "Being angry with the weather." ], "answer": 0 },
+            { "q": "What can we conclude about Anna's feelings last week compared to yesterday?", "options": [ "She was more tired last week than yesterday.", "She was happier last week because the weather was nice.", "She was angry at her brother last week.", "She was at home all week." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men kecha charchagandim.", "en": "I was tired yesterday", "tiles": [ "I", "was", "tired", "yesterday" ], "distractors": [ "were", "am", "today" ], "alt": [] },
+            { "uz": "Ular uyda edilar.", "en": "They were at home", "tiles": [ "They", "were", "at", "home" ], "distractors": [ "was", "in", "yesterday" ], "alt": [] },
+            { "uz": "Ob-havo kecha issiq edi.", "en": "The weather was hot yesterday", "tiles": [ "The", "weather", "was", "hot", "yesterday" ], "distractors": [ "were", "cold", "tomorrow" ], "alt": [] },
+            { "uz": "Biz o'tgan hafta kasal edik.", "en": "We were ill last week", "tiles": [ "We", "were", "ill", "last", "week" ], "distractors": [ "was", "yesterday", "month" ], "alt": [] },
+            { "uz": "Sen kecha kechqurun och edingmi?", "en": "Were you hungry yesterday evening", "tiles": [ "Were", "you", "hungry", "yesterday", "evening" ], "distractors": [ "Was", "thirsty", "night" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "tired", "uz": "charchagan", "en": "I was tired yesterday evening", "tiles": [ "I", "was", "tired", "yesterday", "evening" ], "distractors": [ "were", "is", "am" ], "alt": [] },
+            { "word": "happy", "uz": "baxtli", "en": "We were very happy yesterday", "tiles": [ "We", "were", "very", "happy", "yesterday" ], "distractors": [ "was", "is", "are" ], "alt": [] },
+            { "word": "ill", "uz": "kasal", "en": "She was ill last week", "tiles": [ "She", "was", "ill", "last", "week" ], "distractors": [ "were", "is", "are" ], "alt": [] },
+            { "word": "hungry", "uz": "och", "en": "They were hungry at night", "tiles": [ "They", "were", "hungry", "at", "night" ], "distractors": [ "was", "is", "be" ], "alt": [] },
+            { "word": "born", "uz": "tug'ilgan", "en": "He was born last month", "tiles": [ "He", "was", "born", "last", "month" ], "distractors": [ "were", "is", "are" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Yesterday was a cold day. I was tired in the morning because I was ill last week. My friend Anna was hungry and thirsty in the afternoon. We were at a nice cafe. The weather was bad, but we were happy together. Anna was sad at first, but then she was fine. We were home at night.",
+          "items": [
+            { "q": "What was the weather like yesterday?", "options": [ "It were a cold day.", "It was a cold day.", "It was cold weather yesterday.", "It was hot yesterday." ], "answer": 1 },
+            { "q": "Why was the speaker tired in the morning?", "options": [ "Because she was ill yesterday.", "Because I were ill last week.", "Because I was ill last week.", "Because we was ill last week." ], "answer": 2 },
+            { "q": "How was Anna in the afternoon?", "options": [ "Anna was happy and sad.", "Anna was tired and ill.", "Anna were hungry and thirsty.", "Anna was hungry and thirsty." ], "answer": 3 },
+            { "q": "Where were they in the afternoon?", "options": [ "We were at a nice cafe.", "We were at home.", "We was at a nice cafe.", "We was home." ], "answer": 0 },
+            { "q": "How was Anna at first?", "options": [ "Anna was happy.", "Anna was sad.", "Anna was cold.", "Anna were sad." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I was tired yesterday", "uz": "Men kecha charchagandim", "tiles": [ "I", "was", "tired", "yesterday" ], "distractors": [ "were", "is", "am" ], "alt": [] },
+            { "en": "They were at home", "uz": "Ular uyda edilar", "tiles": [ "They", "were", "at", "home" ], "distractors": [ "was", "is", "are" ], "alt": [] },
+            { "en": "She was ill last week", "uz": "U o'tgan hafta kasal edi", "tiles": [ "She", "was", "ill", "last", "week" ], "distractors": [ "were", "is", "yesterday" ], "alt": [] },
+            { "en": "We were hungry", "uz": "Biz och edik", "tiles": [ "We", "were", "hungry" ], "distractors": [ "was", "is", "thirsty" ], "alt": [] },
+            { "en": "He was happy yesterday", "uz": "U kecha baxtli edi", "tiles": [ "He", "was", "happy", "yesterday" ], "distractors": [ "were", "sad", "is" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "My day yesterday",
+          "topicUz": "Kechagi kunim",
+          "sentences": ["Yesterday morning I was at school with my friends.", "Then, at one o clock, I was very hungry.", "After that, I was at home with my family.", "We were happy because the dinner was delicious.", "Finally, I was in bed at ten o clock."]
+        }
+      ],
+      "exam": [
+        { "q": "Men kecha xafa edim.", "options": [ "I is sad yesterday.", "I were sad yesterday.", "I was sad yesterday.", "I am sad yesterday." ], "answer": 2 },
+        { "q": "Ular kecha uyda edilar.", "options": [ "They was at home yesterday.", "They be at home yesterday.", "They are at home yesterday.", "They were at home yesterday." ], "answer": 3 },
+        { "q": "Sen o'tgan haftada kasal edingizmi?", "options": [ "Were you ill last week?", "Was you ill last week?", "You were ill last week?", "Are you ill last week?" ], "answer": 0 },
+        { "q": "Biz kecha kechqurun och edik.", "options": [ "We was hungry yesterday evening.", "We were hungry yesterday evening.", "We is hungry yesterday evening.", "We are hungry yesterday evening." ], "answer": 1 },
+        { "q": "Ob-havo kecha issiq edi.", "options": [ "The weather were hot yesterday.", "The weather is hot yesterday.", "The weather was hot yesterday.", "The weather be hot yesterday." ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: yesterday?", "options": [ "tun", "bugun", "ertaga", "kecha" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: tired?", "options": [ "charchagan", "och", "xafa", "baxtli" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: born?", "options": [ "kasal", "tug'ilgan", "sovuq", "vaqt" ], "answer": 1 }
+      ]
+    },
+    {
+      "id": "A1-10",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last week, I had a short holiday. On Monday, I decided to visit my friend in another city. I walked to the station and arrived there early. I waited for the train and then traveled to the hotel. The journey finished in the afternoon. At the hotel, I opened my room and looked at the nice city view. In the evening, I watched a good film on TV and listened to music. I called my family and talked to them about my trip.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "A busy day at school", "Cooking dinner at home", "A holiday trip last week", "Buying a new house" ], "answer": 2 },
+            { "q": "When did the author decide to visit a friend?", "options": [ "On Tuesday", "On Sunday", "On Wednesday", "On Monday" ], "answer": 3 },
+            { "q": "Where did the author stay during the trip?", "options": [ "At a hotel", "At home", "In a tent", "At the station" ], "answer": 0 },
+            { "q": "What does the word 'opened' mean in this context?", "options": [ "Locked the door", "Unlocked and went into the room", "Cleaned the floor", "Painted the walls" ], "answer": 1 },
+            { "q": "Why did the author call the family?", "options": [ "To ask for money", "To order food", "To talk about the trip", "To complain about the train" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men kecha kinoni tomosha qildim.", "en": "I watched the film yesterday", "tiles": [ "I", "watched", "the", "film", "yesterday" ], "distractors": [ "watch", "watches", "did" ], "alt": [] },
+            { "uz": "Biz o'tgan hafta do'stimnikiga bordik.", "en": "We visited my friend last week", "tiles": [ "We", "visited", "my", "friend", "last", "week" ], "distractors": [ "visit", "visits", "were" ], "alt": [] },
+            { "uz": "U kecha xatni tugatdi.", "en": "He finished the letter yesterday", "tiles": [ "He", "finished", "the", "letter", "yesterday" ], "distractors": [ "finish", "finishes", "does" ], "alt": [] },
+            { "uz": "Biz kecha kinoni ko'rmadik.", "en": "We didn't watch the film yesterday", "tiles": [ "We", "didn't", "watch", "the", "film", "yesterday" ], "distractors": [ "don't", "watched", "not" ], "alt": [] },
+            { "uz": "Men o'tgan hafta mehmonxonada qoldim.", "en": "I stayed at the hotel last week", "tiles": [ "I", "stayed", "at", "the", "hotel", "last", "week" ], "distractors": [ "stay", "stays", "did" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "finish", "uz": "tugatmoq", "en": "I finished my work last week", "tiles": [ "I", "finished", "my", "work", "last", "week" ], "distractors": [ "finish", "did", "was" ], "alt": [] },
+            { "word": "watch", "uz": "tomosha qilmoq", "en": "We watched a film yesterday", "tiles": [ "We", "watched", "a", "film", "yesterday" ], "distractors": [ "watch", "watches", "were" ], "alt": [] },
+            { "word": "visit", "uz": "tashrif buyurmoq", "en": "They visited the hotel on Monday", "tiles": [ "They", "visited", "the", "hotel", "on", "Monday" ], "distractors": [ "visit", "visits", "are" ], "alt": [] },
+            { "word": "wait", "uz": "kutmoq", "en": "She waited at the station", "tiles": [ "She", "waited", "at", "the", "station" ], "distractors": [ "wait", "waits", "did" ], "alt": [] },
+            { "word": "walk", "uz": "piyoda yurmoq", "en": "He walked to the park then", "tiles": [ "He", "walked", "to", "the", "park", "then" ], "distractors": [ "walk", "walks", "were" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Last week, I visited my friend in a big hotel. We arrived at the station in the morning. Then, we walked to the hotel. I called my mother and we talked on the phone. My friend watched a film on TV. I listened to music in my room. We stayed there for three days. It was a very good holiday.",
+          "items": [
+            { "q": "Where did the speaker go last week?", "options": [ "I visited my friend in a big hotel.", "We visited my friend in a big hotel.", "I visit my friend in a big hotel.", "She visited her friend in a big hotel." ], "answer": 0 },
+            { "q": "What did they do at the station?", "options": [ "We arriving at the station.", "We arrived at the station in the morning.", "We arrive at the station.", "We didn't arrive at the station." ], "answer": 1 },
+            { "q": "How did they get to the hotel?", "options": [ "Then, we walk to the hotel.", "Then, we walking to the hotel.", "Then, we walked to the hotel.", "Then, we is walked to the hotel." ], "answer": 2 },
+            { "q": "What did the speaker's friend do?", "options": [ "My friend watch a film on TV.", "My friend is watched a film on TV.", "My friend watching a film on TV.", "My friend watched a film on TV." ], "answer": 3 },
+            { "q": "How long did they stay there?", "options": [ "We stayed there for three days.", "We stays there for three days.", "We didn't stay there for three days.", "We stay there for three days." ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I watched the film yesterday", "uz": "Men kecha kinoni tomosha qildim", "tiles": [ "I", "watched", "the", "film", "yesterday" ], "distractors": [ "watch", "watches", "is" ], "alt": [] },
+            { "en": "She didn't open the door", "uz": "U eshikni ochmadi", "tiles": [ "She", "didn't", "open", "the", "door" ], "distractors": [ "opened", "opens", "don't" ], "alt": [] },
+            { "en": "We visited our friends", "uz": "Biz do'stlarimizga tashrif buyurdik", "tiles": [ "We", "visited", "our", "friends" ], "distractors": [ "visit", "visits", "are" ], "alt": [] },
+            { "en": "They didn't wait for us", "uz": "Ular bizni kutishmadi", "tiles": [ "They", "didn't", "wait", "for", "us" ], "distractors": [ "waited", "waits", "don't" ], "alt": [] },
+            { "en": "He walked to the station", "uz": "U bekatgacha piyoda yurdi", "tiles": [ "He", "walked", "to", "the", "station" ], "distractors": [ "walk", "walks", "did" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "My holiday in the hotel",
+          "topicUz": "Mehmonxonadagi tatilim",
+          "sentences": ["First, I decided to travel and arrived at the station.", "Then, I stayed in a nice hotel during the holiday.", "After that, I visited my friend and talked with him.", "Next, I watched a film in the evening.", "Finally, I called my mother and finished the day."]
+        }
+      ],
+      "exam": [
+        { "q": "Men kecha ingliz tilini o'rganndim.", "options": [ "I learn English yesterday.", "I learned English yesterday.", "I learning English yesterday.", "I learns English yesterday." ], "answer": 1 },
+        { "q": "Biz kecha film tomosha qildik.", "options": [ "We watches a film yesterday.", "We watch a film yesterday.", "We watched a film yesterday.", "We watching a film yesterday." ], "answer": 2 },
+        { "q": "Ular kecha do'stiga qo'ng'iroq qilishmadi.", "options": [ "They didn't called their friend.", "They not called their friend.", "They don't call their friend.", "They didn't call their friend." ], "answer": 3 },
+        { "q": "Siz kecha soat sakkizda ishni boshladingizmi?", "options": [ "Did you start work at eight?", "You started work at eight?", "Did you started work at eight?", "Do you start work at eight?" ], "answer": 0 },
+        { "q": "U o'tgan hafta mehmonxonada qoldi.", "options": [ "She stay at a hotel last week.", "She stayed at a hotel last week.", "She stays at a hotel last week.", "She staying at a hotel last week." ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: film?", "options": [ "bekat", "xat", "kino", "ta'til" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: station?", "options": [ "mehmonxona", "kino", "ta'til", "bekat" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: holiday?", "options": [ "ta'til", "kino", "xat", "mehmonxona" ], "answer": 0 }
+      ]
+    },
+    {
+      "id": "A1-11",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "It is a sunny morning now. Anna is sitting outside in the garden at the moment. She is wearing a nice dress and new shoes. Her brother is standing near her and holding a phone. They are smiling because they are very happy. Inside the house, their mother is making a big breakfast in the kitchen. Anna's father is still sleeping in his room because it is early. Everyone is very busy today.",
+          "items": [
+            { "q": "What is the main topic of the text?", "options": [ "Why Anna is buying new clothes", "What Anna does every single day", "What Anna's family is doing at the moment", "Where Anna lives in the city" ], "answer": 2 },
+            { "q": "Where is Anna sitting in the text?", "options": [ "She is sitting near the computer", "She is sitting inside in the kitchen", "She is sitting in her own bedroom", "She is sitting outside in the garden" ], "answer": 3 },
+            { "q": "What is Anna's mother doing?", "options": [ "She is making a big breakfast", "She is wearing new shoes", "She is sleeping in the room", "She is standing outside" ], "answer": 0 },
+            { "q": "In the text, what does the word 'busy' mean?", "options": [ "Feeling very tired and sleepy", "Having a lot of things to do", "Sitting quietly in the garden", "Wearing old clothes now" ], "answer": 1 },
+            { "q": "Why is Anna's father still sleeping?", "options": [ "Because he is holding a phone", "Because he is sitting outside", "Because it is early in the morning", "Because he is wearing a shirt" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men hozir kitob o'qiyapman.", "en": "I am reading a book now", "tiles": [ "I", "am", "reading", "a", "book", "now" ], "distractors": [ "is", "are", "read" ], "alt": [] },
+            { "uz": "Ular tashqarida o'tirishibdi.", "en": "They are sitting outside", "tiles": [ "They", "are", "sitting", "outside" ], "distractors": [ "is", "am", "sit" ], "alt": [] },
+            { "uz": "U hozir yangi ko'ylak kiyib yuribdi.", "en": "She is wearing a new dress now", "tiles": [ "She", "is", "wearing", "a", "new", "dress", "now" ], "distractors": [ "are", "am", "wear" ], "alt": [] },
+            { "uz": "Biz hozir kompyuterda rasm chizyapmiz.", "en": "We are drawing a picture on the computer now", "tiles": [ "We", "are", "drawing", "a", "picture", "on", "the", "computer", "now" ], "distractors": [ "is", "am", "make" ], "alt": [] },
+            { "uz": "Ular hali ham tashqarida telefon olib yurishibdi.", "en": "They are still carrying a phone outside", "tiles": [ "They", "are", "still", "carrying", "a", "phone", "outside" ], "distractors": [ "is", "am", "carry" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "now", "uz": "hozir", "en": "I am reading a book now", "tiles": [ "I", "am", "reading", "a", "book", "now" ], "distractors": [ "is", "are", "read" ], "alt": [] },
+            { "word": "wear", "uz": "kiyib yurmoq", "en": "She is wearing a new dress", "tiles": [ "She", "is", "wearing", "a", "new", "dress" ], "distractors": [ "are", "am", "wear" ], "alt": [] },
+            { "word": "sit", "uz": "o'tirmoq", "en": "They are sitting outside now", "tiles": [ "They", "are", "sitting", "outside", "now" ], "distractors": [ "is", "am", "sit" ], "alt": [] },
+            { "word": "sleep", "uz": "uxlamoq", "en": "The baby is sleeping inside", "tiles": [ "The", "baby", "is", "sleeping", "inside" ], "distractors": [ "are", "am", "sleep" ], "alt": [] },
+            { "word": "buy", "uz": "sotib olmoq", "en": "He is buying a new phone", "tiles": [ "He", "is", "buying", "a", "new", "phone" ], "distractors": [ "are", "am", "buy" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Anna is sitting outside in the park at the moment. She is wearing a nice blue dress and black shoes. Her friend Tom is standing near a big tree now. Tom is talking on his phone and smiling. A little dog is sleeping under the bench. Anna is eating a red apple and drinking cold water. They are very happy today.",
+          "items": [
+            { "q": "Where is Anna sitting at the moment?", "options": [ "She are sitting outside in the park.", "She is sitting outside in the park.", "She is sit outside in the park.", "She sitting outside in the park." ], "answer": 1 },
+            { "q": "What is Anna wearing?", "options": [ "She wearing a blue dress and black shoes.", "She is wearing a blue shirt and black shoes.", "She is wearing a blue dress and black shoes.", "She are wearing a blue dress and black shoes." ], "answer": 2 },
+            { "q": "What is Tom doing near a big tree now?", "options": [ "Tom is standing and sleeping.", "Tom is talk on his phone and smiling.", "Tom are talking on his phone and smiling.", "Tom is talking on his phone and smiling." ], "answer": 3 },
+            { "q": "Where is the little dog sleeping?", "options": [ "The dog is sleeping under the bench.", "The dog is sleeping on the bench.", "The dog are sleeping under the bench.", "The dog sleeping under the bench." ], "answer": 0 },
+            { "q": "What is Anna eating?", "options": [ "She are eating a red apple.", "She is eating a red apple.", "She is eating a red dress.", "She eating a red apple." ], "answer": 1 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I am reading a book now", "uz": "Men hozir kitob o'qiyapman", "tiles": [ "I", "am", "reading", "a", "book", "now" ], "distractors": [ "is", "are", "read" ], "alt": [] },
+            { "en": "They are sitting outside", "uz": "Ular tashqarida o'tirishibdi", "tiles": [ "They", "are", "sitting", "outside" ], "distractors": [ "am", "is", "sit" ], "alt": [] },
+            { "en": "She is wearing a dress", "uz": "U ayol ko'ylak kiyib yuribdi", "tiles": [ "She", "is", "wearing", "a", "dress" ], "distractors": [ "are", "am", "wear" ], "alt": [] },
+            { "en": "We are standing inside", "uz": "Biz ichkarida turibmiz", "tiles": [ "We", "are", "standing", "inside" ], "distractors": [ "is", "am", "stand" ], "alt": [] },
+            { "en": "He is sleeping now", "uz": "U hozir uxlayapti", "tiles": [ "He", "is", "sleeping", "now" ], "distractors": [ "am", "are", "sleep" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Present Continuous",
+          "topicUz": "Hozirgi davomli zamon",
+          "sentences": ["First, I am sitting outside on a comfortable chair.", "Then, I am wearing a blue shirt and new shoes.", "After that, I am holding my phone in my hand now.", "Next, I am looking at a nice picture on the screen.", "Finally, I am smiling because I am very happy."]
+        }
+      ],
+      "exam": [
+        { "q": "Men hozir kitob o'qiyapman.", "options": [ "I am reading a book now.", "I reading a book now.", "I am read a book now.", "I is reading a book now." ], "answer": 0 },
+        { "q": "Ular hozir tashqarida o'tirishibdi.", "options": [ "They is sitting outside now.", "They are sitting outside now.", "They sitting outside now.", "They are sit outside now." ], "answer": 1 },
+        { "q": "U (qiz) hozir yangi ko'ylak kiyib yuribdi.", "options": [ "She are wearing a dress now.", "She wearing a dress now.", "She is wearing a dress now.", "She is wear a dress now." ], "answer": 2 },
+        { "q": "Biz hozir xonada uxlamayapmiz.", "options": [ "We aren't sleep in the room now.", "We isn't sleeping in the room now.", "We don't sleeping in the room now.", "We aren't sleeping in the room now." ], "answer": 3 },
+        { "q": "Sen hozir telefon qilyapsanmi?", "options": [ "Are you phoning now?", "Do you phone now?", "Is you phoning now?", "Are you making a phone now?" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: now?", "options": [ "keyin", "hozir", "daqiqa", "hali ham" ], "answer": 1 },
+        { "q": "Nima ma'noni anglatadi: wear?", "options": [ "o'tirmoq", "turmoq", "kiyib yurmoq", "ko'tarib yurmoq" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: outside?", "options": [ "band", "ichkarida", "hali ham", "tashqarida" ], "answer": 3 }
+      ]
+    },
+    {
+      "id": "A1-12",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Every weekend, I usually stay at home and eat bread with fruit for breakfast. I rarely go to a restaurant because food there is very expensive. However, today is different. Right now, I am sitting in a nice restaurant and eating delicious meat with vegetables while the rain is falling outside. My family prefers staying at home when the weather is bad. So, I am having a very quiet and peaceful lunch alone today.",
+          "items": [
+            { "q": "What is the main idea of the text?", "options": [ "The speaker is having a special lunch at a restaurant today despite regular habits.", "The speaker is staying at home as usual.", "The speaker hates eating meat at home.", "The weather is sunny and warm today." ], "answer": 0 },
+            { "q": "What does the speaker usually eat for breakfast on weekends?", "options": [ "Meat with vegetables", "Bread with fruit", "Delicious dinner", "Expensive soup" ], "answer": 1 },
+            { "q": "What is the weather doing outside right now according to the text?", "options": [ "The sun is shining", "The snow is falling", "The rain is falling", "The wind is blowing" ], "answer": 2 },
+            { "q": "In the text, what does the word 'rarely' mean in this context?", "options": [ "Always", "Usually", "Every day", "Hardly ever, not often" ], "answer": 3 },
+            { "q": "Why is today different from the speaker's normal weekend routine?", "options": [ "Because the speaker is eating at an expensive restaurant right now.", "Because the speaker is eating breakfast at home.", "Because the family is cooking meat together.", "Because the weather is very hot and sunny." ], "answer": 0 }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            { "uz": "Men har kuni ertalab kofe ichaman.", "en": "I drink coffee every morning.", "tiles": [ "I", "drink", "coffee", "every", "morning" ], "distractors": [ "drinking", "am", "drinks" ], "alt": [] },
+            { "uz": "Ular hozir tushlik qilishmoqda.", "en": "They are having lunch now.", "tiles": [ "They", "are", "having", "lunch", "now" ], "distractors": [ "have", "has", "is" ], "alt": [] },
+            { "uz": "U qishda kamdan-kam sabzavot yeydi.", "en": "He rarely eats vegetables in winter.", "tiles": [ "He", "rarely", "eats", "vegetables", "in", "winter" ], "distractors": [ "eat", "is", "eating", "spring" ], "alt": [] },
+            { "uz": "Biz dam olish kunlari restoranga boramiz.", "en": "We go to the restaurant at the weekend.", "tiles": [ "We", "go", "to", "the", "restaurant", "at", "the", "weekend" ], "distractors": [ "going", "are", "goes" ], "alt": [] },
+            { "uz": "Qarang, tashqarida hozir yomg'ir yog'yapti.", "en": "Look, it is raining outside now.", "tiles": [ "Look", "it", "is", "raining", "outside", "now" ], "distractors": [ "rains", "rain", "snow" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            { "word": "breakfast", "uz": "nonushta", "en": "I am eating breakfast right now", "tiles": [ "I", "am", "eating", "breakfast", "right", "now" ], "distractors": [ "is", "eat", "every", "day" ], "alt": [] },
+            { "word": "coffee", "uz": "kofe", "en": "She drinks coffee every morning", "tiles": [ "She", "drinks", "coffee", "every", "morning" ], "distractors": [ "drink", "is", "drinking", "now" ], "alt": [] },
+            { "word": "dinner", "uz": "kechki ovqat", "en": "We are having dinner at home tonight", "tiles": [ "We", "are", "having", "dinner", "at", "home", "tonight" ], "distractors": [ "have", "is", "eat" ], "alt": [] },
+            { "word": "restaurant", "uz": "restoran", "en": "They usually go to a cheap restaurant", "tiles": [ "They", "usually", "go", "to", "a", "cheap", "restaurant" ], "distractors": [ "goes", "expensive", "is", "going" ], "alt": [] },
+            { "word": "weekend", "uz": "dam olish kunlari", "en": "He visits his grandparents every weekend", "tiles": [ "He", "visits", "his", "grandparents", "every", "weekend" ], "distractors": [ "visit", "is", "visiting", "now" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Tom usually eats bread and meat for breakfast at home. He rarely eats fruit in the morning. Today is a warm spring morning and the sun shines brightly. Tom is sitting at a small restaurant with his friend Jack. They are eating delicious fruit and vegetables for breakfast today because the restaurant has a special offer. Tom usually hates expensive restaurants, but he likes this place very much. While they are eating, a cold wind starts to blow outside. So they decide to stay inside and drink hot coffee.",
+          "items": [
+            { "q": "What does Tom usually eat for breakfast?", "options": [ "Hot coffee", "Fruit and vegetables", "Bread and meat", "Delicious dinner" ], "answer": 2 },
+            { "q": "What is the weather like this morning in the text?", "options": [ "It is raining", "It is snowing", "A strong wind blows", "The sun shines brightly" ], "answer": 3 },
+            { "q": "What are Tom and Jack eating today?", "options": [ "Fruit and vegetables", "Meat and bread", "Only expensive lunch", "Cold dinner" ], "answer": 0 },
+            { "q": "How does Tom usually feel about expensive restaurants?", "options": [ "He likes them", "He hates them", "He prefers them", "He never sees them" ], "answer": 1 },
+            { "q": "What do Tom and Jack do when the cold wind starts to blow?", "options": [ "They go outside", "They run home", "They decide to stay inside", "They stop eating fruit" ], "answer": 2 }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            { "en": "I drink coffee every morning", "uz": "Men har kuni ertalab kofe ichaman", "tiles": [ "I", "drink", "coffee", "every", "morning" ], "distractors": [ "drinks", "am", "drinking" ], "alt": [] },
+            { "en": "She is drinking tea now", "uz": "U hozir choy ichyapti", "tiles": [ "She", "is", "drinking", "tea", "now" ], "distractors": [ "drinks", "drink", "are" ], "alt": [] },
+            { "en": "We rarely eat meat", "uz": "Biz kamdan-kam go'sht yeymiz", "tiles": [ "We", "rarely", "eat", "meat" ], "distractors": [ "eating", "eats", "is" ], "alt": [] },
+            { "en": "They are having lunch", "uz": "Ular tushlik qilishmoqda", "tiles": [ "They", "are", "having", "lunch" ], "distractors": [ "have", "has", "is" ], "alt": [] },
+            { "en": "Rain falls in autumn", "uz": "Kuzda yomg'ir yog'adi", "tiles": [ "Rain", "falls", "in", "autumn" ], "distractors": [ "fall", "is", "falling" ], "alt": [] }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "A busy morning",
+          "topicUz": "Shoshilinch tong",
+          "sentences": ["I usually get up at seven o clock every morning.", "But today I am late, so I am running to the kitchen now.", "My mother is making breakfast for me at the moment.", "After breakfast, I always go to school with my sister.", "Right now she is waiting for me near the door."]
+        }
+      ],
+      "exam": [
+        { "q": "Men har kuni nonushta qilaman, lekin hozir choy ichyapman.", "options": [ "I have breakfast every day, but I drink tea now.", "I am having breakfast every day, but I drink tea now.", "I have breakfast every day, but I am drinking tea now.", "I am having breakfast every day, but I am drinking tea now." ], "answer": 2 },
+        { "q": "Ular odatda dam olish kunlari restoranga boradilar.", "options": [ "They go to a restaurant usually on the weekend.", "They are usually going to a restaurant on the weekend.", "They usually are going to a restaurant on the weekend.", "They usually go to a restaurant on the weekend." ], "answer": 3 },
+        { "q": "Qara, tashqarida yomg'ir yog'yapti!", "options": [ "Look, it is raining outside!", "Look, it rains outside!", "Look, it rain outside!", "Look, it raining outside!" ], "answer": 0 },
+        { "q": "Biz kamdan-kam holatlarda kechki ovqatni restoranda yeymiz.", "options": [ "We are rarely eating dinner at a restaurant.", "We rarely eat dinner at a restaurant.", "We eat rarely dinner at a restaurant.", "We rarely eating dinner at a restaurant." ], "answer": 1 },
+        { "q": "Sen hozir tushlik qilyapsanmi?", "options": [ "Do you have lunch now?", "You are having lunch now?", "Are you having lunch now?", "You have lunch now?" ], "answer": 2 },
+        { "q": "Nima ma'noni anglatadi: restaurant?", "options": [ "mazali", "dam olish kunlari", "qimmat", "restoran" ], "answer": 3 },
+        { "q": "Nima ma'noni anglatadi: expensive?", "options": [ "qimmat", "shamol", "yomg'ir", "qor" ], "answer": 0 },
+        { "q": "Nima ma'noni anglatadi: prefer?", "options": [ "yomon ko'rmoq", "afzal ko'rmoq", "kamdan-kam", "shuning uchun" ], "answer": 1 }
+      ]
+    }
+  ],
+  "levelExam": [
+    { "q": "U o'qituvchi.", "options": [ "He is teacher.", "He am a teacher.", "He are a teacher.", "He is a teacher." ], "answer": 3 },
+    { "q": "Mening opam bor.", "options": [ "I have got a sister.", "I has got a sister.", "I got a sister.", "I have a sister got." ], "answer": 0 },
+    { "q": "Bu olma.", "options": [ "This is a apple.", "This is an apple.", "This are an apple.", "This apple is an." ], "answer": 1 },
+    { "q": "U yerda uchta bola bor.", "options": [ "There are three childs.", "There is three childs.", "There are three children.", "There is three children." ], "answer": 2 },
+    { "q": "U har kuni ishlaydi.", "options": [ "He works every days.", "He work every day.", "He is work every day.", "He works every day." ], "answer": 3 },
+    { "q": "Sen ingliz tilida gapirasanmi?", "options": [ "Do you speak English?", "Does you speak English?", "You speak English?", "Are you speak English?" ], "answer": 0 },
+    { "q": "Xato qayerda: She go to school every day.", "options": [ "She go to school every day.", "She goes to school every day.", "She is go to school every day.", "She going to school every day." ], "answer": 1 },
+    { "q": "Xato qayerda: They is students.", "options": [ "They am students.", "They is students.", "They are students.", "They be students." ], "answer": 2 },
+    { "q": "student", "options": [ "bola", "o'qituvchi", "do'st", "talaba, o'quvchi" ], "answer": 3 },
+    { "q": "difficult", "options": [ "qiyin", "oson", "arzon", "qimmat" ], "answer": 0 }
+  ]
+}

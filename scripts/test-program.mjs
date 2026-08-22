@@ -1051,5 +1051,90 @@ t('entitlementOf() bayroqdan mustaqil ishlayveradi',
 t('limitFor/tasksFor bosqichlari saqlanib qolgan',
   api.limitFor('free') === 5 && api.tasksFor('free') === 1);
 
+
+// ─── 28. OFFLINE VAZIFA VALIDATORI (docs/specs/offline-tasks.md) ───
+// validate-tasks.mjs — index.html dan mustaqil modul, lekin uning qoidalari
+// generatsiya sifatining yagona avtomatik qo'riqchisi. Qoida jimgina
+// yumshab ketsa, buzuq kontent to'g'ridan-to'g'ri APK ga tushadi.
+console.log('\n28. Offline vazifa validatori:');
+{
+  const V = await import('./validate-tasks.mjs');
+  const words = [
+    { en: 'student', uz: 'talaba', ipa: '' }, { en: 'teacher', uz: 'o\'qituvchi', ipa: '' },
+    { en: 'doctor', uz: 'shifokor', ipa: '' }, { en: 'driver', uz: 'haydovchi', ipa: '' },
+    { en: 'name', uz: 'ism', ipa: '' },
+  ];
+  const ctx = type => ({ level: 'A1', unitId: 'A1-01', expectedType: type, words });
+  const tr = (en, tiles, distractors) => ({
+    type: 'translate',
+    items: Array.from({ length: 5 }, () => ({ uz: 'Men talabaman.', en, tiles, distractors, alt: [] })),
+  });
+  const clean = errs => errs.length === 0;
+  const caught = errs => errs.length > 0;
+
+  t('tur moslashtirish: speak→dictate, write→order, qolgani o\'zgarmaydi',
+    V.offlineTypeOf('speak') === 'dictate' && V.offlineTypeOf('write') === 'order'
+    && V.offlineTypeOf('read') === 'read' && V.offlineTypeOf('translate') === 'translate');
+
+  // Plitka ko'p to'plami — Set bilan solishtirilsa takrorlanuvchi so'z sezilmay qoladi.
+  t('takrorlanuvchi so\'z uchun plitka yetarli bo\'lsa o\'tadi',
+    clean(V.validateTask(tr('The cat and the dog.', ['The','cat','and','the','dog'], ['is','are']), ctx('translate'))));
+  t('takrorlanuvchi so\'zga bitta plitka yetishmasa tutiladi',
+    caught(V.validateTask(tr('The cat and the dog.', ['The','cat','and','dog'], ['is','are']), ctx('translate'))));
+
+  // o'/g' qidiruvi inglizcha apostrofga urilmasin — aks holda validator
+  // har normal gapda yolg'on xato beradi va o'chirib qo'yiladi.
+  t('inglizcha apostrof (don\'t, dog\'s, o\'clock) yolg\'on xato bermaydi',
+    clean(V.validateTask(tr("I don't know the dog's name at five o'clock.",
+      ['I',"don't",'know','the',"dog's",'name','at','five',"o'clock"], ['is','are']), ctx('translate'))));
+  t('inglizcha maydonga tushib qolgan o\'zbekcha so\'z tutiladi',
+    caught(V.validateTask(tr("I am a o'qituvchi.", ['I','am','a',"o'qituvchi"], ['is','are']), ctx('translate'))));
+
+  t('kutilgan turdan boshqa tur tutiladi',
+    caught(V.validateTask({ type: 'order', topic: 'x', topicUz: 'x',
+      sentences: ['a.','b.','c.','d.','e.'] }, ctx('translate'))));
+
+  t('mcq: 4 noyob variant va oraliqdagi answer o\'tadi',
+    clean(V.validateMcq({ q: 'Q?', options: ['a','b','c','d'], answer: 2 }, 'test')));
+  t('mcq: takroriy variant tutiladi',
+    caught(V.validateMcq({ q: 'Q?', options: ['a','b','c','A'], answer: 2 }, 'test')));
+  t('mcq: oraliqdan tashqaridagi answer tutiladi',
+    caught(V.validateMcq({ q: 'Q?', options: ['a','b','c','d'], answer: 4 }, 'test')));
+
+  // build.uz — o'quvchi darsda ko'rgan tarjima bilan bir xil bo'lishi shart,
+  // aks holda imtihon hech narsaga qarshi baholaydi.
+  const bd = uz => ({ type: 'build', items: [
+    { word: 'student', uz, en: 'I am a student.', tiles: ['I','am','a','student'], distractors: ['is','are'], alt: [] },
+    { word: 'teacher', uz: 'o\'qituvchi', en: 'She is a teacher.', tiles: ['She','is','a','teacher'], distractors: ['am','are'], alt: [] },
+    { word: 'doctor', uz: 'shifokor', en: 'He is a doctor.', tiles: ['He','is','a','doctor'], distractors: ['am','are'], alt: [] },
+    { word: 'driver', uz: 'haydovchi', en: 'You are a driver.', tiles: ['You','are','a','driver'], distractors: ['am','is'], alt: [] },
+    { word: 'name', uz: 'ism', en: 'My name is Ali.', tiles: ['My','name','is','Ali'], distractors: ['am','are'], alt: [] },
+  ]});
+  t('build.uz kurrikulum tarjimasi bilan aynan bo\'lsa o\'tadi', clean(V.validateTask(bd('talaba'), ctx('build'))));
+  t('build.uz kurrikulumdan chetlashsa tutiladi', caught(V.validateTask(bd('o quvchi'), ctx('build'))));
+
+  // So'z shakli: gapda "sitting"/"went" turishi normal. Bu qoida yumshasa
+  // validator to'g'ri kontentni rad etadi va generatsiya bekorga qayta yuriladi.
+  {
+    const vs = [
+      { en: 'sit', uz: "o'tirmoq", ipa: '' }, { en: 'go', uz: 'bormoq', ipa: '' },
+      { en: 'stop', uz: "to'xtamoq", ipa: '' }, { en: 'study', uz: "o'qimoq", ipa: '' },
+      { en: 'fly', uz: 'uchmoq', ipa: '' },
+    ];
+    const mk = (word, en, tiles) => ({ word, uz: vs.find(w => w.en === word).uz, en, tiles, distractors: ['was','were'], alt: [] });
+    const forms = { type: 'build', items: [
+      mk('sit', 'She is sitting on a chair.', ['She','is','sitting','on','a','chair']),
+      mk('go', 'He went to school.', ['He','went','to','school']),
+      mk('stop', 'The bus stopped here.', ['The','bus','stopped','here']),
+      mk('study', 'She studies every day.', ['She','studies','every','day']),
+      mk('fly', 'The bird flew away.', ['The','bird','flew','away']),
+    ]};
+    t("so'z shakllari tanildi: sitting / went / stopped / studies / flew",
+      clean(V.validateTask(forms, { level: 'A1', unitId: 'A1-01', expectedType: 'build', words: vs })));
+    forms.items[1] = mk('go', 'He walked to school.', ['He','walked','to','school']);
+    t("so'z gapda umuman ishlatilmasa baribir tutiladi",
+      caught(V.validateTask(forms, { level: 'A1', unitId: 'A1-01', expectedType: 'build', words: vs })));
+  }
+}
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);
 process.exit(fails === 0 ? 0 : 1);
