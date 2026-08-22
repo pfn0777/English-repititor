@@ -34,6 +34,16 @@
     .dot-load span:nth-child(2){animation-delay:.22s;}
     .dot-load span:nth-child(3){animation-delay:.44s;}
     @keyframes blink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+    /* O'yin rejimlari (docs/specs/offline-games.md): har bosishga DARHOL
+       vizual javob — kutish yo'q, animatsiya javobning o'zi bilan birga. */
+    .gm-pop { animation: gmPop 0.22s ease-out; }
+    @keyframes gmPop { 0%{transform:scale(1);} 45%{transform:scale(1.07);} 100%{transform:scale(1);} }
+    .gm-shake { animation: gmShake 0.3s ease-in-out; }
+    @keyframes gmShake {
+      0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);}
+      40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);}
+    }
+    .gm-card { transition: transform 0.15s ease-out, background-color 0.15s; }
     select, input, textarea {
       color-scheme: dark;
     }
@@ -106,6 +116,28 @@ const TASKS_ACTIVE = MAX_DAILY_TASKS;  // obunachi — to'liq norma
 const TASKS_TRIAL  = 3;                // trial — obunaga o'sish uchun joy qoldiradi
 const TASKS_FREE   = 1;                // trial tugagan, obunasiz
 const DAY_MS       = 86400000;
+
+// ─── 1d. OFFLINE BILKA (docs/specs/offline-client.md) ────────────
+// SUBSCRIPTION_ENABLED naqshi: bitta kod bazasi, bayroq bilan ikki xatti-harakat.
+// false — hozirgi (Telegram/veb) bilka: vazifani AI yozadi va AI tekshiradi.
+// true  — APK bilkasi: vazifa data/tasks-*.json dan olinadi, baho lokal.
+// `let`, const emas — testlar ikkala holatni ham ko'ra olsin.
+let OFFLINE_BUILD = false;
+
+// Yuklangan darajalar keshi: level -> { level, units[], levelExam[] }.
+// Boshlanishida hammasi emas, faqat joriy daraja yuklanadi (~100 KB).
+const OFFLINE_TASKS = {};
+
+// Onlayn tur → offline o'rnini bosuvchi. `speak`/`write` erkin ochiq javob —
+// ularni AI'siz baholab bo'lmaydi, lekin o'chirib tashlash unitni sof tarjima
+// mashqiga tushiradi (docs/specs/offline-tasks.md).
+const OFFLINE_TYPE_MAP = { speak:'dictate', write:'order' };
+function offlineTypeOf(t) { return OFFLINE_TYPE_MAP[t] || t; }
+
+const OFFLINE_TASK_TYPES = {
+  dictate: { emoji:'🎧', title:'Diktant',    desc:"Eshitgan jumlangizni so'zlardan yig'ing" },
+  order:   { emoji:'🔀', title:'Tartiblash', desc:'5 jumlani mantiqiy tartibda joylashtiring' },
+};
 
 const TASK_TYPES = {
   translate: { emoji:'🔤', title:'Tarjima',      desc:"5 ta o'zbekcha jumlani inglizchaga o'giring" },
@@ -3346,6 +3378,7 @@ function tgName() {
 }
 
 function tgInit() {
+  if (OFFLINE_BUILD) return;   // APK bilkasi Telegram ichida ochilmaydi
   const a = tgApp();
   if (!a) return;
   try {
@@ -3383,6 +3416,7 @@ function syncProgress() {
 }
 
 async function pushProgress() {
+  if (OFFLINE_BUILD) return;   // qurilmalar orasida sync yo'q — hammasi lokal
   if (!user || !user.program) return;
   const sent = user.program;
   try {
@@ -3406,6 +3440,7 @@ async function pushProgress() {
 }
 
 async function loadProgress() {
+  if (OFFLINE_BUILD) return null;
   try {
     const res = await fetch(progressUrl(), {
       method:'POST', headers: progressHeaders(),
@@ -4216,6 +4251,235 @@ function getRoadmap() {
   };
 }
 
+// ─── 4.55 OFFLINE KONTENT (docs/specs/offline-client.md) ─────────
+// Sof funksiyalar: DOM'ga tegmaydi, dastur mexanizmini o'zgartirmaydi.
+// Yagona vazifasi — AI qaytaradigan ikki narsani (vazifa matni va baho)
+// lokal data bilan almashtirish. applyResult() farqni sezmaydi.
+
+// Data va kod BIRGA eskiradi. Shuning uchun moslik indeks bo'yicha emas,
+// `id` bo'yicha tekshiriladi: jimgina noto'g'ri vazifa berishdan ko'ra
+// ochiq xato yaxshi.
+function offlineSchemaError(lv, data) {
+  if (!data || typeof data !== 'object') return "fayl bo'sh";
+  if (data.level !== lv) return `level "${data.level}" ≠ "${lv}"`;
+  const units = CURRICULUM[lv] || [];
+  if (!units.length) return `${lv} kurrikulumi yo'q`;
+  if (!Array.isArray(data.units) || data.units.length !== units.length)
+    return `unit soni ${Array.isArray(data.units) ? data.units.length : 0} ≠ ${units.length}`;
+  for (let i = 0; i < units.length; i++) {
+    const got = data.units[i] && data.units[i].id;
+    if (got !== units[i].id) return `${i+1}-unit: "${got}" ≠ "${units[i].id}"`;
+  }
+  if (!Array.isArray(data.levelExam)) return 'levelExam massiv emas';
+  return null;
+}
+
+// fetchImpl — testdan berish uchun; ilovada oddiy fetch.
+async function loadOfflineLevel(lv, fetchImpl) {
+  if (OFFLINE_TASKS[lv]) return { ok:true, cached:true, data:OFFLINE_TASKS[lv] };
+  const f = fetchImpl || (typeof fetch === 'function' ? fetch : null);
+  if (!f) return { ok:false, reason:'fetch', message:"fetch yo'q" };
+  let data = null;
+  try {
+    const res = await f(`data/tasks-${String(lv).toLowerCase()}.json`);
+    if (!res || !res.ok) return { ok:false, reason:'fetch', message:`HTTP ${res && res.status}` };
+    data = await res.json();
+  } catch (e) {
+    return { ok:false, reason:'fetch', message:e && e.message };
+  }
+  const bad = offlineSchemaError(lv, data);
+  if (bad) return { ok:false, reason:'schema', message:bad };
+  OFFLINE_TASKS[lv] = data;
+  return { ok:true, data };
+}
+
+// Pozitsiya → vazifa obyekti. getTaskType() ni O'ZGARTIRMAYDI, faqat o'qiydi.
+function offlineTaskAt() {
+  const p = user.program;
+  if (!p) return { ok:false, reason:'no_program' };
+  const online = getTaskType();
+  if (!online) return { ok:false, reason:'no_type' };
+  const lv = OFFLINE_TASKS[p.level];
+  if (!lv) return { ok:false, reason:'not_loaded' };
+
+  if (online === 'level_exam') {
+    const items = lv.levelExam;
+    if (!Array.isArray(items) || !items.length) return { ok:false, reason:'missing', where:'levelExam' };
+    return { ok:true, type:'level_exam', task:{ type:'level_exam', items } };
+  }
+
+  // Daraja imtihonidan yiqilgach beriladigan takror vazifa. Pozitsiya darajaning
+  // oxirida turadi, shuning uchun vazifa unitlardan orqaga qarab izlanadi.
+  if (p.levelExam.pending) {
+    const t = offlineRemedialTask(lv, p.unitIndex);
+    return t ? { ok:true, type:t.type, task:t } : { ok:false, reason:'missing', where:'remedial' };
+  }
+
+  const u = lv.units[p.unitIndex];
+  if (!u) return { ok:false, reason:'missing', where:`unit ${p.unitIndex}` };
+
+  if (online === 'unit_exam') {
+    if (!Array.isArray(u.exam) || !u.exam.length) return { ok:false, reason:'missing', where:`${u.id} exam` };
+    return { ok:true, type:'unit_exam', task:{ type:'unit_exam', items:u.exam } };
+  }
+
+  const task = (u.tasks || [])[p.taskIndex];
+  if (!task) return { ok:false, reason:'missing', where:`${u.id} #${p.taskIndex+1}` };
+  const want = offlineTypeOf(online);
+  if (task.type !== want)
+    return { ok:false, reason:'type_mismatch', where:`${u.id} #${p.taskIndex+1}: "${task.type}" ≠ "${want}"` };
+  return { ok:true, type:task.type, task };
+}
+
+function offlineRemedialTask(lv, fromIndex) {
+  const last = Math.min(fromIndex, lv.units.length - 1);
+  for (let i = last; i >= 0; i--) {
+    const tasks = (lv.units[i] && lv.units[i].tasks) || [];
+    const hit = tasks.find(t => t && t.type === 'translate');
+    if (hit) return hit;
+  }
+  for (let i = last; i >= 0; i--) {
+    const tasks = (lv.units[i] && lv.units[i].tasks) || [];
+    if (tasks[0]) return tasks[0];
+  }
+  return null;
+}
+
+// Solishtirish normallashtiriladi: tinish belgisi va ortiqcha probel hisobga
+// olinmaydi. Apostrof SAQLANADI — "dont" ≠ "don't" haqiqiy imlo xatosi.
+function normOffline(s) {
+  return String(s == null ? '' : s)
+    .toLowerCase()
+    .replace(/[.,!?;:]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function offlineItems(task) {
+  if (!task) return [];
+  if (task.type === 'order') return Array.isArray(task.sentences) ? task.sentences : [];
+  return Array.isArray(task.items) ? task.items : [];
+}
+
+// Sof baholovchi. applyResult() shu { correct, total } ni oladi va AI'dan
+// kelganidan farqini sezmaydi.
+// answer — turga qarab: variantli — indekslar; plitkali — satrlar;
+// order — foydalanuvchi qo'ygan tartib (pozitsiya → jumla indeksi).
+function gradeOffline(task, answer) {
+  const detail = [];
+  const ans = Array.isArray(answer) ? answer : [];
+  const type = task && task.type;
+  const items = offlineItems(task);
+
+  if (type === 'order') {
+    items.forEach((sent, i) => {
+      const g = ans[i];
+      const placed = Number.isInteger(g) && items[g] !== undefined ? items[g] : '';
+      // Har POZITSIYA alohida band. Butun tartib "to'g'ri yoki xato" deb
+      // baholansa, bitta juftlikni almashtirgan o'quvchi 0/5 oladi va
+      // PASS_THRESHOLD hech qachon ishlamaydi.
+      detail.push({ ok: g === i, given: placed, expected: sent });
+    });
+  } else if (type === 'translate' || type === 'build' || type === 'dictate') {
+    items.forEach(item => {
+      const given = ans[detail.length];
+      const alts = Array.isArray(item && item.alt) ? item.alt : [];
+      const n = normOffline(given);
+      const ok = !!n && (n === normOffline(item && item.en) || alts.some(a => n === normOffline(a)));
+      detail.push({ ok, given: given == null ? '' : String(given), expected: (item && item.en) || '' });
+    });
+  } else {
+    // read / listen / unit_exam / level_exam — variantli
+    items.forEach(item => {
+      const g = ans[detail.length];
+      const opts = (item && item.options) || [];
+      detail.push({
+        ok: Number.isInteger(g) && g === (item && item.answer),
+        given: Number.isInteger(g) && opts[g] !== undefined ? opts[g] : '',
+        expected: opts[(item && item.answer)] !== undefined ? opts[item.answer] : '',
+      });
+    });
+  }
+
+  return { correct: detail.filter(d => d.ok).length, total: detail.length, detail };
+}
+
+// Plitkalar HAR ochilishda qayta aralashtiriladi — o'quvchi tartibni yodlab
+// olmasin. Deterministik urug' ataylab yo'q.
+function offlineShuffle(arr) {
+  const r = (arr || []).slice();
+  for (let i = r.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = r[i]; r[i] = r[j]; r[j] = tmp;
+  }
+  return r;
+}
+
+function offlineTiles(item) {
+  const tiles = Array.isArray(item && item.tiles) ? item.tiles : [];
+  const dis   = Array.isArray(item && item.distractors) ? item.distractors : [];
+  return tiles.concat(dis);
+}
+
+// Vazifa boshidagi qisqa ko'rsatma. AI matnining o'rnini bosadi, lekin
+// kontentni EMAS — kontentni taskBox o'zi data'dan chizadi.
+const OFFLINE_PROMPTS = {
+  read:       "Matnni o'qing va 5 ta savolga javob bering.",
+  listen:     "Audioni tinglang (🔊 tugmasi) va 5 ta savolga javob bering.",
+  translate:  "Har bir o'zbekcha jumlani so'z plitkalaridan yig'ing.",
+  build:      "Berilgan so'z bilan gap tuzing — plitkalardan yig'ing.",
+  dictate:    "Eshitgan jumlangizni so'z plitkalaridan yig'ing.",
+  order:      'Jumlalarni mantiqiy tartibda joylashtiring.',
+  unit_exam:  'Unit imtihoni — 8 ta savol.',
+  level_exam: 'Daraja imtihoni — 10 ta savol.',
+};
+function offlinePromptText(task) {
+  return OFFLINE_PROMPTS[task && task.type] || 'Vazifani bajaring.';
+}
+
+// Baho izohi. Birinchi qator AYNAN AI formatida — resultCard va programFeedback
+// ikkala yo'l uchun bir xil ko'rinsin (docs/specs: marker DOIM birinchi qatorda).
+function offlineFeedbackText(task, score) {
+  const lines = [`📊 **NATIJA: ${score.correct}/${score.total}**`, ''];
+  (score.detail || []).forEach((d, i) => {
+    if (d.ok) {
+      lines.push(`${i+1}. ✅ ${d.expected}`);
+    } else {
+      lines.push(`${i+1}. ❌ ${d.given ? d.given : '— javobsiz —'}`);
+      lines.push(`   ✅ To'g'ri: ${d.expected}`);
+    }
+  });
+  return lines.join('\n');
+}
+
+// Chiqish yo'li: to'g'ri javoblar DATA'dan ko'rsatiladi, AI tushuntirmaydi.
+function offlineRevealText(task) {
+  const items = offlineItems(task);
+  const lines = ["📘 **To'g'ri javoblar**", ''];
+  if (!items.length) return lines.join('\n');
+  if (task.type === 'order') {
+    items.forEach((sent, i) => lines.push(`${i+1}. ${sent}`));
+  } else if (task.type === 'translate' || task.type === 'build' || task.type === 'dictate') {
+    items.forEach((it, i) => {
+      lines.push(`${i+1}. **${it.en || ''}**`);
+      if (it.uz) lines.push(`   ${it.uz}`);
+    });
+  } else {
+    items.forEach((it, i) => {
+      const opts = it.options || [];
+      lines.push(`${i+1}. ${it.q || ''}`);
+      lines.push(`   ✅ ${opts[it.answer] !== undefined ? opts[it.answer] : ''}`);
+    });
+  }
+  return lines.join('\n');
+}
+
+// TTS bor-yo'qligi. Ovoz umuman bo'lmasa listen/dictate TIQILIB QOLMAYDI —
+// matn ko'rsatiladi va vazifa read kabi ishlaydi.
+function offlineTtsReady() {
+  return typeof window !== 'undefined' && !!window && ('speechSynthesis' in window);
+}
+
 // ─── 4.6 OBUNA VA TRIAL (docs/specs/subscription-stars.md) ───────
 // Bu funksiyalar sof: DOM'ga ham, tarmoqqa ham tegmaydi — test-program.mjs
 // ularni to'g'ridan-to'g'ri sinaydi. chat/index.ts da AYNAN shu mantiq
@@ -4272,6 +4536,7 @@ function trialDaysLeft(row, now) {
 // har doim sanadan qayta hisoblanadi, aks holda eskirgan nusxa obunani uzaytirib
 // yuboradi.
 function myEntitlement() {
+  if (OFFLINE_BUILD) return 'active';   // APK bilkasida to'lov yo'q — paywall ham yo'q
   // Obuna uzilgan — hamma to'liq huquqda. entitlementOf() o'zgarmaydi: u sof
   // funksiya va obuna qaytarilganda o'sha holicha ishlashi kerak.
   if (!SUBSCRIPTION_ENABLED) return 'active';
@@ -4387,6 +4652,275 @@ function playableLevel(level) {
   if (CURRICULUM[level] && CURRICULUM[level].length) return level;
   const ready = LEVELS.filter(l => CURRICULUM[l] && CURRICULUM[l].length);
   return ready[ready.length - 1] || 'A1';
+}
+
+// ─── 4.8 O'YIN REJIMLARI (docs/specs/offline-games.md) ───────────
+// Sof mantiq: DOM'ga ham, tarmoqqa ham tegmaydi. O'yin dastur mexanizmiga
+// UMUMAN tegmaydi — advance(), applyResult(), program.doneToday o'zgarmaydi,
+// streak berilmaydi. O'yin vazifa emas.
+//
+// Butun ma'nosi — ZUDLIK BILAN JAVOB. Kontent qo'shilmaydi: hamma narsa
+// user.vocabulary va CURRICULUM dagi 1 800 so'zdan lokal quriladi.
+
+const GAMES_KEY           = 'eb_games';
+const GAME_SPEED_SECONDS  = 60;
+const GAME_SPEED_PENALTY_MS = 2000;   // xato javob uchun jarima
+const GAME_MEMORY_PAIRS   = 6;        // 12 karta
+const GAME_OPTIONS        = 4;        // variantli o'yinlarda tugmalar soni
+const GAME_MIN_POOL       = 20;       // shundan kam bo'lsa unit so'zlari qo'shiladi
+const GAME_COMBO_X2       = 5;        // ketma-ket shuncha to'g'ridan KEYIN ×2
+const GAME_COMBO_X3       = 10;       // … va shundan keyin ×3
+const ANAGRAM_MIN_LEN     = 3;        // 2 harfli so'z anagramma emas
+const ANAGRAM_MAX_LEN     = 10;       // uzuni telefon ekraniga sig'maydi
+const ANAGRAM_HINT_MS     = 10000;    // shundan keyin birinchi harf ochiladi
+const ANAGRAM_POINTS      = 2;
+const ANAGRAM_HINT_POINTS = 1;        // yordam olingan so'z arzonroq
+
+// O'yin XP beradi, lekin vazifadan KAM. Aks holda o'quvchi dasturni tashlab
+// o'yin o'ynaydi — bitta sessiya eng ko'pi bilan vazifa XP'sining yarmi.
+const GAME_XP_MAX = Math.floor(XP_PER_TASK / 2);
+
+const GAMES = {
+  speed:       { emoji:'⚡',  title:'Tezlik',       desc:"60 soniya — tarjimani tez tanlang",  unit:'ball' },
+  memory:      { emoji:'🃏', title:'Xotira jufti', desc:"6 juft — vaqt cheklovi yo'q",        unit:'urinish' },
+  anagram:     { emoji:'🔡', title:"So'z terish",  desc:"Harflardan so'zni yig'ing",          unit:'ball' },
+  listen_game: { emoji:'👂', title:'Quloq',        desc:"Eshitgan so'zingizni tanlang",       unit:'ball' },
+};
+const GAME_KEYS = Object.keys(GAMES);
+
+// ── Saqlash (eb_games) ───────────────────────────────────────────
+// `best`: speed/anagram/listen_game — ball (ko'p yaxshi); memory — urinish
+// soni (KAM yaxshi, shuning uchun boshlang'ich qiymati null, 0 emas).
+function gameDefaults() {
+  return { speed:{ best:0, plays:0 }, memory:{ best:null, plays:0 },
+           anagram:{ best:0, plays:0 }, listen_game:{ best:0, plays:0 } };
+}
+
+// Eski foydalanuvchida eb_games umuman yo'q — user.ielts / program.lessonsSeen
+// bilan bir xil naqsh: yo'q maydon standart qiymatga tushadi, crash bo'lmaydi.
+function getGames() {
+  const raw = LS.get(GAMES_KEY);
+  const out = gameDefaults();
+  if (raw && typeof raw === 'object') {
+    for (const k of GAME_KEYS) {
+      const v = raw[k];
+      if (!v || typeof v !== 'object') continue;
+      if (v.best === null || Number.isFinite(v.best)) out[k].best = v.best;
+      if (Number.isFinite(v.plays)) out[k].plays = v.plays;
+    }
+  }
+  return out;
+}
+function ensureGames() { if (!LS.get(GAMES_KEY)) LS.set(GAMES_KEY, gameDefaults()); }
+
+// memory'da KICHIKROQ natija yaxshiroq — bu yagona teskari o'yin.
+function betterScore(game, val, prev) {
+  if (!Number.isFinite(val)) return false;
+  if (game === 'memory') return prev == null || val < prev;
+  return val > (prev == null ? 0 : prev);
+}
+
+function recordGame(game, val) {
+  const g = getGames();
+  const s = g[game] || (gameDefaults()[game]);
+  s.plays = (s.plays || 0) + 1;
+  const improved = betterScore(game, val, s.best);
+  if (improved) s.best = val;
+  g[game] = s;
+  LS.set(GAMES_KEY, g);
+  return { best: s.best, plays: s.plays, improved };
+}
+
+// ── So'z hovuzi ──────────────────────────────────────────────────
+// Birinchi navbatda o'rgangan so'zlari. 20 tadan kam bo'lsa joriy va OLDINGI
+// unitlarning so'zlari qo'shiladi. Hech qachon o'quvchi KO'RMAGAN darajadan
+// (yoki hali ochilmagan unitdan) so'z olinmaydi — aks holda o'yin dasturdan
+// oldinga o'tib ketadi va tanish mashq o'rniga tasodifiy test bo'ladi.
+function gameWordPool(u) {
+  const usr = u || (typeof user !== 'undefined' ? user : null);
+  const out = [], seen = new Set();
+  const push = (en, uz, ipa) => {
+    const w = String(en || '').trim();
+    if (!w || seen.has(w.toLowerCase())) return;
+    seen.add(w.toLowerCase());
+    out.push({ en: w, uz: String(uz || '').trim(), ipa: String(ipa || '').trim() });
+  };
+  if (!usr) return out;
+  (usr.vocabulary || []).forEach(v => push(v && v.word, v && v.translation, v && v.pronunciation));
+  if (out.length >= GAME_MIN_POOL) return out;
+
+  const p = usr.program;
+  if (!p) return out;
+  const li = LEVELS.indexOf(p.level);
+  if (li < 0) return out;
+  for (let i = 0; i <= li; i++) {
+    const units = CURRICULUM[LEVELS[i]] || [];
+    // Joriy darajada faqat OCHILGAN unitlargacha; oldingi darajalar to'liq.
+    const last = i === li ? Math.min(p.unitIndex, units.length - 1) : units.length - 1;
+    for (let j = 0; j <= last; j++) unitWords(units[j]).forEach(w => push(w.en, w.uz, w.ipa));
+  }
+  return out;
+}
+
+function anagramEligible(w) {
+  const en = String((w && w.en) || '').trim();
+  return /^[a-z]+$/i.test(en) && en.length >= ANAGRAM_MIN_LEN && en.length <= ANAGRAM_MAX_LEN;
+}
+
+// Menyuda faqat HAQIQATDA o'ynaladigan o'yinlar. Quloq o'yini TTS'siz
+// ko'rsatilmaydi: matnli zaxira uning butun ma'nosini yo'q qiladi.
+function gamesAvailable(pool, ttsOk) {
+  const p = pool || gameWordPool();
+  const tts = ttsOk === undefined ? offlineTtsReady() : ttsOk;
+  const withUz = p.filter(w => w.uz).length;
+  const out = [];
+  if (withUz >= GAME_OPTIONS) out.push('speed');
+  if (withUz >= GAME_MEMORY_PAIRS) out.push('memory');
+  if (p.filter(anagramEligible).length >= 1) out.push('anagram');
+  if (tts && p.length >= GAME_OPTIONS) out.push('listen_game');
+  return out;
+}
+
+// ── Chalg'ituvchilar ─────────────────────────────────────────────
+// Tovush yaqinligi: umumiy bosh qism, birinchi/oxirgi harf, uzunlik.
+// Tasodifiy so'z quloq o'yinini ma'nosiz qiladi — bu specda alohida talab.
+function soundScore(a, b) {
+  const x = String(a || '').toLowerCase(), y = String(b || '').toLowerCase();
+  if (!x || !y) return 0;
+  let i = 0;
+  while (i < x.length && i < y.length && x[i] === y[i]) i++;
+  let s = i * 2;
+  if (x[0] === y[0]) s += 3;
+  if (x.length === y.length) s += 2;
+  if (x[x.length - 1] === y[y.length - 1]) s += 1;
+  return s;
+}
+
+// Chalg'ituvchilar HAR DOIM o'sha hovuzdan olinadi — shunda o'yin haqiqiy
+// farqlashni sinaydi. `close` — tovush jihatdan yaqinini tanlash (quloq o'yini).
+function gameDistractors(pool, correct, n, close) {
+  const label = w => normOffline(close ? w.en : w.uz);
+  const seen = new Set([label(correct)]);
+  const cands = [];
+  for (const w of (pool || [])) {
+    if (!w || w === correct) continue;
+    const k = label(w);
+    if (!k || seen.has(k)) continue;      // takrorlanmaydi va to'g'ri javobga teng emas
+    seen.add(k);
+    cands.push(w);
+  }
+  if (!close) return offlineShuffle(cands).slice(0, n);
+
+  const ranked = cands.slice().sort((a, b) => soundScore(b.en, correct.en) - soundScore(a.en, correct.en));
+  // Sifat chegarasi eng yaqin so'zga NISBATAN olinadi, qat'iy son emas.
+  // "Eng yaqin n×3" degan oyna kichik hovuzda butun lug'atni ichiga olib,
+  // o'yinni yana tasodifiyga aylantirardi.
+  const top = ranked.length ? soundScore(ranked[0].en, correct.en) : 0;
+  const floorScore = Math.max(2, Math.ceil(top / 2));
+  const near = ranked.filter(w => soundScore(w.en, correct.en) >= floorScore);
+  // Chegaradan o'tganlar orasidan tasodifiy n ta — yaqin, lekin har raundda
+  // bir xil emas. Yetmasa qolgani reytingi bo'yicha to'ldiriladi.
+  const out = offlineShuffle(near).slice(0, n);
+  for (const w of ranked) {
+    if (out.length >= n) break;
+    if (!out.includes(w)) out.push(w);
+  }
+  return out.slice(0, n);
+}
+
+// Aralashtirilgan harflar asl so'zning ko'p to'plamiga TENG bo'ladi —
+// harf qo'shilmaydi ham, tushib qolmaydi ham.
+function scrambleWord(en) {
+  const letters = String(en || '').split('');
+  if (letters.length < 2) return letters;
+  const same = letters.join('');
+  for (let i = 0; i < 12; i++) {
+    const s = offlineShuffle(letters);
+    if (s.join('') !== same) return s;
+  }
+  return offlineShuffle(letters);
+}
+
+// ── buildRound — UI'siz raund quruvchi ───────────────────────────
+// opts.exclude — shu sessiyada allaqachon chiqqan so'zlar (takror kamaysin).
+// Hovuz yetmasa null qaytaradi; UI shunda o'yinni taklif qilmaydi.
+function buildRound(game, pool, opts) {
+  const p = (Array.isArray(pool) ? pool : []).filter(w => w && w.en);
+  const o = opts || {};
+  const avoid = new Set(o.exclude || []);
+  const pick = (list) => {
+    const fresh = list.filter(w => !avoid.has(w.en));
+    return offlineShuffle(fresh.length ? fresh : list)[0];
+  };
+
+  if (game === 'memory') {
+    const usable = p.filter(w => w.uz);
+    if (usable.length < GAME_MEMORY_PAIRS) return null;
+    const pairs = offlineShuffle(usable).slice(0, GAME_MEMORY_PAIRS);
+    const cards = [];
+    pairs.forEach((w, i) => {
+      cards.push({ pair:i, face:'en', text:w.en, word:w });
+      cards.push({ pair:i, face:'uz', text:w.uz, word:w });
+    });
+    return { game, pairs, cards: offlineShuffle(cards) };
+  }
+
+  if (game === 'anagram') {
+    const usable = p.filter(anagramEligible);
+    if (!usable.length) return null;
+    const word = pick(usable);
+    return { game, word, answer: word.en, letters: scrambleWord(word.en) };
+  }
+
+  // speed / listen_game — 4 variant. speed'da variantlar o'zbekcha (tarjima),
+  // listen_game'da INGLIZCHA (bu talaffuzni tanish o'yini, tarjima emas).
+  const close = game === 'listen_game';
+  const usable = close ? p : p.filter(w => w.uz);
+  if (usable.length < GAME_OPTIONS) return null;
+  const word = pick(usable);
+  const dis = gameDistractors(usable, word, GAME_OPTIONS - 1, close);
+  if (dis.length < GAME_OPTIONS - 1) return null;
+  const label = w => (close ? w.en : w.uz);
+  const options = offlineShuffle([word].concat(dis)).map(label);
+  return { game, word, prompt: word.en, options, answer: options.indexOf(label(word)) };
+}
+
+// ── Ball hisobi ──────────────────────────────────────────────────
+// Ko'paytma ketma-ket to'g'ri javoblar soniga qarab: 5 tadan KEYIN ×2,
+// 10 tadan keyin ×3. Xato kombo'ni nolga tushiradi.
+function comboMult(streak) {
+  return streak >= GAME_COMBO_X3 ? 3 : streak >= GAME_COMBO_X2 ? 2 : 1;
+}
+
+function newGameState() {
+  return { score:0, combo:0, bestCombo:0, correct:0, wrong:0, mult:1 };
+}
+
+// Sof: holatni o'zgartirmaydi, YANGISINI qaytaradi.
+function scoreRound(state, ok, points) {
+  const s = state || newGameState();
+  const base = points == null ? 1 : points;
+  if (!ok) {
+    return { score:s.score, combo:0, bestCombo:s.bestCombo,
+             correct:s.correct, wrong:s.wrong + 1, mult:1 };
+  }
+  const combo = s.combo + 1;
+  return { score: s.score + base * comboMult(s.combo), combo,
+           bestCombo: Math.max(s.bestCombo, combo),
+           correct: s.correct + 1, wrong: s.wrong, mult: comboMult(combo) };
+}
+
+// Sessiya XP'si — DOIM GAME_XP_MAX dan oshmaydi, ya'ni vazifadan arzon.
+function gameXp(game, stats) {
+  const s = stats || {};
+  if (game === 'memory') {
+    const att = s.attempts || 0;
+    if (!att) return 0;
+    // 6 juft uchun ideal 6 urinish → to'liq XP; sekin o'ynasa kamayadi.
+    return Math.max(1, Math.min(GAME_XP_MAX,
+      Math.round(GAME_XP_MAX * GAME_MEMORY_PAIRS / Math.max(GAME_MEMORY_PAIRS, att))));
+  }
+  return Math.min(GAME_XP_MAX, Math.floor((s.score || 0) / 3));
 }
 
 // ─── 5. WORD PARSER ──────────────────────────────────────────────
@@ -4918,6 +5452,17 @@ async function startTask() {
   const gate = canStartTask();
   if (!gate.ok) return { ok:false, reason:gate.reason };
   const type = getTaskType();
+
+  // Offline bilka: vazifa AI'dan emas, data/tasks-*.json dan olinadi.
+  if (OFFLINE_BUILD) {
+    const src = offlineTaskAt();
+    if (!src.ok) return { ok:false, reason:'offline_content', message:offlineContentMsg(src) };
+    const cur = issueTask(src.type, offlinePromptText(src.task));
+    cur.offline = src.task;   // baholash va "to'g'ri javoblar" shu obyektdan o'qiladi
+    saveUser();
+    return { ok:true, type:src.type, prompt:cur.prompt, offline:true };
+  }
+
   history = [];
   const text = await callAI('Vazifani ber.', { program:'issue' });
   if (isAiError(text)) return { ok:false, reason:'ai_error', message:text };
@@ -4929,6 +5474,17 @@ async function startTask() {
 async function retryTask() {
   const p = user.program;
   if (!p?.current || p.current.status !== 'failed') return { ok:false, reason:'no_failed_task' };
+
+  // Offline bilka: AI yengillashtirilgan variant yoza olmaydi. Buning o'rniga
+  // vazifa o'zgarmaydi (plitkalar qayta aralashadi), relief'da esa unit DARSI
+  // qayta ochiladi — u lokal va allaqachon mavjud.
+  if (OFFLINE_BUILD) {
+    const openLesson = !!p.current.relief;
+    p.current.status = 'open';
+    saveUser();
+    return { ok:true, eased:false, openLesson, type:p.current.type, prompt:p.current.prompt };
+  }
+
   if (!p.current.relief) {
     p.current.status = 'open';
     saveUser();
@@ -4948,6 +5504,20 @@ async function retryTask() {
 async function submitTask(answer, audio) {
   const p = user.program;
   if (!p?.current) return { ok:false, reason:'no_task' };
+
+  // Offline bilka: baho lokal va ZUDLIK BILAN. answer — massiv (variantli turda
+  // indekslar, plitkalida satrlar, order'da pozitsiyalar).
+  if (OFFLINE_BUILD) {
+    if (!p.current.offline) return { ok:false, reason:'offline_content' };
+    if (!Array.isArray(answer)) return { ok:false, reason:'empty_answer' };
+    const score = gradeOffline(p.current.offline, answer);
+    if (!score.total) return { ok:false, reason:'offline_content' };
+    const text = offlineFeedbackText(p.current.offline, score);
+    const r = applyResult(score);
+    if (!r.passed && p.current) { p.current.feedback = text; saveUser(); }
+    return { ok:true, text, score, ...r };
+  }
+
   if (!audio && (!answer || !answer.trim())) return { ok:false, reason:'empty_answer' };
 
   p.current.status = 'submitted';
@@ -4988,6 +5558,15 @@ async function revealAndSkip() {
   const p = user.program;
   if (!p?.current) return { ok:false, reason:'no_task' };
   if (!p.current.canSkip) return { ok:false, reason:'not_allowed' };
+
+  // Offline bilka: to'g'ri javoblar data'dan ko'rsatiladi, so'ng hozirgi
+  // mantiq o'zgarishsiz — XP'siz o'tkazish va weakUnits.
+  if (OFFLINE_BUILD) {
+    const text = offlineRevealText(p.current.offline);
+    const r = skipTask();
+    if (!r.ok) return r;
+    return { ok:true, skipped:true, text, unitId:r.unitId };
+  }
 
   history = [];
   const text = await callAI("To'g'ri javoblarni ko'rsat.", { program:'reveal' });
@@ -5311,9 +5890,26 @@ const NAV_TABS = [
   { id:'progress', emoji:'📊', label:'Progress' },
 ];
 
+// Offline bilkada AI Ustoz va Testlar YO'Q. Ular qulflangan holda ham
+// ko'rsatilmaydi — bo'lmagan narsa taklif qilinmaydi. O'rniga bo'sh joy
+// qolmaydi: "Testlar" o'rnini o'yin rejimlari egallaydi (offline-games.md).
+// Onlayn bilkada o'yin tabi UMUMAN yo'q — bayroq o'chiq bo'lsa navigatsiya
+// bir zarra ham o'zgarmaydi.
+const GAMES_TAB = { id:'games', emoji:'🎮', label:"O'yin" };
+function navTabs() {
+  if (!OFFLINE_BUILD) return NAV_TABS;
+  const out = [];
+  for (const t of NAV_TABS) {
+    if (t.id === 'ai') continue;
+    if (t.id === 'tests') { out.push(GAMES_TAB); continue; }
+    out.push(t);
+  }
+  return out;
+}
+
 function renderBottomNav(active, fixed=true) {
   const locked = !freeModeGate().ok;
-  const items = NAV_TABS.map(t => {
+  const items = navTabs().map(t => {
     const on = t.id === active;
     const lk = locked && (t.id === 'ai' || t.id === 'tests');
     return `<button data-nav="${t.id}" class="flex-1 flex flex-col items-center justify-center gap-0.5 py-2 ${on?'text-indigo-400':'text-slate-500 hover:text-slate-300'} ${lk?'opacity-50':''} transition-colors">
@@ -5345,6 +5941,10 @@ function ieltsActive() { return user.goal === 'ielts' && !ieltsLocked(); }
 
 function navTo(tab) {
   if (typeof teardownRec === 'function') teardownRec();
+  if (OFFLINE_BUILD && (tab === 'ai' || tab === 'tests')) return renderProgram();
+  // O'yin ekrani faqat offline bilkada bor — onlayn bilkada bu tab chizilmaydi,
+  // lekin eski qo'ng'iroq (masalan keshdagi ekran) bosh sahifaga tushsin.
+  if (tab === 'games') return OFFLINE_BUILD ? renderGames() : renderDashboard();
   if (tab === 'home') return renderDashboard();
   if (tab === 'ai')   { currentMode = 'conversation'; history = []; return renderChat(); }
   if (tab === 'tasks') { lessonOpen = false; return renderProgram(); }
@@ -5364,10 +5964,55 @@ let programFeedbackKind = 'pass';   // 'pass' | 'skip'
 // matn yoki takrorlash sessiyasi yo'qoladi.
 let currentView = '';
 
+// Joriy darajaning vazifa fayli yuklanadimi. Yuklash bir marta urinadi:
+// xato bo'lsa ekranda ochiq aytiladi va "qayta urinish" tugmasi beriladi —
+// aks holda renderProgram → yuklash → renderProgram cheksiz aylanadi.
+let offlineLoading = false;
+let offlineLoadError = null;   // { level, message } — xato qaysi darajaniki
+
+function offlineErrorFor(level) {
+  return offlineLoadError && offlineLoadError.level === level ? offlineLoadError.message : null;
+}
+
+function ensureOfflineLevel() {
+  const p = user.program;
+  if (!OFFLINE_BUILD || !p) return;
+  if (OFFLINE_TASKS[p.level] || offlineLoading || offlineErrorFor(p.level)) return;
+  offlineLoading = true;
+  loadOfflineLevel(p.level).then(r => {
+    offlineLoading = false;
+    offlineLoadError = r.ok ? null : { level: p.level, message: r.message || r.reason };
+    if (currentView === 'program') renderProgram();
+  });
+}
+
+function offlineContentReady(cur) {
+  const p = user.program;
+  if (!OFFLINE_BUILD || !p) return true;
+  if (cur && cur.offline) return true;      // ochiq vazifa o'z data'sini olib yuradi
+  if (OFFLINE_TASKS[p.level]) return true;
+  ensureOfflineLevel();
+  return false;
+}
+
 function taskLabel(type) {
   if (type === 'unit_exam')  return { emoji:'📋', title:'Unit imtihoni',   desc:"Butun unit bo'yicha 8 savol" };
   if (type === 'level_exam') return { emoji:'🏆', title:'Daraja imtihoni', desc:'Darajani tasdiqlaydigan 10 savol' };
-  return TASK_TYPES[type] || { emoji:'📝', title:'Vazifa', desc:'' };
+  // Offline bilkada yo'l xaritasi kurrikulumdagi ONLAYN turni ko'rsatadi
+  // (speak/write), vazifa esa o'rnini bosuvchi bo'ladi — nomlar ajralib
+  // qolmasin. getRoadmap() ga tegilmaydi, moslashtirish shu yerda.
+  const t = OFFLINE_BUILD ? offlineTypeOf(type) : type;
+  return OFFLINE_TASK_TYPES[t] || TASK_TYPES[t] || { emoji:'📝', title:'Vazifa', desc:'' };
+}
+
+// Kontent yo'q/eskirgan holatning sababi — jimgina noto'g'ri vazifa berishdan
+// ko'ra ochiq xato yaxshi (docs/specs/offline-client.md).
+function offlineContentMsg(src) {
+  if (!src || src.ok) return '';
+  if (src.reason === 'not_loaded')    return 'Vazifalar fayli hali yuklanmadi';
+  if (src.reason === 'type_mismatch') return `Kontent eskirgan: ${src.where}`;
+  if (src.reason === 'missing')       return `Kontent to'liq emas: ${src.where}`;
+  return 'Vazifa topilmadi';
 }
 
 function programHeader() {
@@ -5465,6 +6110,7 @@ function resultCard(text, passed, kind) {
 // Trial tugashiga sanoq. Faqat oxirgi 3 kunda ko'rsatiladi — 7-kundan boshlab
 // har kuni ko'rsatilsa, ogohlantirish fon shovqiniga aylanadi va bosilmay qoladi.
 function trialStrip() {
+  if (OFFLINE_BUILD) return '';   // offline bilkada obuna ham, trial ham yo'q
   const left = myTrialDaysLeft();
   if (left === null || left > 3) return '';
   const urgent = left <= 1;
@@ -5589,6 +6235,38 @@ function renderProgram() {
     body = unitLessonBox(getUnit());
     bind = bindLessonBox;
 
+  } else if (!offlineContentReady(cur)) {
+    // Kontent yuklanmagan: jimgina noto'g'ri vazifa berishdan ko'ra ochiq xato.
+    const due = dueWords(user.vocabulary || []).length;
+    const loadErr = offlineErrorFor(p.level);
+    body = loadErr
+      ? `<div class="bg-slate-800 rounded-2xl p-6 border border-red-600 text-center">
+      <div class="text-5xl mb-3">📦</div>
+      <div class="font-bold mb-1">Vazifalar yuklanmadi</div>
+      <div class="text-slate-400 text-sm mb-1">${p.level} darajasi uchun kontent ochilmadi.</div>
+      <div class="text-xs text-slate-500 mb-4">${esc(String(loadErr))}</div>
+      <button id="off-retry" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 text-sm font-semibold transition-colors mb-2">🔄 Qayta urinish</button>
+      <button id="off-lesson" class="w-full bg-slate-700 hover:bg-slate-600 rounded-xl py-3 text-sm transition-colors mb-2">📖 Mavzu darsi va so'zlar</button>
+      <button id="off-review" class="w-full bg-slate-700 hover:bg-slate-600 rounded-xl py-3 text-sm transition-colors">📚 So'zlarni takrorlash${due ? ` (${due} ta navbatda)` : ''}</button>
+    </div>`
+      : `<div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 text-center">
+      <div class="dot-load text-indigo-400 text-2xl mb-2"><span>●</span><span>●</span><span>●</span></div>
+      <div class="text-slate-400 text-sm">Vazifalar yuklanmoqda…</div>
+    </div>`;
+    bind = () => {
+      const rt = document.getElementById('off-retry');
+      if (rt) rt.onclick = () => { offlineLoadError = null; renderProgram(); };
+      const ls = document.getElementById('off-lesson');
+      if (ls) ls.onclick = () => { lessonOpen = true; renderProgram(); };
+      const rv = document.getElementById('off-review');
+      if (rv) rv.onclick = () => {
+        const v = user.vocabulary || [];
+        if (!v.length) return toast("Lug'at bo'sh — avval mavzu darsini oching", 'error');
+        const d = dueWords(v);
+        startReview(d.length ? d : v);
+      };
+    };
+
   } else if (cur && cur.status === 'failed') {
     const relief = cur.relief;
     body = `${cur.feedback ? resultCard(cur.feedback, false) : ''}
@@ -5641,7 +6319,7 @@ function renderProgram() {
       bind = () => { document.getElementById('pg-free').onclick = renderDashboard; };
     }
 
-  } else if (isOffline()) {
+  } else if (isOffline() && !OFFLINE_BUILD) {
     // Vazifa berish AI'ga bog'liq — internetsiz mumkin emas. Lekin dars va
     // takrorlash to'liq lokal, shuning uchun bo'sh ekran o'rniga shularni taklif qilamiz.
     const due = dueWords(user.vocabulary || []).length;
@@ -5854,7 +6532,332 @@ function onLessonNext() {
   renderProgram();
 }
 
+// ─── OFFLINE VAZIFA EKRANI (docs/specs/offline-client.md) ────────
+// Butun offline rejimning sababi — ZUDLIK BILAN JAVOB. Shuning uchun:
+//   · javob berilgach natija darhol ko'rinadi (AI kutish yo'q);
+//   · klaviatura ochilmaydi — hamma kiritish bosish orqali;
+//   · plitkalar HAR ochilishda qayta aralashadi (tartib yodlanmasin).
+// Vazifa band-band beriladi: bitta savol → natija → keyingisi.
+let offlineRun = null;
+
+function offlineHaptic(ok) {
+  try {
+    if (typeof navigator !== 'undefined' && navigator && typeof navigator.vibrate === 'function') {
+      navigator.vibrate(ok ? 10 : [10, 40, 10]);
+    }
+  } catch (_e) { /* vibratsiya ixtiyoriy — hech qachon oqimni to'xtatmaydi */ }
+}
+
+// attempts kalitga kiradi: qayta urinishda plitkalar qaytadan aralashadi.
+function offlineRunKey(cur) {
+  return `${cur.unitId}#${cur.taskIndex}#${cur.type}#${cur.attempts}`;
+}
+
+function offlineSteps(task) {
+  // order — bitta ekranda beshta jumla, ya'ni bitta qadam.
+  return task.type === 'order' ? 1 : offlineItems(task).length;
+}
+
+function offlineRunFor(cur) {
+  const key = offlineRunKey(cur);
+  if (offlineRun && offlineRun.key === key) return offlineRun;
+  offlineRun = {
+    key, task: cur.offline, type: cur.offline.type,
+    i: 0, answers: [], checked: false, lastOk: false,
+    pool: [], picked: [], order: [], shuffled: [], showText: false,
+  };
+  offlineStepInit();
+  return offlineRun;
+}
+
+function offlineStepInit() {
+  const R = offlineRun;
+  R.checked = false;
+  R.picked = [];
+  if (R.type === 'order') {
+    const n = offlineItems(R.task).length;
+    R.order = new Array(n).fill(null);
+    R.shuffled = offlineShuffle(offlineItems(R.task).map((_, i) => i));
+  } else if (R.type === 'translate' || R.type === 'build' || R.type === 'dictate') {
+    const item = offlineItems(R.task)[R.i] || {};
+    // id — plitka indeksi: bir xil so'z ikki marta uchrasa ham ajratiladi.
+    R.pool = offlineShuffle(offlineTiles(item).map((w, id) => ({ id, w })));
+  }
+}
+
+function offlineProgress(R) {
+  const total = offlineSteps(R.task);
+  return `<div class="flex items-center gap-2 mb-3">
+    <div class="flex-1 bg-slate-700 rounded-full h-1.5">
+      <div class="bg-indigo-500 h-1.5 rounded-full transition-all" style="width:${Math.round(R.i / total * 100)}%"></div>
+    </div>
+    <span class="text-xs text-slate-500 shrink-0">${Math.min(R.i + 1, total)}/${total}</span>
+  </div>`;
+}
+
+// Oxirgi band tekshirilgach tugma "Natijani ko'rish" ga aylanadi — o'sha yerda
+// submitTask chaqiriladi va applyResult butun vazifani baholaydi.
+function offlineNextBtn(R) {
+  const last = R.i >= offlineSteps(R.task) - 1;
+  return `<button id="of-next" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors">
+    ${last ? 'Natijani ko\'rish →' : 'Davom →'}
+  </button>`;
+}
+
+function offlineCheckBtn(enabled) {
+  return `<button id="of-check" ${enabled ? '' : 'disabled'}
+    class="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl py-3 font-semibold transition-colors">Tekshirish</button>`;
+}
+
+// 🔊 va matn zaxirasi. TTS umuman yo'q bo'lsa matn DARHOL ko'rsatiladi va
+// vazifa read kabi ishlaydi — o'quvchi tiqilib qolmasin.
+function offlineAudioBox(text, R) {
+  const noTts = !offlineTtsReady();
+  const shown = noTts || R.showText;
+  return `<div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 mb-3 text-center">
+    <button id="of-play" class="bg-indigo-600 hover:bg-indigo-500 rounded-full w-16 h-16 text-2xl transition-colors">🔊</button>
+    <div class="text-xs text-slate-500 mt-2">Qayta eshitish uchun yana bosing</div>
+    ${shown
+      ? `<div class="text-sm text-slate-300 mt-3 text-left bg-slate-900 rounded-xl p-3">${esc(text)}</div>`
+      : '<button id="of-show" class="text-xs text-slate-400 hover:text-indigo-400 mt-3 underline">Ovoz eshitilmayaptimi? Matnni ko\'rsatish</button>'}
+  </div>`;
+}
+
+function offlineMcqBox(R, item) {
+  const opts = (item.options || []).map((o, i) => {
+    let cls = 'bg-slate-800 border-slate-700 hover:border-indigo-500';
+    let mark = '';
+    if (R.checked) {
+      const chosen = R.answers[R.i] === i;
+      if (i === item.answer) { cls = 'bg-emerald-950 border-emerald-500 text-emerald-300'; mark = ' ✅'; }
+      else if (chosen)       { cls = 'bg-red-950 border-red-500 text-red-300'; mark = ' ❌'; }
+      else                   { cls = 'bg-slate-800 border-slate-700 opacity-50'; }
+    }
+    return `<button class="of-opt w-full text-left border rounded-xl px-4 py-3 text-sm transition-colors ${cls}"
+      data-i="${i}" ${R.checked ? 'disabled' : ''}>${esc(o)}${mark}</button>`;
+  }).join('');
+  return `<div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 mb-3">
+    <div class="text-sm font-medium mb-3">${esc(item.q || '')}</div>
+    <div class="space-y-2">${opts}</div>
+  </div>
+  ${R.checked ? offlineNextBtn(R) : ''}`;
+}
+
+function offlineTileBox(R, item) {
+  const picked = R.picked.map(id => {
+    const t = R.pool.find(x => x.id === id);
+    return `<button class="of-pick bg-indigo-600 hover:bg-indigo-500 rounded-lg px-3 py-1.5 text-sm transition-colors" data-id="${id}">${esc(t ? t.w : '')}</button>`;
+  }).join('');
+  const rest = R.pool.filter(t => !R.picked.includes(t.id)).map(t =>
+    `<button class="of-tile bg-slate-700 hover:bg-slate-600 rounded-lg px-3 py-1.5 text-sm transition-colors" data-id="${t.id}">${esc(t.w)}</button>`).join('');
+
+  const given = R.picked.map(id => (R.pool.find(x => x.id === id) || {}).w).join(' ');
+  const ok = R.lastOk;
+
+  const result = R.checked ? `
+  <div class="${ok ? 'bg-emerald-950 border-emerald-600' : 'bg-red-950 border-red-600'} border rounded-2xl p-4 mb-3">
+    <div class="font-bold text-sm ${ok ? 'text-emerald-400' : 'text-red-400'} mb-1">${ok ? '✅ To\'g\'ri!' : '❌ Xato'}</div>
+    ${ok ? '' : `<div class="text-sm text-slate-300 line-through">${esc(given)}</div>
+    <div class="text-sm text-emerald-300 mt-1">${esc(item.en || '')}</div>`}
+    ${item.uz ? `<div class="text-xs text-slate-400 mt-1">${esc(item.uz)}</div>` : ''}
+  </div>` : '';
+
+  return `
+  <div class="bg-slate-800 rounded-2xl p-3 border border-slate-700 mb-3 min-h-[52px] flex flex-wrap gap-2 items-start">
+    ${picked || '<span class="text-xs text-slate-500 py-1.5">So\'zlarni bosib jumla yig\'ing…</span>'}
+  </div>
+  ${R.checked ? '' : `<div class="flex flex-wrap gap-2 mb-4">${rest}</div>`}
+  ${result}
+  ${R.checked ? offlineNextBtn(R) : offlineCheckBtn(R.picked.length > 0)}`;
+}
+
+function offlineOrderBox(R) {
+  const sents = offlineItems(R.task);
+  const posOf = i => R.order.indexOf(i);
+  const rows = R.shuffled.map(i => {
+    const pos = posOf(i);
+    let cls = pos >= 0 ? 'bg-indigo-950 border-indigo-500' : 'bg-slate-800 border-slate-700 hover:border-indigo-500';
+    let badge = pos >= 0 ? String(pos + 1) : '·';
+    if (R.checked) {
+      const right = pos === i;
+      cls = right ? 'bg-emerald-950 border-emerald-500' : 'bg-red-950 border-red-500';
+      badge = right ? '✓' : String(pos + 1);
+    }
+    return `<button class="of-sent w-full text-left border rounded-xl px-3 py-2.5 text-sm flex gap-3 items-start transition-colors ${cls}"
+      data-i="${i}" ${R.checked ? 'disabled' : ''}>
+      <span class="w-6 h-6 shrink-0 rounded-full bg-slate-700 text-xs flex items-center justify-center font-bold">${badge}</span>
+      <span>${esc(sents[i])}</span>
+    </button>`;
+  }).join('');
+
+  const answer = R.checked ? `
+  <div class="bg-slate-800 border border-emerald-700 rounded-2xl p-4 mb-3">
+    <div class="text-sm font-bold text-emerald-400 mb-2">✅ To'g'ri tartib</div>
+    <ol class="text-sm text-slate-300 space-y-1 list-decimal list-inside">
+      ${sents.map(x => `<li>${esc(x)}</li>`).join('')}
+    </ol>
+  </div>` : '';
+
+  const filled = R.order.every(x => x !== null);
+  return `<div class="space-y-2 mb-4">${rows}</div>
+  ${answer}
+  ${R.checked ? offlineNextBtn(R) : offlineCheckBtn(filled)}`;
+}
+
+function offlineBox(cur, lbl) {
+  const R = offlineRunFor(cur);
+  const task = R.task;
+  const items = offlineItems(task);
+  const item = items[R.i] || {};
+
+  const head = `
+  <div class="bg-slate-800 rounded-2xl p-4 border border-indigo-600 mb-3">
+    <div class="text-xs text-indigo-400 font-semibold mb-1">${lbl.emoji} ${lbl.title}${cur.attempts ? ` · ${cur.attempts+1}-urinish` : ''}</div>
+    <div class="text-sm text-slate-300">${esc(cur.prompt || '')}</div>
+    ${task.type === 'build' && item.word ? `<div class="mt-2 text-sm"><b class="text-indigo-300">${esc(item.word)}</b>${item.uz ? ` <span class="text-slate-400">— ${esc(item.uz)}</span>` : ''}</div>` : ''}
+  </div>`;
+
+  let context = '';
+  if (task.type === 'read') {
+    context = `<div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 mb-3 text-sm leading-relaxed text-slate-200">${esc(task.text || '')}</div>`;
+  } else if (task.type === 'listen') {
+    context = offlineAudioBox(task.text || '', R);
+  } else if (task.type === 'dictate') {
+    context = offlineAudioBox(item.en || '', R);
+  } else if (task.type === 'translate') {
+    context = `<div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 mb-3">
+      <div class="text-xs text-slate-500 mb-1">Shu jumlani inglizchada yig'ing:</div>
+      <div class="text-sm font-medium">${esc(item.uz || '')}</div>
+    </div>`;
+  } else if (task.type === 'order') {
+    context = `<div class="bg-slate-800 rounded-2xl p-4 border border-slate-700 mb-3">
+      <div class="text-sm font-medium">${esc(task.topicUz || task.topic || '')}</div>
+      <div class="text-xs text-slate-500 mt-1">Jumlalarni bosib tartib raqamini bering. Xato bo'lsa qayta bosing.</div>
+    </div>`;
+  }
+
+  let bodyHtml;
+  if (task.type === 'order') bodyHtml = offlineOrderBox(R);
+  else if (task.type === 'translate' || task.type === 'build' || task.type === 'dictate') bodyHtml = offlineTileBox(R, item);
+  else bodyHtml = offlineMcqBox(R, item);
+
+  return `${head}${offlineProgress(R)}${context}${bodyHtml}
+  <div class="text-xs text-slate-500 mt-3 text-center">O'tish uchun ${Math.round(PASS_THRESHOLD*100)}% kerak</div>`;
+}
+
+// Faqat #pg-body ni almashtiradi — butun ekranni qayta chizish kerak emas,
+// va bu "zudlik bilan javob" hissini saqlaydi.
+function offlineRerender() {
+  const p = user.program;
+  if (!p || !p.current) return renderProgram();
+  const box = document.getElementById('pg-body');
+  if (!box) return renderProgram();
+  box.innerHTML = offlineBox(p.current, taskLabel(p.current.type));
+  bindOfflineBox();
+}
+
+function bindOfflineBox() {
+  const R = offlineRun;
+  if (!R) return;
+  const $ = id => document.getElementById(id);
+
+  const play = $('of-play');
+  if (play) play.onclick = () => {
+    const txt = R.type === 'dictate' ? (offlineItems(R.task)[R.i] || {}).en : R.task.text;
+    speakText(txt || '');
+  };
+  const show = $('of-show');
+  if (show) show.onclick = () => { R.showText = true; offlineRerender(); };
+
+  document.querySelectorAll('.of-opt').forEach(b => {
+    b.onclick = () => {
+      if (R.checked) return;
+      const i = Number(b.dataset.i);
+      const item = offlineItems(R.task)[R.i] || {};
+      R.answers[R.i] = i;
+      R.lastOk = i === item.answer;
+      R.checked = true;
+      offlineHaptic(R.lastOk);
+      offlineRerender();
+    };
+  });
+
+  document.querySelectorAll('.of-tile').forEach(b => {
+    b.onclick = () => {
+      if (R.checked) return;
+      R.picked.push(Number(b.dataset.id));
+      offlineHaptic(true);
+      offlineRerender();
+    };
+  });
+  document.querySelectorAll('.of-pick').forEach(b => {
+    b.onclick = () => {
+      if (R.checked) return;
+      const id = Number(b.dataset.id);
+      const at = R.picked.indexOf(id);
+      if (at >= 0) R.picked.splice(at, 1);
+      offlineRerender();
+    };
+  });
+
+  document.querySelectorAll('.of-sent').forEach(b => {
+    b.onclick = () => {
+      if (R.checked) return;
+      const i = Number(b.dataset.i);
+      const at = R.order.indexOf(i);
+      if (at >= 0) R.order[at] = null;                 // qaytarib olish
+      else {
+        const free = R.order.indexOf(null);
+        if (free < 0) return;
+        R.order[free] = i;
+      }
+      offlineHaptic(true);
+      offlineRerender();
+    };
+  });
+
+  const check = $('of-check');
+  if (check) check.onclick = () => {
+    if (R.checked) return;
+    if (R.type === 'order') {
+      R.answers = R.order.slice();
+      const g = gradeOffline(R.task, R.answers);
+      R.lastOk = g.correct === g.total;
+    } else {
+      const given = R.picked.map(id => (R.pool.find(x => x.id === id) || {}).w).join(' ');
+      R.answers[R.i] = given;
+      const item = offlineItems(R.task)[R.i] || {};
+      const alts = Array.isArray(item.alt) ? item.alt : [];
+      const n = normOffline(given);
+      R.lastOk = !!n && (n === normOffline(item.en) || alts.some(a => n === normOffline(a)));
+    }
+    R.checked = true;
+    offlineHaptic(R.lastOk);
+    offlineRerender();
+  };
+
+  const next = $('of-next');
+  if (next) next.onclick = () => {
+    if (R.i >= offlineSteps(R.task) - 1) return doSubmitOffline();
+    R.i++;
+    offlineStepInit();
+    offlineRerender();
+  };
+}
+
+async function doSubmitOffline() {
+  if (programBusy) return;
+  programBusy = true;
+  const answers = offlineRun ? offlineRun.answers.slice() : [];
+  const r = await submitTask(answers);
+  offlineRun = null;
+  await finishSubmit(r);
+}
+
 function taskBox(cur, lbl) {
+  // Offline bilka: vazifa data'dan chiziladi, matn AI'dan kelmaydi.
+  if (OFFLINE_BUILD && cur.offline) return offlineBox(cur, lbl);
+
   const { html } = renderAI(cur.prompt);
   const head = `
   <div class="bg-slate-800 rounded-2xl p-4 border border-indigo-600 mb-4">
@@ -5882,6 +6885,7 @@ function taskBox(cur, lbl) {
 }
 
 function bindTaskBox() {
+  if (OFFLINE_BUILD && user.program?.current?.offline) return bindOfflineBox();
   const mic = document.getElementById('pg-mic');
   if (mic) { mic.onclick = () => toggleRec('program'); return; }
   const ta = document.getElementById('pg-ans');
@@ -5905,6 +6909,7 @@ async function doStartTask() {
   if (programBusy) return;
   programBusy = true;
   programLoading('Vazifa tayyorlanmoqda...');
+  offlineRun = null;
   const r = await startTask();
   programBusy = false;
   if (!r.ok) {
@@ -5921,6 +6926,10 @@ async function doRetryTask() {
   const r = await retryTask();
   programBusy = false;
   if (!r.ok) toast(r.message || 'Xatolik. Qayta urinib ko\'ring.', 'error');
+  // Offline'da AI yengillashtirilgan variant yoza olmaydi — 3 urinishdan keyin
+  // mavzu darsi qayta ochiladi (qoida, misollar, mini-tekshiruv).
+  if (r.ok && r.openLesson) { lessonOpen = true; toast("Mavzuni birga qaytaramiz", 'info'); }
+  offlineRun = null;
   renderProgram();
 }
 
@@ -6082,7 +7091,7 @@ function renderDashboard() {
   const isIelts = ieltsActive();
   const modeGate = freeModeGate();
   const modeLocked = !modeGate.ok;
-  const cards = Object.entries(MODES).map(([k,m]) => `
+  const cards = OFFLINE_BUILD ? '' : Object.entries(MODES).map(([k,m]) => `
     <div class="mode-card bg-slate-800 rounded-2xl p-4 border ${!modeLocked && k===leastMode?'border-indigo-500':'border-slate-700'} relative ${modeLocked?'opacity-50 cursor-not-allowed':''}"
          data-mode="${k}">
       ${modeLocked?'<div class="absolute top-2 right-2 text-sm">🔒</div>':''}
@@ -6142,9 +7151,9 @@ function renderDashboard() {
         </div>
       </div>
       ${examHtml}
-      <h3 class="font-semibold text-slate-300 text-sm ${modeLocked?'mb-1':'mb-3'}">Mashq turini tanlang${modeLocked?' 🔒':''}</h3>
+      ${OFFLINE_BUILD ? '' : `<h3 class="font-semibold text-slate-300 text-sm ${modeLocked?'mb-1':'mb-3'}">Mashq turini tanlang${modeLocked?' 🔒':''}</h3>
       ${modeLocked?`<p class="text-slate-500 text-xs mb-3">${lockText(modeGate)}</p>`:''}
-      <div class="grid grid-cols-2 gap-3 mb-5">${cards}</div>
+      <div class="grid grid-cols-2 gap-3 mb-5">${cards}</div>`}
       <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
         <div class="text-sm font-semibold text-slate-300 mb-2">Zaif joylar</div>
         <div class="flex flex-wrap gap-2">${errHtml}</div>
@@ -6754,6 +7763,410 @@ function renderVocabulary() {
   });
 }
 
+// ─── VIEW: O'YINLAR (docs/specs/offline-games.md) ────────────────
+// Bu ekran FAQAT offline bilkada bor (navTabs). Mantiq §4.8 da sof holda
+// yozilgan — bu yerda faqat chizish va bosish. Har bosishga DARHOL javob:
+// yashil/qizil + animatsiya, hech qanday kutish yo'q.
+//
+// Sessiya uzunligi speed'da vaqt bilan (60s) belgilangan. anagram va
+// listen_game'da spec uzunlik bermagan — qat'iy raund soni tanlandi, chunki
+// vaqt cheklovi bu ikkalasini speed'ning nusxasiga aylantirardi.
+const GAME_ANAGRAM_WORDS = 8;
+const GAME_LISTEN_ROUNDS = 10;
+
+let gameRun = null;          // joriy sessiya — saqlanmaydi, chiqishda yo'qoladi
+let gameTimer = null;
+let gameHintTimer = null;
+
+function stopGameTimers() {
+  if (gameTimer) { clearInterval(gameTimer); gameTimer = null; }
+  if (gameHintTimer) { clearTimeout(gameHintTimer); gameHintTimer = null; }
+}
+
+// Chiqish ogohlantirishsiz: o'yin sessiyasi qimmatli data emas.
+function exitGame() { stopGameTimers(); gameRun = null; renderGames(); }
+
+function renderGames() {
+  currentView = 'games';
+  stopGameTimers();
+  gameRun = null;
+  const pool = gameWordPool();
+  const avail = gamesAvailable(pool);
+  const rec = getGames();
+  // Quloq o'yini TTS'siz MENYUDA KO'RSATILMAYDI — matnli zaxira bu o'yinning
+  // butun ma'nosini yo'q qiladi (talaffuzni tanish).
+  const visible = GAME_KEYS.filter(k => k !== 'listen_game' || offlineTtsReady());
+  const cards = visible.map(k => {
+    const g = GAMES[k], st = rec[k], on = avail.includes(k);
+    const best = st.best == null ? "hali yo'q" : `${st.best} ${g.unit}`;
+    return `<button data-gm="${k}" ${on ? '' : 'disabled'}
+      class="mode-card w-full text-left bg-slate-800 rounded-2xl p-4 border border-slate-700 hover:border-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-3">
+      <div class="text-3xl shrink-0">${g.emoji}</div>
+      <div class="flex-1 min-w-0">
+        <div class="font-semibold text-sm">${esc(g.title)}</div>
+        <div class="text-xs text-slate-400">${esc(g.desc)}</div>
+      </div>
+      <div class="text-right shrink-0">
+        <div class="text-[10px] text-slate-500 uppercase tracking-wide">Rekord</div>
+        <div class="text-sm font-bold text-amber-400">${esc(best)}</div>
+        <div class="text-[10px] text-slate-500">${st.plays} marta</div>
+      </div>
+    </button>`;
+  }).join('');
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade pb-24">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+      <div class="flex-1 font-semibold">O'yinlar 🎮</div>
+      <span class="text-slate-400 text-sm">${pool.length} so'z</span>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-5 space-y-3">
+      <div class="text-xs text-slate-500">O'rgangan so'zlaringizdan quriladi. XP beradi, lekin vazifadan kam — asosiy yo'l baribir dastur.</div>
+      ${cards}
+      ${avail.length ? '' : `<div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 text-center">
+        <div class="text-4xl mb-2">📖</div>
+        <div class="text-sm text-slate-400">So'z hovuzi hali kichik. Mavzu darsini oching — 25 ta so'z lug'atga tushadi va o'yinlar ochiladi.</div>
+      </div>`}
+    </div>
+  </div>
+  ${renderBottomNav('games')}`;
+
+  document.querySelectorAll('[data-gm]').forEach(b => { b.onclick = () => startGame(b.dataset.gm); });
+  bindBottomNav();
+}
+
+function startGame(key) {
+  stopGameTimers();
+  const pool = gameWordPool();
+  const round = buildRound(key, pool);
+  if (!round) { toast("So'z yetarli emas — avval mavzu darsini oching", 'error'); return renderGames(); }
+  gameRun = {
+    game: key, pool, round, state: newGameState(),
+    flash: null, lock: false, over: false, result: null, xp: 0,
+    seen: round.word ? [round.word.en] : [], rounds: 1,
+    typed: [], hint: false,                       // anagram
+    attempts: 0, open: [], done: [],              // memory
+    endsAt: Date.now() + GAME_SPEED_SECONDS * 1000,
+  };
+  renderGameScreen();
+  if (key === 'speed') startGameTimer();
+  if (key === 'listen_game') sayGameWord();
+  if (key === 'anagram') armAnagramHint();
+}
+
+function startGameTimer() {
+  const R = gameRun;
+  stopGameTimers();
+  gameTimer = setInterval(() => {
+    if (gameRun !== R || R.over) return stopGameTimers();
+    const head = document.getElementById('gm-head');
+    if (head) head.innerHTML = gameHeadStats(R);
+    if (Date.now() >= R.endsAt) endGame();
+  }, 250);
+}
+
+function sayGameWord() {
+  const R = gameRun;
+  if (!R || !R.round || !R.round.word) return;
+  if (offlineTtsReady()) speakText(R.round.word.en);
+}
+
+// 10 soniyadan keyin birinchi harf ochiladi va so'z arzonlashadi.
+function armAnagramHint() {
+  if (gameHintTimer) clearTimeout(gameHintTimer);
+  const R = gameRun;
+  if (!R) return;
+  const rd = R.round;
+  gameHintTimer = setTimeout(() => {
+    if (gameRun !== R || R.round !== rd || R.flash || R.over || R.typed.length) return;
+    R.hint = true;
+    const id = rd.letters.findIndex(ch => ch === rd.answer[0]);
+    if (id >= 0) R.typed = [id];
+    gameRerender();
+  }, ANAGRAM_HINT_MS);
+}
+
+function gameHeadStats(R) {
+  if (R.game === 'memory') {
+    return `<span class="text-sm text-slate-300">Urinish: <b>${R.attempts}</b></span>`;
+  }
+  const parts = [`<span class="text-sm text-slate-300">Ball: <b class="text-amber-400">${R.state.score}</b></span>`];
+  if (R.state.mult > 1) parts.push(`<span class="text-xs font-bold text-emerald-400 gm-pop">×${R.state.mult}</span>`);
+  if (R.game === 'speed') {
+    const left = Math.max(0, Math.ceil((R.endsAt - Date.now()) / 1000));
+    parts.push(`<span class="text-sm font-mono ${left <= 10 ? 'text-red-400' : 'text-slate-300'}">⏱ ${left}s</span>`);
+  }
+  return parts.join(' ');
+}
+
+function renderGameScreen() {
+  currentView = 'games';
+  const R = gameRun;
+  if (!R) return renderGames();
+  const g = GAMES[R.game];
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade pb-24">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+      <button id="gm-exit" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
+      <div class="flex-1 font-semibold text-sm">${g.emoji} ${esc(g.title)}</div>
+      <div id="gm-head" class="flex items-center gap-2">${gameHeadStats(R)}</div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-5"><div id="gm-body">${gameBody(R)}</div></div>
+  </div>
+  ${renderBottomNav('games')}`;
+  document.getElementById('gm-exit').onclick = exitGame;
+  bindBottomNav();
+  bindGameBody();
+}
+
+// Faqat sarlavha va tanani almashtiradi — "zudlik bilan javob" hissi shundan.
+function gameRerender() {
+  const R = gameRun;
+  if (!R) return;
+  const head = document.getElementById('gm-head');
+  const body = document.getElementById('gm-body');
+  if (!head || !body) return renderGameScreen();
+  head.innerHTML = gameHeadStats(R);
+  body.innerHTML = gameBody(R);
+  bindGameBody();
+}
+
+function gameBody(R) {
+  if (R.over) return gameOverBox(R);
+  if (R.game === 'memory')  return gameMemoryBox(R);
+  if (R.game === 'anagram') return gameAnagramBox(R);
+  return gameMcqBox(R);
+}
+
+function gameMcqBox(R) {
+  const rd = R.round;
+  const opts = rd.options.map((o, i) => {
+    let cls = 'bg-slate-800 border-slate-700 hover:border-indigo-500', anim = '';
+    if (R.flash) {
+      if (i === rd.answer)       { cls = 'bg-emerald-950 border-emerald-500 text-emerald-300'; anim = 'gm-pop'; }
+      else if (i === R.flash.i)  { cls = 'bg-red-950 border-red-500 text-red-300'; anim = 'gm-shake'; }
+      else                       { cls = 'bg-slate-800 border-slate-700 opacity-40'; }
+    }
+    return `<button class="gm-opt ${anim} w-full text-left border rounded-xl px-4 py-3.5 text-sm transition-colors ${cls}"
+      data-i="${i}" ${R.flash ? 'disabled' : ''}>${esc(o)}</button>`;
+  }).join('');
+
+  const head = R.game === 'listen_game'
+    ? `<div class="text-center mb-5">
+        <button id="gm-say" class="bg-indigo-600 hover:bg-indigo-500 rounded-full w-20 h-20 text-3xl transition-colors">🔊</button>
+        <div class="text-xs text-slate-500 mt-2">Qayta eshitish uchun bosing</div>
+      </div>`
+    : `<div class="text-center mb-5">
+        <div class="text-3xl font-bold">${esc(rd.prompt)}</div>
+        ${rd.word.ipa ? `<div class="text-xs text-slate-500 mt-1">${esc(rd.word.ipa)}</div>` : ''}
+      </div>`;
+
+  const penalty = R.flash && !R.flash.ok && R.game === 'speed'
+    ? '<div class="text-center text-red-400 text-xs mt-3 gm-shake">−2 soniya jarima</div>' : '';
+
+  return `${head}<div class="space-y-2">${opts}</div>${penalty}
+  <div class="text-center text-xs text-slate-500 mt-4">Kombo: <b class="text-slate-300">${R.state.combo}</b>${R.state.bestCombo ? ` · eng uzuni ${R.state.bestCombo}` : ''}</div>`;
+}
+
+function gameAnagramBox(R) {
+  const rd = R.round;
+  const ok = R.flash && R.flash.ok;
+  const slots = rd.answer.split('').map((_, i) => {
+    const id = R.typed[i];
+    const ch = id === undefined ? '' : rd.letters[id];
+    let cls = ch ? 'bg-indigo-600 border-indigo-500' : 'border-slate-600 border-dashed';
+    if (R.flash) cls = ok ? 'bg-emerald-700 border-emerald-500' : 'bg-red-900 border-red-500';
+    return `<span class="w-9 h-11 rounded-lg border flex items-center justify-center text-lg font-bold uppercase ${cls}">${esc(ch || '')}</span>`;
+  }).join('');
+
+  const tiles = rd.letters.map((ch, id) => R.typed.includes(id) ? '' :
+    `<button class="gm-letter bg-slate-700 hover:bg-slate-600 rounded-lg w-11 h-12 text-lg font-bold uppercase transition-colors" data-id="${id}">${esc(ch)}</button>`).join('');
+
+  const result = R.flash ? `<div class="mt-4 text-center ${ok ? 'text-emerald-400 gm-pop' : 'text-red-400 gm-shake'} font-semibold text-sm">
+      ${ok ? "✅ To'g'ri!" : `❌ To'g'risi: <b>${esc(rd.answer)}</b>`}
+    </div>` : '';
+
+  return `<div class="text-center mb-4">
+    <div class="text-xs text-slate-500 mb-1">Bu so'zni harflardan yig'ing</div>
+    <div class="text-lg font-semibold text-indigo-300">${esc(rd.word.uz || rd.word.en)}</div>
+    ${R.hint ? '<div class="text-[11px] text-amber-400 mt-1">💡 Birinchi harf ochildi — ball kamayadi</div>' : ''}
+  </div>
+  <div class="flex flex-wrap justify-center gap-1.5 mb-5">${slots}</div>
+  ${R.flash ? '' : `<div class="flex flex-wrap justify-center gap-2 mb-4">${tiles}</div>
+  <button id="gm-undo" class="w-full bg-slate-700 hover:bg-slate-600 rounded-xl py-2.5 text-sm transition-colors" ${R.typed.length ? '' : 'disabled'}>⌫ Orqaga</button>`}
+  ${result}
+  <div class="text-center text-xs text-slate-500 mt-4">So'z ${Math.min(R.rounds, GAME_ANAGRAM_WORDS)}/${GAME_ANAGRAM_WORDS} · kombo ${R.state.combo}</div>`;
+}
+
+function gameMemoryBox(R) {
+  const cards = R.round.cards;
+  const miss = R.open.length === 2 && cards[R.open[0]].pair !== cards[R.open[1]].pair;
+  const html = cards.map((c, i) => {
+    const done = R.done.includes(c.pair);
+    const open = done || R.open.includes(i);
+    let cls = 'bg-slate-800 border-slate-700 hover:border-indigo-500', anim = '';
+    if (done)                       { cls = 'bg-emerald-900 border-emerald-600 text-emerald-200'; anim = 'gm-pop'; }
+    else if (open && miss)          { cls = 'bg-red-950 border-red-500 text-red-200'; anim = 'gm-shake'; }
+    else if (open)                  { cls = 'bg-indigo-700 border-indigo-500'; anim = 'gm-pop'; }
+    return `<button class="gm-cell gm-card ${anim} border rounded-xl h-20 px-1 text-xs font-medium flex items-center justify-center text-center ${cls}"
+      data-i="${i}" ${open ? 'disabled' : ''}>${open ? esc(c.text) : '❓'}</button>`;
+  }).join('');
+  return `<div class="grid grid-cols-3 gap-2">${html}</div>
+  <div class="text-center text-sm text-slate-400 mt-4">Topilgan: <b>${R.done.length}</b>/${GAME_MEMORY_PAIRS} · urinish ${R.attempts} <span class="text-slate-600">(ideal ${GAME_MEMORY_PAIRS})</span></div>
+  <div class="text-center text-xs text-slate-600 mt-1">Vaqt cheklovi yo'q — shoshilmang</div>`;
+}
+
+function gameOverBox(R) {
+  const g = GAMES[R.game];
+  const r = R.result || {};
+  const rows = R.game === 'memory'
+    ? [["Urinishlar", `${R.attempts}`], ['Ideal', `${GAME_MEMORY_PAIRS}`]]
+    : [["To'g'ri", `${R.state.correct}`], ['Xato', `${R.state.wrong}`],
+       ['Ball', `${R.state.score}`], ['Eng uzun kombo', `${R.state.bestCombo}`]];
+  const best = r.best == null ? '—' : `${r.best} ${g.unit}`;
+  return `<div class="bg-slate-800 rounded-2xl p-6 border ${r.improved ? 'border-amber-500' : 'border-slate-700'} text-center">
+    <div class="text-5xl mb-2 gm-pop">${r.improved ? '🏆' : g.emoji}</div>
+    <div class="font-bold mb-3">${r.improved ? 'Yangi rekord!' : 'Yakun'}</div>
+    <div class="space-y-1 text-sm text-left max-w-xs mx-auto mb-4">
+      ${rows.map(([k, v]) => `<div class="flex justify-between border-b border-slate-700 pb-1"><span class="text-slate-400">${k}</span><b>${v}</b></div>`).join('')}
+      <div class="flex justify-between pt-1"><span class="text-slate-400">Rekord</span><b class="text-amber-400">${esc(best)}</b></div>
+    </div>
+    ${R.xp ? `<div class="text-sm text-emerald-400 mb-4">+${R.xp} XP</div>`
+           : '<div class="text-xs text-slate-500 mb-4">XP berilmadi</div>'}
+    <button id="gm-again" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors mb-2">🔁 Yana</button>
+    <button id="gm-menu" class="w-full bg-slate-700 hover:bg-slate-600 rounded-xl py-2.5 text-sm transition-colors">O'yinlar ro'yxati</button>
+  </div>`;
+}
+
+function gameNextRound() {
+  const R = gameRun;
+  if (!R || R.over) return;
+  if (R.game === 'speed' && Date.now() >= R.endsAt) return endGame();
+  if (R.game === 'anagram' && R.rounds >= GAME_ANAGRAM_WORDS) return endGame();
+  if (R.game === 'listen_game' && R.rounds >= GAME_LISTEN_ROUNDS) return endGame();
+  const rd = buildRound(R.game, R.pool, { exclude: R.seen });
+  if (!rd) return endGame();
+  R.round = rd;
+  R.rounds++;
+  R.flash = null;
+  R.typed = [];
+  R.hint = false;
+  R.seen.push(rd.word.en);
+  // Oxirgi bir necha so'z takrorlanmasin, lekin hovuz kichik bo'lsa qulflanmasin.
+  const keep = Math.max(3, Math.floor(R.pool.length / 2));
+  while (R.seen.length > keep) R.seen.shift();
+  gameRerender();
+  if (R.game === 'listen_game') sayGameWord();
+  if (R.game === 'anagram') armAnagramHint();
+}
+
+function gameCheckAnagram() {
+  const R = gameRun;
+  if (gameHintTimer) { clearTimeout(gameHintTimer); gameHintTimer = null; }
+  const given = R.typed.map(id => R.round.letters[id]).join('');
+  const ok = normOffline(given) === normOffline(R.round.answer);
+  R.flash = { ok };
+  R.state = scoreRound(R.state, ok, R.hint ? ANAGRAM_HINT_POINTS : ANAGRAM_POINTS);
+  offlineHaptic(ok);
+  R.lock = true;
+  gameRerender();
+  setTimeout(() => {
+    if (gameRun !== R) return;
+    R.lock = false;
+    gameNextRound();
+  }, ok ? 650 : 1400);
+}
+
+function bindGameBody() {
+  const R = gameRun;
+  if (!R) return;
+  const $ = id => document.getElementById(id);
+
+  if (R.over) {
+    const a = $('gm-again'); if (a) a.onclick = () => startGame(R.game);
+    const m = $('gm-menu');  if (m) m.onclick = exitGame;
+    return;
+  }
+
+  const say = $('gm-say');
+  if (say) say.onclick = () => sayGameWord();
+
+  document.querySelectorAll('.gm-opt').forEach(b => {
+    b.onclick = () => {
+      if (R.flash || R.lock) return;
+      const i = Number(b.dataset.i);
+      const ok = i === R.round.answer;
+      R.flash = { i, ok };
+      R.state = scoreRound(R.state, ok);
+      offlineHaptic(ok);
+      // Xato → 2 soniya jarima (vaqtdan yechiladi va ekranda aytiladi).
+      if (!ok && R.game === 'speed') R.endsAt -= GAME_SPEED_PENALTY_MS;
+      R.lock = true;
+      gameRerender();
+      setTimeout(() => {
+        if (gameRun !== R) return;
+        R.lock = false;
+        gameNextRound();
+      }, ok ? 380 : 950);
+    };
+  });
+
+  document.querySelectorAll('.gm-letter').forEach(b => {
+    b.onclick = () => {
+      if (R.flash || R.lock) return;
+      R.typed.push(Number(b.dataset.id));
+      offlineHaptic(true);
+      if (R.typed.length >= R.round.answer.length) return gameCheckAnagram();
+      gameRerender();
+    };
+  });
+  const undo = $('gm-undo');
+  if (undo) undo.onclick = () => { if (R.flash || !R.typed.length) return; R.typed.pop(); gameRerender(); };
+
+  document.querySelectorAll('.gm-cell').forEach(b => {
+    b.onclick = () => {
+      if (R.lock) return;
+      const i = Number(b.dataset.i);
+      const cards = R.round.cards;
+      if (R.open.includes(i) || R.done.includes(cards[i].pair)) return;
+      R.open.push(i);
+      offlineHaptic(true);
+      if (R.open.length < 2) return gameRerender();
+      R.attempts++;
+      const [x, y] = R.open;
+      if (cards[x].pair === cards[y].pair) {
+        // Ochilgan juft ekranda QOLADI va so'z aytiladi (TTS bo'lsa).
+        R.done.push(cards[x].pair);
+        R.open = [];
+        gameRerender();
+        if (offlineTtsReady()) speakText(cards[x].word.en);
+        if (R.done.length >= GAME_MEMORY_PAIRS) setTimeout(() => { if (gameRun === R) endGame(); }, 600);
+        return;
+      }
+      offlineHaptic(false);
+      R.lock = true;
+      gameRerender();
+      setTimeout(() => {
+        if (gameRun !== R) return;
+        R.open = []; R.lock = false;
+        gameRerender();
+      }, 850);
+    };
+  });
+}
+
+function endGame() {
+  const R = gameRun;
+  if (!R || R.over) return;
+  stopGameTimers();
+  R.over = true;
+  const val = R.game === 'memory' ? R.attempts : R.state.score;
+  R.result = recordGame(R.game, val);
+  R.xp = gameXp(R.game, { score: R.state.score, attempts: R.attempts });
+  if (R.xp > 0) addXP(R.xp);
+  gameRerender();
+}
+
 // ─── 14. REVIEW MODE ─────────────────────────────────────────────
 function startReview(vocab) {
   const queue = [...vocab].sort((a,b)=>a.mastery-b.mastery);
@@ -6859,6 +8272,8 @@ function init() {
   // !user.lastTaskDay bo'lsa yangi foydalanuvchining null'i ham to'ldirilib,
   // streak bir kunga oshib ketardi.
   if (user.lastTaskDay === undefined) user.lastTaskDay = user.lastVisit || todayStr();
+  // O'yin rekordlari — eski foydalanuvchida eb_games umuman yo'q.
+  ensureGames();
   registerVisit();
 
   // Dastur: eski foydalanuvchida yo'q — A1-01 dan boshlanadi va bir marta tushuntiriladi.
@@ -6875,6 +8290,10 @@ function init() {
   if (user.introSeen === false) { renderPathIntro(); syncFromServer(); return; }
   renderDashboard();
   if (isMigrated) showProgramIntro();
+
+  // Offline bilka: joriy darajaning vazifalari darhol yuklana boshlaydi,
+  // foydalanuvchi "Vazifalar" ga o'tgunicha tayyor bo'lsin.
+  ensureOfflineLevel();
 
   // Server progressi yangiroq bo'lsa (boshqa qurilma yoki tozalangan brauzer) — uni olamiz.
   syncFromServer();
@@ -6930,7 +8349,18 @@ window.addEventListener('offline', () => toast("Internet aloqasi uzildi — dars
 // AI so'rovlari keshlanmaydi — sw.js Supabase domenini butunlay chetlab o'tadi.
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('sw:', err.message));
+    navigator.serviceWorker.register('./sw.js').then(() => {
+      // Offline bilka: barcha darajalar kontenti oldindan keshlanadi, aks holda
+      // daraja ko'tarilgan kuni internet bo'lmasa dastur to'xtab qoladi.
+      // Onlayn bilka bu xabarni yubormaydi — sw kesh bo'sh qoladi.
+      if (!OFFLINE_BUILD) return;
+      const send = () => navigator.serviceWorker.controller?.postMessage({
+        type: 'cache-tasks',
+        urls: LEVELS.map(lv => `data/tasks-${lv.toLowerCase()}.json`),
+      });
+      if (navigator.serviceWorker.controller) send();
+      else navigator.serviceWorker.addEventListener('controllerchange', send, { once: true });
+    }).catch(err => console.warn('sw:', err.message));
   });
 }
 

@@ -3,9 +3,12 @@
 // mavzu darsi (so'zlar + grammatika) va lug'at takrorlash (SRS) tarmoqqa muhtoj emas.
 // AI vazifalari baribir internet talab qiladi; ular keshlanmaydi.
 
-const VERSION = 'eb-v5';
+const VERSION = 'eb-v7';   // o'yin rejimlari qo'shildi (offline-games.md)
 const SHELL_CACHE = `${VERSION}-shell`;
 const CDN_CACHE = `${VERSION}-cdn`;
+// Offline bilkaning vazifa kontenti (docs/specs/offline-client.md).
+// Onlayn bilka bu fayllarni umuman so'ramaydi — kesh bo'sh qoladi.
+const DATA_CACHE = `${VERSION}-data`;
 const SHELL = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', (e) => {
@@ -21,6 +24,19 @@ self.addEventListener('activate', (e) => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(k => !k.startsWith(VERSION)).map(k => caches.delete(k)));
     await self.clients.claim();
+  })());
+});
+
+// Klient (OFFLINE_BUILD = true) darajalar ro'yxatini yuborganda ular oldindan
+// keshlanadi. Onlayn bilka bu xabarni HECH QACHON yubormaydi, shuning uchun
+// hozirgi xatti-harakat o'zgarmaydi.
+self.addEventListener('message', (e) => {
+  const d = e.data || {};
+  if (d.type !== 'cache-tasks' || !Array.isArray(d.urls)) return;
+  e.waitUntil((async () => {
+    const c = await caches.open(DATA_CACHE);
+    // Har fayl alohida: bittasi yo'q bo'lsa qolganlari baribir keshlansin.
+    await Promise.all(d.urls.map(u => c.add(u).catch(() => null)));
   })());
 });
 
@@ -51,6 +67,21 @@ self.addEventListener('fetch', (e) => {
       } catch (_e) {
         return (await caches.match(req)) || (await caches.match('./index.html'));
       }
+    })());
+    return;
+  }
+
+  // Vazifa kontenti: avval kesh (internetsiz ham ochilsin), fonda yangilanadi.
+  if (sameOrigin && url.pathname.includes('/data/') && url.pathname.endsWith('.json')) {
+    e.respondWith((async () => {
+      const cached = await caches.match(req);
+      if (cached) return cached;
+      const res = await fetch(req).catch(() => null);
+      if (res && res.ok) {
+        const c = await caches.open(DATA_CACHE);
+        c.put(req, res.clone());
+      }
+      return res || new Response('', { status: 504 });
     })());
     return;
   }
