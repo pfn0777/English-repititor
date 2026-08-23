@@ -1,0 +1,2567 @@
+{
+  "level": "C1",
+  "units": [
+    {
+      "id": "C1-01",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Every project review in our department begins with the same question: what actually went wrong? Last spring the team spent four weeks arguing about the budget, and it was that argument that delayed the launch. The budget itself was never the real problem. What the reviewers finally identified was a single missing test, a fault so small that nobody had considered it salient. It is this pattern, rather than any shortage of money, that explains most of our failures.\nSince then we have changed the way we open a review. What we look for first is the crux of the problem, not the loudest complaint in the room. It was our new director who insisted on the rule, and her reasoning was simple. If a team cannot name the underlying cause in one sentence, it does not yet understand it. Trivial details are still recorded, but they are set aside; what receives attention is the decisive factor. The change has been substantial. Reviews that once consumed a whole afternoon now take under an hour, and the conclusions we reach are far more definitive.",
+          "items": [
+            {
+              "q": "What is the main idea of the text?",
+              "options": [
+                "How the team learned to focus its reviews on the central cause.",
+                "Why the department decided to stop holding project reviews.",
+                "How the team reduced the budget of every new project.",
+                "Why the director asked the team to record more details."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What delayed the launch last spring?",
+              "options": [
+                "The four-week argument about the budget.",
+                "A shortage of money in the department.",
+                "The absence of the new director.",
+                "A complaint from another department."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Who insisted on the new rule for reviews?",
+              "options": [
+                "The new director of the department.",
+                "The reviewers who found the missing test.",
+                "The whole team, after a long vote.",
+                "The author of the first project report."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What does the word 'crux' mean in this text?",
+              "options": [
+                "The central point of the problem.",
+                "The total cost of the project.",
+                "The final page of the report.",
+                "A detail that can be ignored."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What can we conclude about the reviews now?",
+              "options": [
+                "They are shorter and end with clearer conclusions.",
+                "They last longer than a whole afternoon.",
+                "They no longer record any small details.",
+                "They start from the loudest complaint in the room."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "en": "It was the deadline that worried us",
+              "uz": "Bizni aynan muddat tashvishga solgandi.",
+              "tiles": [
+                "It",
+                "was",
+                "the",
+                "deadline",
+                "that",
+                "worried",
+                "us"
+              ],
+              "distractors": [
+                "is",
+                "what",
+                "who"
+              ],
+              "alt": []
+            },
+            {
+              "en": "What matters here is consistency",
+              "uz": "Bu yerda muhimi izchillikdir.",
+              "tiles": [
+                "What",
+                "matters",
+                "here",
+                "is",
+                "consistency"
+              ],
+              "distractors": [
+                "that",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "en": "What I need is a clear answer",
+              "uz": "Menga kerak bo'lgani aniq javob.",
+              "tiles": [
+                "What",
+                "I",
+                "need",
+                "is",
+                "a",
+                "clear",
+                "answer"
+              ],
+              "distractors": [
+                "that",
+                "needs"
+              ],
+              "alt": []
+            },
+            {
+              "en": "It was Nodira who led the project",
+              "uz": "Loyihani aynan Nodira boshqargan.",
+              "tiles": [
+                "It",
+                "was",
+                "Nodira",
+                "who",
+                "led",
+                "the",
+                "project"
+              ],
+              "distractors": [
+                "is",
+                "whom"
+              ],
+              "alt": []
+            },
+            {
+              "en": "It is the essence that interests us",
+              "uz": "Bizni aynan mohiyat qiziqtiradi.",
+              "tiles": [
+                "It",
+                "is",
+                "the",
+                "essence",
+                "that",
+                "interests",
+                "us"
+              ],
+              "distractors": [
+                "are",
+                "interest"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "crux",
+              "uz": "eng muhim nuqta",
+              "en": "What she explained was the crux",
+              "tiles": [
+                "What",
+                "she",
+                "explained",
+                "was",
+                "the",
+                "crux"
+              ],
+              "distractors": [
+                "that",
+                "explains"
+              ],
+              "alt": []
+            },
+            {
+              "word": "trivial",
+              "uz": "arzimas",
+              "en": "It was a trivial detail that stopped us",
+              "tiles": [
+                "It",
+                "was",
+                "a",
+                "trivial",
+                "detail",
+                "that",
+                "stopped",
+                "us"
+              ],
+              "distractors": [
+                "is",
+                "stops"
+              ],
+              "alt": []
+            },
+            {
+              "word": "crucial",
+              "uz": "o'ta muhim",
+              "en": "It is the timing that is crucial",
+              "tiles": [
+                "It",
+                "is",
+                "the",
+                "timing",
+                "that",
+                "is",
+                "crucial"
+              ],
+              "distractors": [
+                "are",
+                "crucially"
+              ],
+              "alt": []
+            },
+            {
+              "word": "underlying",
+              "uz": "asosda yotgan",
+              "en": "What we missed was the underlying cause",
+              "tiles": [
+                "What",
+                "we",
+                "missed",
+                "was",
+                "the",
+                "underlying",
+                "cause"
+              ],
+              "distractors": [
+                "that",
+                "misses"
+              ],
+              "alt": []
+            },
+            {
+              "word": "decisive",
+              "uz": "qat'iy, hal etuvchi",
+              "en": "It was her decisive answer that helped",
+              "tiles": [
+                "It",
+                "was",
+                "her",
+                "decisive",
+                "answer",
+                "that",
+                "helped"
+              ],
+              "distractors": [
+                "is",
+                "helps"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Good morning. I want to explain what our committee decided last week. It was the second proposal that we finally accepted, not the first one. What convinced us was the cost table on page four. The author of that proposal is Rustam, and it is Rustam who will lead the work from Monday. What we still need is a short written report every Friday. The deadline for the whole project is the tenth of March. It was not the design that worried the committee at all; it was the timetable.",
+          "items": [
+            {
+              "q": "Which proposal did the committee accept?",
+              "options": [
+                "The second one.",
+                "The first one.",
+                "Both of them.",
+                "Neither of them."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What convinced the committee?",
+              "options": [
+                "The cost table on page four.",
+                "The design on the first page.",
+                "A short written report.",
+                "The timetable of the project."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Who will lead the work from Monday?",
+              "options": [
+                "Rustam.",
+                "The head of the committee.",
+                "The author of the first proposal.",
+                "Nobody has been chosen."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How often is a written report needed?",
+              "options": [
+                "Every Friday.",
+                "Every Monday.",
+                "Once a month.",
+                "Twice a week."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What worried the committee?",
+              "options": [
+                "The timetable.",
+                "The design.",
+                "The cost table.",
+                "The author."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "en": "What we need is time",
+              "uz": "Bizga kerak bo'lgani vaqt.",
+              "tiles": [
+                "What",
+                "we",
+                "need",
+                "is",
+                "time"
+              ],
+              "distractors": [
+                "that",
+                "needs"
+              ],
+              "alt": []
+            },
+            {
+              "en": "It was Nodira who called",
+              "uz": "Aynan Nodira qo'ng'iroq qilgandi.",
+              "tiles": [
+                "It",
+                "was",
+                "Nodira",
+                "who",
+                "called"
+              ],
+              "distractors": [
+                "whom",
+                "is"
+              ],
+              "alt": []
+            },
+            {
+              "en": "What matters is the result",
+              "uz": "Muhimi natijadir.",
+              "tiles": [
+                "What",
+                "matters",
+                "is",
+                "the",
+                "result"
+              ],
+              "distractors": [
+                "that",
+                "matter"
+              ],
+              "alt": []
+            },
+            {
+              "en": "It is trust that counts",
+              "uz": "Aynan ishonch hal qiladi.",
+              "tiles": [
+                "It",
+                "is",
+                "trust",
+                "that",
+                "counts"
+              ],
+              "distractors": [
+                "was",
+                "count"
+              ],
+              "alt": []
+            },
+            {
+              "en": "What he wanted was silence",
+              "uz": "U istagani sukunat edi.",
+              "tiles": [
+                "What",
+                "he",
+                "wanted",
+                "was",
+                "silence"
+              ],
+              "distractors": [
+                "that",
+                "wants"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Finding the real cause",
+          "topicUz": "Haqiqiy sababni topish",
+          "sentences": [
+            "Last month our small team missed an important deadline.",
+            "It was the delay in testing that caused the problem.",
+            "That delay, in turn, came from one missing document.",
+            "What we did next was simple: we rewrote the checklist.",
+            "Since then no report has left the office late."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Bizni aynan muddat tashvishga solgandi.",
+          "options": [
+            "It was the deadline that worried us.",
+            "It was the deadline what worried us.",
+            "It the deadline was that worried us.",
+            "The deadline it was worried us."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Muhimi izchillikdir.",
+          "options": [
+            "What matters is consistency.",
+            "That matters is consistency.",
+            "What matter is consistency.",
+            "What is matters consistency."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Menga kerak bo'lgani aniq reja.",
+          "options": [
+            "What I need is a clear plan.",
+            "What I need it is a clear plan.",
+            "That I need is a clear plan.",
+            "What do I need is a clear plan."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Yig'ilishni aynan Nodira boshqargan.",
+          "options": [
+            "It was Nodira who chaired the meeting.",
+            "It was Nodira she chaired the meeting.",
+            "It was Nodira whom chaired the meeting.",
+            "Nodira it was who chaired the meeting."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Bizni pul emas, aynan vaqt cheklagan.",
+          "options": [
+            "It was time, not money, that limited us.",
+            "It was time, not money, what limited us.",
+            "It was time, not money, limited us.",
+            "Time it was, not money, that limited us."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"crux\" so'zi nimani anglatadi?",
+          "options": [
+            "eng muhim nuqta",
+            "juda oz, chekka",
+            "yakuniy, so'nggi",
+            "arzimas"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"negligible\" so'zi nimani anglatadi?",
+          "options": [
+            "e'tiborga olmasa ham bo'ladigan",
+            "salmoqli",
+            "hal qiluvchi",
+            "ko'zga ko'ringan"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"paramount\" so'zi nimani anglatadi?",
+          "options": [
+            "eng ustun turuvchi",
+            "tegishli, o'rinli",
+            "arzimas",
+            "anchagina"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "C1-02",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "For almost a century the manuscript in the city museum was believed to have been written in 1420. That date is printed in every guidebook, and until recently nobody had tried to substantiate it. Last year a team from the university was reported to have found a second copy in a private collection. The second copy is thought to have been produced by the same workshop, yet its paper is clearly younger.\nThe old claim was quickly denounced by two historians, who pointed out that the earlier date had never been documented anywhere. Their objection is now widely cited. The museum, however, is said to have refused every new test, and its director is understood to have called the whole question unimportant.\nSince then a small laboratory has been allowed to examine a single page. The results are believed to have corroborated the historians. The manuscript is now supposed to have been copied around 1560, more than a hundred years later than the label in the hall still claims. The museum has not corrected that label.",
+          "items": [
+            {
+              "q": "What is the main idea of the text?",
+              "options": [
+                "The date long given to a manuscript has turned out to be wrong.",
+                "A museum has bought a second copy of a famous manuscript.",
+                "Two historians have written a new guidebook for the museum.",
+                "A university team has opened a laboratory inside the museum."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What date was printed in every guidebook?",
+              "options": [
+                "1420.",
+                "1560.",
+                "1890.",
+                "The year is never given."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Who denounced the old claim?",
+              "options": [
+                "Two historians.",
+                "The director of the museum.",
+                "The private collector.",
+                "The laboratory staff."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What does the word 'substantiate' mean in this text?",
+              "options": [
+                "To support something with evidence.",
+                "To print something in a guidebook.",
+                "To move something to a private collection.",
+                "To refuse a request for a test."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What can we conclude from the last paragraph?",
+              "options": [
+                "The label in the hall still shows the wrong date.",
+                "The museum has replaced the label with a new one.",
+                "The laboratory examined the whole manuscript.",
+                "The historians have accepted the date of 1420."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "en": "The text is thought to have been copied",
+              "uz": "Matn ko'chirilgan deb o'ylanadi.",
+              "tiles": [
+                "The",
+                "text",
+                "is",
+                "thought",
+                "to",
+                "have",
+                "been",
+                "copied"
+              ],
+              "distractors": [
+                "are",
+                "wrote"
+              ],
+              "alt": []
+            },
+            {
+              "en": "He was reported to have resigned",
+              "uz": "Uning iste'foga chiqqani xabar qilingandi.",
+              "tiles": [
+                "He",
+                "was",
+                "reported",
+                "to",
+                "have",
+                "resigned"
+              ],
+              "distractors": [
+                "has",
+                "resigning"
+              ],
+              "alt": []
+            },
+            {
+              "en": "They are believed to have confirmed the claim",
+              "uz": "Ular da'voni tasdiqlagan deb hisoblanadi.",
+              "tiles": [
+                "They",
+                "are",
+                "believed",
+                "to",
+                "have",
+                "confirmed",
+                "the",
+                "claim"
+              ],
+              "distractors": [
+                "is",
+                "confirming"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The document is supposed to have disappeared",
+              "uz": "Hujjat yo'qolgan deb taxmin qilinadi.",
+              "tiles": [
+                "The",
+                "document",
+                "is",
+                "supposed",
+                "to",
+                "have",
+                "disappeared"
+              ],
+              "distractors": [
+                "are",
+                "disappearing"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The report is said to have been disclosed",
+              "uz": "Hisobot oshkor qilingan deb aytiladi.",
+              "tiles": [
+                "The",
+                "report",
+                "is",
+                "said",
+                "to",
+                "have",
+                "been",
+                "disclosed"
+              ],
+              "distractors": [
+                "are",
+                "disclosing"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "substantiate",
+              "uz": "dalil bilan asoslamoq",
+              "en": "The finding is believed to substantiate his theory",
+              "tiles": [
+                "The",
+                "finding",
+                "is",
+                "believed",
+                "to",
+                "substantiate",
+                "his",
+                "theory"
+              ],
+              "distractors": [
+                "are",
+                "substantiates"
+              ],
+              "alt": []
+            },
+            {
+              "word": "refute",
+              "uz": "rad etib isbotlamoq",
+              "en": "The study is said to refute that idea",
+              "tiles": [
+                "The",
+                "study",
+                "is",
+                "said",
+                "to",
+                "refute",
+                "that",
+                "idea"
+              ],
+              "distractors": [
+                "are",
+                "refutes"
+              ],
+              "alt": []
+            },
+            {
+              "word": "documented",
+              "uz": "hujjat bilan qayd etilgan",
+              "en": "The case is known to have been documented",
+              "tiles": [
+                "The",
+                "case",
+                "is",
+                "known",
+                "to",
+                "have",
+                "been",
+                "documented"
+              ],
+              "distractors": [
+                "are",
+                "documenting"
+              ],
+              "alt": []
+            },
+            {
+              "word": "cite",
+              "uz": "manba sifatida keltirmoq",
+              "en": "He is reported to have cited two sources",
+              "tiles": [
+                "He",
+                "is",
+                "reported",
+                "to",
+                "have",
+                "cited",
+                "two",
+                "sources"
+              ],
+              "distractors": [
+                "has",
+                "citing"
+              ],
+              "alt": []
+            },
+            {
+              "word": "verified",
+              "uz": "tekshirib tasdiqlangan",
+              "en": "The figure is said to have been verified",
+              "tiles": [
+                "The",
+                "figure",
+                "is",
+                "said",
+                "to",
+                "have",
+                "been",
+                "verified"
+              ],
+              "distractors": [
+                "are",
+                "verifying"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Here is the short news summary. The old bridge in the north of the city is believed to have been built in 1890. Last week engineers were reported to have found deep cracks in two of its pillars. The city council is said to have closed the bridge on Tuesday evening. A full report is thought to have been sent to the ministry already. Officials are understood to have promised a decision before the end of April. Until then, buses will use the new road along the river.",
+          "items": [
+            {
+              "q": "When is the bridge believed to have been built?",
+              "options": [
+                "In 1890.",
+                "In 1420.",
+                "In 1560.",
+                "Last week."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What did the engineers find?",
+              "options": [
+                "Deep cracks in two pillars.",
+                "A crack in the new road.",
+                "An old report from the ministry.",
+                "Two broken buses."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When was the bridge closed?",
+              "options": [
+                "On Tuesday evening.",
+                "On Monday morning.",
+                "At the end of April.",
+                "Last year."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Where is the full report thought to have been sent?",
+              "options": [
+                "To the ministry.",
+                "To the city museum.",
+                "To the bus company.",
+                "To the university."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When is a decision promised?",
+              "options": [
+                "Before the end of April.",
+                "Before the end of March.",
+                "On Tuesday evening.",
+                "Next week."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "en": "He is said to have left",
+              "uz": "U ketgan deb aytiladi.",
+              "tiles": [
+                "He",
+                "is",
+                "said",
+                "to",
+                "have",
+                "left"
+              ],
+              "distractors": [
+                "has",
+                "leaving"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The book is thought to be old",
+              "uz": "Kitob eski deb o'ylanadi.",
+              "tiles": [
+                "The",
+                "book",
+                "is",
+                "thought",
+                "to",
+                "be",
+                "old"
+              ],
+              "distractors": [
+                "are",
+                "thinking"
+              ],
+              "alt": []
+            },
+            {
+              "en": "She was reported to have resigned",
+              "uz": "Uning iste'foga chiqqani xabar qilindi.",
+              "tiles": [
+                "She",
+                "was",
+                "reported",
+                "to",
+                "have",
+                "resigned"
+              ],
+              "distractors": [
+                "has",
+                "resigning"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The rule is known to exist",
+              "uz": "Qoida borligi ma'lum.",
+              "tiles": [
+                "The",
+                "rule",
+                "is",
+                "known",
+                "to",
+                "exist"
+              ],
+              "distractors": [
+                "are",
+                "knowing"
+              ],
+              "alt": []
+            },
+            {
+              "en": "They are believed to have arrived",
+              "uz": "Ular yetib kelgan deb hisoblanadi.",
+              "tiles": [
+                "They",
+                "are",
+                "believed",
+                "to",
+                "have",
+                "arrived"
+              ],
+              "distractors": [
+                "is",
+                "arriving"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "A disputed date",
+          "topicUz": "Bahsli sana",
+          "sentences": [
+            "A small museum in Samarkand owns a very old manuscript.",
+            "The book was long believed to have been written in 1420.",
+            "That date, however, had never been supported by any laboratory test.",
+            "Last spring a laboratory was finally reported to have examined one page.",
+            "Since then the museum has quietly removed the old label."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Qo'lyozma 1420-yilda yozilgan deb hisoblanadi.",
+          "options": [
+            "The manuscript is believed to have been written in 1420.",
+            "The manuscript is believed to have written in 1420.",
+            "The manuscript is believed that was written in 1420.",
+            "The manuscript believes to have been written in 1420."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Uning iste'foga chiqqani xabar qilingandi.",
+          "options": [
+            "He was reported to have resigned.",
+            "He was reported to has resigned.",
+            "He was reported that he resign.",
+            "He was report to have resigned."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Ular hujjatni tekshirgan deb aytiladi.",
+          "options": [
+            "They are said to have checked the document.",
+            "They are said to have check the document.",
+            "They is said to have checked the document.",
+            "They are said that have checked the document."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Ma'lumot tasdiqlangan deb o'ylanadi.",
+          "options": [
+            "The information is thought to have been confirmed.",
+            "The information are thought to have been confirmed.",
+            "The information is thinking to have been confirmed.",
+            "The information is thought to have been confirm."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Hujjat rasman tasdiqlangani ma'lum.",
+          "options": [
+            "The act is known to have been ratified.",
+            "The act is known that was ratified.",
+            "The act knows to have been ratified.",
+            "The act is known to have been ratify."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"refute\" so'zi nimani anglatadi?",
+          "options": [
+            "rad etib isbotlamoq",
+            "boshqa dalil bilan quvvatlamoq",
+            "manba sifatida keltirmoq",
+            "oshkor qilmoq"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"stipulate\" so'zi nimani anglatadi?",
+          "options": [
+            "shart qilib qo'ymoq",
+            "majburan bajartirmoq",
+            "ochiq qoralamoq",
+            "rasman tasdiqlamoq"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"corroborate\" so'zi nimani anglatadi?",
+          "options": [
+            "boshqa dalil bilan quvvatlamoq",
+            "noto'g'riligini ko'rsatmoq",
+            "havola",
+            "amalga oshirmoq"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "C1-03",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Having worked on the same river project for three years, the planning group finally presented its report last month. Being aware of the public interest, the city published the whole document online the same evening.\nThe report comprises four parts. Having studied the older plans first, the authors decided to begin with history. Their account, drawing on maps from the last century, shows how the two districts on either bank slowly diverged. Being separated by the water and by a busy road, the two neighbourhoods developed almost independently.\nThe second part encompasses transport. Having counted the traffic for six months, the team argues that a new bridge would entail far higher costs than a ferry. The third part, being the shortest of all, deals with parks.\nHaving read every comment received in April, the council will vote in June. Officials say that, being a long-term plan, the project must survive several changes of government. Whatever is decided, the debate is expected to culminate in a public meeting at the end of the year.",
+          "items": [
+            {
+              "q": "What is the main idea of the text?",
+              "options": [
+                "A planning group has published a long report about a river project.",
+                "The city has decided to build a new bridge over the river.",
+                "Two districts have asked the council to open more parks.",
+                "A ferry company has complained about the cost of transport."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How many parts does the report have?",
+              "options": [
+                "Four.",
+                "Three.",
+                "Six.",
+                "Two."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How long did the team count the traffic?",
+              "options": [
+                "For six months.",
+                "For three years.",
+                "For one month.",
+                "For a year."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What does the word 'entail' mean in this text?",
+              "options": [
+                "To bring something with it as a necessary result.",
+                "To reduce something to a lower level.",
+                "To describe something in careful detail.",
+                "To delay something until a later date."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What can we conclude about the two districts?",
+              "options": [
+                "They grew apart because the water and the road divided them.",
+                "They have always been governed as a single neighbourhood.",
+                "They were joined by a bridge in the last century.",
+                "They were both built after the report was written."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "en": "Having reviewed the data we revised the plan",
+              "uz": "Ma'lumotni ko'rib chiqib, rejani o'zgartirdik.",
+              "tiles": [
+                "Having",
+                "reviewed",
+                "the",
+                "data",
+                "we",
+                "revised",
+                "the",
+                "plan"
+              ],
+              "distractors": [
+                "Have",
+                "reviewing"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Being aware of the risk she acted early",
+              "uz": "Xavfdan xabardor bo'lgani uchun u erta harakat qildi.",
+              "tiles": [
+                "Being",
+                "aware",
+                "of",
+                "the",
+                "risk",
+                "she",
+                "acted",
+                "early"
+              ],
+              "distractors": [
+                "Been",
+                "awareness"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Having finished the letter he went to bed",
+              "uz": "Xatni tugatib, u uxlashga ketdi.",
+              "tiles": [
+                "Having",
+                "finished",
+                "the",
+                "letter",
+                "he",
+                "went",
+                "to",
+                "bed"
+              ],
+              "distractors": [
+                "Have",
+                "finishing"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Being late we called a taxi",
+              "uz": "Kech qolganimiz uchun taksi chaqirdik.",
+              "tiles": [
+                "Being",
+                "late",
+                "we",
+                "called",
+                "a",
+                "taxi"
+              ],
+              "distractors": [
+                "Been",
+                "lately"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Having read the report she wrote a reply",
+              "uz": "Hisobotni o'qib, u javob yozdi.",
+              "tiles": [
+                "Having",
+                "read",
+                "the",
+                "report",
+                "she",
+                "wrote",
+                "a",
+                "reply"
+              ],
+              "distractors": [
+                "Have",
+                "reading"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "comprise",
+              "uz": "tarkib topmoq",
+              "en": "Being short, the report comprises four parts",
+              "tiles": [
+                "Being",
+                "short",
+                "the",
+                "report",
+                "comprises",
+                "four",
+                "parts"
+              ],
+              "distractors": [
+                "Been",
+                "comprising"
+              ],
+              "alt": []
+            },
+            {
+              "word": "entail",
+              "uz": "o'zi bilan olib kelmoq",
+              "en": "Having checked it, we know this entails risk",
+              "tiles": [
+                "Having",
+                "checked",
+                "it",
+                "we",
+                "know",
+                "this",
+                "entails",
+                "risk"
+              ],
+              "distractors": [
+                "Have",
+                "entailing"
+              ],
+              "alt": []
+            },
+            {
+              "word": "emerge",
+              "uz": "yuzaga chiqmoq",
+              "en": "Having waited an hour, new problems emerged",
+              "tiles": [
+                "Having",
+                "waited",
+                "an",
+                "hour",
+                "new",
+                "problems",
+                "emerged"
+              ],
+              "distractors": [
+                "Have",
+                "emerging"
+              ],
+              "alt": []
+            },
+            {
+              "word": "diverge",
+              "uz": "ajralib ketmoq",
+              "en": "Being separated, the two paths slowly diverged",
+              "tiles": [
+                "Being",
+                "separated",
+                "the",
+                "two",
+                "paths",
+                "slowly",
+                "diverged"
+              ],
+              "distractors": [
+                "Been",
+                "diverging"
+              ],
+              "alt": []
+            },
+            {
+              "word": "culminate",
+              "uz": "cho'qqisiga yetmoq",
+              "en": "The debate, having grown louder, culminated yesterday",
+              "tiles": [
+                "The",
+                "debate",
+                "having",
+                "grown",
+                "louder",
+                "culminated",
+                "yesterday"
+              ],
+              "distractors": [
+                "have",
+                "culminating"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Good afternoon, everyone. Having read all your questions, I will answer the three most common ones today. Being new to the city, many of you asked about the library. It opens at nine and closes at eight, except on Sunday. Second, having received the timetable last week, we can now confirm that lessons start on the fourteenth of September. Finally, being a rather small school, we have only one computer room, so please book it a day in advance.",
+          "items": [
+            {
+              "q": "How many questions will the speaker answer?",
+              "options": [
+                "Three.",
+                "Two.",
+                "Four.",
+                "All of them."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When does the library close?",
+              "options": [
+                "At eight.",
+                "At nine.",
+                "At seven.",
+                "At ten."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When do the lessons start?",
+              "options": [
+                "On the fourteenth of September.",
+                "On the fourth of September.",
+                "On the fourteenth of November.",
+                "At the end of the week."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How many computer rooms does the school have?",
+              "options": [
+                "One.",
+                "Two.",
+                "Three.",
+                "None."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How early must the computer room be booked?",
+              "options": [
+                "A day in advance.",
+                "A week in advance.",
+                "An hour in advance.",
+                "A month in advance."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "en": "Having finished, she went home",
+              "uz": "Ishni tugatib, u uyga ketdi.",
+              "tiles": [
+                "Having",
+                "finished",
+                "she",
+                "went",
+                "home"
+              ],
+              "distractors": [
+                "Have",
+                "finishing"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Being tired, he stopped working",
+              "uz": "Charchagani uchun u ishni to'xtatdi.",
+              "tiles": [
+                "Being",
+                "tired",
+                "he",
+                "stopped",
+                "working"
+              ],
+              "distractors": [
+                "Been",
+                "tiring"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Having eaten, we left quickly",
+              "uz": "Ovqatlanib, biz tez ketdik.",
+              "tiles": [
+                "Having",
+                "eaten",
+                "we",
+                "left",
+                "quickly"
+              ],
+              "distractors": [
+                "Have",
+                "eating"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Being ready, they started early",
+              "uz": "Tayyor bo'lgani uchun ular erta boshladi.",
+              "tiles": [
+                "Being",
+                "ready",
+                "they",
+                "started",
+                "early"
+              ],
+              "distractors": [
+                "Been",
+                "readiness"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Having called, I waited outside",
+              "uz": "Qo'ng'iroq qilib, men tashqarida kutdim.",
+              "tiles": [
+                "Having",
+                "called",
+                "I",
+                "waited",
+                "outside"
+              ],
+              "distractors": [
+                "Have",
+                "calling"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "A long day at the office",
+          "topicUz": "Ofisdagi uzun kun",
+          "sentences": [
+            "Having arrived before seven, Malika opened the office alone.",
+            "Being the first person there, she switched on the coffee machine.",
+            "The machine, however, broke down after only two minutes.",
+            "Having failed to repair it herself, she called the technician.",
+            "He arrived at nine, by which time the room was full."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Ma'lumotni ko'rib chiqib, rejani qayta ko'rdik.",
+          "options": [
+            "Having reviewed the data, we revised the plan.",
+            "Have reviewed the data, we revised the plan.",
+            "Having review the data, we revised the plan.",
+            "Having been reviewed the data, we revised the plan."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Xavfdan xabardor bo'lgani uchun u erta harakat qildi.",
+          "options": [
+            "Being aware of the risk, she acted early.",
+            "Been aware of the risk, she acted early.",
+            "Being aware of the risk, she act early.",
+            "Be aware of the risk, she acted early."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Xatni tugatib, u uxlashga ketdi.",
+          "options": [
+            "Having finished the letter, he went to bed.",
+            "Having finish the letter, he went to bed.",
+            "Have finished the letter, he went to bed.",
+            "Having finished the letter, he go to bed."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Kech qolganimiz uchun taksi chaqirdik.",
+          "options": [
+            "Being late, we called a taxi.",
+            "Been late, we called a taxi.",
+            "Being lately, we called a taxi.",
+            "Be late, we called a taxi."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Hisobotni o'qib, u javob yozdi.",
+          "options": [
+            "Having read the report, she wrote a reply.",
+            "Having readed the report, she wrote a reply.",
+            "Have read the report, she wrote a reply.",
+            "Having read the report, she write a reply."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"entail\" so'zi nimani anglatadi?",
+          "options": [
+            "o'zi bilan olib kelmoq",
+            "qamrab olmoq",
+            "kesishmoq",
+            "hamrohlik qilmoq"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"coincide\" so'zi nimani anglatadi?",
+          "options": [
+            "bir vaqtga to'g'ri kelmoq",
+            "ajralib ketmoq",
+            "ichiga singdirmoq",
+            "cho'qqisiga yetmoq"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"precede\" so'zi nimani anglatadi?",
+          "options": [
+            "oldinda kelmoq",
+            "ketidan sodir bo'lmoq",
+            "asta rivojlanmoq",
+            "tashkil etmoq"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "C1-04",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Our editor has one rule, and every new writer soon learns it: if a word can be omitted, omit it. She never explains the rule twice, and she does not need to. Her marks in the margin are short, and so are her comments.\nLast week she returned my article with three lines crossed out. You have said this already, she wrote, so do not restate it. I had used four sentences where one would do. Having read her note, I condensed the whole paragraph and sent it back the same evening.\nGood writers, she says, use substitution rather than repetition. If you have written the old report once, the second time write the old one. If a colleague says she enjoyed the meeting and you enjoyed it too, say so did I rather than repeating the entire sentence. English allows both forms, but the shorter one always sounds more natural.\nSome students find this advice ambiguous, and I did too at first. Yet the principle is simple. Say it once, clearly; if the reader can supply the missing words, leave them out.",
+          "items": [
+            {
+              "q": "What is the main idea of the text?",
+              "options": [
+                "An editor teaches writers to say things once and cut what can be understood.",
+                "An editor explains why long articles are better than short ones.",
+                "A writer complains that his editor never reads his articles.",
+                "A writer describes how he learned French from his editor."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How many lines were crossed out in the article?",
+              "options": [
+                "Three.",
+                "Four.",
+                "One.",
+                "Two."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What did the writer do after reading the note?",
+              "options": [
+                "He condensed the paragraph and sent it back.",
+                "He asked the editor to explain the rule again.",
+                "He wrote four more sentences on the same idea.",
+                "He left the article exactly as it was."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What does the word 'ambiguous' mean in this text?",
+              "options": [
+                "Open to more than one understanding.",
+                "Repeated far too often.",
+                "Written in a foreign language.",
+                "Marked in the margin in red."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What can we conclude about the editor?",
+              "options": [
+                "She prefers the shorter form whenever the reader can fill the gap.",
+                "She wants every idea to be repeated at least twice.",
+                "She refuses to read anything shorter than four sentences.",
+                "She thinks substitution makes writing harder to follow."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "en": "She can speak French and so can I",
+              "uz": "U fransuzcha gapira oladi, men ham.",
+              "tiles": [
+                "She",
+                "can",
+                "speak",
+                "French",
+                "and",
+                "so",
+                "can",
+                "I"
+              ],
+              "distractors": [
+                "do",
+                "am"
+              ],
+              "alt": []
+            },
+            {
+              "en": "She took the big one not the small",
+              "uz": "U kattasini oldi, kichigini emas.",
+              "tiles": [
+                "She",
+                "took",
+                "the",
+                "big",
+                "one",
+                "not",
+                "the",
+                "small"
+              ],
+              "distractors": [
+                "ones",
+                "them"
+              ],
+              "alt": []
+            },
+            {
+              "en": "I think so too",
+              "uz": "Men ham shunday o'ylayman.",
+              "tiles": [
+                "I",
+                "think",
+                "so",
+                "too"
+              ],
+              "distractors": [
+                "do",
+                "that"
+              ],
+              "alt": []
+            },
+            {
+              "en": "She did not come and neither did I",
+              "uz": "U kelmadi, men ham kelmadim.",
+              "tiles": [
+                "She",
+                "did",
+                "not",
+                "come",
+                "and",
+                "neither",
+                "did",
+                "I"
+              ],
+              "distractors": [
+                "so",
+                "either"
+              ],
+              "alt": []
+            },
+            {
+              "en": "They are ready but we are not",
+              "uz": "Ular tayyor, biz esa emas.",
+              "tiles": [
+                "They",
+                "are",
+                "ready",
+                "but",
+                "we",
+                "are",
+                "not"
+              ],
+              "distractors": [
+                "do",
+                "neither"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "omit",
+              "uz": "tushirib qoldirmoq",
+              "en": "He omitted one line and so did she",
+              "tiles": [
+                "He",
+                "omitted",
+                "one",
+                "line",
+                "and",
+                "so",
+                "did",
+                "she"
+              ],
+              "distractors": [
+                "omit",
+                "too"
+              ],
+              "alt": []
+            },
+            {
+              "word": "concise",
+              "uz": "ixcham",
+              "en": "Her notes are concise and so are mine",
+              "tiles": [
+                "Her",
+                "notes",
+                "are",
+                "concise",
+                "and",
+                "so",
+                "are",
+                "mine"
+              ],
+              "distractors": [
+                "is",
+                "ours"
+              ],
+              "alt": []
+            },
+            {
+              "word": "redundant",
+              "uz": "keraksiz takroriy",
+              "en": "This sentence is redundant, that one is not",
+              "tiles": [
+                "This",
+                "sentence",
+                "is",
+                "redundant",
+                "that",
+                "one",
+                "is",
+                "not"
+              ],
+              "distractors": [
+                "ones",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "word": "clarify",
+              "uz": "aniqlashtirmoq",
+              "en": "He clarified the rule, and I did too",
+              "tiles": [
+                "He",
+                "clarified",
+                "the",
+                "rule",
+                "and",
+                "I",
+                "did",
+                "too"
+              ],
+              "distractors": [
+                "clarify",
+                "also"
+              ],
+              "alt": []
+            },
+            {
+              "word": "paraphrase",
+              "uz": "boshqa so'zlar bilan aytmoq",
+              "en": "She paraphrased the text better than I did",
+              "tiles": [
+                "She",
+                "paraphrased",
+                "the",
+                "text",
+                "better",
+                "than",
+                "I",
+                "did"
+              ],
+              "distractors": [
+                "paraphrase",
+                "done"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Right, a few short announcements before we begin. The morning meeting will start at ten, not at nine as before. Karim will chair it, and so will Dilnoza. If you cannot come, tell me today; if you can, you do not need to reply at all. The old printer has gone, and the new one is in the corner by the window. It takes the same paper as the old machine did. Finally, the report is due on Friday, and the summary is too.",
+          "items": [
+            {
+              "q": "When will the morning meeting start?",
+              "options": [
+                "At ten.",
+                "At nine.",
+                "At eight.",
+                "At eleven."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Who will chair the meeting?",
+              "options": [
+                "Karim and Dilnoza.",
+                "Only Karim.",
+                "Only Dilnoza.",
+                "Nobody has been chosen yet."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What should you do if you can come?",
+              "options": [
+                "Nothing, no reply is needed.",
+                "Send a reply today.",
+                "Tell Karim before Friday.",
+                "Write your name on the report."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Where is the new printer?",
+              "options": [
+                "In the corner by the window.",
+                "Next to the old printer.",
+                "In the meeting room.",
+                "It has not arrived yet."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When is the report due?",
+              "options": [
+                "On Friday.",
+                "On Monday.",
+                "Today.",
+                "At the end of the month."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "en": "She can and so can I",
+              "uz": "U qila oladi, men ham.",
+              "tiles": [
+                "She",
+                "can",
+                "and",
+                "so",
+                "can",
+                "I"
+              ],
+              "distractors": [
+                "do",
+                "too"
+              ],
+              "alt": []
+            },
+            {
+              "en": "I think so too",
+              "uz": "Men ham shunday o'ylayman.",
+              "tiles": [
+                "I",
+                "think",
+                "so",
+                "too"
+              ],
+              "distractors": [
+                "do",
+                "that"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Karim did not but Nodira did",
+              "uz": "Karim qilmadi, Nodira esa qildi.",
+              "tiles": [
+                "Karim",
+                "did",
+                "not",
+                "but",
+                "Nodira",
+                "did"
+              ],
+              "distractors": [
+                "does",
+                "so"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Take the small one please",
+              "uz": "Kichigini oling, iltimos.",
+              "tiles": [
+                "Take",
+                "the",
+                "small",
+                "one",
+                "please"
+              ],
+              "distractors": [
+                "ones",
+                "this"
+              ],
+              "alt": []
+            },
+            {
+              "en": "They are ready we are not",
+              "uz": "Ular tayyor, biz esa emas.",
+              "tiles": [
+                "They",
+                "are",
+                "ready",
+                "we",
+                "are",
+                "not"
+              ],
+              "distractors": [
+                "do",
+                "neither"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Choosing a laptop",
+          "topicUz": "Noutbuk tanlash",
+          "sentences": [
+            "Last Saturday my brother and I went to look at laptops.",
+            "He wanted a light machine for travelling, and so did I.",
+            "The shop had only two models left in stock.",
+            "The cheaper one was much heavier, so we did not take it.",
+            "In the end he bought the other, and I did too."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "U fransuzcha gapira oladi, men ham.",
+          "options": [
+            "She can speak French and so can I.",
+            "She can speak French and so I can.",
+            "She can speak French and so do I.",
+            "She can speak French and also can I."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Menda qizil va ko'k ruchka bor.",
+          "options": [
+            "I have a red pen and a blue one.",
+            "I have a red pen and a blue it.",
+            "I have a red pen and a blue pen one.",
+            "I have a red pen and blue one."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "U kelmadi, men ham kelmadim.",
+          "options": [
+            "She did not come, and neither did I.",
+            "She did not come, and so did I.",
+            "She did not come, and neither I did.",
+            "She did not come, and either did I."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Men ham shunday o'ylayman.",
+          "options": [
+            "I think so too.",
+            "I think it too.",
+            "I think so also am.",
+            "I so think too."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Ular tayyor, biz esa emas.",
+          "options": [
+            "They are ready, but we are not.",
+            "They are ready, but we do not.",
+            "They are ready, but not we are.",
+            "They are ready, but we are not to."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"concise\" so'zi nimani anglatadi?",
+          "options": [
+            "ixcham",
+            "ortiqcha so'zga boy",
+            "izchilligi yo'q",
+            "ochiq aytilmagan, yashirin"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"allude\" so'zi nimani anglatadi?",
+          "options": [
+            "ishora qilib o'tmoq",
+            "batafsil ochib bermoq",
+            "noto'g'ri talqin qilmoq",
+            "qayta ifodalamoq"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"redundant\" so'zi nimani anglatadi?",
+          "options": [
+            "keraksiz takroriy",
+            "ravon",
+            "aniqlashtirmoq",
+            "ikki xil tushuniladigan"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "C1-05",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "The implementation of the new water regulation began in March. Its evaluation, however, will not take place until next year, and that delay has already attracted criticism.\nThe report identifies three problems. The first is the allocation of funds. The distribution of money between the districts followed the old classification of regions, and no justification for that decision appears in the documents. The second problem is supervision. The administration of the programme was divided between two offices, and the coordination of their work was weak from the very start.\nThe third problem concerns transparency. Public access to the figures required a written request, and the verification of those figures by an independent body never took place. According to the authors, the absence of accountability made any interpretation of the results almost impossible.\nThe recommendations themselves are short. They call for the integration of the two offices, the introduction of a single reporting standard, and the adaptation of the timetable to the real speed of the work. Compliance with that standard would be checked twice a year. The transformation, the authors admit, will be slow.",
+          "items": [
+            {
+              "q": "What is the main idea of the text?",
+              "options": [
+                "A report lists the weaknesses of a new regulation and suggests changes.",
+                "A ministry explains why the water regulation was cancelled.",
+                "Two offices describe how they divided the extra budget.",
+                "An independent body reports on the quality of the water."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When did the implementation of the regulation begin?",
+              "options": [
+                "In March.",
+                "Next year.",
+                "In September.",
+                "Twice a year."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How many problems does the report identify?",
+              "options": [
+                "Three.",
+                "Two.",
+                "Four.",
+                "One."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What does the word 'allocation' mean in this text?",
+              "options": [
+                "The way money is divided and given out.",
+                "The total amount of money that was lost.",
+                "The office that collects the money.",
+                "The date on which money must be returned."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What can we conclude about the change the authors want?",
+              "options": [
+                "It will take a long time to complete.",
+                "It has already been finished this year.",
+                "It requires no new reporting standard.",
+                "It will be checked only once in ten years."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "en": "The implementation of the rule was rapid",
+              "uz": "Qoidani amalga oshirish tez kechdi.",
+              "tiles": [
+                "The",
+                "implementation",
+                "of",
+                "the",
+                "rule",
+                "was",
+                "rapid"
+              ],
+              "distractors": [
+                "implement",
+                "were"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The assessment of the risk was thorough",
+              "uz": "Xavfni baholash puxta bo'ldi.",
+              "tiles": [
+                "The",
+                "assessment",
+                "of",
+                "the",
+                "risk",
+                "was",
+                "thorough"
+              ],
+              "distractors": [
+                "assess",
+                "were"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The allocation of the funds was delayed",
+              "uz": "Mablag'ni taqsimlash kechikdi.",
+              "tiles": [
+                "The",
+                "allocation",
+                "of",
+                "the",
+                "funds",
+                "was",
+                "delayed"
+              ],
+              "distractors": [
+                "allocate",
+                "were"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The verification of the data is necessary",
+              "uz": "Ma'lumotni tekshirish zarur.",
+              "tiles": [
+                "The",
+                "verification",
+                "of",
+                "the",
+                "data",
+                "is",
+                "necessary"
+              ],
+              "distractors": [
+                "verify",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The integration of the two departments continues",
+              "uz": "Ikki bo'limni birlashtirish davom etmoqda.",
+              "tiles": [
+                "The",
+                "integration",
+                "of",
+                "the",
+                "two",
+                "departments",
+                "continues"
+              ],
+              "distractors": [
+                "integrate",
+                "continue"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "innovation",
+              "uz": "yangilik",
+              "en": "The introduction of this innovation was slow",
+              "tiles": [
+                "The",
+                "introduction",
+                "of",
+                "this",
+                "innovation",
+                "was",
+                "slow"
+              ],
+              "distractors": [
+                "innovate",
+                "were"
+              ],
+              "alt": []
+            },
+            {
+              "word": "compliance",
+              "uz": "talabga rioya qilish",
+              "en": "Compliance with the new standard is compulsory",
+              "tiles": [
+                "Compliance",
+                "with",
+                "the",
+                "new",
+                "standard",
+                "is",
+                "compulsory"
+              ],
+              "distractors": [
+                "comply",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "word": "supervision",
+              "uz": "nazorat qilish",
+              "en": "The supervision of the work was weak",
+              "tiles": [
+                "The",
+                "supervision",
+                "of",
+                "the",
+                "work",
+                "was",
+                "weak"
+              ],
+              "distractors": [
+                "supervise",
+                "were"
+              ],
+              "alt": []
+            },
+            {
+              "word": "collaboration",
+              "uz": "hamkorlik",
+              "en": "The collaboration between the two offices improved",
+              "tiles": [
+                "The",
+                "collaboration",
+                "between",
+                "the",
+                "two",
+                "offices",
+                "improved"
+              ],
+              "distractors": [
+                "collaborate",
+                "improve"
+              ],
+              "alt": []
+            },
+            {
+              "word": "accountability",
+              "uz": "javobgarlik",
+              "en": "The accountability of the administration remains unclear",
+              "tiles": [
+                "The",
+                "accountability",
+                "of",
+                "the",
+                "administration",
+                "remains",
+                "unclear"
+              ],
+              "distractors": [
+                "account",
+                "remain"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Good morning. This is a short summary of the committee decision. The implementation of the new timetable will begin on the first of October. The evaluation of the first stage is planned for December. The allocation of the extra budget has already been approved, and the distribution of the new equipment will follow in November. Supervision of the whole programme is the responsibility of the technical office. Compliance with the safety rules will be checked every month.",
+          "items": [
+            {
+              "q": "When will the implementation of the timetable begin?",
+              "options": [
+                "On the first of October.",
+                "On the first of November.",
+                "In December.",
+                "Every month."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When is the evaluation of the first stage planned?",
+              "options": [
+                "In December.",
+                "In October.",
+                "In November.",
+                "Next March."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "When will the equipment be distributed?",
+              "options": [
+                "In November.",
+                "In October.",
+                "In December.",
+                "Every month."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Who is responsible for supervision of the programme?",
+              "options": [
+                "The technical office.",
+                "The committee chair.",
+                "The safety inspector.",
+                "The budget department."
+              ],
+              "answer": 0
+            },
+            {
+              "q": "How often will compliance be checked?",
+              "options": [
+                "Every month.",
+                "Every year.",
+                "Twice a year.",
+                "Only once."
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "en": "The implementation was slow",
+              "uz": "Amalga oshirish sekin kechdi.",
+              "tiles": [
+                "The",
+                "implementation",
+                "was",
+                "slow"
+              ],
+              "distractors": [
+                "implement",
+                "were"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The evaluation begins tomorrow",
+              "uz": "Baholash ertaga boshlanadi.",
+              "tiles": [
+                "The",
+                "evaluation",
+                "begins",
+                "tomorrow"
+              ],
+              "distractors": [
+                "evaluate",
+                "begin"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Verification of the data failed",
+              "uz": "Ma'lumotni tekshirish natija bermadi.",
+              "tiles": [
+                "Verification",
+                "of",
+                "the",
+                "data",
+                "failed"
+              ],
+              "distractors": [
+                "verify",
+                "fail"
+              ],
+              "alt": []
+            },
+            {
+              "en": "The allocation of funds continued",
+              "uz": "Mablag' ajratish davom etdi.",
+              "tiles": [
+                "The",
+                "allocation",
+                "of",
+                "funds",
+                "continued"
+              ],
+              "distractors": [
+                "allocate",
+                "continue"
+              ],
+              "alt": []
+            },
+            {
+              "en": "Compliance with the rule is required",
+              "uz": "Qoidaga rioya qilish talab etiladi.",
+              "tiles": [
+                "Compliance",
+                "with",
+                "the",
+                "rule",
+                "is",
+                "required"
+              ],
+              "distractors": [
+                "comply",
+                "are"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "A new safety standard",
+          "topicUz": "Yangi xavfsizlik andozasi",
+          "sentences": [
+            "In January the ministry approved a new safety standard.",
+            "The publication of that document took another two months.",
+            "Its implementation in the factories began only in April.",
+            "The first evaluation of the results appeared in September.",
+            "According to that report, compliance had reached eighty per cent."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Qoidani amalga oshirish tez kechdi.",
+          "options": [
+            "The implementation of the rule was rapid.",
+            "The implement of the rule was rapid.",
+            "The implementation of the rule were rapid.",
+            "The implementation the rule was rapid."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Xavfni baholash puxta bo'ldi.",
+          "options": [
+            "The assessment of the risk was thorough.",
+            "The assess of the risk was thorough.",
+            "The assessment of the risk were thorough.",
+            "The assessment for the risk was thorough."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Ma'lumotni tekshirish zarur.",
+          "options": [
+            "The verification of the data is necessary.",
+            "The verify of the data is necessary.",
+            "The verification of the data are necessary.",
+            "The verification of the data is necessity."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Ikki bo'limni birlashtirish davom etmoqda.",
+          "options": [
+            "The integration of the two departments continues.",
+            "The integrate of the two departments continues.",
+            "The integration of the two departments continue.",
+            "The integration of the two departments is continues."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Andozaga rioya qilish har yili tekshiriladi.",
+          "options": [
+            "Compliance with the standard is checked every year.",
+            "Comply with the standard is checked every year.",
+            "Compliance with the standard are checked every year.",
+            "Compliance of the standard is check every year."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"allocation\" so'zi nimani anglatadi?",
+          "options": [
+            "ajratish, taqsimlash",
+            "egallash, sotib olish",
+            "tasniflash",
+            "shaffoflik"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"accountability\" so'zi nimani anglatadi?",
+          "options": [
+            "javobgarlik",
+            "muvofiqlashtirish",
+            "moslashuv",
+            "aralashuv"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "\"justification\" so'zi nimani anglatadi?",
+          "options": [
+            "asoslash",
+            "talqin",
+            "qonunchilik",
+            "yangilik"
+          ],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "C1-06",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "C1-07",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "C1-08",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "C1-09",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "C1-10",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "C1-11",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "C1-12",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    }
+  ],
+  "levelExam": []
+}

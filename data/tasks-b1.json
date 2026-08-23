@@ -1,0 +1,3073 @@
+{
+  "level": "B1",
+  "units": [
+    {
+      "id": "B1-01",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last Friday evening Aziz was walking home along the pavement near the old bridge. The traffic was heavy and the noise of the cars filled the whole street. While he was turning the corner, he heard a loud crash behind him. A taxi hit a bicycle, and the driver was shouting at a passenger inside the car. A young man was lying on the road and he could not move his leg. Aziz was carrying his phone, so he called an ambulance immediately. A crowd was gathering around them, but nobody was helping the injured man. Aziz sat next to him and whispered calm words until the ambulance arrived. The next day a police officer thanked him and called him a brave witness.",
+          "items": [
+            {
+              "q": "What is the text mainly about?",
+              "options": [
+                "How Aziz helped a man after a street accident",
+                "Why Aziz decided to buy a new bicycle",
+                "How the police stopped a dangerous taxi driver",
+                "Why the old bridge was closed on Friday"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What was Aziz doing when he heard the crash?",
+              "options": [
+                "He was riding a bicycle",
+                "He was turning the corner",
+                "He was waiting for a taxi",
+                "He was talking to a passenger"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Who did Aziz call?",
+              "options": [
+                "A police officer",
+                "His own family",
+                "An ambulance",
+                "The taxi driver"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "In the text, what does the word 'whispered' mean?",
+              "options": [
+                "Spoke very quietly",
+                "Shouted very loudly",
+                "Wrote something on paper",
+                "Ran away quickly"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What can we conclude about Aziz?",
+              "options": [
+                "He was afraid and left the place quickly",
+                "He stayed calm and helped a stranger",
+                "He knew the injured man very well",
+                "He was driving the taxi that evening"
+              ],
+              "answer": 1
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "uz": "Men uyga ketayotgan edim.",
+              "en": "I was walking home",
+              "tiles": [
+                "I",
+                "was",
+                "walking",
+                "home"
+              ],
+              "distractors": [
+                "were",
+                "walk",
+                "did"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U uxlayotganda telefon jiringladi.",
+              "en": "While she was sleeping the phone rang",
+              "tiles": [
+                "While",
+                "she",
+                "was",
+                "sleeping",
+                "the",
+                "phone",
+                "rang"
+              ],
+              "distractors": [
+                "were",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz ko'prik yonida turgan edik.",
+              "en": "We were standing near the bridge",
+              "tiles": [
+                "We",
+                "were",
+                "standing",
+                "near",
+                "the",
+                "bridge"
+              ],
+              "distractors": [
+                "was",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Nima uchun baqirayotgan eding?",
+              "en": "Why were you shouting",
+              "tiles": [
+                "Why",
+                "were",
+                "you",
+                "shouting"
+              ],
+              "distractors": [
+                "was",
+                "been",
+                "did"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Yo'lovchilar hech narsa demayotgan edi.",
+              "en": "The passengers were not saying anything",
+              "tiles": [
+                "The",
+                "passengers",
+                "were",
+                "not",
+                "saying",
+                "anything"
+              ],
+              "distractors": [
+                "was",
+                "been"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "accident",
+              "uz": "baxtsiz hodisa",
+              "en": "The accident happened while I was driving",
+              "tiles": [
+                "The",
+                "accident",
+                "happened",
+                "while",
+                "I",
+                "was",
+                "driving"
+              ],
+              "distractors": [
+                "were",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "word": "shout",
+              "uz": "baqirmoq",
+              "en": "The driver was shouting at the passenger",
+              "tiles": [
+                "The",
+                "driver",
+                "was",
+                "shouting",
+                "at",
+                "the",
+                "passenger"
+              ],
+              "distractors": [
+                "were",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "word": "crowd",
+              "uz": "olomon",
+              "en": "A crowd was gathering near the corner",
+              "tiles": [
+                "A",
+                "crowd",
+                "was",
+                "gathering",
+                "near",
+                "the",
+                "corner"
+              ],
+              "distractors": [
+                "were",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "word": "rush",
+              "uz": "shoshilmoq",
+              "en": "People were rushing towards the bridge",
+              "tiles": [
+                "People",
+                "were",
+                "rushing",
+                "towards",
+                "the",
+                "bridge"
+              ],
+              "distractors": [
+                "was",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "word": "whisper",
+              "uz": "pichirlamoq",
+              "en": "She was whispering to the witness",
+              "tiles": [
+                "She",
+                "was",
+                "whispering",
+                "to",
+                "the",
+                "witness"
+              ],
+              "distractors": [
+                "were",
+                "been"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Yesterday morning I was waiting for the bus near the market. The traffic was very slow and many people were standing on the pavement. While I was reading a message on my phone, I heard a loud noise. A car was turning at the corner and it hit a wall. The driver was not injured, but his hands were shaking. A woman called an ambulance and it arrived in ten minutes. I was late for work that day, but I stayed and told the police everything.",
+          "items": [
+            {
+              "q": "Where was the speaker waiting?",
+              "options": [
+                "Near the market",
+                "Near the bridge",
+                "At the office",
+                "In the hospital"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What was the speaker doing when the noise started?",
+              "options": [
+                "Reading a message on the phone",
+                "Talking to a driver",
+                "Buying bread in the market",
+                "Crossing the road"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What did the car hit?",
+              "options": [
+                "A bus",
+                "A wall",
+                "A bicycle",
+                "A tree"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "What happened to the driver?",
+              "options": [
+                "He was injured badly",
+                "He was not injured, but his hands were shaking",
+                "He escaped from the car",
+                "He was sleeping inside"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "How long did the ambulance take?",
+              "options": [
+                "Two minutes",
+                "Half an hour",
+                "Ten minutes",
+                "One hour"
+              ],
+              "answer": 2
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "uz": "Men avtobusni kutayotgan edim.",
+              "en": "I was waiting for the bus",
+              "tiles": [
+                "I",
+                "was",
+                "waiting",
+                "for",
+                "the",
+                "bus"
+              ],
+              "distractors": [
+                "were",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Men qo'ng'iroq qilganimda u kitob o'qiyotgan edi.",
+              "en": "She was reading when I called",
+              "tiles": [
+                "She",
+                "was",
+                "reading",
+                "when",
+                "I",
+                "called"
+              ],
+              "distractors": [
+                "were",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Bolalar bog'da o'ynashayotgan edi.",
+              "en": "The children were playing in the garden",
+              "tiles": [
+                "The",
+                "children",
+                "were",
+                "playing",
+                "in",
+                "the",
+                "garden"
+              ],
+              "distractors": [
+                "was",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz diqqat bilan tinglamayotgan edik.",
+              "en": "We were not listening carefully",
+              "tiles": [
+                "We",
+                "were",
+                "not",
+                "listening",
+                "carefully"
+              ],
+              "distractors": [
+                "was",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Kecha nima qilayotgan eding?",
+              "en": "What were you doing yesterday",
+              "tiles": [
+                "What",
+                "were",
+                "you",
+                "doing",
+                "yesterday"
+              ],
+              "distractors": [
+                "was",
+                "been"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "The accident on the bridge",
+          "topicUz": "Ko'prikdagi hodisa",
+          "sentences": [
+            "Last Sunday my brother and I were cycling towards the old bridge.",
+            "While we were crossing it, a red car was coming very fast.",
+            "The car hit the wall, and the driver was shouting for help.",
+            "My brother called an ambulance while I was talking to the driver.",
+            "Ten minutes later the doctors arrived and took him to hospital."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Men uyga ketayotgan edim.",
+          "options": [
+            "I was walking home.",
+            "I were walking home.",
+            "I am walking home.",
+            "I was walk home."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "U uxlayotganda telefon jiringladi.",
+          "options": [
+            "While she was sleeping, the phone rang.",
+            "While she were sleeping, the phone rang.",
+            "While she is sleeping, the phone rang.",
+            "While she was sleep, the phone rang."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Biz ko'prik yonida turgan edik.",
+          "options": [
+            "We was standing near the bridge.",
+            "We were standing near the bridge.",
+            "We are standing near the bridge.",
+            "We were stand near the bridge."
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Nima qilayotgan eding?",
+          "options": [
+            "What was you doing?",
+            "What you were doing?",
+            "What were you doing?",
+            "What did you doing?"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Ular baqirmayotgan edi.",
+          "options": [
+            "They was not shouting.",
+            "They did not shouting.",
+            "They are not shouting.",
+            "They were not shouting."
+          ],
+          "answer": 3
+        },
+        {
+          "q": "Nima ma'noni anglatadi: witness?",
+          "options": [
+            "guvoh",
+            "yo'lovchi",
+            "haydovchi",
+            "olomon"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Nima ma'noni anglatadi: rescue?",
+          "options": [
+            "qochib qutulmoq",
+            "qutqarmoq",
+            "baqirmoq",
+            "jarohatlamoq"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Nima ma'noni anglatadi: silence?",
+          "options": [
+            "shovqin",
+            "vahima",
+            "sukunat",
+            "yo'nalish"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "B1-02",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "When I was a child, my family used to live in a small village near the mountains. We did not have a television, so every evening my grandmother would tell us long stories about her own childhood. My cousin and I used to spend the whole summer outside. We would run to the playground before breakfast and stay on the swing until dark. Our neighbour had an old scooter, and he used to let us ride it around his garden. Life was much simpler then. Now I live in the city and I work in an office, so I visit the countryside only twice a year. I still miss those quiet evenings, but I do not miss the strict rules of my grandfather.",
+          "items": [
+            {
+              "q": "What is the writer comparing in this text?",
+              "options": [
+                "Two different villages in the mountains",
+                "His childhood in the village and his life today",
+                "His grandmother and his grandfather",
+                "Summer holidays and winter holidays"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Who told the family stories in the evening?",
+              "options": [
+                "His grandmother",
+                "His grandfather",
+                "His cousin",
+                "The neighbour"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What did the neighbour let the children ride?",
+              "options": [
+                "A bicycle",
+                "A horse",
+                "An old scooter",
+                "A small car"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "In the text, what does the word 'strict' mean?",
+              "options": [
+                "Very friendly and open",
+                "Not allowing people to break the rules",
+                "Very old and traditional",
+                "Quiet and shy"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "What can we conclude about the writer today?",
+              "options": [
+                "He wants to move back to the village immediately",
+                "He has forgotten his childhood completely",
+                "He remembers the village warmly but not everything about it",
+                "He still visits the playground every week"
+              ],
+              "answer": 2
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "uz": "Men ilgari qishloqda yashardim.",
+              "en": "I used to live in a village",
+              "tiles": [
+                "I",
+                "used",
+                "to",
+                "live",
+                "in",
+                "a",
+                "village"
+              ],
+              "distractors": [
+                "use",
+                "am"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz har yozda buvimiznikiga borardik.",
+              "en": "We would visit our grandmother every summer",
+              "tiles": [
+                "We",
+                "would",
+                "visit",
+                "our",
+                "grandmother",
+                "every",
+                "summer"
+              ],
+              "distractors": [
+                "use",
+                "was"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U ilgari shirinliklarni yoqtirardi.",
+              "en": "She used to like sweets",
+              "tiles": [
+                "She",
+                "used",
+                "to",
+                "like",
+                "sweets"
+              ],
+              "distractors": [
+                "use",
+                "was"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Bolaligimda men multfilm ko'rardim.",
+              "en": "As a child I used to watch cartoons",
+              "tiles": [
+                "As",
+                "a",
+                "child",
+                "I",
+                "used",
+                "to",
+                "watch",
+                "cartoons"
+              ],
+              "distractors": [
+                "use",
+                "watching"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Ular endi o'yin maydonchasiga bormaydi.",
+              "en": "They do not go to the playground now",
+              "tiles": [
+                "They",
+                "do",
+                "not",
+                "go",
+                "to",
+                "the",
+                "playground",
+                "now"
+              ],
+              "distractors": [
+                "does",
+                "used"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "childhood",
+              "uz": "bolalik",
+              "en": "In my childhood we used to play outside",
+              "tiles": [
+                "In",
+                "my",
+                "childhood",
+                "we",
+                "used",
+                "to",
+                "play",
+                "outside"
+              ],
+              "distractors": [
+                "use",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "word": "neighbour",
+              "uz": "qo'shni",
+              "en": "Our neighbour would help us every winter",
+              "tiles": [
+                "Our",
+                "neighbour",
+                "would",
+                "help",
+                "us",
+                "every",
+                "winter"
+              ],
+              "distractors": [
+                "used",
+                "was"
+              ],
+              "alt": []
+            },
+            {
+              "word": "playground",
+              "uz": "o'yin maydonchasi",
+              "en": "We used to meet at the playground",
+              "tiles": [
+                "We",
+                "used",
+                "to",
+                "meet",
+                "at",
+                "the",
+                "playground"
+              ],
+              "distractors": [
+                "use",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "word": "cartoon",
+              "uz": "multfilm",
+              "en": "My cousin would watch cartoons every morning",
+              "tiles": [
+                "My",
+                "cousin",
+                "would",
+                "watch",
+                "cartoons",
+                "every",
+                "morning"
+              ],
+              "distractors": [
+                "used",
+                "was"
+              ],
+              "alt": []
+            },
+            {
+              "word": "tradition",
+              "uz": "an'ana",
+              "en": "This tradition used to be very popular",
+              "tiles": [
+                "This",
+                "tradition",
+                "used",
+                "to",
+                "be",
+                "very",
+                "popular"
+              ],
+              "distractors": [
+                "use",
+                "been"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "When my father was young, he used to work on a farm outside the city. He would get up at five in the morning and feed the animals before breakfast. In those days the family did not have a car, so he used to walk to school for an hour. He says that children were much more patient then. Now he lives in a flat in the centre and drives everywhere. He still gets up early, but he does not work outside any more.",
+          "items": [
+            {
+              "q": "Where did the father use to work?",
+              "options": [
+                "In a school",
+                "On a farm",
+                "In a shop",
+                "In an office"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "What time did he get up?",
+              "options": [
+                "At four in the morning",
+                "At six in the morning",
+                "At five in the morning",
+                "At seven in the morning"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "How did he get to school?",
+              "options": [
+                "He walked for an hour",
+                "He went by bus",
+                "His father drove him",
+                "He rode a bicycle"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Did the family have a car in those days?",
+              "options": [
+                "Yes, they had two cars",
+                "No, they did not have a car",
+                "Yes, but it was very old",
+                "They had a motorbike"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Where does the father live now?",
+              "options": [
+                "On the same farm",
+                "In a village near the city",
+                "In a flat in the centre",
+                "In another country"
+              ],
+              "answer": 2
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "uz": "Men ilgari pianino chalardim.",
+              "en": "I used to play the piano",
+              "tiles": [
+                "I",
+                "used",
+                "to",
+                "play",
+                "the",
+                "piano"
+              ],
+              "distractors": [
+                "use",
+                "am"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz tez-tez buvimiznikiga borardik.",
+              "en": "We would visit our grandmother often",
+              "tiles": [
+                "We",
+                "would",
+                "visit",
+                "our",
+                "grandmother",
+                "often"
+              ],
+              "distractors": [
+                "used",
+                "was"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U ilgari juda uyalchan edi.",
+              "en": "He used to be very shy",
+              "tiles": [
+                "He",
+                "used",
+                "to",
+                "be",
+                "very",
+                "shy"
+              ],
+              "distractors": [
+                "use",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U ilgari eski o'yinchoqlar yig'ardi.",
+              "en": "She used to collect old toys",
+              "tiles": [
+                "She",
+                "used",
+                "to",
+                "collect",
+                "old",
+                "toys"
+              ],
+              "distractors": [
+                "use",
+                "been"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Qo'shnimiz bizga shirinlik olib kelardi.",
+              "en": "Our neighbour would bring us sweets",
+              "tiles": [
+                "Our",
+                "neighbour",
+                "would",
+                "bring",
+                "us",
+                "sweets"
+              ],
+              "distractors": [
+                "used",
+                "was"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "A summer in the village",
+          "topicUz": "Qishloqdagi yoz",
+          "sentences": [
+            "Every summer my family used to travel to my grandfather's village.",
+            "We would arrive late at night, and grandmother waited by the gate.",
+            "The next morning my cousins and I would run to the playground.",
+            "After lunch we used to ride an old scooter around the garden.",
+            "At the end of August we returned to the city."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Men ilgari qishloqda yashardim.",
+          "options": [
+            "I used to live in a village.",
+            "I use to live in a village.",
+            "I used to living in a village.",
+            "I am used to live in a village."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Har yozda buvimiznikiga borardik.",
+          "options": [
+            "Every summer we would visited our grandmother.",
+            "Every summer we would visit our grandmother.",
+            "Every summer we would to visit our grandmother.",
+            "Every summer we use to visit our grandmother."
+          ],
+          "answer": 1
+        },
+        {
+          "q": "U ilgari multfilm ko'rardi.",
+          "options": [
+            "He used watch cartoons.",
+            "He use to watch cartoons.",
+            "He used to watch cartoons.",
+            "He used to watching cartoons."
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Ular ilgari bu yerda ishlamasdi.",
+          "options": [
+            "They did not used to work here.",
+            "They not used to work here.",
+            "They did not use to working here.",
+            "They did not use to work here."
+          ],
+          "answer": 3
+        },
+        {
+          "q": "Bolaligimda men juda uyalchan edim.",
+          "options": [
+            "I used to be very shy as a child.",
+            "I use to be very shy as a child.",
+            "I used to being very shy as a child.",
+            "I was used be very shy as a child."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Nima ma'noni anglatadi: childhood?",
+          "options": [
+            "o'smir",
+            "bolalik",
+            "odat",
+            "an'ana"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Nima ma'noni anglatadi: neighbour?",
+          "options": [
+            "amakivachcha, xolavachcha",
+            "buvi",
+            "qo'shni",
+            "bobo"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Nima ma'noni anglatadi: spoil?",
+          "options": [
+            "nishonlamoq",
+            "qattiqqo'l",
+            "intizom",
+            "erkalatib buzmoq"
+          ],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "id": "B1-03",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Last month Dilnoza travelled to Samarkand for an important meeting. She had booked the hotel two weeks earlier, so she was not worried about anything. But when she arrived at the station, she realised that she had left her documents at home. She called her brother and explained the problem to him. He admitted that he had seen the folder on the kitchen table that morning, but he had not thought it was important. Dilnoza did not blame him, because she had solved harder problems before. She sent clear photos of the documents to the office, and the manager accepted them. Later she confessed that she had never felt so nervous in her life. Now she always checks her bag twice before she leaves the house.",
+          "items": [
+            {
+              "q": "What is the main idea of the text?",
+              "options": [
+                "Dilnoza forgot her documents but found a solution",
+                "Dilnoza missed her train to Samarkand",
+                "Dilnoza and her brother had a serious quarrel",
+                "Dilnoza decided to change her job in Samarkand"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What had Dilnoza done two weeks before the trip?",
+              "options": [
+                "She had bought a new bag",
+                "She had booked the hotel",
+                "She had written to the manager",
+                "She had visited Samarkand"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Where had her brother seen the folder?",
+              "options": [
+                "In her bag",
+                "In the office",
+                "On the kitchen table",
+                "At the station"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "In the text, what does the word 'admitted' mean?",
+              "options": [
+                "Refused to answer",
+                "Said that something was true",
+                "Asked a difficult question",
+                "Forgot something important"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "What did Dilnoza learn from this day?",
+              "options": [
+                "Never to travel alone again",
+                "Never to trust her brother",
+                "To check her bag before leaving",
+                "To book hotels much later"
+              ],
+              "answer": 2
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "uz": "Men yetib borganimda, poyezd allaqachon ketgan edi.",
+              "en": "When I arrived the train had already left",
+              "tiles": [
+                "When",
+                "I",
+                "arrived",
+                "the",
+                "train",
+                "had",
+                "already",
+                "left"
+              ],
+              "distractors": [
+                "has",
+                "leave"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U kalitlarini unutganini angladi.",
+              "en": "She realised she had forgotten her keys",
+              "tiles": [
+                "She",
+                "realised",
+                "she",
+                "had",
+                "forgotten",
+                "her",
+                "keys"
+              ],
+              "distractors": [
+                "has",
+                "forget"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz u kelgunicha ovqatlanib bo'lgan edik.",
+              "en": "We had eaten before he arrived",
+              "tiles": [
+                "We",
+                "had",
+                "eaten",
+                "before",
+                "he",
+                "arrived"
+              ],
+              "distractors": [
+                "has",
+                "eat"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Ular buni ilgari ko'rmagan edilar.",
+              "en": "They had not seen it before",
+              "tiles": [
+                "They",
+                "had",
+                "not",
+                "seen",
+                "it",
+                "before"
+              ],
+              "distractors": [
+                "has",
+                "see"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Men uni oldinroq tanimagan edim.",
+              "en": "I had not recognised him earlier",
+              "tiles": [
+                "I",
+                "had",
+                "not",
+                "recognised",
+                "him",
+                "earlier"
+              ],
+              "distractors": [
+                "has",
+                "recognise"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "realise",
+              "uz": "anglab yetmoq",
+              "en": "She realised that she had made a mistake",
+              "tiles": [
+                "She",
+                "realised",
+                "that",
+                "she",
+                "had",
+                "made",
+                "a",
+                "mistake"
+              ],
+              "distractors": [
+                "has",
+                "make"
+              ],
+              "alt": []
+            },
+            {
+              "word": "admit",
+              "uz": "tan olmoq",
+              "en": "He admitted that he had lied to us",
+              "tiles": [
+                "He",
+                "admitted",
+                "that",
+                "he",
+                "had",
+                "lied",
+                "to",
+                "us"
+              ],
+              "distractors": [
+                "has",
+                "lie"
+              ],
+              "alt": []
+            },
+            {
+              "word": "warn",
+              "uz": "ogohlantirmoq",
+              "en": "They had warned us about the storm",
+              "tiles": [
+                "They",
+                "had",
+                "warned",
+                "us",
+                "about",
+                "the",
+                "storm"
+              ],
+              "distractors": [
+                "has",
+                "warn"
+              ],
+              "alt": []
+            },
+            {
+              "word": "disappear",
+              "uz": "g'oyib bo'lmoq",
+              "en": "The keys had disappeared before lunch",
+              "tiles": [
+                "The",
+                "keys",
+                "had",
+                "disappeared",
+                "before",
+                "lunch"
+              ],
+              "distractors": [
+                "has",
+                "disappear"
+              ],
+              "alt": []
+            },
+            {
+              "word": "apologise",
+              "uz": "uzr so'ramoq",
+              "en": "He apologised after he had understood everything",
+              "tiles": [
+                "He",
+                "apologised",
+                "after",
+                "he",
+                "had",
+                "understood",
+                "everything"
+              ],
+              "distractors": [
+                "has",
+                "understand"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "Last week Bekzod went to the airport to meet his friend from Turkey. He had checked the flight time on his phone before he left home. But when he arrived, he saw that the plane had landed an hour earlier. His friend had already taken a taxi to the hotel in the centre. Bekzod felt embarrassed and called him immediately to apologise. His friend was not angry at all, because he had understood the mistake. They met at the hotel and had a long dinner together.",
+          "items": [
+            {
+              "q": "Where did Bekzod go last week?",
+              "options": [
+                "To the airport",
+                "To the station",
+                "To the hotel",
+                "To Turkey"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What had Bekzod checked before he left home?",
+              "options": [
+                "The price of the taxi",
+                "The flight time",
+                "The address of the hotel",
+                "The weather in Turkey"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "When had the plane landed?",
+              "options": [
+                "An hour later",
+                "Exactly on time",
+                "An hour earlier",
+                "The day before"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "How had his friend got to the hotel?",
+              "options": [
+                "By bus",
+                "On foot",
+                "Bekzod drove him",
+                "By taxi"
+              ],
+              "answer": 3
+            },
+            {
+              "q": "How did his friend react?",
+              "options": [
+                "He was very angry",
+                "He was not angry",
+                "He returned to the airport",
+                "He changed the hotel"
+              ],
+              "answer": 1
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "uz": "Poyezd allaqachon ketgan edi.",
+              "en": "The train had already left",
+              "tiles": [
+                "The",
+                "train",
+                "had",
+                "already",
+                "left"
+              ],
+              "distractors": [
+                "has",
+                "leave"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U pasportini unutgan edi.",
+              "en": "She had forgotten her passport",
+              "tiles": [
+                "She",
+                "had",
+                "forgotten",
+                "her",
+                "passport"
+              ],
+              "distractors": [
+                "has",
+                "forget"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz u filmni hech ko'rmagan edik.",
+              "en": "We had never seen that film",
+              "tiles": [
+                "We",
+                "had",
+                "never",
+                "seen",
+                "that",
+                "film"
+              ],
+              "distractors": [
+                "has",
+                "see"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U yolg'on gapirganini tan oldi.",
+              "en": "He admitted that he had lied",
+              "tiles": [
+                "He",
+                "admitted",
+                "that",
+                "he",
+                "had",
+                "lied"
+              ],
+              "distractors": [
+                "has",
+                "lie"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Ular tushlikkacha ishni tugatgan edilar.",
+              "en": "They had finished the work before lunch",
+              "tiles": [
+                "They",
+                "had",
+                "finished",
+                "the",
+                "work",
+                "before",
+                "lunch"
+              ],
+              "distractors": [
+                "has",
+                "finish"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "A missed train",
+          "topicUz": "Poyezdga ulgurmagan kun",
+          "sentences": [
+            "Last Tuesday Karim had an important interview in another city.",
+            "He had bought his ticket a week earlier, so he felt calm.",
+            "However, he woke up late because his alarm had not rung.",
+            "When he reached the station, the train had already left.",
+            "Luckily the company understood his problem and gave him a new date."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Men yetib borganimda, poyezd allaqachon ketgan edi.",
+          "options": [
+            "When I arrived, the train had already left.",
+            "When I arrived, the train has already left.",
+            "When I arrived, the train had already leave.",
+            "When I arrived, the train was already left."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "U kalitlarini unutganini angladi.",
+          "options": [
+            "She realised she has forgotten her keys.",
+            "She realised she had forgotten her keys.",
+            "She realised she had forgot her keys.",
+            "She realised she was forgotten her keys."
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Biz u kelgunicha ovqatlanib bo'lgan edik.",
+          "options": [
+            "We have eaten before he arrived.",
+            "We had ate before he arrived.",
+            "We had eaten before he arrived.",
+            "We was eaten before he arrived."
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Ular buni ilgari ko'rmagan edilar.",
+          "options": [
+            "They had not saw it before.",
+            "They has not seen it before.",
+            "They not had seen it before.",
+            "They had not seen it before."
+          ],
+          "answer": 3
+        },
+        {
+          "q": "U yolg'on gapirganini tan oldi.",
+          "options": [
+            "He admitted that he had lied.",
+            "He admitted that he has lied.",
+            "He admitted that he had lie.",
+            "He admitted that he was lied."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Nima ma'noni anglatadi: realise?",
+          "options": [
+            "tanimoq",
+            "anglab yetmoq",
+            "eslamoq",
+            "xotirlamoq"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Nima ma'noni anglatadi: deny?",
+          "options": [
+            "tan olmoq",
+            "ayblamoq",
+            "inkor qilmoq",
+            "shikoyat qilmoq"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Nima ma'noni anglatadi: previously?",
+          "options": [
+            "bahslashmoq",
+            "tushuntirmoq",
+            "tasvirlab bermoq",
+            "ilgari"
+          ],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "id": "B1-04",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "Nodira has been learning English for three years. She started at a small language centre near her house, and she has been going there twice a week since then. At the beginning she struggled with pronunciation, and she was often exhausted after the evening class. Her teacher told her that patience is more important than talent. Since January she has been practising with a friend from Canada, and her improvement has been steady. She has also been recording her own voice every evening and comparing it with the original. Now she can follow films without subtitles. She has been working on her writing since the summer, because she wants to study abroad next year. Her family says that her determination is the real reason for her success.",
+          "items": [
+            {
+              "q": "What is the text mainly about?",
+              "options": [
+                "A teacher who opened a language centre",
+                "How Nodira has been improving her English",
+                "Why Canadian films are difficult to follow",
+                "A student who decided to stop studying"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "How long has Nodira been learning English?",
+              "options": [
+                "For one year",
+                "For two years",
+                "For three years",
+                "Since the summer"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "Who has she been practising with since January?",
+              "options": [
+                "Her teacher",
+                "Her sister",
+                "A friend from Canada",
+                "A student from her class"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "In the text, what does the word 'exhausted' mean?",
+              "options": [
+                "Very tired",
+                "Very angry",
+                "Very proud",
+                "Very late"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What can we conclude about her success?",
+              "options": [
+                "It came from regular effort over a long time",
+                "It came from one very good lesson",
+                "It came from living in another country",
+                "It came from watching films with subtitles"
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "uz": "Men ikki yildan beri ingliz tilini o'rganyapman.",
+              "en": "I have been learning English for two years",
+              "tiles": [
+                "I",
+                "have",
+                "been",
+                "learning",
+                "English",
+                "for",
+                "two",
+                "years"
+              ],
+              "distractors": [
+                "has",
+                "am"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U ertalabdan beri ishlayapti.",
+              "en": "She has been working since morning",
+              "tiles": [
+                "She",
+                "has",
+                "been",
+                "working",
+                "since",
+                "morning"
+              ],
+              "distractors": [
+                "have",
+                "is"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz bir soatdan beri kutyapmiz.",
+              "en": "We have been waiting for an hour",
+              "tiles": [
+                "We",
+                "have",
+                "been",
+                "waiting",
+                "for",
+                "an",
+                "hour"
+              ],
+              "distractors": [
+                "has",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Ular uzoq vaqtdan beri mashq qilishyapti.",
+              "en": "They have been practising for a long time",
+              "tiles": [
+                "They",
+                "have",
+                "been",
+                "practising",
+                "for",
+                "a",
+                "long",
+                "time"
+              ],
+              "distractors": [
+                "has",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Qancha vaqtdan beri bu yerda yashayapsan?",
+              "en": "How long have you been living here",
+              "tiles": [
+                "How",
+                "long",
+                "have",
+                "you",
+                "been",
+                "living",
+                "here"
+              ],
+              "distractors": [
+                "has",
+                "are"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "practise",
+              "uz": "mashq qilmoq",
+              "en": "I have been practising English since September",
+              "tiles": [
+                "I",
+                "have",
+                "been",
+                "practising",
+                "English",
+                "since",
+                "September"
+              ],
+              "distractors": [
+                "has",
+                "am"
+              ],
+              "alt": []
+            },
+            {
+              "word": "patience",
+              "uz": "sabr",
+              "en": "He has been showing great patience for months",
+              "tiles": [
+                "He",
+                "has",
+                "been",
+                "showing",
+                "great",
+                "patience",
+                "for",
+                "months"
+              ],
+              "distractors": [
+                "have",
+                "is"
+              ],
+              "alt": []
+            },
+            {
+              "word": "effort",
+              "uz": "harakat, sa'y",
+              "en": "They have been making an effort since Monday",
+              "tiles": [
+                "They",
+                "have",
+                "been",
+                "making",
+                "an",
+                "effort",
+                "since",
+                "Monday"
+              ],
+              "distractors": [
+                "has",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "word": "exhausted",
+              "uz": "holdan toygan",
+              "en": "She is exhausted because she has been studying",
+              "tiles": [
+                "She",
+                "is",
+                "exhausted",
+                "because",
+                "she",
+                "has",
+                "been",
+                "studying"
+              ],
+              "distractors": [
+                "have",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "word": "improvement",
+              "uz": "yaxshilanish",
+              "en": "She has been showing real improvement since January",
+              "tiles": [
+                "She",
+                "has",
+                "been",
+                "showing",
+                "real",
+                "improvement",
+                "since",
+                "January"
+              ],
+              "distractors": [
+                "have",
+                "is"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "My brother has been working as an engineer for five years. He has been living in Tashkent since he finished university. Every evening he has been studying German, because his company wants to open an office in Berlin. He says that he is exhausted, but he does not want to stop. His teacher says that his pronunciation has been improving steadily. He has been saving money since January, and next summer he hopes to travel to Germany with his family.",
+          "items": [
+            {
+              "q": "How long has the brother been working as an engineer?",
+              "options": [
+                "For two years",
+                "For five years",
+                "Since January",
+                "For ten years"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Where has he been living since university?",
+              "options": [
+                "In Berlin",
+                "In a village",
+                "In Tashkent",
+                "In Germany"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "Which language has he been studying?",
+              "options": [
+                "English",
+                "French",
+                "Russian",
+                "German"
+              ],
+              "answer": 3
+            },
+            {
+              "q": "Why does his company need that language?",
+              "options": [
+                "It wants to open an office in Berlin",
+                "It wants to sell cars in Tashkent",
+                "It wants to close the office",
+                "It wants to teach the workers"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What has he been doing since January?",
+              "options": [
+                "Saving money",
+                "Looking for a new job",
+                "Travelling every month",
+                "Teaching at the university"
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "uz": "Men seni kutyapman.",
+              "en": "I have been waiting for you",
+              "tiles": [
+                "I",
+                "have",
+                "been",
+                "waiting",
+                "for",
+                "you"
+              ],
+              "distractors": [
+                "has",
+                "am"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U ertalabdan beri ishlayapti.",
+              "en": "She has been working since morning",
+              "tiles": [
+                "She",
+                "has",
+                "been",
+                "working",
+                "since",
+                "morning"
+              ],
+              "distractors": [
+                "have",
+                "is"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Ular bir necha soatdan beri o'ynashyapti.",
+              "en": "They have been playing for hours",
+              "tiles": [
+                "They",
+                "have",
+                "been",
+                "playing",
+                "for",
+                "hours"
+              ],
+              "distractors": [
+                "has",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Biz bu yerda ko'p yildan beri yashaymiz.",
+              "en": "We have been living here for years",
+              "tiles": [
+                "We",
+                "have",
+                "been",
+                "living",
+                "here",
+                "for",
+                "years"
+              ],
+              "distractors": [
+                "has",
+                "are"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U kun bo'yi o'qiyapti.",
+              "en": "He has been studying all day",
+              "tiles": [
+                "He",
+                "has",
+                "been",
+                "studying",
+                "all",
+                "day"
+              ],
+              "distractors": [
+                "have",
+                "is"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Learning to play the guitar",
+          "topicUz": "Gitara chalishni o'rganish",
+          "sentences": [
+            "Two years ago Sardor bought an old guitar at the market.",
+            "Since that day he has been practising for an hour every evening.",
+            "At first his fingers hurt, and his neighbours complained about the noise.",
+            "After six months he could play his first song without mistakes.",
+            "He has been teaching his younger sister since January."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Men ikki yildan beri ingliz tilini o'rganyapman.",
+          "options": [
+            "I have been learning English for two years.",
+            "I have been learning English since two years.",
+            "I has been learning English for two years.",
+            "I have been learn English for two years."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "U ertalabdan beri ishlayapti.",
+          "options": [
+            "She has been working for morning.",
+            "She has been working since morning.",
+            "She have been working since morning.",
+            "She has been work since morning."
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Biz bir soatdan beri kutyapmiz.",
+          "options": [
+            "We have been waiting since an hour.",
+            "We has been waiting for an hour.",
+            "We have been waiting for an hour.",
+            "We have been wait for an hour."
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Qancha vaqtdan beri bu yerda yashayapsan?",
+          "options": [
+            "How long you have been living here?",
+            "How long has you been living here?",
+            "How long have you been live here?",
+            "How long have you been living here?"
+          ],
+          "answer": 3
+        },
+        {
+          "q": "Ular dushanbadan beri harakat qilishyapti.",
+          "options": [
+            "They have been making an effort since Monday.",
+            "They have been making an effort for Monday.",
+            "They has been making an effort since Monday.",
+            "They have been make an effort since Monday."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Nima ma'noni anglatadi: exhausted?",
+          "options": [
+            "holdan toygan",
+            "sabr",
+            "qat'iyat",
+            "rag'bat"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Nima ma'noni anglatadi: patience?",
+          "options": [
+            "quvvat, energiya",
+            "sabr",
+            "harakat, sa'y",
+            "yaxshilanish"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Nima ma'noni anglatadi: gradually?",
+          "options": [
+            "doimiy ravishda",
+            "hozirda",
+            "asta-sekin",
+            "vaqtinchalik"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "B1-05",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "The man who lives next door to us is a scientist. His name is Rustam, and he works at the university where my sister studies. He is also the person who helped our neighbourhood build a small library last year. The building which stands behind the market was empty for a very long time. Rustam found a lawyer whose office is in the same street, and together they wrote a letter to a local organisation. Many residents who had never met before started working as volunteers. Today the library, which opens at nine every morning, has more than two thousand books. Rustam says that a community which reads together becomes stronger. My sister, whose favourite subject is history, borrows a book there every week.",
+          "items": [
+            {
+              "q": "What is the text mainly about?",
+              "options": [
+                "A neighbour who helped to create a library",
+                "A university where many scientists work",
+                "A market which was closed last year",
+                "A lawyer who moved to another street"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Where does Rustam work?",
+              "options": [
+                "In the library",
+                "At the university",
+                "In the market",
+                "In a law office"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "What stood behind the market?",
+              "options": [
+                "A new school",
+                "A small hospital",
+                "A building which was empty",
+                "The house of the lawyer"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "In the text, what does the word 'residents' mean?",
+              "options": [
+                "People who visit a city for one day",
+                "People who live in a place",
+                "People who work in an organisation",
+                "People who write books"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Why was the project successful?",
+              "options": [
+                "Because the government paid for everything",
+                "Because the building was already a library",
+                "Because only two experts worked on it",
+                "Because many people in the area helped"
+              ],
+              "answer": 3
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "uz": "Bu yerda yashaydigan kishi shifokor.",
+              "en": "The man who lives here is a doctor",
+              "tiles": [
+                "The",
+                "man",
+                "who",
+                "lives",
+                "here",
+                "is",
+                "a",
+                "doctor"
+              ],
+              "distractors": [
+                "which",
+                "live"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Bu men o'qigan maktab.",
+              "en": "This is the school where I studied",
+              "tiles": [
+                "This",
+                "is",
+                "the",
+                "school",
+                "where",
+                "I",
+                "studied"
+              ],
+              "distractors": [
+                "which",
+                "who"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Men o'qigan kitob qiziq edi.",
+              "en": "The book which I read was interesting",
+              "tiles": [
+                "The",
+                "book",
+                "which",
+                "I",
+                "read",
+                "was",
+                "interesting"
+              ],
+              "distractors": [
+                "who",
+                "where"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Men mashinasi qizil bo'lgan odamni bilaman.",
+              "en": "I know the man whose car is red",
+              "tiles": [
+                "I",
+                "know",
+                "the",
+                "man",
+                "whose",
+                "car",
+                "is",
+                "red"
+              ],
+              "distractors": [
+                "who",
+                "which"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Bu men ishlaydigan bino.",
+              "en": "This is the building where I work",
+              "tiles": [
+                "This",
+                "is",
+                "the",
+                "building",
+                "where",
+                "I",
+                "work"
+              ],
+              "distractors": [
+                "which",
+                "who"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "colleague",
+              "uz": "hamkasb",
+              "en": "The colleague who helped me is very kind",
+              "tiles": [
+                "The",
+                "colleague",
+                "who",
+                "helped",
+                "me",
+                "is",
+                "very",
+                "kind"
+              ],
+              "distractors": [
+                "which",
+                "where"
+              ],
+              "alt": []
+            },
+            {
+              "word": "stranger",
+              "uz": "notanish odam",
+              "en": "A stranger whose name I forgot called me",
+              "tiles": [
+                "A",
+                "stranger",
+                "whose",
+                "name",
+                "I",
+                "forgot",
+                "called",
+                "me"
+              ],
+              "distractors": [
+                "who",
+                "which"
+              ],
+              "alt": []
+            },
+            {
+              "word": "engineer",
+              "uz": "muhandis",
+              "en": "This is the engineer who built the bridge",
+              "tiles": [
+                "This",
+                "is",
+                "the",
+                "engineer",
+                "who",
+                "built",
+                "the",
+                "bridge"
+              ],
+              "distractors": [
+                "which",
+                "where"
+              ],
+              "alt": []
+            },
+            {
+              "word": "library",
+              "uz": "kutubxona",
+              "en": "The library which opens at nine is new",
+              "tiles": [
+                "The",
+                "library",
+                "which",
+                "opens",
+                "at",
+                "nine",
+                "is",
+                "new"
+              ],
+              "distractors": [
+                "who",
+                "whose"
+              ],
+              "alt": []
+            },
+            {
+              "word": "neighbourhood",
+              "uz": "mahalla",
+              "en": "I like the neighbourhood where my family lives",
+              "tiles": [
+                "I",
+                "like",
+                "the",
+                "neighbourhood",
+                "where",
+                "my",
+                "family",
+                "lives"
+              ],
+              "distractors": [
+                "which",
+                "who"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "My best friend is a nurse who works at the city hospital. She lives in a flat which is very close to her job. The building where she works is more than fifty years old. Last month she met a scientist whose research is about clean water. He asked her to join a group of volunteers. Now she spends every Saturday with people who want to help their community. She says that it is the best decision which she has ever made.",
+          "items": [
+            {
+              "q": "What is the friend's job?",
+              "options": [
+                "She is a nurse",
+                "She is a scientist",
+                "She is a lawyer",
+                "She is a teacher"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "Where does she work?",
+              "options": [
+                "At the university",
+                "At the city hospital",
+                "In a small library",
+                "In an office"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "How old is the building where she works?",
+              "options": [
+                "Five years old",
+                "Fifteen years old",
+                "More than fifty years old",
+                "It is completely new"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "What is the scientist's research about?",
+              "options": [
+                "Old buildings",
+                "City hospitals",
+                "Modern equipment",
+                "Clean water"
+              ],
+              "answer": 3
+            },
+            {
+              "q": "What does she do on Saturdays?",
+              "options": [
+                "She works as a volunteer",
+                "She stays at home",
+                "She studies at the university",
+                "She visits her family"
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "uz": "Qo'ng'iroq qilgan odam mening hamkasbim edi.",
+              "en": "The man who called was my colleague",
+              "tiles": [
+                "The",
+                "man",
+                "who",
+                "called",
+                "was",
+                "my",
+                "colleague"
+              ],
+              "distractors": [
+                "which",
+                "where"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Bu men o'qigan maktab.",
+              "en": "This is the school where I studied",
+              "tiles": [
+                "This",
+                "is",
+                "the",
+                "school",
+                "where",
+                "I",
+                "studied"
+              ],
+              "distractors": [
+                "which",
+                "who"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Men tug'ilgan shahar kichkina.",
+              "en": "The city where I was born is small",
+              "tiles": [
+                "The",
+                "city",
+                "where",
+                "I",
+                "was",
+                "born",
+                "is",
+                "small"
+              ],
+              "distractors": [
+                "which",
+                "who"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Sen bergan kitob qiziq.",
+              "en": "The book which you gave me is interesting",
+              "tiles": [
+                "The",
+                "book",
+                "which",
+                "you",
+                "gave",
+                "me",
+                "is",
+                "interesting"
+              ],
+              "distractors": [
+                "who",
+                "where"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "U shuni yozgan yozuvchi.",
+              "en": "She is the writer who wrote this",
+              "tiles": [
+                "She",
+                "is",
+                "the",
+                "writer",
+                "who",
+                "wrote",
+                "this"
+              ],
+              "distractors": [
+                "which",
+                "whose"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "The new library in our street",
+          "topicUz": "Ko'chamizdagi yangi kutubxona",
+          "sentences": [
+            "Last spring an old building which stood behind the market was empty.",
+            "A neighbour who works at the university suggested a very simple idea.",
+            "He asked a lawyer whose office was near the market for help.",
+            "Then residents who had free time painted the walls together.",
+            "Today the library where children read opens at nine every morning."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Yonimizda yashaydigan kishi shifokor.",
+          "options": [
+            "The man who lives next door is a doctor.",
+            "The man which lives next door is a doctor.",
+            "The man who live next door is a doctor.",
+            "The man whose lives next door is a doctor."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Bu men o'qigan maktab.",
+          "options": [
+            "This is the school which I studied.",
+            "This is the school where I studied.",
+            "This is the school who I studied.",
+            "This is the school whose I studied."
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Men mashinasi qizil bo'lgan odamni bilaman.",
+          "options": [
+            "I know the man who car is red.",
+            "I know the man which car is red.",
+            "I know the man whose car is red.",
+            "I know the man whose is car red."
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Sen bergan kitob qiziq edi.",
+          "options": [
+            "The book who you gave me was interesting.",
+            "The book where you gave me was interesting.",
+            "The book whose you gave me was interesting.",
+            "The book which you gave me was interesting."
+          ],
+          "answer": 3
+        },
+        {
+          "q": "Ko'prikni qurgan muhandis shu yerda.",
+          "options": [
+            "The engineer who built the bridge is here.",
+            "The engineer which built the bridge is here.",
+            "The engineer who build the bridge is here.",
+            "The engineer whose built the bridge is here."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Nima ma'noni anglatadi: colleague?",
+          "options": [
+            "qarindosh",
+            "hamkasb",
+            "notanish odam",
+            "istiqomatchi"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Nima ma'noni anglatadi: volunteer?",
+          "options": [
+            "a'zo",
+            "mutaxassis",
+            "ko'ngilli",
+            "olim"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Nima ma'noni anglatadi: neighbourhood?",
+          "options": [
+            "jamiyat",
+            "bino",
+            "jamoa",
+            "mahalla"
+          ],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "id": "B1-06",
+      "tasks": [
+        {
+          "type": "read",
+          "text": "If I had more free time, I would learn two new languages. Many people say something like this, but very few of them change anything. My friend Kamola is different. Two years ago she was working in a bank and she was not happy at all. She often said that if she were braver, she would open her own studio. One day she stopped talking and started planning. She saved money for a year, took a course in photography and rented a small room near the park. Today she says that fear was her only real problem. If she were still afraid, she would be sitting in the same grey office. Her advice is simple: if you had one completely free year, what would you change today?",
+          "items": [
+            {
+              "q": "What is the main idea of the text?",
+              "options": [
+                "Photography courses are cheaper than bank jobs",
+                "A friend who turned a dream into a real business",
+                "Banks are the worst places to work in",
+                "Learning two languages is easier than changing a job"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Where did Kamola work two years ago?",
+              "options": [
+                "In a studio",
+                "In a park",
+                "In a bank",
+                "In a school"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "What course did she take?",
+              "options": [
+                "A language course",
+                "A photography course",
+                "A business course",
+                "A cooking course"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "In the text, what does the word 'fear' mean?",
+              "options": [
+                "The feeling of being afraid",
+                "The feeling of being tired",
+                "The wish to earn more money",
+                "The habit of saving money"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What does the writer suggest?",
+              "options": [
+                "That planning is more useful than talking",
+                "That everybody should leave the bank",
+                "That free time is impossible to find",
+                "That photography is the best profession"
+              ],
+              "answer": 0
+            }
+          ]
+        },
+        {
+          "type": "translate",
+          "items": [
+            {
+              "uz": "Vaqtim ko'proq bo'lganda, sayohat qilardim.",
+              "en": "If I had more time I would travel",
+              "tiles": [
+                "If",
+                "I",
+                "had",
+                "more",
+                "time",
+                "I",
+                "would",
+                "travel"
+              ],
+              "distractors": [
+                "will",
+                "having"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Sizning o'rningizda bo'lsam, rozi bo'lardim.",
+              "en": "If I were you I would agree",
+              "tiles": [
+                "If",
+                "I",
+                "were",
+                "you",
+                "I",
+                "would",
+                "agree"
+              ],
+              "distractors": [
+                "am",
+                "will"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Agar uning puli bo'lsa, sayohat qilardi.",
+              "en": "If she had money she would travel",
+              "tiles": [
+                "If",
+                "she",
+                "had",
+                "money",
+                "she",
+                "would",
+                "travel"
+              ],
+              "distractors": [
+                "has",
+                "will"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Agar bilsak, senga aytardik.",
+              "en": "If we knew we would tell you",
+              "tiles": [
+                "If",
+                "we",
+                "knew",
+                "we",
+                "would",
+                "tell",
+                "you"
+              ],
+              "distractors": [
+                "know",
+                "will"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Mening o'rnimda nima qilarding?",
+              "en": "What would you do in my situation",
+              "tiles": [
+                "What",
+                "would",
+                "you",
+                "do",
+                "in",
+                "my",
+                "situation"
+              ],
+              "distractors": [
+                "will",
+                "did"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "build",
+          "items": [
+            {
+              "word": "opportunity",
+              "uz": "imkoniyat",
+              "en": "If I had the opportunity I would travel",
+              "tiles": [
+                "If",
+                "I",
+                "had",
+                "the",
+                "opportunity",
+                "I",
+                "would",
+                "travel"
+              ],
+              "distractors": [
+                "will",
+                "having"
+              ],
+              "alt": []
+            },
+            {
+              "word": "courage",
+              "uz": "jasorat",
+              "en": "If I had courage I would speak louder",
+              "tiles": [
+                "If",
+                "I",
+                "had",
+                "courage",
+                "I",
+                "would",
+                "speak",
+                "louder"
+              ],
+              "distractors": [
+                "will",
+                "having"
+              ],
+              "alt": []
+            },
+            {
+              "word": "wealth",
+              "uz": "boylik",
+              "en": "If wealth came easily nobody would work hard",
+              "tiles": [
+                "If",
+                "wealth",
+                "came",
+                "easily",
+                "nobody",
+                "would",
+                "work",
+                "hard"
+              ],
+              "distractors": [
+                "will",
+                "comes"
+              ],
+              "alt": []
+            },
+            {
+              "word": "admire",
+              "uz": "qoyil qolmoq",
+              "en": "If he helped others people would admire him",
+              "tiles": [
+                "If",
+                "he",
+                "helped",
+                "others",
+                "people",
+                "would",
+                "admire",
+                "him"
+              ],
+              "distractors": [
+                "will",
+                "helps"
+              ],
+              "alt": []
+            },
+            {
+              "word": "hesitate",
+              "uz": "ikkilanmoq",
+              "en": "If you hesitated now you would lose everything",
+              "tiles": [
+                "If",
+                "you",
+                "hesitated",
+                "now",
+                "you",
+                "would",
+                "lose",
+                "everything"
+              ],
+              "distractors": [
+                "will",
+                "hesitate"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "listen",
+          "text": "If I won a lot of money, I would not stop working. I would buy a small house near the sea and open a language school there. My sister does not agree with me at all. She says that if she had that much money, she would travel for a whole year. Our father laughs at both of us. He says that if people really wanted to change their lives, they would start today with what they already have. Maybe he is right.",
+          "items": [
+            {
+              "q": "What would the speaker do with the money?",
+              "options": [
+                "Stop working immediately",
+                "Open a language school",
+                "Buy a big car",
+                "Give everything away"
+              ],
+              "answer": 1
+            },
+            {
+              "q": "Where would the speaker buy a house?",
+              "options": [
+                "Near the sea",
+                "Near the school",
+                "In the mountains",
+                "In another country"
+              ],
+              "answer": 0
+            },
+            {
+              "q": "What would the sister do?",
+              "options": [
+                "Open a school with her brother",
+                "Buy a house near the sea",
+                "Travel for a whole year",
+                "Save all the money"
+              ],
+              "answer": 2
+            },
+            {
+              "q": "What does the father say?",
+              "options": [
+                "That money is always dangerous",
+                "That the sister is completely right",
+                "That nobody should dream about money",
+                "That people would start today if they really wanted to"
+              ],
+              "answer": 3
+            },
+            {
+              "q": "Does the sister agree with the speaker?",
+              "options": [
+                "Yes, she agrees with everything",
+                "No, she does not agree",
+                "She has no opinion",
+                "She agrees with the father only"
+              ],
+              "answer": 1
+            }
+          ]
+        },
+        {
+          "type": "dictate",
+          "items": [
+            {
+              "uz": "Vaqtim bo'lsa, yordam berardim.",
+              "en": "If I had time I would help",
+              "tiles": [
+                "If",
+                "I",
+                "had",
+                "time",
+                "I",
+                "would",
+                "help"
+              ],
+              "distractors": [
+                "will",
+                "having"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Sizning o'rningizda bo'lsam, kutardim.",
+              "en": "If I were you I would wait",
+              "tiles": [
+                "If",
+                "I",
+                "were",
+                "you",
+                "I",
+                "would",
+                "wait"
+              ],
+              "distractors": [
+                "am",
+                "will"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Agar puli bo'lsa, sayohat qilardi.",
+              "en": "She would travel if she had money",
+              "tiles": [
+                "She",
+                "would",
+                "travel",
+                "if",
+                "she",
+                "had",
+                "money"
+              ],
+              "distractors": [
+                "has",
+                "will"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Ertaga nima qilarding?",
+              "en": "What would you do tomorrow",
+              "tiles": [
+                "What",
+                "would",
+                "you",
+                "do",
+                "tomorrow"
+              ],
+              "distractors": [
+                "will",
+                "did"
+              ],
+              "alt": []
+            },
+            {
+              "uz": "Agar bilsak, ularga aytardik.",
+              "en": "If we knew we would tell them",
+              "tiles": [
+                "If",
+                "we",
+                "knew",
+                "we",
+                "would",
+                "tell",
+                "them"
+              ],
+              "distractors": [
+                "know",
+                "will"
+              ],
+              "alt": []
+            }
+          ]
+        },
+        {
+          "type": "order",
+          "topic": "Kamola and her studio",
+          "topicUz": "Kamola va uning studiyasi",
+          "sentences": [
+            "Two years ago Kamola was working in a bank and felt unhappy.",
+            "She said that if she were braver, she would open a studio.",
+            "One evening her sister asked her a very simple question.",
+            "If nothing changed in five years, how would she feel then?",
+            "The next morning Kamola started saving money for her first camera."
+          ]
+        }
+      ],
+      "exam": [
+        {
+          "q": "Vaqtim ko'proq bo'lganda, ikkita til o'rgangan bo'lardim.",
+          "options": [
+            "If I had more time, I would learn two languages.",
+            "If I have more time, I would learn two languages.",
+            "If I had more time, I will learn two languages.",
+            "If I would have more time, I learn two languages."
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Sizning o'rningizda bo'lsam, taklifni qabul qilardim.",
+          "options": [
+            "If I am you, I would accept the offer.",
+            "If I were you, I would accept the offer.",
+            "If I were you, I will accept the offer.",
+            "If I were you, I would accepted the offer."
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Agar uning puli bo'lsa, sayohat qilardi.",
+          "options": [
+            "If she has money, she would travel.",
+            "If she had money, she will travel.",
+            "If she had money, she would travel.",
+            "If she would have money, she travelled."
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Agar bilsak, senga aytardik.",
+          "options": [
+            "If we know, we would tell you.",
+            "If we knew, we will tell you.",
+            "If we would know, we told you.",
+            "If we knew, we would tell you."
+          ],
+          "answer": 3
+        },
+        {
+          "q": "Mening o'rnimda nima qilarding?",
+          "options": [
+            "What would you do in my situation?",
+            "What will you do in my situation?",
+            "What would you did in my situation?",
+            "What you would do in my situation?"
+          ],
+          "answer": 0
+        },
+        {
+          "q": "Nima ma'noni anglatadi: courage?",
+          "options": [
+            "qo'rquv",
+            "jasorat",
+            "shubha",
+            "baxt"
+          ],
+          "answer": 1
+        },
+        {
+          "q": "Nima ma'noni anglatadi: envy?",
+          "options": [
+            "qoyil qolmoq",
+            "qoniqtirmoq",
+            "hasad qilmoq",
+            "tasavvur qilmoq"
+          ],
+          "answer": 2
+        },
+        {
+          "q": "Nima ma'noni anglatadi: hesitate?",
+          "options": [
+            "faraz qilmoq",
+            "ko'rib chiqmoq",
+            "tilamoq",
+            "ikkilanmoq"
+          ],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "id": "B1-07",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "B1-08",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "B1-09",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "B1-10",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "B1-11",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    },
+    {
+      "id": "B1-12",
+      "tasks": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "exam": []
+    }
+  ],
+  "levelExam": []
+}
