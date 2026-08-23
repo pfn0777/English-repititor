@@ -1134,6 +1134,26 @@ console.log('\n28. Offline vazifa validatori:');
     forms.items[1] = mk('go', 'He walked to school.', ['He','walked','to','school']);
     t("so'z gapda umuman ishlatilmasa baribir tutiladi",
       caught(V.validateTask(forms, { level: 'A1', unitId: 'A1-01', expectedType: 'build', words: vs })));
+
+    // Qiyosiy/orttirma shakl: qiyoslash unitida "heavy" gapda "heavier" bo'lib
+    // keladi. Bu qoida yumshasa validator to'g'ri kontentni rad etadi va
+    // yozuvchi so'z tanlashda sun'iy cheklanadi (A2 da aynan shunday bo'lgan).
+    const cmp = [
+      { en: 'heavy', uz: "og'ir", ipa: '' }, { en: 'high', uz: 'baland', ipa: '' },
+      { en: 'big', uz: 'katta', ipa: '' }, { en: 'large', uz: 'keng', ipa: '' },
+      { en: 'modern', uz: 'zamonaviy', ipa: '' },
+    ];
+    const mk2 = (word, en, tiles) => ({ word, uz: cmp.find(w => w.en === word).uz, en, tiles, distractors: ['was','were'], alt: [] });
+    const cf = [
+      mk2('heavy', 'This box is heavier than that one.', ['This','box','is','heavier','than','that','one']),
+      mk2('high', 'It is the highest mountain here.', ['It','is','the','highest','mountain','here']),
+      mk2('big', 'My room is bigger than yours.', ['My','room','is','bigger','than','yours']),
+      mk2('large', 'This hall is larger than the office.', ['This','hall','is','larger','than','the','office']),
+      mk2('modern', 'The city is more modern now.', ['The','city','is','more','modern','now']),
+    ];
+    t('qiyosiy shakllar tanildi: heavier / highest / bigger / larger',
+      clean(V.validateTask({ type: 'build', items: cf }, { level: 'A2', unitId: 'A2-01', expectedType: 'build', words: cmp })));
+
   }
 }
 console.log(fails === 0 ? '\nHAMMASI OK' : `\n${fails} TA TEST YIQILDI`);

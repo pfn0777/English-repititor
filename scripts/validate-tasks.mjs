@@ -107,10 +107,16 @@ function formsMatch(word, tok) {
   const cands = [w + 's', w + 'es', w + 'd', w + 'ed', w + 'ing'];
   if (w.endsWith('e')) cands.push(w.slice(0, -1) + 'ing', w.slice(0, -1) + 'ed');
   if (w.endsWith('y')) cands.push(w.slice(0, -1) + 'ies', w.slice(0, -1) + 'ied');
+  // Sifatning qiyosiy/orttirma shakli: heavy -> heavier, high -> highest.
+  // Busiz validator to'g'ri kontentni rad etadi va yozuvchi qiyoslash unitida
+  // faqat "more/the most" oladigan so'zlarni tanlashga majbur bo'ladi.
+  cands.push(w + 'er', w + 'est');
+  if (w.endsWith('e')) cands.push(w + 'r', w + 'st');
+  if (w.endsWith('y')) cands.push(w.slice(0, -1) + 'ier', w.slice(0, -1) + 'iest');
   // CVC oxiri: sit → sitting, stop → stopped, plan → planned
   const last = w.slice(-1), prev = w.slice(-2, -1), pre2 = w.slice(-3, -2);
   if (w.length >= 3 && !VOWEL.test(last) && VOWEL.test(prev) && !VOWEL.test(pre2) && !'wxy'.includes(last)) {
-    cands.push(w + last + 'ing', w + last + 'ed');
+    cands.push(w + last + 'ing', w + last + 'ed', w + last + 'er', w + last + 'est');
   }
   if (IRREGULAR[w] && IRREGULAR[w].includes(tok)) return true;
   return cands.includes(tok);
