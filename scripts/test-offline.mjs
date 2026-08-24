@@ -73,8 +73,12 @@ const exported = ['initProgram','getUnit','getTaskType','applyResult','issueTask
                   'gameDefaults','getGames','ensureGames','betterScore','recordGame',
                   'gameWordPool','anagramEligible','gamesAvailable','soundScore','gameDistractors',
                   'scrambleWord','buildRound','comboMult','newGameState','scoreRound','gameXp',
-                  'unitWords','navTabs','NAV_TABS',
-                  'gameBody','gameHeadStats','renderGames','GAME_ANAGRAM_WORDS','GAME_LISTEN_ROUNDS'];
+                  'unitWords','navTabs','NAV_TABS','navTo',
+                  'gameBody','gameHeadStats','renderGames','GAME_ANAGRAM_WORDS','GAME_LISTEN_ROUNDS',
+                  // Testlar (docs/specs/offline-testlar.md) — sof mantiq + render.
+                  'QUIZ_RESULTS_KEY','availableQuizzes','buildQuizSession','scoreQuizAnswer','quizPct',
+                  'getQuizResults','recordQuizResult',
+                  'renderQuizList','renderQuizSession','renderQuizResult','startQuiz','exitQuiz'];
 const runner = new Function(...names, `${patched}\n; return { ${exported.join(',')}, setUser:u=>{user=u}, getUser:()=>user,
   setOffline:v=>{ OFFLINE_BUILD=v; }, getOffline:()=>OFFLINE_BUILD,
   clearOfflineCache:()=>{ for (const k of Object.keys(OFFLINE_TASKS)) delete OFFLINE_TASKS[k]; } };`);
@@ -868,9 +872,9 @@ console.log("16. O'yin rejimlari — sof mantiq:");
     api.setOffline(true);
     const on = api.navTabs().map(x => x.id);
     t('OFFLINE_BUILD=true: o\'yin tabi bor', on.includes('games'));
-    t('offline bilkada AI Ustoz va Testlar baribir yo\'q',
+    t('offline bilkada AI Ustoz va eski Testlar (quiz mode) baribir yo\'q',
       !on.includes('ai') && !on.includes('tests'));
-    t('o\'yin tabi Testlar o\'rnida turadi', on.join(',') === 'home,tasks,games,progress');
+    t('o\'yin va yangi Testlar tabi bir qatorda turadi', on.join(',') === 'home,tasks,games,quiz,progress');
     api.setOffline(false);
   }
 
@@ -958,6 +962,169 @@ console.log("16. O'yin rejimlari — sof mantiq:");
     t('o\'yin dastur holatini o\'zgartirmaydi', JSON.stringify(u.program) === snap);
     t('o\'yin streak bermaydi', u.streak === 0 && u.lastTaskDay === null);
     t('o\'yin kunlik normani sarflamaydi', u.program.doneToday.count === 0);
+  }
+}
+
+// ── 17. TESTLAR (docs/specs/offline-testlar.md) ──────────────────
+// Mavjud exam/levelExam massivlarini dastur oqimidan tashqarida
+// o'ynatadigan sof sinov rejimi. Yangi kontent yozilmaydi — faqat
+// data/tasks-<lv>.json dagi mavjudlarini o'qiydi.
+console.log("17. Testlar — sof mantiq:");
+{
+  const mkExamItem = (i) => ({ q:`Q${i}?`, options:['a','b','c','d'], answer: i % 4 });
+  const mkUnit = (id, examLen) => ({
+    id, title:`Unit ${id}`,
+    tasks: [],
+    exam: examLen ? Array.from({ length: examLen }, (_, i) => mkExamItem(i)) : [],
+  });
+
+  // ── 17.1 availableQuizzes — bo'sh/mavjud bo'lmagan exam/levelExam chiqarilmaydi
+  console.log('  17.1 availableQuizzes (bo\'sh/mavjud bo\'lmagan chiqarilmaydi):');
+  {
+    const fake = {
+      A1: {
+        units: [mkUnit('A1-01', 8), mkUnit('A1-02', 0), mkUnit('A1-03', 8)],
+        levelExam: Array.from({ length: 10 }, (_, i) => mkExamItem(i)),
+      },
+      A2: {
+        units: [mkUnit('A2-01', 8)],
+        levelExam: [],   // bo'sh — ko'rinmasligi shart
+      },
+      // B1 umuman yo'q — mavjud emas, ko'rinmasligi shart
+    };
+    const list = api.availableQuizzes(fake);
+    const keys = list.map(q => q.key);
+    t('A1-01 (exam bor) ro\'yxatda', keys.includes('A1-A1-01'));
+    t('A1-02 (exam bo\'sh) ro\'yxatda YO\'Q', !keys.includes('A1-A1-02'));
+    t('A1-03 (exam bor) ro\'yxatda', keys.includes('A1-A1-03'));
+    t('A1 levelExam (bor) ro\'yxatda', keys.includes('A1-levelExam'));
+    t('A2-01 (exam bor) ro\'yxatda', keys.includes('A2-A2-01'));
+    t('A2 levelExam (bo\'sh) ro\'yxatda YO\'Q', !keys.includes('A2-levelExam'));
+    t('B1 (data yo\'q) hech narsa chiqarmaydi', !keys.some(k => k.startsWith('B1-')));
+    t('faqat haqiqiy elementlar sanaladi', list.length === 4);
+    const unitEntry = list.find(q => q.key === 'A1-A1-01');
+    t('unit elementi kind=unit', unitEntry.kind === 'unit' && unitEntry.unitId === 'A1-01');
+    const levelEntry = list.find(q => q.key === 'A1-levelExam');
+    t('daraja elementi kind=level', levelEntry.kind === 'level' && levelEntry.unitId === null);
+
+    t('bo\'sh obyekt bilan chaqirilsa bo\'sh ro\'yxat', api.availableQuizzes({}).length === 0);
+  }
+
+  // ── 17.2 buildQuizSession / scoreQuizAnswer — to'g'ri hisoblash
+  console.log('  17.2 buildQuizSession / scoreQuizAnswer:');
+  {
+    const items = Array.from({ length: 4 }, (_, i) => mkExamItem(i)); // answer: 0,1,2,3
+    let s = api.buildQuizSession(items);
+    t('boshlang\'ich sessiya: idx=0, correct=0', s.idx === 0 && s.correct === 0 && s.answers.length === 0);
+
+    s = api.scoreQuizAnswer(s, 0);   // to'g'ri (item0.answer===0)
+    t('to\'g\'ri javob → correct oshadi', s.correct === 1 && s.idx === 1);
+    t('answers massiviga yoziladi', s.answers[0].ok === true && s.answers[0].chosenIdx === 0);
+
+    s = api.scoreQuizAnswer(s, 0);   // item1.answer===1, chosenIdx=0 → xato
+    t('xato javob → correct oshmaydi', s.correct === 1 && s.idx === 2);
+    t('xato answers massivida ok:false', s.answers[1].ok === false);
+
+    s = api.scoreQuizAnswer(s, 2);   // to'g'ri
+    s = api.scoreQuizAnswer(s, 3);   // to'g'ri
+    t('sessiya oxirida nisbat to\'g\'ri chiqadi (3/4)', s.correct === 3 && s.idx === 4);
+    t('quizPct to\'g\'ri foiz hisoblaydi', api.quizPct(s) === 75);
+    t('bo\'sh sessiya foizi 0 (bo\'lishga 0)', api.quizPct(api.buildQuizSession([])) === 0);
+
+    // Sof: kirish obyekti o'zgarmaydi.
+    const base = api.buildQuizSession(items);
+    const snap = JSON.stringify(base);
+    api.scoreQuizAnswer(base, 0);
+    t('scoreQuizAnswer sof (kirish holati o\'zgarmaydi)', JSON.stringify(base) === snap);
+  }
+
+  // ── 17.3 Saqlash (eb_quiz_results) ───────────────────────────────
+  console.log('  17.3 Saqlash (eb_quiz_results):');
+  {
+    delete store['eb_quiz_results'];
+    t('boshlang\'ich holat bo\'sh', Object.keys(api.getQuizResults()).length === 0);
+    let r = api.recordQuizResult('A1-A1-01', 60);
+    t('birinchi urinish: best=60, attempts=1', r.best === 60 && r.attempts === 1 && r.improved === true);
+    r = api.recordQuizResult('A1-A1-01', 40);
+    t('pastroq natija: best o\'zgarmaydi, attempts oshadi', r.best === 60 && r.attempts === 2 && r.improved === false);
+    r = api.recordQuizResult('A1-A1-01', 90);
+    t('yuqoriroq natija: yangi rekord', r.best === 90 && r.attempts === 3 && r.improved === true);
+    const all = api.getQuizResults();
+    t('shakl <LEVEL>-<unitId|levelExam> kaliti bilan saqlanadi',
+      all['A1-A1-01'] && all['A1-A1-01'].best === 90 && all['A1-A1-01'].attempts === 3);
+    delete store['eb_quiz_results'];
+  }
+
+  // ── 17.4 Mavjud darajalarni oltin javob bilan to'liq yurish ──────
+  // exam/levelExam data/tasks-*.json dan — yangi fixture kerak emas.
+  // Yarim yozilgan daraja (B2/C1/C2 hali muallif tomonidan yozilmoqda)
+  // "yiqildi" deb ko'rsatilmaydi — 14b dagi bilan bir xil qoida.
+  console.log('  17.4 Mavjud darajalarni oltin javob bilan yurish (unit exam + levelExam):');
+  {
+    for (const lv of api.LEVELS) {
+      const url = new URL(`../data/tasks-${lv.toLowerCase()}.json`, import.meta.url);
+      if (!fs.existsSync(url)) { console.log(`     —    ${lv}: fayl yo'q, o'tkazildi`); continue; }
+      const data = JSON.parse(fs.readFileSync(url, 'utf8'));
+      const units = Array.isArray(data.units) ? data.units : [];
+      const holesUnits = units.filter(u => !Array.isArray(u.exam) || !u.exam.length).map(u => u.id);
+      const noLevelExam = !Array.isArray(data.levelExam) || !data.levelExam.length;
+      if (holesUnits.length || noLevelExam) {
+        console.log(`     —    ${lv}: kontent to'liq emas (${holesUnits.length} unit imtihoni, levelExam ${noLevelExam ? "yo'q" : 'bor'}), o'tkazildi`);
+        continue;
+      }
+
+      const src = { [lv]: data };
+      const quizzes = api.availableQuizzes(src);
+      t(`${lv}: barcha unit + daraja imtihoni ro'yxatda (${units.length + 1} ta)`,
+        quizzes.length === units.length + 1);
+
+      let bad = [];
+      for (const q of quizzes) {
+        let s = api.buildQuizSession(q.items);
+        while (s.idx < s.items.length) {
+          s = api.scoreQuizAnswer(s, s.items[s.idx].answer);   // oltin javob
+        }
+        if (api.quizPct(s) !== 100) bad.push(`${q.key}: ${s.correct}/${s.items.length}`);
+      }
+      t(`${lv}: har bir unit exam + levelExam oltin javob bilan 100% beradi${bad.length ? ' — ' + bad.slice(0,3).join(' | ') : ''}`,
+        bad.length === 0);
+    }
+  }
+
+  // ── 17.5 Dastur holatiga hech narsa yozmaydi ─────────────────────
+  console.log('  17.5 Dastur holatiga (user.program) ta\'sir yo\'q:');
+  {
+    const u = { name:'T', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[],
+                streak:0, lastTaskDay:null };
+    u.program = api.initProgram('A1');
+    api.setUser(u);
+    const snap = JSON.stringify(u.program);
+    const items = Array.from({ length: 4 }, (_, i) => mkExamItem(i));
+    let s = api.buildQuizSession(items);
+    s = api.scoreQuizAnswer(s, 0);
+    api.recordQuizResult('A1-A1-01', api.quizPct(s));
+    t('Testlar dastur holatini o\'zgartirmaydi', JSON.stringify(u.program) === snap);
+    t('Testlar streak bermaydi', u.streak === 0 && u.lastTaskDay === null);
+    t('Testlar kunlik normani sarflamaydi', u.program.doneToday.count === 0);
+  }
+
+  // ── 17.6 navTo('quiz') — bayroqqa bog'liq ────────────────────────
+  console.log('  17.6 navTo bayroqqa bog\'liq:');
+  {
+    const u = { name:'T', level:'A1', goal:'general', xp:0, vocabulary:[], achievements:[] };
+    u.program = api.initProgram('A1');
+    api.setUser(u);
+
+    api.setOffline(false);
+    let crashed = null;
+    try { api.navTo('quiz'); } catch (e) { crashed = e.message; }
+    t(`OFFLINE_BUILD=false: navTo('quiz') xatosiz${crashed ? ' — ' + crashed : ''} (renderDashboard'ga tushadi)`, crashed === null);
+
+    api.setOffline(true);
+    crashed = null;
+    try { api.navTo('quiz'); } catch (e) { crashed = e.message; }
+    t(`OFFLINE_BUILD=true: navTo('quiz') xatosiz${crashed ? ' — ' + crashed : ''} (renderQuizList'ga tushadi)`, crashed === null);
+    api.setOffline(false);
   }
 }
 

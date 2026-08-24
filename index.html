@@ -4923,6 +4923,82 @@ function gameXp(game, stats) {
   return Math.min(GAME_XP_MAX, Math.floor((s.score || 0) / 3));
 }
 
+// ─── 4.9. TESTLAR (docs/specs/offline-testlar.md) ─────────────────
+// Offline "Testlar" — mavjud unit_exam (8 MCQ) va levelExam (10 MCQ)
+// massivlarini dastur oqimidan TASHQARIDA, istalgan vaqt o'ynatiladigan
+// qilib chiqaradi. Yangi savol yozilmaydi — faqat data/tasks-<lv>.json
+// dagi mavjudlarini o'qiydi. `user.program`ga hech narsa yozmaydi (XP,
+// streak, passedUnits, weakUnits — hech biri tegilmaydi); sof o'z-o'zini
+// sinov.
+
+const QUIZ_RESULTS_KEY = 'eb_quiz_results';
+
+// Barcha darajalar bo'ylab exam/levelExam bo'sh bo'lmagan unit/darajalarni
+// ro'yxatga soladi. `tasksByLevel` — testda berish uchun (odatda OFFLINE_TASKS,
+// ya'ni allaqachon yuklangan darajalar). `passedUnits` TEKSHIRILMAYDI —
+// barcha unit ochiq (spec: oldindan bilim darajasini ko'rish ham mumkin).
+function availableQuizzes(tasksByLevel) {
+  const src = tasksByLevel || OFFLINE_TASKS;
+  const out = [];
+  for (const lv of LEVELS) {
+    const data = src[lv];
+    if (!data) continue;
+    for (const u of (data.units || [])) {
+      if (Array.isArray(u.exam) && u.exam.length) {
+        out.push({ level: lv, kind: 'unit', unitId: u.id, key: `${lv}-${u.id}`,
+                   title: u.title || u.id, items: u.exam });
+      }
+    }
+    if (Array.isArray(data.levelExam) && data.levelExam.length) {
+      out.push({ level: lv, kind: 'level', unitId: null, key: `${lv}-levelExam`,
+                 title: 'Daraja imtihoni', items: data.levelExam });
+    }
+  }
+  return out;
+}
+
+// Savollar massivini sessiya holatiga o'giradi. MVP: tartib o'zgarmaydi
+// (aralashtirilmaydi, adaptiv qiyinlashtirilmaydi — spec "Qamrov tashqarisida").
+function buildQuizSession(items) {
+  return { items: Array.isArray(items) ? items : [], idx: 0, correct: 0, answers: [] };
+}
+
+// Sof: kirish sessiyasini o'zgartirmaydi, YANGISINI qaytaradi (scoreRound
+// bilan bir xil naqsh). idx dagi savolni chosenIdx bilan solishtiradi.
+function scoreQuizAnswer(session, chosenIdx) {
+  const s = session || buildQuizSession([]);
+  const item = s.items[s.idx];
+  const ok = !!item && item.answer === chosenIdx;
+  return {
+    items: s.items,
+    idx: s.idx + 1,
+    correct: s.correct + (ok ? 1 : 0),
+    answers: s.answers.concat([{ idx: s.idx, chosenIdx, ok }]),
+  };
+}
+
+function quizPct(session) {
+  const s = session || buildQuizSession([]);
+  return s.items.length ? Math.round((s.correct / s.items.length) * 100) : 0;
+}
+
+// ── Saqlash (eb_quiz_results) — faqat ko'rsatish, hech qanday gate emas.
+function getQuizResults() {
+  const raw = LS.get(QUIZ_RESULTS_KEY);
+  return (raw && typeof raw === 'object') ? raw : {};
+}
+
+function recordQuizResult(key, pct) {
+  const r = getQuizResults();
+  const prev = r[key] || { best: 0, attempts: 0 };
+  const improved = pct > (prev.best || 0);
+  const best = improved ? pct : (prev.best || 0);
+  const attempts = (prev.attempts || 0) + 1;
+  r[key] = { best, attempts };
+  LS.set(QUIZ_RESULTS_KEY, r);
+  return { best, attempts, improved };
+}
+
 // ─── 5. WORD PARSER ──────────────────────────────────────────────
 function parseWords(text) {
   const re = /📌 \*\*(.+?)\*\*\s*(?:\((.+?)\))?\s*— (.+?)(?:\n|$)/g;
@@ -5896,12 +5972,15 @@ const NAV_TABS = [
 // Onlayn bilkada o'yin tabi UMUMAN yo'q — bayroq o'chiq bo'lsa navigatsiya
 // bir zarra ham o'zgarmaydi.
 const GAMES_TAB = { id:'games', emoji:'🎮', label:"O'yin" };
+// Testlar (docs/specs/offline-testlar.md) — o'yin tabi bilan BIR QATORDA,
+// uni almashtirmaydi. "tests" o'rnini ikkalasi birga egallaydi.
+const QUIZ_TAB  = { id:'quiz',  emoji:'🎯', label:'Testlar' };
 function navTabs() {
   if (!OFFLINE_BUILD) return NAV_TABS;
   const out = [];
   for (const t of NAV_TABS) {
     if (t.id === 'ai') continue;
-    if (t.id === 'tests') { out.push(GAMES_TAB); continue; }
+    if (t.id === 'tests') { out.push(GAMES_TAB); out.push(QUIZ_TAB); continue; }
     out.push(t);
   }
   return out;
@@ -5945,6 +6024,9 @@ function navTo(tab) {
   // O'yin ekrani faqat offline bilkada bor — onlayn bilkada bu tab chizilmaydi,
   // lekin eski qo'ng'iroq (masalan keshdagi ekran) bosh sahifaga tushsin.
   if (tab === 'games') return OFFLINE_BUILD ? renderGames() : renderDashboard();
+  // Testlar ekrani faqat offline bilkada bor — onlayn bilkada bu id
+  // navTabs()dan umuman chiqmaydi, lekin eski keshdan kelsa bosh sahifaga.
+  if (tab === 'quiz')  return OFFLINE_BUILD ? renderQuizList() : renderDashboard();
   if (tab === 'home') return renderDashboard();
   if (tab === 'ai')   { currentMode = 'conversation'; history = []; return renderChat(); }
   if (tab === 'tasks') { lessonOpen = false; return renderProgram(); }
@@ -8165,6 +8247,187 @@ function endGame() {
   R.xp = gameXp(R.game, { score: R.state.score, attempts: R.attempts });
   if (R.xp > 0) addXP(R.xp);
   gameRerender();
+}
+
+// ─── VIEW: TESTLAR (docs/specs/offline-testlar.md) ────────────────
+// Bu ekran FAQAT offline bilkada bor (navTabs). Mantiq §4.9 da sof holda
+// yozilgan — bu yerda faqat chizish va bosish. `user.program`ga hech
+// narsa o'qimaydi ham, yozmaydi ham (XP/streak yo'q — sof o'z-o'zini sinov).
+let quizLoading = false;
+let quizList    = null;   // availableQuizzes() natijasi, keshlangan
+let quizCurrent = null;   // tanlangan { level, kind, unitId, key, title, items }
+let quizSession = null;   // buildQuizSession natijasi
+let quizFlash   = null;   // { i, ok } — joriy savolga oxirgi javob
+let quizLock    = false;
+
+// Ro'yxat ekraniga kirganda hali yuklanmagan darajalarni fonda yuklaydi —
+// dastur ichidagi ensureOfflineLevel() bilan bir xil naqsh, lekin BARCHA
+// darajalar uchun (Testlar "istalgan" unit/darajani ko'rsatishi kerak).
+function ensureQuizLevelsLoaded() {
+  if (!OFFLINE_BUILD || quizLoading) return;
+  const missing = LEVELS.filter(lv => !OFFLINE_TASKS[lv]);
+  if (!missing.length) return;
+  quizLoading = true;
+  Promise.all(missing.map(lv => loadOfflineLevel(lv).catch(() => null))).then(() => {
+    quizLoading = false;
+    quizList = null;
+    if (currentView === 'quiz' && !quizSession) renderQuizList();
+  });
+}
+
+// Chiqish ogohlantirishsiz: sinov sessiyasi qimmatli data emas (o'yin
+// sessiyasi bilan bir xil qoida).
+function exitQuiz() {
+  quizCurrent = null; quizSession = null; quizFlash = null; quizLock = false;
+  renderQuizList();
+}
+
+function renderQuizList() {
+  currentView = 'quiz';
+  quizCurrent = null; quizSession = null; quizFlash = null; quizLock = false;
+  if (!OFFLINE_BUILD) return renderDashboard();
+  ensureQuizLevelsLoaded();
+  quizList = availableQuizzes();
+  const results = getQuizResults();
+  const byLevel = {};
+  quizList.forEach(q => { (byLevel[q.level] = byLevel[q.level] || []).push(q); });
+  const levels = Object.keys(byLevel);
+
+  const levelsHtml = levels.length ? levels.map(lv => `
+    <div class="mb-4">
+      <div class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">${esc(lv)}</div>
+      <div class="space-y-2">
+        ${byLevel[lv].map(q => {
+          const r = results[q.key];
+          const best = r ? `${r.best}%` : "hali yo'q";
+          return `<button data-qz="${q.key}" class="w-full text-left bg-slate-800 rounded-2xl p-4 border border-slate-700 hover:border-indigo-500 flex items-center gap-3">
+            <div class="text-2xl shrink-0">${q.kind === 'level' ? '🏆' : '📋'}</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-sm">${esc(q.title)}</div>
+              <div class="text-xs text-slate-400">${q.items.length} ta savol</div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="text-[10px] text-slate-500 uppercase tracking-wide">Rekord</div>
+              <div class="text-sm font-bold text-amber-400">${esc(best)}</div>
+              ${r ? `<div class="text-[10px] text-slate-500">${r.attempts} marta</div>` : ''}
+            </div>
+          </button>`;
+        }).join('')}
+      </div>
+    </div>`).join('')
+    : `<div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 text-center">
+        <div class="text-4xl mb-2">${quizLoading ? '⏳' : '📭'}</div>
+        <div class="text-sm text-slate-400">${quizLoading ? 'Yuklanmoqda…' : "Hozircha sinov mavjud emas."}</div>
+      </div>`;
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade pb-24">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+      <div class="flex-1 font-semibold">Testlar 🎯</div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-5">
+      <div class="text-xs text-slate-500 mb-4">Mavjud unit va daraja imtihonlaridan o'z-o'zingizni sinang. Dastur holatiga ta'sir qilmaydi — XP yoki streak berilmaydi.</div>
+      ${levelsHtml}
+    </div>
+  </div>
+  ${renderBottomNav('quiz')}`;
+
+  document.querySelectorAll('[data-qz]').forEach(b => { b.onclick = () => startQuiz(b.dataset.qz); });
+  bindBottomNav();
+}
+
+function startQuiz(key) {
+  const q = (quizList || availableQuizzes()).find(x => x.key === key);
+  if (!q) return renderQuizList();
+  quizCurrent = q;
+  quizSession = buildQuizSession(q.items);
+  quizFlash = null;
+  quizLock = false;
+  renderQuizSession();
+}
+
+function renderQuizSession() {
+  currentView = 'quiz';
+  const q = quizCurrent, s = quizSession;
+  if (!q || !s) return renderQuizList();
+  if (s.idx >= s.items.length) return renderQuizResult();
+  const item = s.items[s.idx];
+  const opts = (item.options || []).map((o, i) => {
+    let cls = 'bg-slate-800 border-slate-700 hover:border-indigo-500', anim = '';
+    if (quizFlash) {
+      if (i === item.answer)      { cls = 'bg-emerald-950 border-emerald-500 text-emerald-300'; anim = 'gm-pop'; }
+      else if (i === quizFlash.i) { cls = 'bg-red-950 border-red-500 text-red-300'; anim = 'gm-shake'; }
+      else                        { cls = 'bg-slate-800 border-slate-700 opacity-40'; }
+    }
+    return `<button class="qz-opt ${anim} w-full text-left border rounded-xl px-4 py-3.5 text-sm transition-colors ${cls}"
+      data-i="${i}" ${quizFlash ? 'disabled' : ''}>${esc(o)}</button>`;
+  }).join('');
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade pb-24">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+      <button id="qz-exit" class="text-slate-400 hover:text-white text-xl w-8 h-8 flex items-center justify-center">←</button>
+      <div class="flex-1 font-semibold text-sm">${esc(q.title)}</div>
+      <span class="text-slate-400 text-sm">${s.idx+1}/${s.items.length}</span>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-5">
+      <div class="text-center mb-5"><div class="text-lg font-semibold">${esc(item.q)}</div></div>
+      <div class="space-y-2">${opts}</div>
+    </div>
+  </div>
+  ${renderBottomNav('quiz')}`;
+
+  const exitBtn = document.getElementById('qz-exit');
+  if (exitBtn) exitBtn.onclick = exitQuiz;
+  bindBottomNav();
+  document.querySelectorAll('.qz-opt').forEach(b => {
+    b.onclick = () => {
+      if (quizFlash || quizLock) return;
+      const i = Number(b.dataset.i);
+      const ok = i === item.answer;
+      quizFlash = { i, ok };
+      offlineHaptic(ok);
+      quizLock = true;
+      renderQuizSession();
+      setTimeout(() => {
+        quizSession = scoreQuizAnswer(quizSession, i);
+        quizFlash = null;
+        quizLock = false;
+        renderQuizSession();
+      }, ok ? 500 : 1100);
+    };
+  });
+}
+
+function renderQuizResult() {
+  currentView = 'quiz';
+  const q = quizCurrent, s = quizSession;
+  if (!q || !s) return renderQuizList();
+  const pct = quizPct(s);
+  const rec = recordQuizResult(q.key, pct);
+  quizList = null;   // keyingi ro'yxatda yangi rekord ko'rinsin
+
+  document.getElementById('app').innerHTML = `
+  <div class="min-h-screen view-fade pb-24 flex flex-col">
+    <div class="bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
+      <div class="flex-1 font-semibold text-sm">${esc(q.title)}</div>
+    </div>
+    <div class="max-w-2xl mx-auto px-4 py-8 flex-1 flex items-center w-full">
+      <div class="bg-slate-800 rounded-2xl p-6 border ${rec.improved ? 'border-amber-500' : 'border-slate-700'} text-center w-full">
+        <div class="text-5xl mb-2 gm-pop">${pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '📖'}</div>
+        <div class="font-bold mb-1 text-lg">${s.correct}/${s.items.length} to'g'ri</div>
+        <div class="text-3xl font-bold text-indigo-400 mb-4">${pct}%</div>
+        <div class="text-sm text-slate-400 mb-4">Rekord: <b class="text-amber-400">${rec.best}%</b> · ${rec.attempts} marta</div>
+        <button id="qz-again" class="w-full bg-indigo-600 hover:bg-indigo-500 rounded-xl py-3 font-semibold transition-colors mb-2">🔁 Yana urinish</button>
+        <button id="qz-list" class="w-full bg-slate-700 hover:bg-slate-600 rounded-xl py-2.5 text-sm transition-colors">Ro'yxatga qaytish</button>
+      </div>
+    </div>
+  </div>
+  ${renderBottomNav('quiz')}`;
+
+  const again = document.getElementById('qz-again'); if (again) again.onclick = () => startQuiz(q.key);
+  const list  = document.getElementById('qz-list');  if (list)  list.onclick  = exitQuiz;
+  bindBottomNav();
 }
 
 // ─── 14. REVIEW MODE ─────────────────────────────────────────────
